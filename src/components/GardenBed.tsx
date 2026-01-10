@@ -1,4 +1,4 @@
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, Trash2 } from 'lucide-react'
 import type { Crop, GardenProfile } from '@/types'
 import { isCropViable } from '@/utils/dateEngine'
 
@@ -78,6 +78,12 @@ interface GardenBedProps {
 
   /** Optional name/title for the bed */
   bedName?: string
+
+  /** Optional callback when delete button is clicked */
+  onDelete?: () => void
+
+  /** Whether to show delete button (default: false) */
+  showDelete?: boolean
 }
 
 /**
@@ -91,7 +97,9 @@ export function GardenBed({
   checkDate = new Date(),
   width = 8,
   height = 4,
-  bedName
+  bedName,
+  onDelete,
+  showDelete = false
 }: GardenBedProps) {
   const totalCells = width * height
   const defaultSquares = Array(totalCells).fill(null) as (Crop | null)[]
@@ -119,9 +127,20 @@ export function GardenBed({
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <div className="mb-4 text-center">
+      <div className="mb-4 text-center relative">
         <h2 className="text-2xl font-bold text-soil-800">{displayName}</h2>
         <p className="text-soil-600">{cellCount} Square Foot Gardening cells</p>
+        {showDelete && onDelete && (
+          <button
+            onClick={onDelete}
+            className="absolute top-0 right-0 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            title="Delete this bed"
+            type="button"
+            aria-label={`Delete ${displayName}`}
+          >
+            <Trash2 className="w-5 h-5" />
+          </button>
+        )}
       </div>
 
       <div

@@ -437,4 +437,70 @@ describe('useLayoutManager', () => {
     expect(result.current.currentBed[0]).toEqual(lettuce)
     expect(result.current.currentBed).toHaveLength(32)
   })
+
+  it('adds a new box to the active layout', () => {
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+    const initialBoxCount = result.current.activeLayout?.boxes.length
+
+    act(() => {
+      result.current.addBox('Herb Box', 2, 4)
+    })
+
+    const updatedLayout = result.current.activeLayout
+    expect(updatedLayout?.boxes).toHaveLength((initialBoxCount ?? 0) + 1)
+
+    const newBox = updatedLayout?.boxes[updatedLayout.boxes.length - 1]
+    expect(newBox?.name).toBe('Herb Box')
+    expect(newBox?.width).toBe(2)
+    expect(newBox?.height).toBe(4)
+    expect(newBox?.cells).toHaveLength(8) // 2 * 4
+    expect(newBox?.cells.every(cell => cell === null)).toBe(true)
+  })
+
+  it('removes a box from the active layout', () => {
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+    // Add two more boxes (separate act calls to avoid batching)
+    let box1Id: string | undefined
+    let box2Id: string | undefined
+
+    act(() => {
+      box1Id = result.current.addBox('Box 1', 2, 2)
+    })
+
+    act(() => {
+      box2Id = result.current.addBox('Box 2', 3, 3)
+    })
+
+    expect(result.current.activeLayout?.boxes).toHaveLength(3) // Main Bed + 2 new
+
+    // Remove the first added box
+    act(() => {
+      if (box1Id) {
+        result.current.removeBox(box1Id)
+      }
+    })
+
+    expect(result.current.activeLayout?.boxes).toHaveLength(2)
+    expect(result.current.activeLayout?.boxes.find(b => b.id === box1Id)).toBeUndefined()
+    expect(result.current.activeLayout?.boxes.find(b => b.id === box2Id)).toBeDefined()
+  })
+
+  it('prevents removing the last remaining box', () => {
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+    const onlyBoxId = result.current.activeLayout?.boxes[0]?.id
+
+    expect(result.current.activeLayout?.boxes).toHaveLength(1)
+
+    act(() => {
+      if (onlyBoxId) {
+        result.current.removeBox(onlyBoxId)
+      }
+    })
+
+    // Should still have 1 box
+    expect(result.current.activeLayout?.boxes).toHaveLength(1)
+  })
 })

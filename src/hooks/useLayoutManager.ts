@@ -95,6 +95,12 @@ export interface UseLayoutManagerResult {
 
   /** Replace entire bed in single operation (batch update) */
   setBed: (newBed: (Crop | null)[]) => void
+
+  /** Add a new box to the active layout */
+  addBox: (name: string, width: number, height: number) => string
+
+  /** Remove a box from the active layout */
+  removeBox: (boxId: string) => void
 }
 
 /**
@@ -291,6 +297,50 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     })
   }
 
+  const addBox = (name: string, width: number, height: number): string => {
+    if (!activeLayout) return ''
+
+    const newBox: GardenBox = {
+      id: generateUUID(),
+      name,
+      width,
+      height,
+      cells: Array(width * height).fill(null) as (Crop | null)[],
+    }
+
+    const updatedBoxes = [...activeLayout.boxes, newBox]
+
+    setLayoutStorage({
+      ...layoutStorage,
+      layouts: {
+        ...layouts,
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
+      },
+    })
+
+    return newBox.id
+  }
+
+  const removeBox = (boxId: string): void => {
+    if (!activeLayout) return
+
+    // Prevent removing the last remaining box
+    if (activeLayout.boxes.length <= 1) {
+      console.warn('Cannot remove the last remaining box')
+      return
+    }
+
+    const updatedBoxes = activeLayout.boxes.filter(box => box.id !== boxId)
+
+    setLayoutStorage({
+      ...layoutStorage,
+      layouts: {
+        ...layouts,
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
+      },
+    })
+  }
+
   return {
     layouts,
     activeLayoutId,
@@ -305,5 +355,7 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     removeCrop,
     clearBed,
     setBed,
+    addBox,
+    removeBox,
   }
 }
