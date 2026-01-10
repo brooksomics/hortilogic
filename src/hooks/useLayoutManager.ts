@@ -1,19 +1,9 @@
 import { useLocalStorage } from './useLocalStorage'
 import { useProfiles } from './useProfiles'
 import type { LayoutStorage, GardenLayout, Crop } from '../types/garden'
+import { generateUUID } from '../utils/uuid'
 
 const LAYOUTS_KEY = 'hortilogic:layouts'
-
-/**
- * Generates a UUID v4 string
- */
-function generateUUID(): string {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0
-    const v = c === 'x' ? r : (r & 0x3) | 0x8
-    return v.toString(16)
-  })
-}
 
 /**
  * Creates an empty bed with 32 null cells

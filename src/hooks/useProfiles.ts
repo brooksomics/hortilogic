@@ -1,18 +1,8 @@
 import { useLocalStorage } from './useLocalStorage'
 import type { ProfileStorage, GardenProfile } from '../types/garden'
+import { generateUUID } from '../utils/uuid'
 
 const PROFILES_KEY = 'hortilogic:profiles'
-
-/**
- * Generates a UUID v4 string
- */
-function generateUUID(): string {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0
-    const v = c === 'x' ? r : (r & 0x3) | 0x8
-    return v.toString(16)
-  })
-}
 
 /**
  * Creates default Denver-based garden profile

@@ -60,6 +60,11 @@ export function LayoutActionModal({
       return
     }
 
+    if (trimmedName.length > 50) {
+      setError('Layout name must be 50 characters or less')
+      return
+    }
+
     setError('')
     onConfirm(trimmedName)
   }
@@ -126,6 +131,7 @@ export function LayoutActionModal({
                   setLayoutName(e.target.value)
                   setError('')
                 }}
+                maxLength={50}
                 className="w-full px-3 py-2 border border-soil-300 rounded-md focus:outline-none focus:ring-2 focus:ring-leaf-600"
                 placeholder="e.g., Spring 2026, Fall Garden"
                 autoFocus
