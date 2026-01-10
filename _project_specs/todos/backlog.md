@@ -4,55 +4,6 @@ Future work, prioritized. Move to active.md when starting.
 
 ---
 
-## [TODO-006] Expand Crop Database (Core 50)
-
-**Status:** pending
-**Priority:** medium
-**Estimate:** S-M
-
-### Description
-Move from 5 sample crops (Lettuce, Tomato, Carrot, Peas, Radish) to a comprehensive "Core 50" crop database with real planting data and companion rules.
-
-### Acceptance Criteria
-- [ ] Create crops.json with 50 common garden crops
-- [ ] Each crop has complete companion planting data
-- [ ] Each crop has accurate planting windows by zone
-- [ ] Crop library UI handles 50+ crops gracefully
-- [ ] Search/filter functionality for finding crops
-
-### Validation
-- Manual: Browse crop library, verify data accuracy
-- Automated: Test crop data loading, filtering
-
-### Test Cases
-| Input | Expected Output | Notes |
-|-------|-----------------|-------|
-| Load crops.json | 50 crops available | Data file |
-| Search "tom" | Find Tomato, Cherry Tomato | Filter works |
-| Check companions | Accurate friend/enemy data | Validate rules |
-| Select Zone 10b | Only show viable crops for zone | Filter by zone |
-
-### Dependencies
-- Depends on: None
-- Blocks: None
-
-### TDD Execution Log
-| Phase | Command | Result | Timestamp |
-|-------|---------|--------|-----------|
-| RED | - | - | - |
-| GREEN | - | - | - |
-| VALIDATE | - | - | - |
-| COMPLETE | - | - | - |
-
-### Technical Notes
-- Create src/data/crops.json (or crops.ts for type safety)
-- Add search input to CropLibrary component
-- Consider virtual scrolling for performance with 50+ items
-- Source companion planting data from reliable gardening references
-- Include common names and varieties
-
----
-
 ## [TODO-007] Code Quality Improvements from F004 Review
 
 **Status:** pending
@@ -239,3 +190,71 @@ Quality improvements identified during Feature 005 Phase 1-4 code reviews (migra
 3. **Missing Loading State** - No indicator during migration (brief, not critical)
 
 **Estimated effort:** 150-250 minutes total
+
+---
+
+## [TODO-009] Critical Fixes from Code Audit (Settings, Performance, File Size)
+
+**Status:** moved-to-active
+**Priority:** high
+**Estimate:** M
+
+### Description
+Address three critical issues identified in code audit: (1) Re-enable Settings functionality so users can change frost dates, (2) Fix autofill performance bottleneck causing multiple re-renders, (3) Refactor files exceeding 200-line Bootstrap limit.
+
+### Acceptance Criteria
+- [ ] **Settings Re-enabled:** Users can click Settings button and change frost dates
+- [ ] **Settings Integration:** Settings modal updates active layout's profile (not just default)
+- [ ] **Batch Update Method:** Add `setBed(bed)` to useLayoutManager for single-transaction updates
+- [ ] **Autofill Performance:** handleAutoFill uses setBed instead of forEach plantCrop
+- [ ] **App.tsx Refactor:** Extract handlers to useLayoutActions hook (reduce from 257 to <200 lines)
+- [ ] **Test Files Split:** Split useLayoutManager.test.ts (379→<200) and LayoutSelector.test.tsx (307→<200)
+
+### Validation
+- Manual: Click Settings, change dates, verify viability updates, click Autofill 20+ times (no stutter)
+- Automated: All 158 tests pass, coverage ≥80%, lint+typecheck clean
+
+### Test Cases
+| Input | Expected Output | Notes |
+|-------|-----------------|-------|
+| Click Settings button | Modal opens | Critical - currently disabled |
+| Change frost dates in Settings | Active profile updates, viability recalculates | Must work for active layout |
+| Click Autofill with 20 empty squares | Single state update, no UI stutter | Performance fix |
+| Check App.tsx line count | ≤200 lines | Bootstrap compliance |
+| Check test file line counts | ≤200 lines each | Bootstrap compliance |
+| Run full test suite | 158+ tests pass | No regressions |
+
+### Dependencies
+- Depends on: F005 (Layouts) complete ✅
+- Relates to: TODO-008 (broader quality improvements)
+- Blocks: Future features requiring Settings
+
+### TDD Execution Log
+| Phase | Command | Result | Timestamp |
+|-------|---------|--------|-----------|
+| RED | - | - | - |
+| GREEN | - | - | - |
+| VALIDATE | - | - | - |
+| COMPLETE | - | - | - |
+
+### Technical Notes
+**From Code Audit (2026-01-10):**
+
+**Critical Issue: Settings Unreachable**
+- `src/App.tsx:136` - Settings button commented out
+- Users cannot change frost dates, breaking parametric garden planner
+- App defaults to Denver/SF dates - unusable for other locations
+
+**High Issue: Autofill Performance**
+- `src/App.tsx:96-102` - forEach loop calls plantCrop individually
+- Each plantCrop triggers setLayoutStorage → re-render + localStorage write
+- 20 empty squares = 20 separate state updates = UI stutter
+- **Solution:** Add `setBed(bed)` method, update entire bed in one transaction
+
+**Medium Issue: Bootstrap Violations**
+- App.tsx: 257 lines (exceeds 200 by 28%)
+- useLayoutManager.test.ts: 379 lines (exceeds 200 by 89%)
+- LayoutSelector.test.tsx: 307 lines (exceeds 200 by 53%)
+- **Solution:** Extract useLayoutActions hook, split test files by responsibility
+
+**Estimated effort:** 120-180 minutes total

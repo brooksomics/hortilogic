@@ -365,6 +365,62 @@ describe('useLayoutManager', () => {
     expect(l1.bed[5]).toEqual(tomato)
   })
 
+  it('setBed updates entire bed in single operation', () => {
+    const { result } = renderHook(() => useLayoutManager())
+
+    // Create a new bed with multiple crops
+    const newBed: (Crop | null)[] = Array(32).fill(null)
+    newBed[0] = lettuce
+    newBed[5] = tomato
+    newBed[10] = lettuce
+    newBed[15] = tomato
+
+    // Update entire bed at once
+    act(() => {
+      result.current.setBed(newBed)
+    })
+
+    // Verify all crops were planted
+    expect(result.current.currentBed[0]).toEqual(lettuce)
+    expect(result.current.currentBed[5]).toEqual(tomato)
+    expect(result.current.currentBed[10]).toEqual(lettuce)
+    expect(result.current.currentBed[15]).toEqual(tomato)
+    expect(result.current.currentBed[20]).toBeNull()
+  })
+
+  it('setBed updates only the active layout', () => {
+    const { result } = renderHook(() => useLayoutManager())
+
+    const layout1Id = result.current.activeLayoutId
+
+    // Create layout 2
+    let layout2Id: string | undefined
+    act(() => {
+      layout2Id = result.current.createLayout('Layout 2')
+    })
+
+    // Update layout 2 bed
+    const newBed: (Crop | null)[] = Array(32).fill(null)
+    newBed[0] = lettuce
+    newBed[5] = tomato
+
+    act(() => {
+      result.current.setBed(newBed)
+    })
+
+    // Layout 2 should have the new bed
+    if (!layout2Id) throw new Error('Layout 2 ID not set')
+    const l2 = result.current.layouts[layout2Id]
+    if (!l2) throw new Error('Layout 2 not found')
+    expect(l2.bed[0]).toEqual(lettuce)
+    expect(l2.bed[5]).toEqual(tomato)
+
+    // Layout 1 should be unchanged
+    const l1 = result.current.layouts[layout1Id]
+    if (!l1) throw new Error('Layout 1 not found')
+    expect(l1.bed.every((cell: Crop | null) => cell === null)).toBe(true)
+  })
+
   it('returns current bed from active layout', () => {
     const { result } = renderHook(() => useLayoutManager())
 

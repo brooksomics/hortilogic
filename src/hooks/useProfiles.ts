@@ -41,6 +41,9 @@ export interface UseProfilesResult {
 
   /** Get profile by ID, returns undefined if not found */
   getProfile: (id: string) => GardenProfile | undefined
+
+  /** Update a profile by ID */
+  updateProfile: (id: string, profile: GardenProfile) => void
 }
 
 /**
@@ -51,7 +54,7 @@ export interface UseProfilesResult {
  * typically share the same location and frost dates.
  */
 export function useProfiles(): UseProfilesResult {
-  const [profileStorage] = useLocalStorage<ProfileStorage>(
+  const [profileStorage, setProfileStorage] = useLocalStorage<ProfileStorage>(
     PROFILES_KEY,
     createDefaultProfileStorage()
   )
@@ -64,9 +67,25 @@ export function useProfiles(): UseProfilesResult {
     return profiles[id]
   }
 
+  const updateProfile = (id: string, profile: GardenProfile): void => {
+    if (!profiles[id]) {
+      console.error(`Profile ${id} not found`)
+      return
+    }
+
+    setProfileStorage({
+      ...profileStorage,
+      profiles: {
+        ...profiles,
+        [id]: profile,
+      },
+    })
+  }
+
   return {
     profiles,
     defaultProfileId,
     getProfile,
+    updateProfile,
   }
 }

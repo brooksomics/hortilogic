@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
-import { renderHook } from '@testing-library/react'
+import { renderHook, act } from '@testing-library/react'
 import { useProfiles } from './useProfiles'
 import type { ProfileStorage, GardenProfile } from '../types/garden'
 
@@ -160,5 +160,57 @@ describe('useProfiles', () => {
 
     const defaultProfile = result.current.profiles[defaultId]
     expect(defaultProfile).toBeDefined()
+  })
+
+  it('updateProfile updates profile data', () => {
+    const { result } = renderHook(() => useProfiles())
+
+    const profileId = result.current.defaultProfileId
+    const originalProfile = result.current.getProfile(profileId)
+    expect(originalProfile).toBeDefined()
+
+    const updatedProfile: GardenProfile = {
+      name: 'Updated Garden',
+      hardiness_zone: '10a',
+      last_frost_date: '2024-01-15',
+      first_frost_date: '2024-12-15',
+      season_extension_weeks: 6,
+    }
+
+    // Update profile
+    act(() => {
+      result.current.updateProfile(profileId, updatedProfile)
+    })
+
+    // Verify profile was updated
+    const newProfile = result.current.getProfile(profileId)
+    expect(newProfile).toEqual(updatedProfile)
+  })
+
+  it('updateProfile persists to localStorage', () => {
+    const { result } = renderHook(() => useProfiles())
+
+    const profileId = result.current.defaultProfileId
+
+    const updatedProfile: GardenProfile = {
+      name: 'Escondido Garden',
+      hardiness_zone: '10a',
+      last_frost_date: '2024-01-15',
+      first_frost_date: '2024-12-15',
+      season_extension_weeks: 2,
+    }
+
+    act(() => {
+      result.current.updateProfile(profileId, updatedProfile)
+    })
+
+    // Check localStorage
+    const stored = localStorage.getItem('hortilogic:profiles')
+    expect(stored).not.toBeNull()
+
+    if (!stored) return
+
+    const parsed = JSON.parse(stored) as ProfileStorage
+    expect(parsed.profiles[profileId]).toEqual(updatedProfile)
   })
 })

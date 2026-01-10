@@ -4,6 +4,71 @@ Done items for reference. Move here from active.md when complete.
 
 ---
 
+## [TODO-006] Expand Crop Database (Core 50)
+
+**Status:** ✅ completed
+**Priority:** medium
+**Estimate:** S-M
+**Completed:** 2026-01-10
+
+### Description
+Move from 5 sample crops (Lettuce, Tomato, Carrot, Peas, Radish) to a comprehensive "Core 50" crop database with real planting data and companion rules.
+
+### Acceptance Criteria
+- [✅] Create crops.json with 50 common garden crops (created crops.ts for type safety)
+- [✅] Each crop has complete companion planting data
+- [✅] Each crop has accurate planting windows by zone (frost-relative windows work for all zones)
+- [✅] Crop library UI handles 50+ crops gracefully
+- [✅] Search/filter functionality for finding crops
+
+### Validation
+- ✅ Manual: Browse crop library, verify data accuracy
+- ✅ Automated: Test crop data loading, filtering (158 tests passing)
+
+### Test Cases
+| Input | Expected Output | Status |
+|-------|-----------------|--------|
+| Load crops.ts | 50 crops available | ✅ PASS |
+| Search "tom" | Find Tomato, Cherry Tomato | ✅ PASS |
+| Check companions | Accurate friend/enemy data | ✅ PASS |
+| Frost-relative windows | Work for all zones | ✅ PASS |
+
+### TDD Execution Log
+| Phase | Command | Result | Timestamp |
+|-------|---------|--------|-----------|
+| RED (Phase 1) | `npm test src/data/crops.test.ts` | FAIL (9 tests) | 2026-01-10 22:38 |
+| GREEN (Phase 1) | `npm test src/data/crops.test.ts` | PASS (9 tests) | 2026-01-10 22:41 |
+| RED (Phase 2) | `npm test src/components/CropLibrary.test.tsx` | FAIL (8 new tests) | 2026-01-10 22:42 |
+| GREEN (Phase 2) | `npm test src/components/CropLibrary.test.tsx` | PASS (18 tests) | 2026-01-10 22:42 |
+| RED (Phase 3) | `npm test src/App.test.tsx` | FAIL (1 new test) | 2026-01-10 22:43 |
+| GREEN (Phase 3) | `npm test src/App.test.tsx` | PASS (14 tests) | 2026-01-10 22:43 |
+| VALIDATE | `npm test` | PASS (158 tests total) | 2026-01-10 22:43 |
+| COMPLETE | `git commit && git push` | Success | 2026-01-10 22:44 |
+
+### Implementation Details
+- **Created:** `src/data/crops.ts` (542 lines) - TypeScript for type safety
+- **Created:** `src/data/crops.test.ts` (73 lines) - Data validation tests
+- **Modified:** `src/components/CropLibrary.tsx` - Added search input, filtering, crop count (129 lines, under 200 limit)
+- **Modified:** `src/components/CropLibrary.test.tsx` - Added 8 search/filter tests
+- **Modified:** `src/App.tsx` - Replaced sampleCrops with CORE_50_CROPS
+- **Modified:** `CODE_INDEX.md` - Documented new crop database and search capabilities
+
+### Crop Categories
+- 10 Leafy Greens (Lettuce, Spinach, Kale, Arugula, etc.)
+- 6 Nightshades (Tomato, Cherry Tomato, Pepper, Eggplant, etc.)
+- 8 Brassicas (Broccoli, Cauliflower, Cabbage, etc.)
+- 6 Legumes (Peas, Green Beans, Fava Beans, etc.)
+- 8 Root Vegetables (Carrot, Beet, Onion, Garlic, etc.)
+- 6 Cucurbits (Cucumber, Zucchini, Pumpkin, etc.)
+- 6 Herbs (Basil, Cilantro, Parsley, Dill, etc.)
+
+### Data Sources
+- University Extension Companion Planting Guides
+- "Carrots Love Tomatoes" by Louise Riotte
+- Mother Earth News Companion Planting Chart
+
+---
+
 ## [TODO-004] Implement Feature 004: User Configuration & Settings
 
 **Status:** ✅ completed

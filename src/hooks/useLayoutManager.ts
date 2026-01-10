@@ -87,6 +87,9 @@ export interface UseLayoutManagerResult {
 
   /** Clear all crops from the active layout */
   clearBed: () => void
+
+  /** Replace entire bed in single operation (batch update) */
+  setBed: (newBed: (Crop | null)[]) => void
 }
 
 /**
@@ -246,6 +249,18 @@ export function useLayoutManager(): UseLayoutManagerResult {
     })
   }
 
+  const setBed = (newBed: (Crop | null)[]): void => {
+    if (!activeLayout) return
+
+    setLayoutStorage({
+      ...layoutStorage,
+      layouts: {
+        ...layouts,
+        [activeLayoutId]: touchLayout({ ...activeLayout, bed: [...newBed] }),
+      },
+    })
+  }
+
   return {
     layouts,
     activeLayoutId,
@@ -259,5 +274,6 @@ export function useLayoutManager(): UseLayoutManagerResult {
     plantCrop,
     removeCrop,
     clearBed,
+    setBed,
   }
 }
