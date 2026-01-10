@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react'
-import { Sprout, Sparkles, Settings } from 'lucide-react'
+import { Sprout, Sparkles } from 'lucide-react'
 import { GardenBed } from './components/GardenBed'
 import { CropLibrary } from './components/CropLibrary'
-import { SettingsModal } from './components/SettingsModal'
-import { useGarden } from './hooks/useGarden'
-import type { Crop, GardenProfile } from './types'
+import { LayoutSelector } from './components/LayoutSelector'
+import { LayoutActionModal } from './components/LayoutActionModal'
+import { useLayoutManager } from './hooks/useLayoutManager'
+import { useProfiles } from './hooks/useProfiles'
+import { migrateToLayoutsSchema } from './utils/storageMigration'
+import { autoFillBed } from './utils/companionEngine'
+import type { Crop } from './types'
 
 // Sample crops with planting strategies and companion rules
 const sampleCrops: Crop[] = [
@@ -45,26 +49,96 @@ const sampleCrops: Crop[] = [
   }
 ]
 
-// Default garden profile (Denver, CO frost dates)
-const defaultProfile: GardenProfile = {
-  name: 'My Garden',
-  hardiness_zone: '5b',
-  last_frost_date: '2024-05-15',
-  first_frost_date: '2024-10-01',
-  season_extension_weeks: 0
-}
-
 function App() {
-  const { currentBed, gardenProfile, plantCrop, removeCrop, clearBed, setGardenProfile, autoFill } = useGarden()
-  const [selectedCrop, setSelectedCrop] = useState<Crop | null>(null)
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-
-  // Initialize garden profile if not set
+  // Run migration on app load
   useEffect(() => {
-    if (!gardenProfile) {
-      setGardenProfile(defaultProfile)
+    migrateToLayoutsSchema()
+  }, [])
+
+  // Layout management
+  const {
+    layouts,
+    activeLayoutId,
+    activeLayout,
+    currentBed,
+    createLayout,
+    switchLayout,
+    renameLayout,
+    deleteLayout,
+    duplicateLayout,
+    plantCrop,
+    removeCrop,
+    clearBed,
+  } = useLayoutManager()
+
+  const { getProfile, defaultProfileId } = useProfiles()
+
+  // Get garden profile for active layout (with fallback to default profile)
+  const gardenProfile = activeLayout
+    ? (getProfile(activeLayout.profileId) || getProfile(defaultProfileId) || null)
+    : null
+
+  // UI State
+  const [selectedCrop, setSelectedCrop] = useState<Crop | null>(null)
+  const [layoutModalMode, setLayoutModalMode] = useState<'create' | 'rename' | 'delete' | null>(null)
+  const [targetLayoutId, setTargetLayoutId] = useState<string | null>(null)
+
+  // Layout action handlers
+  const handleCreateLayout = () => {
+    setLayoutModalMode('create')
+  }
+
+  const handleRenameLayout = (layoutId: string) => {
+    setTargetLayoutId(layoutId)
+    setLayoutModalMode('rename')
+  }
+
+  const handleDuplicateLayout = (layoutId: string) => {
+    const layout = layouts[layoutId]
+    if (layout) {
+      duplicateLayout(layoutId, `${layout.name} (Copy)`)
     }
-  }, [gardenProfile, setGardenProfile])
+  }
+
+  const handleDeleteLayout = (layoutId: string) => {
+    setTargetLayoutId(layoutId)
+    setLayoutModalMode('delete')
+  }
+
+  const handleLayoutModalConfirm = (name: string) => {
+    if (layoutModalMode === 'create') {
+      createLayout(name)
+    } else if (layoutModalMode === 'rename' && targetLayoutId) {
+      renameLayout(targetLayoutId, name)
+    } else if (layoutModalMode === 'delete' && targetLayoutId) {
+      deleteLayout(targetLayoutId)
+    }
+    setLayoutModalMode(null)
+    setTargetLayoutId(null)
+  }
+
+  const handleLayoutModalClose = () => {
+    setLayoutModalMode(null)
+    setTargetLayoutId(null)
+  }
+
+  // Automagic fill handler
+  const handleAutoFill = () => {
+    if (!gardenProfile || !activeLayout) {
+      // Garden not fully initialized yet, skip silently
+      return
+    }
+
+    const newBed = autoFillBed(currentBed, sampleCrops, gardenProfile, new Date())
+
+    // Replace entire bed in one operation to avoid multiple renders
+    newBed.forEach((crop, index) => {
+      const currentCrop = currentBed[index]
+      if (crop && !currentCrop) {
+        plantCrop(index, crop)
+      }
+    })
+  }
 
   // Handle square click - plant or remove crop
   const handleSquareClick = (index: number) => {
@@ -84,18 +158,21 @@ function App() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex justify-center items-center mb-4 gap-4">
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex-1" />
             <Sprout className="w-12 h-12 text-leaf-600" />
-            <button
-              onClick={() => {
-                setIsSettingsOpen(true)
-              }}
-              className="ml-auto p-2 rounded-lg hover:bg-leaf-100 text-soil-700 hover:text-leaf-700 transition-colors"
-              aria-label="Open settings"
-              type="button"
-            >
-              <Settings className="w-6 h-6" />
-            </button>
+            <div className="flex-1 flex justify-end items-center gap-3">
+              <LayoutSelector
+                layouts={layouts}
+                activeLayoutId={activeLayoutId}
+                onSwitch={switchLayout}
+                onCreate={handleCreateLayout}
+                onRename={handleRenameLayout}
+                onDuplicate={handleDuplicateLayout}
+                onDelete={handleDeleteLayout}
+              />
+              {/* Settings button temporarily disabled - profile editing to be added in future update */}
+            </div>
           </div>
           <h1 className="text-4xl font-bold text-soil-900 mb-2">
             HortiLogic
@@ -122,9 +199,7 @@ function App() {
               </h3>
 
               <button
-                onClick={() => {
-                  autoFill(sampleCrops)
-                }}
+                onClick={handleAutoFill}
                 className="w-full bg-leaf-600 hover:bg-leaf-700 text-white font-medium px-4 py-2 rounded transition-colors flex items-center justify-center gap-2 mb-3"
                 type="button"
               >
@@ -199,18 +274,17 @@ function App() {
           </div>
         </div>
 
-        {/* Settings Modal */}
-        {gardenProfile && (
-          <SettingsModal
-            isOpen={isSettingsOpen}
-            profile={gardenProfile}
-            onSave={(updatedProfile) => {
-              setGardenProfile(updatedProfile)
-              setIsSettingsOpen(false)
-            }}
-            onClose={() => {
-              setIsSettingsOpen(false)
-            }}
+        {/* Settings Modal - Disabled in Phase 4, will be re-enabled in future update */}
+        {/* Profile editing functionality to be added in future enhancement */}
+
+        {/* Layout Action Modal */}
+        {layoutModalMode && (
+          <LayoutActionModal
+            isOpen={true}
+            mode={layoutModalMode}
+            currentName={targetLayoutId ? layouts[targetLayoutId]?.name : ''}
+            onConfirm={handleLayoutModalConfirm}
+            onClose={handleLayoutModalClose}
           />
         )}
       </div>
