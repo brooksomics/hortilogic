@@ -96,6 +96,9 @@ export interface UseLayoutManagerResult {
   /** Replace entire bed in single operation (batch update) */
   setBed: (newBed: (Crop | null)[]) => void
 
+  /** Update all boxes in the active layout (for multi-box operations) */
+  setAllBoxes: (boxes: GardenBox[]) => void
+
   /** Add a new box to the active layout */
   addBox: (name: string, width: number, height: number) => string
 
@@ -297,6 +300,18 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     })
   }
 
+  const setAllBoxes = (boxes: GardenBox[]): void => {
+    if (!activeLayout) return
+
+    setLayoutStorage({
+      ...layoutStorage,
+      layouts: {
+        ...layouts,
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes }),
+      },
+    })
+  }
+
   const addBox = (name: string, width: number, height: number): string => {
     if (!activeLayout) return ''
 
@@ -355,6 +370,7 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     removeCrop,
     clearBed,
     setBed,
+    setAllBoxes,
     addBox,
     removeBox,
   }

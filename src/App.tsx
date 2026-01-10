@@ -39,6 +39,7 @@ function App() {
     removeCrop,
     clearBed,
     setBed,
+    setAllBoxes,
     addBox,
     removeBox,
   } = layoutManager
@@ -74,6 +75,7 @@ function App() {
     gardenProfile,
     activeLayout,
     setBed,
+    setAllBoxes,
     plantCrop,
     removeCrop,
     updateProfile,

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { autoFillBed } from '../utils/companionEngine'
 import { CORE_50_CROPS } from '../data/crops'
-import type { Crop, GardenProfile, GardenLayout } from '../types/garden'
+import type { Crop, GardenProfile, GardenLayout, GardenBox } from '../types/garden'
 
 export interface UseGardenInteractionsResult {
   /** Currently selected crop */
@@ -34,6 +34,7 @@ interface UseGardenInteractionsProps {
   gardenProfile: GardenProfile | null
   activeLayout: GardenLayout | null
   setBed: (bed: (Crop | null)[]) => void
+  setAllBoxes: (boxes: GardenBox[]) => void
   plantCrop: (index: number, crop: Crop) => void
   removeCrop: (index: number) => void
   updateProfile: (id: string, profile: GardenProfile) => void
@@ -50,6 +51,7 @@ export function useGardenInteractions({
   gardenProfile,
   activeLayout,
   setBed,
+  setAllBoxes,
   plantCrop,
   removeCrop,
   updateProfile,
@@ -58,21 +60,24 @@ export function useGardenInteractions({
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   const handleAutoFill = (): void => {
-    if (!gardenProfile || !activeLayout || !activeLayout.boxes[0]) {
+    if (!gardenProfile || !activeLayout || activeLayout.boxes.length === 0) {
       return
     }
 
-    // Get dimensions from first box
-    const firstBox = activeLayout.boxes[0]
-    const newBed = autoFillBed(
-      currentBed,
-      CORE_50_CROPS,
-      gardenProfile,
-      firstBox.width,
-      firstBox.height,
-      new Date()
-    )
-    setBed(newBed)
+    // Process ALL boxes in the layout
+    const updatedBoxes = activeLayout.boxes.map((box) => {
+      const filledCells = autoFillBed(
+        box.cells,
+        CORE_50_CROPS,
+        gardenProfile,
+        box.width,
+        box.height,
+        new Date()
+      )
+      return { ...box, cells: filledCells }
+    })
+
+    setAllBoxes(updatedBoxes)
   }
 
   const handleSquareClick = (index: number): void => {

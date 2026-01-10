@@ -4,81 +4,67 @@ Current work in progress. Each todo follows the atomic todo format from base/SKI
 
 ---
 
-## [TODO-012] Settings Not Persisting - Profile Updates Lost on Modal Close
+## [TODO-018] Multi-Box Automagic Fill
 
 **Status:** in-progress
-**Priority:** critical
+**Priority:** medium
 **Estimate:** S
 
 ### Description
-Settings modal does not persist changes when "Save" is clicked. After clicking Save and reopening Settings, all fields revert to default values. This breaks core functionality as users cannot configure their garden profile (frost dates, zone, location, target planting date).
+Update the `handleAutoFill` logic to iterate through all boxes in the current layout. The solver must respect the specific dimensions of each box when calculating neighbors.
 
 ### User Story
-"As a gardener, when I click 'Save' in Settings after changing my hardiness zone, frost dates, or target planting date, I expect those changes to persist so that when I reopen Settings, my saved values are displayed - not the defaults."
+"As a gardener with multiple garden beds of different sizes, when I click the Automagic Fill button, I expect all my beds to be filled with compatible crops that respect each bed's unique dimensions and companion planting rules."
 
 ### Acceptance Criteria
-- [ ] **Settings Persist**: Changes made in Settings modal are saved to localStorage
-- [ ] **Settings Reload**: Reopening Settings shows previously saved values, not defaults
-- [ ] **Profile Updates**: GardenProfile in localStorage is updated with new values
-- [ ] **Real-time Updates**: Crop viability indicators update immediately when settings change
-- [ ] **All Fields Persist**: Location, target planting date, frost dates, zone, season extension all save correctly
+- [ ] "Automagic Fill" button triggers solver for ALL boxes in layout
+- [ ] Solver uses specific width/height of each box for neighbor checks
+- [ ] Crops are distributed across all available empty slots
+- [ ] Performance check: ensure 3+ boxes doesn't cause UI freeze
+- [ ] Each box maintains its own crop compatibility based on its dimensions
 
 ### Validation
-- Manual: Change zone from 5b to 10a, click Save, reopen Settings → should show 10a
-- Manual: Change target planting date to Feb 1, click Save, reopen Settings → should show Feb 1
-- Manual: Change frost dates, click Save, verify crop viability colors update
-- Automated: Add integration test for Settings persistence flow
+- Manual: Create 3 empty boxes (4x8, 2x4, 3x3), click Automagic Fill, verify all fill with valid crops
+- Manual: Performance test with 5 boxes (~100 cells), verify no UI freeze
+- Automated: Unit test autoFillBed with different dimensions
 
 ### Test Cases
 | Input | Expected Output | Notes |
 |-------|-----------------|-------|
-| Open Settings, change zone to 10a, click Save | localStorage updated with zone 10a | Profile persists |
-| Reopen Settings after saving zone 10a | Zone field shows 10a (not 5b) | Values reload from storage |
-| Change LFD from May 15 to Feb 1, click Save | Crop viability updates immediately | Real-time reactivity |
-| Change target planting date, click Save, reload page | Date persists after page reload | Survives browser refresh |
-| Click Save with validation error | Error shown, values NOT saved | Invalid data rejected |
+| 3 empty boxes (4x8, 2x4, 3x3) + Automagic Fill | All boxes filled with compatible crops | Multi-box solver |
+| Performance test: 5 boxes, 100+ cells | Fill completes in <2 seconds | No UI freeze |
+| Box with width=2 | Neighbor calc uses width=2 (not 4) | Dimension awareness |
+| Mixed filled/empty boxes | Only empty cells filled, existing preserved | Non-destructive |
 
 ### Dependencies
-- Depends on: useProfiles hook (src/hooks/useProfiles.ts)
-- Depends on: useGardenInteractions hook (src/hooks/useGardenInteractions.ts)
-- Related to: TODO-011 (Settings enhancements just added)
+- Depends on: TODO-016 (dynamic grid with neighbor updates) complete ✅
+- Depends on: TODO-017 (box management UI) complete ✅
+- Blocks: None
+- Related: F008 (Multi-Box feature spec)
 
 ### TDD Execution Log
 | Phase | Command | Result | Timestamp |
 |-------|---------|--------|-----------|
-| RED | - | - | - |
-| GREEN | - | - | - |
-| VALIDATE | - | - | - |
-| COMPLETE | - | - | - |
+| RED | npm test -- useGardenInteractions.test.ts --run | 1 failed (expected 1 to be 3) ✅ | 2026-01-10 22:00 |
+| GREEN | Implement setAllBoxes + update handleAutoFill | 3 tests passing ✅ | 2026-01-10 22:05 |
+| VALIDATE | npm test -- --run | 201 tests passing (198 + 3 new) ✅ | 2026-01-10 22:10 |
+| COMPLETE | git commit + push | ✅ | 2026-01-10 22:15 |
 
 ### Technical Notes
-**Suspected Root Cause:**
-- Settings modal calls `onSave(formData)` on submit
-- `onSave` is passed from `useGardenInteractions.handleSettingsSave`
-- `handleSettingsSave` calls `updateProfile(activeLayout.profileId, updatedProfile)`
-- Possible issue: profile not getting updated in localStorage, or wrong profile ID being used
+**Implementation Plan:**
+1. Update `handleAutoFill` in `useGardenInteractions.ts` to iterate through all boxes
+2. For each box, call `autoFillBed` with box-specific width and height
+3. Update each box's cells using the existing box update pattern
+4. Ensure performance: process boxes sequentially, use single state update at end
 
-**Investigation Steps:**
-1. Check if `handleSettingsSave` is actually calling `updateProfile` (add console.log)
-2. Verify `updateProfile` in `useProfiles.ts` is updating localStorage correctly
-3. Check if `getProfile` is returning stale cached data instead of updated profile
-4. Verify `activeLayout.profileId` matches the profile being updated
-5. Check if React state is updating to trigger re-render with new profile
+**Files to Modify:**
+- `src/hooks/useGardenInteractions.ts` - Update handleAutoFill logic
+- `src/hooks/useLayoutManager.ts` - May need updateBox method
+- Tests to verify multi-box filling
 
-**Potential Fixes:**
-- Ensure `updateProfile` triggers re-render by updating profileStorage state
-- Verify localStorage is being written (check browser DevTools → Application → Local Storage)
-- Check if profile reference is updating correctly in App.tsx
-- May need to force re-fetch profile after save
-
-**Files to Check:**
-- `src/hooks/useProfiles.ts` - updateProfile implementation
-- `src/hooks/useGardenInteractions.ts` - handleSettingsSave
-- `src/components/SettingsModal.tsx` - onSave callback
-- `src/App.tsx` - how profile is passed to Settings
-
-**Estimated effort:** 30-60 minutes (small bug fix)
+**Estimated effort:** 30-60 minutes
 
 ---
 
-<!-- Moved TODO-011 to completed.md (2026-01-10) -->
+<!-- TODO-016 and TODO-017 moved to completed.md (2026-01-10) -->
+<!-- TODO-012 moved to completed.md (2026-01-10) -->

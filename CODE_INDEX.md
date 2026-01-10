@@ -4,7 +4,7 @@
 
 **Before creating any new function, CHECK HERE FIRST.**
 
-Last updated: 2026-01-10 (TODO-017 complete - Box Management UI)
+Last updated: 2026-01-10 (TODO-018 complete - Multi-Box Automagic Fill)
 
 ---
 
@@ -54,14 +54,16 @@ Last updated: 2026-01-10 (TODO-017 complete - Box Management UI)
 | `renameLayout()` | hooks/useLayoutManager.ts:154 | Rename existing layout |
 | `deleteLayout()` | hooks/useLayoutManager.ts:170 | Delete layout (prevents deleting last one) |
 | `duplicateLayout()` | hooks/useLayoutManager.ts:200 | Copy layout with all box data |
-| `addBox()` | hooks/useLayoutManager.ts:300 | Add a new garden box to active layout |
-| `removeBox()` | hooks/useLayoutManager.ts:324 | Remove a box from active layout (prevents removing last box) |
+| `addBox()` | hooks/useLayoutManager.ts:315 | Add a new garden box to active layout |
+| `removeBox()` | hooks/useLayoutManager.ts:339 | Remove a box from active layout (prevents removing last box) |
+| `setAllBoxes()` | hooks/useLayoutManager.ts:303 | Update all boxes in active layout (for multi-box batch operations) |
 
 **Key Concepts:**
 - Multiple layouts per user (e.g., "Spring 2026", "Fall 2026")
 - **Multi-box support**: Each layout can contain multiple garden boxes of varying sizes
 - Each box has: id, name, width (columns), height (rows), and cells array
 - Default box: "Main Bed" (8x4 = 32 cells)
+- **Multi-box operations**: Automagic Fill processes ALL boxes in parallel with correct dimensions
 - Profiles shared across layouts (same location, different seasons)
 - Migration chain: Legacy → Multi-layout (v1) → Multi-box (v2)
 - LocalStorage keys: `hortilogic:layouts` (v2), `hortilogic:profiles`
