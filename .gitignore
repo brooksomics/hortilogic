@@ -21,6 +21,7 @@ venv/
 # Build outputs
 dist/
 build/
+*.tsbuildinfo
 
 # IDE
 .idea/
@@ -39,3 +40,6 @@ yarn-error.log*
 
 # OS
 Thumbs.db
+
+# Tools
+repomix-output.xml
