@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { CropLibrary } from './CropLibrary'
-import type { Crop } from '@/types'
+import type { Crop, GardenProfile } from '@/types'
 
 const sampleCrops: Crop[] = [
   {
@@ -238,6 +238,144 @@ describe('CropLibrary', () => {
 
       expect(searchInput).toHaveValue('')
       expect(screen.getByText('Lettuce')).toBeInTheDocument()
+    })
+  })
+
+  describe('Viability Indicators', () => {
+    const testProfile: GardenProfile = {
+      name: 'Test Garden',
+      hardiness_zone: '5b',
+      last_frost_date: '2024-04-15',
+      first_frost_date: '2024-10-15',
+      season_extension_weeks: 0,
+      targetPlantingDate: '2024-04-01' // 2 weeks before LFD
+    }
+
+    it('shows green border for viable crops', () => {
+      // Lettuce is viable (plantable -4 to +2 weeks from LFD)
+      // Target is April 1, LFD is April 15 (2 weeks before, within window)
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+          currentProfile={testProfile}
+        />
+      )
+
+      const lettuceButton = screen.getByRole('button', { name: /Select Lettuce for planting/i })
+      expect(lettuceButton).toHaveClass('border-green-500')
+    })
+
+    it('shows gray border for out-of-season crops', () => {
+      const summerProfile: GardenProfile = {
+        ...testProfile,
+        targetPlantingDate: '2024-07-01' // Way past lettuce planting window
+      }
+
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+          currentProfile={summerProfile}
+        />
+      )
+
+      const lettuceButton = screen.getByRole('button', { name: /Select Lettuce for planting/i })
+      expect(lettuceButton).toHaveClass('border-gray-300')
+      expect(lettuceButton).toHaveClass('opacity-60')
+    })
+
+    it('displays viability icon for each crop', () => {
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+          currentProfile={testProfile}
+        />
+      )
+
+      // Each crop button should have a viability icon
+      const lettuceButton = screen.getByRole('button', { name: /Select Lettuce for planting/i })
+      const viabilityIcon = lettuceButton.querySelector('svg.viability-icon')
+      expect(viabilityIcon).toBeInTheDocument()
+    })
+
+    it('includes viability label in aria-label for accessibility', () => {
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+          currentProfile={testProfile}
+        />
+      )
+
+      // Button should include viability status in aria-label
+      const lettuceButton = screen.getByRole('button', { name: /Select Lettuce for planting - Plantable now/i })
+      expect(lettuceButton).toBeInTheDocument()
+    })
+
+    it('renders season filter toggle', () => {
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+          currentProfile={testProfile}
+        />
+      )
+
+      const filterCheckbox = screen.getByRole('checkbox', { name: /hide out-of-season/i })
+      expect(filterCheckbox).toBeInTheDocument()
+    })
+
+    it('filters out-of-season crops when toggle is enabled', async () => {
+      const user = userEvent.setup()
+      const summerProfile: GardenProfile = {
+        ...testProfile,
+        targetPlantingDate: '2024-07-01' // Summer - all spring crops out of season
+      }
+
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+          currentProfile={summerProfile}
+        />
+      )
+
+      // Initially all crops visible
+      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Carrot')).toBeInTheDocument()
+
+      // Enable filter
+      const filterCheckbox = screen.getByRole('checkbox', { name: /hide out-of-season/i })
+      await user.click(filterCheckbox)
+
+      // All crops should be hidden in summer (all are spring crops)
+      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
+      expect(screen.queryByText('Carrot')).not.toBeInTheDocument()
+    })
+
+    it('shows all crops when no profile is provided', () => {
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+        />
+      )
+
+      // All crops should be visible without viability styling
+      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Carrot')).toBeInTheDocument()
     })
   })
 })

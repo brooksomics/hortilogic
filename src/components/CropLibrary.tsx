@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { Sprout, Check, X } from 'lucide-react'
-import type { Crop } from '@/types'
+import type { Crop, GardenProfile } from '@/types'
+import { getCropViabilityStatus, getViabilityStyles } from '@/utils/cropViabilityHelper'
 
 interface CropLibraryProps {
   /** Available crops to display */
@@ -11,23 +12,38 @@ interface CropLibraryProps {
 
   /** Callback when a crop is selected */
   onSelectCrop: (crop: Crop) => void
+
+  /** Optional garden profile for viability indicators */
+  currentProfile?: GardenProfile | null
 }
 
 /**
  * Crop Library sidebar component
  * Displays available crops and allows selection for planting
  */
-export function CropLibrary({ crops, selectedCrop, onSelectCrop }: CropLibraryProps) {
+export function CropLibrary({ crops, selectedCrop, onSelectCrop, currentProfile }: CropLibraryProps) {
   const [searchQuery, setSearchQuery] = useState('')
+  const [hideOutOfSeason, setHideOutOfSeason] = useState(false)
 
   const filteredCrops = useMemo(() => {
     return crops.filter((crop) => {
       const matchesSearch = (crop.name || crop.id)
         .toLowerCase()
         .includes(searchQuery.toLowerCase())
+
+      // Filter by season if profile and toggle enabled
+      if (hideOutOfSeason && currentProfile) {
+        const targetDate = currentProfile.targetPlantingDate
+          ? new Date(currentProfile.targetPlantingDate)
+          : new Date()
+        const status = getCropViabilityStatus(crop, currentProfile, targetDate)
+        const matchesSeason = status === 'viable' || status === 'marginal'
+        return matchesSearch && matchesSeason
+      }
+
       return matchesSearch
     })
-  }, [crops, searchQuery])
+  }, [crops, searchQuery, hideOutOfSeason, currentProfile])
 
   const handleClearSearch = (): void => {
     setSearchQuery('')
@@ -69,6 +85,24 @@ export function CropLibrary({ crops, selectedCrop, onSelectCrop }: CropLibraryPr
         )}
       </div>
 
+      {/* Season Filter Toggle */}
+      {currentProfile && (
+        <div className="mb-4">
+          <label className="flex items-center gap-2 text-sm text-soil-700 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={hideOutOfSeason}
+              onChange={(e) => {
+                setHideOutOfSeason(e.target.checked)
+              }}
+              className="rounded border-soil-300 text-leaf-600 focus:ring-leaf-500"
+              aria-label="Hide out-of-season crops"
+            />
+            <span>Hide out-of-season crops</span>
+          </label>
+        </div>
+      )}
+
       {/* Crop Count */}
       <div className="text-xs text-soil-600 mb-2">
         {filteredCrops.length} {filteredCrops.length === 1 ? 'crop' : 'crops'}
@@ -78,6 +112,31 @@ export function CropLibrary({ crops, selectedCrop, onSelectCrop }: CropLibraryPr
         {filteredCrops.map((crop) => {
           const isSelected = selectedCrop?.id === crop.id
 
+          // Get viability status and styles
+          let viabilityStyles = null
+          let viabilityStatus = null
+          let ViabilityIcon = null
+          if (currentProfile) {
+            const targetDate = currentProfile.targetPlantingDate
+              ? new Date(currentProfile.targetPlantingDate)
+              : new Date()
+            viabilityStatus = getCropViabilityStatus(crop, currentProfile, targetDate)
+            viabilityStyles = getViabilityStyles(viabilityStatus)
+            ViabilityIcon = viabilityStyles.icon
+          }
+
+          // Determine border class
+          const borderClass = isSelected
+            ? 'border-leaf-500 bg-leaf-50'
+            : viabilityStyles
+              ? viabilityStyles.className
+              : 'border-soil-200 hover:border-soil-400 bg-white'
+
+          // Create aria-label with viability info
+          const ariaLabel = viabilityStyles
+            ? `Select ${crop.name || crop.id} for planting - ${viabilityStyles.label}`
+            : `Select ${crop.name || crop.id} for planting`
+
           return (
             <button
               key={crop.id}
@@ -86,14 +145,11 @@ export function CropLibrary({ crops, selectedCrop, onSelectCrop }: CropLibraryPr
               }}
               className={`
                 w-full text-left p-3 rounded-lg border-2 transition-all
-                ${isSelected
-                  ? 'border-leaf-500 bg-leaf-50'
-                  : 'border-soil-200 hover:border-soil-400 bg-white'
-                }
+                ${borderClass}
               `}
               type="button"
               aria-pressed={isSelected}
-              aria-label={`Select ${crop.name || crop.id} for planting`}
+              aria-label={ariaLabel}
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1">
@@ -105,9 +161,17 @@ export function CropLibrary({ crops, selectedCrop, onSelectCrop }: CropLibraryPr
                   </div>
                 </div>
 
-                {isSelected && (
-                  <Check className="w-5 h-5 text-leaf-600 flex-shrink-0" aria-hidden="true" />
-                )}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  {/* Viability Icon */}
+                  {ViabilityIcon && (
+                    <ViabilityIcon className="w-4 h-4 viability-icon" aria-hidden="true" />
+                  )}
+
+                  {/* Selection Check */}
+                  {isSelected && (
+                    <Check className="w-5 h-5 text-leaf-600" aria-hidden="true" />
+                  )}
+                </div>
               </div>
             </button>
           )

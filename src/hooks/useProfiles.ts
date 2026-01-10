@@ -8,12 +8,16 @@ const PROFILES_KEY = 'hortilogic:profiles'
  * Creates default Denver-based garden profile
  */
 function createDefaultProfile(): GardenProfile {
+  // Get current year for frost dates
+  const currentYear = new Date().getFullYear()
+
   return {
     name: 'My Garden',
     hardiness_zone: '5b',
-    last_frost_date: '2024-05-15',
-    first_frost_date: '2024-10-01',
+    last_frost_date: `${currentYear}-05-15`,
+    first_frost_date: `${currentYear}-10-01`,
     season_extension_weeks: 0,
+    targetPlantingDate: new Date().toISOString().split('T')[0], // Default to today
   }
 }
 

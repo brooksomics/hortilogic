@@ -8,6 +8,9 @@ export interface GardenProfile {
   /** USDA hardiness zone (e.g., "5b", "10a") */
   hardiness_zone: string
 
+  /** Optional location/city for better user context (e.g., "Denver, CO") */
+  location?: string
+
   /** ISO date string for last spring frost (e.g., "2024-04-15") */
   last_frost_date: string
 
@@ -16,6 +19,9 @@ export interface GardenProfile {
 
   /** Number of weeks the growing season can be extended (via season extension techniques) */
   season_extension_weeks: number
+
+  /** ISO date string for target planting date (defaults to today) */
+  targetPlantingDate?: string
 }
 
 /**

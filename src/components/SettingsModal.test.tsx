@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { SettingsModal } from './SettingsModal'
 import type { GardenProfile } from '../types/garden'
@@ -108,13 +108,16 @@ describe('SettingsModal', () => {
     const saveButton = screen.getByRole('button', { name: /save/i })
     await user.click(saveButton)
 
-    expect(mockOnSave).toHaveBeenCalledWith({
-      name: 'Backyard Bed',
-      hardiness_zone: '5b',
-      last_frost_date: '2024-01-15',
-      first_frost_date: '2024-10-15',
-      season_extension_weeks: 2
-    })
+    // Should include the new fields with defaults
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: 'Backyard Bed',
+        hardiness_zone: '5b',
+        last_frost_date: '2024-01-15',
+        first_frost_date: '2024-10-15',
+        season_extension_weeks: 2
+      })
+    )
   })
 
   it('calls onClose when cancel is clicked', async () => {
@@ -216,5 +219,94 @@ describe('SettingsModal', () => {
     expect(screen.getByLabelText(/last frost date/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/first frost date/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/season extension/i)).toBeInTheDocument()
+  })
+
+  it('renders location field as optional', () => {
+    render(
+      <SettingsModal
+        isOpen={true}
+        profile={mockProfile}
+        onSave={mockOnSave}
+        onClose={mockOnClose}
+      />
+    )
+
+    const locationInput = screen.getByLabelText(/location/i)
+    expect(locationInput).toBeInTheDocument()
+    expect(locationInput).toHaveValue('')
+  })
+
+  it('renders target planting date field with default to today', () => {
+    render(
+      <SettingsModal
+        isOpen={true}
+        profile={mockProfile}
+        onSave={mockOnSave}
+        onClose={mockOnClose}
+      />
+    )
+
+    const targetDateInput = screen.getByLabelText(/target planting date/i)
+    expect(targetDateInput).toBeInTheDocument()
+    // Should default to today's date
+    const today = new Date().toISOString().split('T')[0]
+    expect(targetDateInput).toHaveValue(today)
+  })
+
+  it('saves location and target planting date when provided', async () => {
+    const user = userEvent.setup()
+    render(
+      <SettingsModal
+        isOpen={true}
+        profile={mockProfile}
+        onSave={mockOnSave}
+        onClose={mockOnClose}
+      />
+    )
+
+    // Add location
+    const locationInput = screen.getByLabelText(/location/i)
+    await user.type(locationInput, 'Denver, CO')
+
+    // Change target planting date (use fireEvent for date inputs)
+    const targetDateInput = screen.getByLabelText(/target planting date/i)
+    fireEvent.change(targetDateInput, { target: { value: '2024-03-15' } })
+
+    // Click save
+    const saveButton = screen.getByRole('button', { name: /save/i })
+    await user.click(saveButton)
+
+    expect(mockOnSave).toHaveBeenCalledWith({
+      name: 'My Garden',
+      hardiness_zone: '5b',
+      last_frost_date: '2024-05-15',
+      first_frost_date: '2024-10-15',
+      season_extension_weeks: 0,
+      location: 'Denver, CO',
+      targetPlantingDate: '2024-03-15'
+    })
+  })
+
+  it('preserves existing location and targetPlantingDate when profile has them', () => {
+    const profileWithLocation: GardenProfile = {
+      ...mockProfile,
+      location: 'Boston, MA',
+      targetPlantingDate: '2024-04-01'
+    }
+
+    render(
+      <SettingsModal
+        isOpen={true}
+        profile={profileWithLocation}
+        onSave={mockOnSave}
+        onClose={mockOnClose}
+      />
+    )
+
+    const locationInput = screen.getByLabelText(/location/i)
+    expect(locationInput).toHaveValue('Boston, MA')
+
+    const targetDateInput = screen.getByLabelText(/target planting date/i)
+    expect(targetDateInput).toHaveValue('2024-04-01')
   })
 })

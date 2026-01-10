@@ -27,11 +27,13 @@ describe('useProfiles', () => {
     const defaultProfile = result.current.profiles[profileId]
     if (!defaultProfile) throw new Error('Default profile not found')
 
+    const currentYear = new Date().getFullYear()
     expect(defaultProfile.name).toBe('My Garden')
     expect(defaultProfile.hardiness_zone).toBe('5b')
-    expect(defaultProfile.last_frost_date).toBe('2024-05-15')
-    expect(defaultProfile.first_frost_date).toBe('2024-10-01')
+    expect(defaultProfile.last_frost_date).toBe(`${currentYear}-05-15`)
+    expect(defaultProfile.first_frost_date).toBe(`${currentYear}-10-01`)
     expect(defaultProfile.season_extension_weeks).toBe(0)
+    expect(defaultProfile.targetPlantingDate).toBeDefined()
   })
 
   it('loads existing profiles from localStorage', () => {
