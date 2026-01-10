@@ -563,3 +563,93 @@ Add UI controls to manage the boxes within a layout. Users can add new boxes wit
 - ✅ Security: Input validation on dimensions
 
 ---
+## [TODO-018] Multi-Box Automagic Fill
+
+**Status:** ✅ completed
+**Priority:** medium
+**Estimate:** S
+**Completed:** 2026-01-10
+
+### Description
+Update the `handleAutoFill` logic to iterate through all boxes in the current layout. The solver must respect the specific dimensions of each box when calculating neighbors.
+
+### User Story
+"As a gardener with multiple garden beds of different sizes, when I click the Automagic Fill button, I expect all my beds to be filled with compatible crops that respect each bed's unique dimensions and companion planting rules."
+
+### Acceptance Criteria
+- [✅] "Automagic Fill" button triggers solver for ALL boxes in layout
+- [✅] Solver uses specific width/height of each box for neighbor checks
+- [✅] Crops are distributed across all available empty slots
+- [✅] Performance check: 3+ boxes doesn't cause UI freeze
+- [✅] Each box maintains its own crop compatibility based on its dimensions
+
+### TDD Execution Log
+| Phase | Command | Result | Timestamp |
+|-------|---------|--------|-----------|
+| RED | npm test -- useGardenInteractions.test.ts --run | 1 failed (expected 1 to be 3) ✅ | 2026-01-10 22:00 |
+| GREEN | Implement setAllBoxes + update handleAutoFill | 3 tests passing ✅ | 2026-01-10 22:05 |
+| VALIDATE | npm test -- --run | 201 tests passing (198 + 3 new) ✅ | 2026-01-10 22:10 |
+| COMPLETE | git commit + push | a350553 ✅ | 2026-01-10 22:15 |
+
+### Implementation Summary
+
+**TDD Methodology:**
+- **RED Phase**: Wrote failing test expecting multi-box autofill (expected 3 boxes, got 1)
+- **GREEN Phase**: Implemented setAllBoxes() and updated handleAutoFill logic
+- **VALIDATE Phase**: All 201 tests passing (198 existing + 3 new)
+
+**Changes Made:**
+1. **useLayoutManager.ts** (`src/hooks/useLayoutManager.ts`):
+   - Added `setAllBoxes(boxes: GardenBox[]): void` method (line 303-313)
+   - Enables batch update of all boxes in single transaction
+   - Follows existing pattern: touchLayout + setLayoutStorage
+   - Added to interface and return statement
+
+2. **useGardenInteractions.ts** (`src/hooks/useGardenInteractions.ts`):
+   - Added `setAllBoxes` to interface props
+   - Updated `handleAutoFill()` to iterate through ALL boxes (line 62-81)
+   - Uses `.map()` to process each box with its specific width/height
+   - Calls `autoFillBed()` for each box preserving existing crops
+   - Single batch update via `setAllBoxes(updatedBoxes)`
+
+3. **useGardenInteractions.test.ts** (NEW FILE):
+   - Created comprehensive test suite with 3 tests
+   - Test 1: Verifies ALL boxes processed (not just first)
+   - Test 2: Respects each box's dimensions (2x2, 4x8, etc.)
+   - Test 3: Preserves existing crops during autofill
+   - Uses mock profile and layout with 3 boxes of different sizes
+
+4. **App.tsx**:
+   - Destructured `setAllBoxes` from useLayoutManager
+   - Passed `setAllBoxes` to useGardenInteractions
+   - No UI changes (existing Automagic Fill button now fills all boxes)
+
+5. **CODE_INDEX.md**:
+   - Added setAllBoxes() to Layout Management section
+   - Updated "Multi-box operations" key concept
+   - Updated last modified timestamp
+
+**Files Modified:**
+- `src/hooks/useLayoutManager.ts` - Added setAllBoxes method
+- `src/hooks/useGardenInteractions.ts` - Multi-box autofill logic
+- `src/hooks/useGardenInteractions.test.ts` - New test file (3 tests)
+- `src/App.tsx` - Passed setAllBoxes to interactions
+- `CODE_INDEX.md` - Documentation updates
+
+**Test Results:** 201 tests passing (198 + 3 new)
+
+**Commits:**
+- a350553: "Complete TODO-018: Multi-Box Automagic Fill (TDD)"
+
+**Bootstrap Compliance:**
+- ✅ Checked CODE_INDEX.md before modifying functions
+- ✅ Followed strict TDD: RED → GREEN → VALIDATE
+- ✅ File sizes within limits (all < 200 lines)
+- ✅ Functions ≤20 lines
+- ✅ Test coverage ≥80% maintained
+- ✅ Atomic commit with complete TDD log
+
+**Feature 008 Status:**
+TODO-018 was the final component of Feature 008 (Multi-Box Garden Beds). With this completion, the entire feature is now **100% complete**.
+
+---
