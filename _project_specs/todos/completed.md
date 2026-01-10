@@ -4,6 +4,78 @@ Done items for reference. Move here from active.md when complete.
 
 ---
 
+## [TODO-009] Critical Fixes from Code Audit (Settings, Performance, File Size)
+
+**Status:** ✅ completed
+**Priority:** high
+**Estimate:** M
+**Completed:** 2026-01-10
+
+### Description
+Address three critical issues identified in code audit: (1) Re-enable Settings functionality so users can change frost dates, (2) Fix autofill performance bottleneck causing multiple re-renders, (3) Refactor files exceeding 200-line Bootstrap limit.
+
+### Acceptance Criteria
+- [✅] **Settings Re-enabled:** Users can click Settings button and change frost dates
+- [✅] **Settings Integration:** Settings modal updates active layout's profile (not just default)
+- [✅] **Batch Update Method:** Add `setBed(bed)` to useLayoutManager for single-transaction updates
+- [✅] **Autofill Performance:** handleAutoFill uses setBed instead of forEach plantCrop
+- [✅] **App.tsx Refactor:** Extract handlers to useLayoutActions hook (reduce from 257 to <200 lines)
+- [✅] **Components Extracted:** Extract GardenControls and GardenInstructions components
+
+### Validation
+- ✅ Manual: Click Settings, change dates, verify viability updates, click Autofill (no stutter)
+- ✅ Automated: All 162 tests pass, lint+typecheck clean
+
+### Test Cases
+| Input | Expected Output | Status |
+|-------|-----------------|--------|
+| Click Settings button | Modal opens | ✅ PASS |
+| Change frost dates in Settings | Active profile updates, viability recalculates | ✅ PASS |
+| Click Autofill with 20 empty squares | Single state update, no UI stutter | ✅ PASS |
+| Check App.tsx line count | ≤200 lines | ✅ PASS (178 lines) |
+| Run full test suite | 162+ tests pass | ✅ PASS (162 tests) |
+
+### TDD Execution Log
+| Phase | Command | Result | Timestamp |
+|-------|---------|--------|-----------|
+| RED (setBed) | `npm test useLayoutManager.test.ts` | FAIL (2 tests) | 2026-01-10 07:34 |
+| GREEN (setBed) | `npm test useLayoutManager.test.ts` | PASS (19 tests) | 2026-01-10 07:35 |
+| RED (updateProfile) | `npm test useProfiles.test.ts` | FAIL (2 tests) | 2026-01-10 07:36 |
+| GREEN (updateProfile) | `npm test useProfiles.test.ts` | PASS (10 tests) | 2026-01-10 07:36 |
+| VALIDATE | `npm test --run` | PASS (162 tests) | 2026-01-10 07:37 |
+| REVIEW | `/code-review` | APPROVED | 2026-01-10 07:38 |
+| COMPLETE | `git commit` | Success (8d32f36) | 2026-01-10 07:39 |
+
+### Implementation Details
+**Added:**
+- `src/hooks/useLayoutActions.ts` (90 lines) - Layout CRUD handlers
+- `src/hooks/useGardenInteractions.ts` (104 lines) - Autofill, planting, settings handlers
+- `src/components/GardenControls.tsx` (44 lines) - Extracted controls panel
+- `src/components/GardenInstructions.tsx` (30 lines) - Extracted instructions panel
+
+**Modified:**
+- `src/App.tsx` - Reduced from 257 → 178 lines (31% reduction)
+- `src/hooks/useLayoutManager.ts` - Added `setBed()` method
+- `src/hooks/useProfiles.ts` - Added `updateProfile()` method
+- Added 4 new tests (setBed × 2, updateProfile × 2)
+
+### Code Review Results
+- 🟢 **No Critical or High Issues**
+- Security: ✅ No vulnerabilities
+- Performance: ✅ Batch update implemented
+- Testing: ✅ 162/162 tests passing
+- TypeScript: ✅ 0 errors
+- Bootstrap: ✅ All files <200 lines
+
+### Audit Compliance
+| Issue | Status | Fix |
+|-------|--------|-----|
+| 🔴 Settings Unreachable | ✅ FIXED | Settings button active, integrated with useProfiles |
+| 🟠 Autofill Performance | ✅ FIXED | Batch update via setBed(), single state transaction |
+| 🟡 Bootstrap Violations | ✅ FIXED | App.tsx: 178 lines, extracted 4 modules |
+
+---
+
 ## [TODO-006] Expand Crop Database (Core 50)
 
 **Status:** ✅ completed
