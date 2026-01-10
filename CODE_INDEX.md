@@ -4,7 +4,7 @@
 
 **Before creating any new function, CHECK HERE FIRST.**
 
-Last updated: 2026-01-09 (Feature 003 complete)
+Last updated: 2026-01-09 (Feature 005 complete - Layout Management)
 
 ---
 
@@ -40,6 +40,29 @@ Last updated: 2026-01-09 (Feature 003 complete)
 
 ---
 
+## Layout Management (Feature 005)
+
+| Function | Location | Purpose |
+|----------|----------|---------|
+| `useLayoutManager()` | hooks/useLayoutManager.ts | Manage multiple garden layouts with CRUD operations |
+| `useProfiles()` | hooks/useProfiles.ts | Access garden profiles (zones, frost dates) |
+| `migrateToLayoutsSchema()` | utils/storageMigration.ts:71 | Migrate from single to multi-layout storage schema |
+| `createLayout()` | hooks/useLayoutManager.ts:122 | Create new blank layout and switch to it |
+| `switchLayout()` | hooks/useLayoutManager.ts:137 | Switch active layout |
+| `renameLayout()` | hooks/useLayoutManager.ts:149 | Rename existing layout |
+| `deleteLayout()` | hooks/useLayoutManager.ts:165 | Delete layout (prevents deleting last one) |
+| `duplicateLayout()` | hooks/useLayoutManager.ts:195 | Copy layout with all bed data |
+
+**Key Concepts:**
+- Multiple layouts per user (e.g., "Spring 2026", "Fall 2026")
+- Each layout has its own bed (32 cells) and references a profile
+- Profiles shared across layouts (same location, different seasons)
+- Migration preserves existing user data from single-layout schema
+- LocalStorage keys: `hortilogic:layouts`, `hortilogic:profiles`
+- Version numbers enable future schema migrations
+
+---
+
 ## Garden State Management
 
 | Function | Location | Purpose |
@@ -64,14 +87,20 @@ Last updated: 2026-01-09 (Feature 003 complete)
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| `App` | App.tsx | Main application with sidebar and grid layout |
+| `App` | App.tsx | Main application with layout management and grid |
 | `GardenBed` | components/GardenBed.tsx | 4×8 interactive grid display |
 | `CropLibrary` | components/CropLibrary.tsx | Crop selection sidebar with viability indicators |
+| `LayoutSelector` | components/LayoutSelector.tsx | Dropdown for switching/managing layouts |
+| `LayoutActionModal` | components/LayoutActionModal.tsx | Modal for create/rename/delete layout actions |
+| `SettingsModal` | components/SettingsModal.tsx | Garden profile settings editor |
 
 **Component Responsibilities:**
-- **App**: Layout, state management, sample crop data
+- **App**: Layout management integration, state coordination, migration
 - **GardenBed**: Grid rendering, click handlers, viability colors
 - **CropLibrary**: Crop list, selection UI, viability badges
+- **LayoutSelector**: Layout dropdown, CRUD action buttons, sorting
+- **LayoutActionModal**: Reusable modal for layout operations (3 modes)
+- **SettingsModal**: Profile editing (currently disabled, to be re-enabled)
 
 **UI Patterns:**
 - Semantic color tokens: `leaf-*` (green), `soil-*` (brown), `frost-*` (blue)
@@ -89,13 +118,18 @@ Last updated: 2026-01-09 (Feature 003 complete)
 | `PlantingStrategy` | types/garden.ts:22 | Planting window (weeks relative to frost date) |
 | `CompanionRules` | types/garden.ts:10 | Friends and enemies for companion planting |
 | `GardenProfile` | types/garden.ts:53 | USDA zone and frost dates |
-| `GardenBed` | types/garden.ts:67 | Array of 32 cells (Crop or null) |
+| `GardenLayout` | types/garden.ts:77 | Layout with ID, name, bed, timestamps, profileId |
+| `LayoutStorage` | types/garden.ts:88 | Multi-layout storage schema (version 1) |
+| `ProfileStorage` | types/garden.ts:95 | Profile storage schema (version 1) |
+| `LegacyGardenState` | types/garden.ts:102 | Old single-layout schema (for migration) |
 
 **Type Relationships:**
 ```
-GardenProfile → used to calculate viability
-Crop → contains PlantingStrategy + CompanionRules
-GardenBed → array of (Crop | null)
+ProfileStorage → Record<string, GardenProfile>
+LayoutStorage → Record<string, GardenLayout>
+GardenLayout → references GardenProfile by ID
+GardenLayout.bed → array of (Crop | null)[32]
+Migration: LegacyGardenState → LayoutStorage + ProfileStorage
 ```
 
 ---
@@ -124,9 +158,12 @@ GardenBed → array of (Crop | null)
 | Viability checking | `isCropViable` |
 | Neighbor logic | `getNeighbors`, `isCompatibleWithNeighbors` |
 | Constraint solving | `autoFillBed` |
+| Layout management | `useLayoutManager`, `createLayout`, `switchLayout` |
+| Profile management | `useProfiles`, `getProfile` |
 | State management | `useGarden`, `useLocalStorage` |
+| Migration | `migrateToLayoutsSchema` |
 | Planting actions | `plantCrop`, `removeCrop`, `clearBed` |
-| UI rendering | `GardenBed`, `CropLibrary` |
+| UI rendering | `GardenBed`, `CropLibrary`, `LayoutSelector` |
 
 ---
 

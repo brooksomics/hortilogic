@@ -166,22 +166,33 @@ Quality improvements identified during Feature 004 code review. These are minor 
 
 ---
 
-## [TODO-008] Code Quality Improvements from F005 Phase 1 Review
+## [TODO-008] Code Quality Improvements from F005 Phase 1-4 Review
 
 **Status:** pending
 **Priority:** low
-**Estimate:** S
+**Estimate:** M-L
 
 ### Description
-Quality improvements identified during Feature 005 Phase 1 code review (migration foundation). These are minor enhancements that improve code quality and reduce duplication but don't block Phase 2-4 implementation.
+Quality improvements identified during Feature 005 Phase 1-4 code reviews (migration foundation, layout manager, UI components, and App integration). These are minor enhancements that improve code quality and reduce duplication but don't block Phase 5 or future features.
 
 ### Acceptance Criteria
 - [ ] Extract shared UUID generation to `src/utils/uuid.ts`
 - [ ] Extract shared `createDefaultProfile()` to single location
+- [ ] Extract layout helper functions to `src/utils/layoutHelpers.ts`
 - [ ] Consider using `crypto.randomUUID()` for cryptographically secure UUIDs
 - [ ] Add profile validation helper for date ranges
+- [ ] Add layout name and cell index validation
 - [ ] Add optional migration success logging
 - [ ] Extract shared test helpers to `src/test/helpers.ts`
+- [ ] Split useLayoutManager.test.ts into multiple focused files
+- [ ] Fix object mutation in duplicateLayout (use object spread)
+- [ ] Fix flaky timestamp test in useLayoutManager.test.ts
+- [ ] Split LayoutSelector.test.tsx into multiple focused files
+- [ ] Add useMemo to sortedLayouts in LayoutSelector.tsx
+- [ ] Add prop validation for currentName in LayoutActionModal
+- [ ] Extract layout handlers from App.tsx to useLayoutActions hook
+- [ ] Add error handling to migration useEffect in App.tsx
+- [ ] Create TODO-010 for re-enabling Settings with profile management
 
 ### Validation
 - Manual: Verify UUID uniqueness, profile validation works
@@ -227,4 +238,61 @@ Quality improvements identified during Feature 005 Phase 1 code review (migratio
 2. **Migration Logging** - Add optional success logging for debugging
 3. **Profile Validation** - Add validation for date range consistency
 
-**Estimated effort:** 45-90 minutes total
+---
+
+**From F005 Phase 2 Code Review:**
+
+**Medium Issues (4):**
+1. **File Size** - useLayoutManager.ts is 274 lines (exceeds 200 line limit)
+   - Fix: Extract helpers to `src/utils/layoutHelpers.ts` (generateUUID, createEmptyBed, createNewLayout, touchLayout)
+
+2. **Test File Size** - useLayoutManager.test.ts is 357 lines (exceeds 200 line limit)
+   - Fix: Split into useLayoutManager.crud.test.ts, useLayoutManager.bed.test.ts, useLayoutManager.persistence.test.ts
+
+3. **Object Mutation** - duplicateLayout mutates object after creation (line 203)
+   - Fix: Use object spread: `{ ...createNewLayout(...), bed: [...original.bed] }`
+
+4. **Missing Validation** - No input validation for layout names or cell indices
+   - Fix: Add validateLayoutName() and validateCellIndex() helpers
+
+**Low Issues (3):**
+1. **Error Handling** - Uses console.error/warn instead of throwing errors (harder to test)
+2. **Flaky Test** - Timestamp test uses setTimeout without proper async/await (line 204-219)
+3. **UUID Quality** - Math.random() not cryptographically secure (acceptable for local IDs)
+
+---
+
+**From F005 Phase 3 Code Review:**
+
+**Medium Issues (2):**
+1. **Test File Size** - LayoutSelector.test.tsx is 276 lines (exceeds 200 line limit by 38%)
+   - Fix: Split into LayoutSelector.rendering.test.tsx, LayoutSelector.actions.test.tsx, LayoutSelector.keyboard.test.tsx
+
+2. **Performance Optimization** - sortedLayouts recalculated on every render (LayoutSelector.tsx:35-37)
+   - Fix: Use useMemo to cache sorted result
+
+**Low Issues (3):**
+1. **Verbose Arrow Functions** - Multiple explicit braces due to lint rules (acceptable tradeoff)
+2. **Missing Prop Validation** - No runtime validation for currentName in delete mode
+3. **Test Robustness** - Sort order test checks presence but not exact order
+
+---
+
+**From F005 Phase 4 Code Review:**
+
+**Medium Issues (3):**
+1. **File Size** - App.tsx is 310 lines (exceeds 200 line limit by 55%)
+   - Fix: Extract layout handlers to `src/hooks/useLayoutActions.ts`
+
+2. **Multiple State Updates** - handleAutoFill calls plantCrop in forEach loop
+   - Note: React 18 batches updates automatically, acceptable for now but could optimize
+
+3. **Settings Disabled** - Profile editing functionality temporarily removed
+   - Fix: Create TODO-010 for re-enabling Settings with profile management
+
+**Low Issues (3):**
+1. **No Error Handling** - Migration useEffect has no try-catch
+2. **Duplicate Handler Patterns** - Could abstract openLayoutModal(mode, layoutId)
+3. **Missing Loading State** - No indicator during migration (brief, not critical)
+
+**Estimated effort:** 150-250 minutes total

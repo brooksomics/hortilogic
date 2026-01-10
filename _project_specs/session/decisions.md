@@ -120,3 +120,46 @@ Track key architectural and implementation decisions.
 - CLAUDE.md (updated with Bootstrap rules)
 - CODE_INDEX.md (created)
 - .claude/skills/base/SKILL.md (contains Ralph Loop automation rules)
+
+---
+
+## [2026-01-09] Settings Modal Implementation (Feature 004)
+
+**Decision**: React state + HTML5 date inputs + LocalStorage persistence
+
+**Context**: Need to allow users to configure custom frost dates, hardiness zone, garden name, and season extension for their specific location (e.g., Escondido vs Denver).
+
+**Options Considered**:
+- Headless UI modal library (more accessible, adds dependency)
+- Radix UI primitives (accessible, adds dependency)
+- Custom modal with React state (zero dependencies, simple)
+- Third-party date picker library (adds weight)
+- HTML5 date inputs (native, touch-friendly, zero dependencies)
+
+**Choice**: Custom modal component with React state + HTML5 date inputs
+
+**Reasoning**:
+- Zero additional dependencies keeps bundle small
+- HTML5 date inputs are touch-friendly and work well on mobile
+- Simple validation logic (date range checks, season extension limits)
+- LocalStorage persistence aligns with existing storage strategy
+- Custom modal gives full control over styling and behavior
+- Follows CLAUDE.md simplicity rules (20 lines/fn, 200 lines/file)
+
+**Trade-offs**:
+- Less accessibility features than Headless UI (but still keyboard navigable)
+- Manual focus trap and ARIA implementation
+- Slightly more code to maintain vs using library
+
+**Implementation Details**:
+- SettingsModal.tsx: 197 lines (under 200 line limit)
+- 9 comprehensive tests covering all acceptance criteria
+- Date validation using `>=` comparison (prevents last frost after first frost)
+- Season extension limited to 0-8 weeks (validated client-side)
+- Settings changes trigger immediate re-render via React state updates
+- All settings persist to LocalStorage on save
+
+**References**:
+- src/components/SettingsModal.tsx
+- src/components/SettingsModal.test.tsx
+- _project_specs/features/004-user-settings.md
