@@ -61,7 +61,9 @@ describe('App', () => {
     // Click an empty square (first square)
     const squares = screen.getAllByRole('button', { name: 'Empty square' })
     expect(squares.length).toBeGreaterThan(0)
-    await user.click(squares[0]!)
+    const firstSquare = squares[0]
+    expect(firstSquare).toBeDefined()
+    await user.click(firstSquare)
 
     // Square should now show the planted crop
     expect(screen.getByLabelText(/Planted: Tomato/i)).toBeInTheDocument()
@@ -77,7 +79,9 @@ describe('App', () => {
 
     const emptySquares = screen.getAllByRole('button', { name: 'Empty square' })
     expect(emptySquares.length).toBeGreaterThan(0)
-    await user.click(emptySquares[0]!)
+    const firstEmptySquare = emptySquares[0]
+    expect(firstEmptySquare).toBeDefined()
+    await user.click(firstEmptySquare)
 
     // Verify crop was planted
     expect(screen.getByLabelText(/Planted: Carrot/i)).toBeInTheDocument()
@@ -110,13 +114,13 @@ describe('App', () => {
     // Mock date to May (month 4) when most crops are viable
     const RealDate = Date
     const mockDate = new RealDate(2024, 4, 15)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // @ts-expect-error - Mocking Date for testing, constructor return type can't be properly typed
     global.Date = class extends RealDate {
       constructor() {
         super()
         return mockDate
       }
-    } as any
+    }
 
     const user = userEvent.setup()
     render(<App />)
@@ -140,13 +144,13 @@ describe('App', () => {
     // Mock date to May (month 4) when most crops are viable
     const RealDate = Date
     const mockDate = new RealDate(2024, 4, 15)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // @ts-expect-error - Mocking Date for testing, constructor return type can't be properly typed
     global.Date = class extends RealDate {
       constructor() {
         super()
         return mockDate
       }
-    } as any
+    }
 
     const user = userEvent.setup()
     render(<App />)
@@ -156,7 +160,9 @@ describe('App', () => {
     await user.click(tomatoButton)
 
     const emptySquares = screen.getAllByRole('button', { name: 'Empty square' })
-    await user.click(emptySquares[0]!)
+    const firstEmptySquare = emptySquares[0]
+    expect(firstEmptySquare).toBeDefined()
+    await user.click(firstEmptySquare)
 
     // Verify tomato was planted
     expect(screen.getByLabelText(/Planted: Tomato/i)).toBeInTheDocument()
@@ -165,8 +171,9 @@ describe('App', () => {
     const automagicButton = screen.getByRole('button', { name: /Automagic Fill/i })
     await user.click(automagicButton)
 
-    // Original tomato should still be there
-    expect(screen.getByLabelText(/Planted: Tomato/i)).toBeInTheDocument()
+    // Original tomato should still be there (may have additional tomatoes planted by autoFill)
+    const tomatoesAfterFill = screen.getAllByLabelText(/Planted: Tomato/i)
+    expect(tomatoesAfterFill.length).toBeGreaterThanOrEqual(1)
 
     global.Date = RealDate
   })

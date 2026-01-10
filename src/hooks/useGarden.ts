@@ -13,7 +13,7 @@ interface GardenState {
 const GARDEN_STORAGE_KEY = 'hortilogic:garden'
 
 const DEFAULT_GARDEN_STATE: GardenState = {
-  currentBed: Array(32).fill(null),
+  currentBed: Array(32).fill(null) as (Crop | null)[],
   gardenProfile: null
 }
 
@@ -35,7 +35,7 @@ export function useGarden() {
    */
   const plantCrop = (cellIndex: number, crop: Crop) => {
     if (cellIndex < 0 || cellIndex >= 32) {
-      console.error(`Invalid cell index: ${cellIndex}. Must be 0-31.`)
+      console.error(`Invalid cell index: ${String(cellIndex)}. Must be 0-31.`)
       return
     }
 
@@ -52,7 +52,7 @@ export function useGarden() {
    */
   const removeCrop = (cellIndex: number) => {
     if (cellIndex < 0 || cellIndex >= 32) {
-      console.error(`Invalid cell index: ${cellIndex}. Must be 0-31.`)
+      console.error(`Invalid cell index: ${String(cellIndex)}. Must be 0-31.`)
       return
     }
 
@@ -69,7 +69,7 @@ export function useGarden() {
   const clearBed = () => {
     setGardenState(prev => ({
       ...prev,
-      currentBed: Array(32).fill(null)
+      currentBed: Array(32).fill(null) as (Crop | null)[]
     }))
   }
 

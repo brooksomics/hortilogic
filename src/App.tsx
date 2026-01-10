@@ -108,7 +108,9 @@ function App() {
               </h3>
 
               <button
-                onClick={() => autoFill(sampleCrops)}
+                onClick={() => {
+                  autoFill(sampleCrops)
+                }}
                 className="w-full bg-leaf-600 hover:bg-leaf-700 text-white font-medium px-4 py-2 rounded transition-colors flex items-center justify-center gap-2 mb-3"
                 type="button"
               >
@@ -177,7 +179,7 @@ function App() {
                 <p>✓ Automagic solver with constraint satisfaction</p>
                 <p>✓ Respects seasonality AND compatibility</p>
                 <p>✓ Preserves existing manual plantings</p>
-                <p>✓ Click "Automagic Fill" to try it!</p>
+                <p>✓ Click &quot;Automagic Fill&quot; to try it!</p>
               </div>
             </div>
           </div>

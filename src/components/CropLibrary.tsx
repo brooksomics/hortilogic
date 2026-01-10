@@ -37,7 +37,9 @@ export function CropLibrary({ crops, selectedCrop, onSelectCrop }: CropLibraryPr
           return (
             <button
               key={crop.id}
-              onClick={() => onSelectCrop(crop)}
+              onClick={() => {
+                onSelectCrop(crop)
+              }}
               className={`
                 w-full text-left p-3 rounded-lg border-2 transition-all
                 ${isSelected

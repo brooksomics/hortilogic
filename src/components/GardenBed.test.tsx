@@ -55,11 +55,15 @@ describe('GardenBed', () => {
     const squares = screen.getAllByRole('button')
 
     // Click first square (index 0)
-    await user.click(squares[0]!)
+    const firstSquare = squares[0]
+    expect(firstSquare).toBeDefined()
+    await user.click(firstSquare)
     expect(handleClick).toHaveBeenCalledWith(0)
 
     // Click last square (index 31)
-    await user.click(squares[31]!)
+    const lastSquare = squares[31]
+    expect(lastSquare).toBeDefined()
+    await user.click(lastSquare)
     expect(handleClick).toHaveBeenCalledWith(31)
   })
 

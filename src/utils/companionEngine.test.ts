@@ -4,7 +4,7 @@ import type { Crop, GardenProfile } from '@/types'
 
 describe('getNeighbors', () => {
   // Helper to create a grid with some crops
-  const createGrid = (): (Crop | null)[] => Array(32).fill(null)
+  const createGrid = (): (Crop | null)[] => Array(32).fill(null) as (Crop | null)[]
 
   const tomato: Crop = {
     id: 'tomato',
@@ -113,14 +113,6 @@ describe('checkCompanionConstraints', () => {
     companions: { friends: ['carrot'], enemies: ['peas'] }
   }
 
-  const peas: Crop = {
-    id: 'peas',
-    name: 'Peas',
-    sfg_density: 8,
-    planting_strategy: { start_window_start: -8, start_window_end: -2 },
-    companions: { friends: ['carrot'], enemies: ['tomato'] }
-  }
-
   const carrot: Crop = {
     id: 'carrot',
     name: 'Carrot',
@@ -193,7 +185,7 @@ describe('autoFillBed', () => {
   }
 
   it('fills empty cells with viable crops', () => {
-    const grid = Array(32).fill(null)
+    const grid: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]
     const crops = [tomato, carrot]
     const targetDate = new Date('2024-05-20') // Just after LFD - tomato and carrot are viable
 
@@ -212,7 +204,7 @@ describe('autoFillBed', () => {
   })
 
   it('preserves existing crops (does not overwrite)', () => {
-    const grid = Array(32).fill(null)
+    const grid: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]
     grid[0] = tomato  // Manually planted
     grid[5] = carrot  // Manually planted
 
@@ -227,7 +219,7 @@ describe('autoFillBed', () => {
   })
 
   it('respects companion planting rules (no enemies adjacent)', () => {
-    const grid = Array(32).fill(null)
+    const grid: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]
     grid[0] = tomato  // Tomato at index 0
 
     const crops = [peas, carrot]
@@ -249,7 +241,7 @@ describe('autoFillBed', () => {
   })
 
   it('only plants crops that are viable for the target date', () => {
-    const grid = Array(32).fill(null)
+    const grid: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]
     const crops = [tomato, peas, carrot]
     const targetDate = new Date('2024-06-01') // Only tomato and carrot viable, peas window has passed
 
@@ -261,7 +253,7 @@ describe('autoFillBed', () => {
   })
 
   it('handles empty crop library gracefully', () => {
-    const grid = Array(32).fill(null)
+    const grid: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]
     const crops: Crop[] = []
     const targetDate = new Date('2024-05-20')
 
@@ -272,7 +264,7 @@ describe('autoFillBed', () => {
   })
 
   it('handles fully planted grid gracefully', () => {
-    const grid = Array(32).fill(tomato)
+    const grid: (Crop | null)[] = Array(32).fill(tomato) as (Crop | null)[]
     const crops = [carrot]
     const targetDate = new Date('2024-05-20')
 

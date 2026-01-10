@@ -76,13 +76,16 @@ interface GardenBedProps {
  * Layout: 4 rows x 8 columns = 32 one-foot squares
  */
 export function GardenBed({
-  squares = Array(32).fill(null),
+  squares = Array(32).fill(null) as (Crop | null)[],
   onSquareClick,
   gardenProfile = null,
   checkDate = new Date()
 }: GardenBedProps) {
   // Ensure we have exactly 32 squares
-  const bedSquares = [...squares.slice(0, 32), ...Array(Math.max(0, 32 - squares.length)).fill(null)]
+  const bedSquares: (Crop | null)[] = [
+    ...squares.slice(0, 32),
+    ...Array(Math.max(0, 32 - squares.length)).fill(null) as (Crop | null)[]
+  ]
 
   // Calculate viability for each planted crop
   const viabilityMap = bedSquares.map(crop => {
@@ -93,7 +96,7 @@ export function GardenBed({
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="mb-4 text-center">
-        <h2 className="text-2xl font-bold text-soil-800">Garden Bed (4' × 8')</h2>
+        <h2 className="text-2xl font-bold text-soil-800">Garden Bed (4&apos; × 8&apos;)</h2>
         <p className="text-soil-600">32 Square Foot Gardening cells</p>
       </div>
 

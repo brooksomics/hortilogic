@@ -146,8 +146,9 @@ describe('useGarden', () => {
     // Check that localStorage was updated
     const stored = localStorage.getItem('hortilogic:garden')
     expect(stored).toBeTruthy()
+    expect(stored).not.toBeNull()
 
-    const parsedState = JSON.parse(stored!)
+    const parsedState = JSON.parse(stored) as { currentBed: (typeof lettuce | null)[] }
     expect(parsedState.currentBed[0]).toEqual(lettuce)
   })
 
