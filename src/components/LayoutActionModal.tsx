@@ -28,8 +28,10 @@ export function LayoutActionModal({
 
   // Handle Escape key to close modal
   useEffect(() => {
+    if (!isOpen) return
+
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === 'Escape') {
         onClose()
       }
     }

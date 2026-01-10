@@ -62,7 +62,7 @@ describe('App', () => {
     const squares = screen.getAllByRole('button', { name: 'Empty square' })
     expect(squares.length).toBeGreaterThan(0)
     const firstSquare = squares[0]
-    expect(firstSquare).toBeDefined()
+    if (!firstSquare) throw new Error('First square not found')
     await user.click(firstSquare)
 
     // Square should now show the planted crop
@@ -80,7 +80,7 @@ describe('App', () => {
     const emptySquares = screen.getAllByRole('button', { name: 'Empty square' })
     expect(emptySquares.length).toBeGreaterThan(0)
     const firstEmptySquare = emptySquares[0]
-    expect(firstEmptySquare).toBeDefined()
+    if (!firstEmptySquare) throw new Error('First empty square not found')
     await user.click(firstEmptySquare)
 
     // Verify crop was planted
@@ -161,7 +161,7 @@ describe('App', () => {
 
     const emptySquares = screen.getAllByRole('button', { name: 'Empty square' })
     const firstEmptySquare = emptySquares[0]
-    expect(firstEmptySquare).toBeDefined()
+    if (!firstEmptySquare) throw new Error('First empty square not found')
     await user.click(firstEmptySquare)
 
     // Verify tomato was planted

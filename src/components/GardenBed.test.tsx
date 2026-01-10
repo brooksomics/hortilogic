@@ -56,13 +56,13 @@ describe('GardenBed', () => {
 
     // Click first square (index 0)
     const firstSquare = squares[0]
-    expect(firstSquare).toBeDefined()
+    if (!firstSquare) throw new Error('First square not found')
     await user.click(firstSquare)
     expect(handleClick).toHaveBeenCalledWith(0)
 
     // Click last square (index 31)
     const lastSquare = squares[31]
-    expect(lastSquare).toBeDefined()
+    if (!lastSquare) throw new Error('Last square not found')
     await user.click(lastSquare)
     expect(handleClick).toHaveBeenCalledWith(31)
   })

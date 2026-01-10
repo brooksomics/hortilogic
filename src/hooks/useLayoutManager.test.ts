@@ -42,11 +42,13 @@ describe('useLayoutManager', () => {
     expect(Object.keys(result.current.layouts)).toHaveLength(1)
 
     const layoutIds = Object.keys(result.current.layouts)
-    const defaultLayout = result.current.layouts[layoutIds[0]]
+    const layoutId = layoutIds[0]
+    if (!layoutId) throw new Error('Layout ID not found')
+    const defaultLayout = result.current.layouts[layoutId]
 
-    expect(defaultLayout.name).toBe('My Garden')
-    expect(defaultLayout.bed).toHaveLength(32)
-    expect(defaultLayout.bed.every((cell) => cell === null)).toBe(true)
+    expect(defaultLayout?.name).toBe('My Garden')
+    expect(defaultLayout?.bed).toHaveLength(32)
+    expect(defaultLayout?.bed.every((cell: Crop | null) => cell === null)).toBe(true)
   })
 
   it('sets activeLayoutId to the default layout', () => {
@@ -135,6 +137,7 @@ describe('useLayoutManager', () => {
     })
 
     const renamedLayout = result.current.layouts[layoutId]
+    if (!renamedLayout) throw new Error('Renamed layout not found')
     expect(renamedLayout.name).toBe('Renamed Garden')
     expect(renamedLayout.bed[5]).toEqual(tomato)
   })
@@ -159,7 +162,9 @@ describe('useLayoutManager', () => {
       duplicateId = result.current.duplicateLayout(originalId, 'Garden Copy')
     })
 
-    const duplicate = result.current.layouts[duplicateId!]
+    if (!duplicateId) throw new Error('Duplicate ID not returned')
+    const duplicate = result.current.layouts[duplicateId]
+    if (!duplicate) throw new Error('Duplicate layout not found')
     expect(duplicate.name).toBe('Garden Copy')
     expect(duplicate.bed[0]).toEqual(lettuce)
     expect(duplicate.bed[5]).toEqual(tomato)
@@ -205,7 +210,9 @@ describe('useLayoutManager', () => {
     const { result } = renderHook(() => useLayoutManager())
 
     const layoutId = result.current.activeLayoutId
-    const originalUpdatedAt = result.current.layouts[layoutId].updatedAt
+    const layout = result.current.layouts[layoutId]
+    if (!layout) throw new Error('Layout not found')
+    const originalUpdatedAt = layout.updatedAt
 
     // Wait a bit to ensure timestamp changes
     setTimeout(() => {
@@ -213,7 +220,9 @@ describe('useLayoutManager', () => {
         result.current.plantCrop(0, lettuce)
       })
 
-      const newUpdatedAt = result.current.layouts[layoutId].updatedAt
+      const updatedLayout = result.current.layouts[layoutId]
+      if (!updatedLayout) throw new Error('Layout not found after update')
+      const newUpdatedAt = updatedLayout.updatedAt
       expect(newUpdatedAt).not.toBe(originalUpdatedAt)
     }, 10)
   })
@@ -258,10 +267,13 @@ describe('useLayoutManager', () => {
     // Second hook: restore from localStorage
     const { result: result2 } = renderHook(() => useLayoutManager())
 
+    if (!layoutId) throw new Error('Layout ID not set')
     expect(Object.keys(result2.current.layouts)).toHaveLength(2)
-    expect(result2.current.layouts[layoutId!]).toBeDefined()
-    expect(result2.current.layouts[layoutId!].name).toBe('Persisted Layout')
-    expect(result2.current.layouts[layoutId!].bed[10]).toEqual(lettuce)
+    expect(result2.current.layouts[layoutId]).toBeDefined()
+    const persistedLayout = result2.current.layouts[layoutId]
+    if (!persistedLayout) throw new Error('Persisted layout not found')
+    expect(persistedLayout.name).toBe('Persisted Layout')
+    expect(persistedLayout.bed[10]).toEqual(lettuce)
   })
 
   it('plantCrop updates only the active layout', () => {
@@ -285,8 +297,12 @@ describe('useLayoutManager', () => {
       result.current.plantCrop(0, tomato)
     })
 
-    expect(result.current.layouts[layout1Id].bed[0]).toEqual(lettuce)
-    expect(result.current.layouts[layout2Id!].bed[0]).toEqual(tomato)
+    const l1 = result.current.layouts[layout1Id]
+    if (!l1 || !layout2Id) throw new Error('Layouts not found')
+    const l2 = result.current.layouts[layout2Id]
+    if (!l2) throw new Error('Layout 2 not found')
+    expect(l1.bed[0]).toEqual(lettuce)
+    expect(l2.bed[0]).toEqual(tomato)
   })
 
   it('removeCrop updates only the active layout', () => {
@@ -302,7 +318,9 @@ describe('useLayoutManager', () => {
       result.current.removeCrop(0)
     })
 
-    expect(result.current.layouts[layoutId].bed[0]).toBeNull()
+    const layout = result.current.layouts[layoutId]
+    if (!layout) throw new Error('Layout not found')
+    expect(layout.bed[0]).toBeNull()
   })
 
   it('clearBed clears only the active layout', () => {
@@ -335,11 +353,16 @@ describe('useLayoutManager', () => {
     })
 
     // Layout 2 should be cleared
-    expect(result.current.layouts[layout2Id!].bed.every((cell) => cell === null)).toBe(true)
+    if (!layout2Id) throw new Error('Layout 2 ID not set')
+    const l2 = result.current.layouts[layout2Id]
+    if (!l2) throw new Error('Layout 2 not found')
+    expect(l2.bed.every((cell: Crop | null) => cell === null)).toBe(true)
 
     // Layout 1 should still have crops
-    expect(result.current.layouts[layout1Id].bed[0]).toEqual(lettuce)
-    expect(result.current.layouts[layout1Id].bed[5]).toEqual(tomato)
+    const l1 = result.current.layouts[layout1Id]
+    if (!l1) throw new Error('Layout 1 not found')
+    expect(l1.bed[0]).toEqual(lettuce)
+    expect(l1.bed[5]).toEqual(tomato)
   })
 
   it('returns current bed from active layout', () => {

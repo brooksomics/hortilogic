@@ -66,7 +66,7 @@ describe('CropLibrary', () => {
 
   it('highlights the selected crop', () => {
     const selectedCrop = sampleCrops[1] // Tomato
-    expect(selectedCrop).toBeDefined()
+    if (!selectedCrop) throw new Error('Selected crop not found')
 
     render(<CropLibrary crops={sampleCrops} selectedCrop={selectedCrop} onSelectCrop={vi.fn()} />)
 
@@ -77,7 +77,7 @@ describe('CropLibrary', () => {
 
   it('shows check icon for selected crop', () => {
     const selectedCrop = sampleCrops[0] // Lettuce
-    expect(selectedCrop).toBeDefined()
+    if (!selectedCrop) throw new Error('Selected crop not found')
 
     render(<CropLibrary crops={sampleCrops} selectedCrop={selectedCrop} onSelectCrop={vi.fn()} />)
 
@@ -89,7 +89,7 @@ describe('CropLibrary', () => {
 
   it('displays selection hint when a crop is selected', () => {
     const selectedCrop = sampleCrops[0]
-    expect(selectedCrop).toBeDefined()
+    if (!selectedCrop) throw new Error('Selected crop not found')
 
     render(<CropLibrary crops={sampleCrops} selectedCrop={selectedCrop} onSelectCrop={vi.fn()} />)
 

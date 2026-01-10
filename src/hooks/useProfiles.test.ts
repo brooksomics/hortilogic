@@ -22,7 +22,10 @@ describe('useProfiles', () => {
     expect(Object.keys(result.current.profiles)).toHaveLength(1)
 
     const profileIds = Object.keys(result.current.profiles)
-    const defaultProfile = result.current.profiles[profileIds[0]]
+    const profileId = profileIds[0]
+    if (!profileId) throw new Error('Profile ID not found')
+    const defaultProfile = result.current.profiles[profileId]
+    if (!defaultProfile) throw new Error('Default profile not found')
 
     expect(defaultProfile.name).toBe('My Garden')
     expect(defaultProfile.hardiness_zone).toBe('5b')

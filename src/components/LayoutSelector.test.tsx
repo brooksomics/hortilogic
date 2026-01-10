@@ -161,7 +161,9 @@ describe('LayoutSelector', () => {
 
     // Find and click rename button for Spring 2026
     const renameButtons = screen.getAllByLabelText(/Rename/i)
-    fireEvent.click(renameButtons[0])
+    const renameButton = renameButtons[0]
+    if (!renameButton) throw new Error('Rename button not found')
+    fireEvent.click(renameButton)
 
     expect(mockOnRename).toHaveBeenCalledWith('layout-2')
   })
@@ -185,7 +187,9 @@ describe('LayoutSelector', () => {
 
     // Find and click duplicate button
     const duplicateButtons = screen.getAllByLabelText(/Duplicate/i)
-    fireEvent.click(duplicateButtons[0])
+    const duplicateButton = duplicateButtons[0]
+    if (!duplicateButton) throw new Error('Duplicate button not found')
+    fireEvent.click(duplicateButton)
 
     expect(mockOnDuplicate).toHaveBeenCalledWith('layout-2')
   })
@@ -209,14 +213,18 @@ describe('LayoutSelector', () => {
 
     // Find and click delete button
     const deleteButtons = screen.getAllByLabelText(/Delete/i)
-    fireEvent.click(deleteButtons[0])
+    const deleteButton = deleteButtons[0]
+    if (!deleteButton) throw new Error('Delete button not found')
+    fireEvent.click(deleteButton)
 
     expect(mockOnDelete).toHaveBeenCalledWith('layout-2')
   })
 
   it('disables delete button when only one layout exists', () => {
+    const layout1 = layouts['layout-1']
+    if (!layout1) throw new Error('Layout 1 not found')
     const singleLayout = {
-      'layout-1': layouts['layout-1'],
+      'layout-1': layout1,
     }
 
     render(

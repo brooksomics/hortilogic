@@ -7,6 +7,7 @@ import { migrateToLayoutsSchema } from './storageMigration'
 import type {
   LegacyGardenState,
   GardenProfile,
+  GardenLayout,
   Crop,
   LayoutStorage,
   ProfileStorage,
@@ -99,7 +100,9 @@ describe('storageMigration', () => {
       const layoutIds = Object.keys(layouts.layouts)
       expect(layoutIds).toHaveLength(1)
 
-      const layout = getLayout(layoutIds[0], layouts)
+      const layoutId = layoutIds[0]
+      if (!layoutId) throw new Error('Layout ID not found')
+      const layout = getLayout(layoutId, layouts)
       expect(layout.name).toBe('My Garden')
     })
 
@@ -126,7 +129,9 @@ describe('storageMigration', () => {
       if (!layoutsStr) throw new Error('Layouts not found')
       const layouts = JSON.parse(layoutsStr) as LayoutStorage
       const layoutIds = Object.keys(layouts.layouts)
-      const layout = getLayout(layoutIds[0], layouts)
+      const layoutId = layoutIds[0]
+      if (!layoutId) throw new Error('Layout ID not found')
+      const layout = getLayout(layoutId, layouts)
 
       expect(layout.bed[0]).toEqual(lettuce)
       expect(layout.bed[5]).toEqual(tomato)
@@ -159,7 +164,9 @@ describe('storageMigration', () => {
       const profileIds = Object.keys(profiles.profiles)
       expect(profileIds).toHaveLength(1)
 
-      const profile = getProfile(profileIds[0], profiles)
+      const profileId = profileIds[0]
+      if (!profileId) throw new Error('Profile ID not found')
+      const profile = getProfile(profileId, profiles)
       expect(profile).toEqual(gardenProfile)
     })
 
@@ -176,7 +183,9 @@ describe('storageMigration', () => {
       if (!profilesStr) throw new Error('Profiles not found')
       const profiles = JSON.parse(profilesStr) as ProfileStorage
       const profileIds = Object.keys(profiles.profiles)
-      const profile = getProfile(profileIds[0], profiles)
+      const profileId = profileIds[0]
+      if (!profileId) throw new Error('Profile ID not found')
+      const profile = getProfile(profileId, profiles)
 
       expect(profile.name).toBe('My Garden')
       expect(profile.hardiness_zone).toBe('5b')
@@ -214,10 +223,12 @@ describe('storageMigration', () => {
       if (!layoutsStr) throw new Error('Layouts not found')
       const layouts = JSON.parse(layoutsStr) as LayoutStorage
       const layoutIds = Object.keys(layouts.layouts)
-      const layout = getLayout(layoutIds[0], layouts)
+      const layoutId = layoutIds[0]
+      if (!layoutId) throw new Error('Layout ID not found')
+      const layout = getLayout(layoutId, layouts)
 
       expect(layout.bed).toHaveLength(32)
-      expect(layout.bed.every((cell) => cell === null)).toBe(true)
+      expect(layout.bed.every((cell: Crop | null) => cell === null)).toBe(true)
     })
 
     it('generates valid UUID v4 for layout ID', () => {
@@ -237,7 +248,9 @@ describe('storageMigration', () => {
       // UUID v4 format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
       const uuidRegex =
         /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-      expect(layoutIds[0]).toMatch(uuidRegex)
+      const layoutId = layoutIds[0]
+      if (!layoutId) throw new Error('Layout ID not found')
+      expect(layoutId).toMatch(uuidRegex)
     })
 
     it('sets correct timestamps (createdAt and updatedAt)', () => {
@@ -255,7 +268,9 @@ describe('storageMigration', () => {
       if (!layoutsStr) throw new Error('Layouts not found')
       const layouts = JSON.parse(layoutsStr) as LayoutStorage
       const layoutIds = Object.keys(layouts.layouts)
-      const layout = getLayout(layoutIds[0], layouts)
+      const layoutId = layoutIds[0]
+      if (!layoutId) throw new Error('Layout ID not found')
+      const layout = getLayout(layoutId, layouts)
 
       expect(layout.createdAt).toBeTruthy()
       expect(layout.updatedAt).toBeTruthy()
@@ -312,9 +327,12 @@ describe('storageMigration', () => {
       const layoutIds = Object.keys(layouts.layouts)
       const profileIds = Object.keys(profiles.profiles)
 
-      const layout = getLayout(layoutIds[0], layouts)
+      const layoutId = layoutIds[0]
+      const profileId = profileIds[0]
+      if (!layoutId || !profileId) throw new Error('IDs not found')
+      const layout = getLayout(layoutId, layouts)
 
-      expect(layout.profileId).toBe(profileIds[0])
+      expect(layout.profileId).toBe(profileId)
     })
   })
 })
