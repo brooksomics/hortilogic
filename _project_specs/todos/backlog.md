@@ -4,56 +4,6 @@ Future work, prioritized. Move to active.md when starting.
 
 ---
 
-## [TODO-004] Implement Feature 004: User Configuration & Settings
-
-**Status:** pending
-**Priority:** high
-**Estimate:** M
-
-### Description
-Unlock the parametric engine by allowing users to configure their own frost dates, hardiness zone, and season extension settings. Currently hardcoded to Denver/San Francisco dates - need to make it work for any location (e.g., Escondido).
-
-### Acceptance Criteria
-- [ ] User can open Settings modal and change "Last Frost Date" from May 15 to Jan 15
-- [ ] Changing frost dates immediately updates "Viability" status of crops in Library
-- [ ] Settings persist on page reload (LocalStorage)
-- [ ] Date validation prevents Last Frost after First Frost
-- [ ] Season extension field accepts 0-8 weeks
-
-### Validation
-- Manual: Open Settings, change dates, verify crop viability indicators update
-- Automated: Test Settings modal, profile updates, LocalStorage persistence
-
-### Test Cases
-| Input | Expected Output | Notes |
-|-------|-----------------|-------|
-| Change Last Frost to Jan 15 | Viability updates in real-time | Escondido climate |
-| Add +2 weeks season extension | Planting windows extend by 2 weeks | Hoop house scenario |
-| Reload page | Settings retained | LocalStorage persistence |
-| Set Last Frost after First Frost | Validation error shown | Invalid date range |
-| Reset to defaults | Return to zone defaults | Reset button |
-
-### Dependencies
-- Depends on: F001 (Core Logic), F002 (Interactive Grid)
-- Blocks: None
-
-### TDD Execution Log
-| Phase | Command | Result | Timestamp |
-|-------|---------|--------|-----------|
-| RED | - | - | - |
-| GREEN | - | - | - |
-| VALIDATE | - | - | - |
-| COMPLETE | - | - | - |
-
-### Technical Notes
-- Create SettingsModal component (use Headless UI or Radix for accessibility)
-- Update GardenProfile interface with name, season_extension_weeks
-- Store settings separately from bed layout in LocalStorage
-- Use HTML5 date inputs or date picker library
-- Settings changes should trigger React re-render
-
----
-
 ## [TODO-005] Implement Feature 005: Layout Management (Save/Load)
 
 **Status:** pending
@@ -213,3 +163,68 @@ Quality improvements identified during Feature 004 code review. These are minor 
 3. Season extension help text could include examples (0=outdoors, 2-4=row covers, 6-8=greenhouse)
 
 **Estimated effort:** 30-60 minutes total
+
+---
+
+## [TODO-008] Code Quality Improvements from F005 Phase 1 Review
+
+**Status:** pending
+**Priority:** low
+**Estimate:** S
+
+### Description
+Quality improvements identified during Feature 005 Phase 1 code review (migration foundation). These are minor enhancements that improve code quality and reduce duplication but don't block Phase 2-4 implementation.
+
+### Acceptance Criteria
+- [ ] Extract shared UUID generation to `src/utils/uuid.ts`
+- [ ] Extract shared `createDefaultProfile()` to single location
+- [ ] Consider using `crypto.randomUUID()` for cryptographically secure UUIDs
+- [ ] Add profile validation helper for date ranges
+- [ ] Add optional migration success logging
+- [ ] Extract shared test helpers to `src/test/helpers.ts`
+
+### Validation
+- Manual: Verify UUID uniqueness, profile validation works
+- Automated: All existing tests still pass after refactoring
+
+### Test Cases
+| Input | Expected Output | Notes |
+|-------|-----------------|-------|
+| Extract shared utilities | No duplication, all tests pass | DRY principle |
+| Use crypto.randomUUID() | Secure UUIDs generated | Better quality |
+| Validate profile dates | Last frost < First frost checked | Data integrity |
+| Test helpers reused | Cleaner test files | Maintainability |
+
+### Dependencies
+- Depends on: F005 Phase 1 (Migration Foundation) complete
+- Blocks: None
+- Can be done anytime before v1.0 release
+
+### TDD Execution Log
+| Phase | Command | Result | Timestamp |
+|-------|---------|--------|-----------|
+| RED | - | - | - |
+| GREEN | - | - | - |
+| VALIDATE | - | - | - |
+| COMPLETE | - | - | - |
+
+### Technical Notes
+**From F005 Phase 1 Code Review:**
+
+**Medium Issues (3):**
+1. **UUID Generation** - `generateUUID()` duplicated in storageMigration.ts and useProfiles.ts
+   - Fix: Extract to `src/utils/uuid.ts`
+   - Consider: Use `crypto.randomUUID()` (Node 19+) or `uuid` package for better quality
+
+2. **Default Profile** - `createDefaultProfile()` duplicated in storageMigration.ts and useProfiles.ts
+   - Fix: Centralize in useProfiles or create shared utility
+
+3. **Code Duplication** - Multiple helper functions duplicated
+   - Impact: Violates DRY principle, harder to maintain
+
+**Low Issues (3):**
+1. **Test Helpers** - `getLayout()` and `getProfile()` could be shared test utilities
+2. **Migration Logging** - Add optional success logging for debugging
+3. **Profile Validation** - Add validation for date range consistency
+
+**Estimated effort:** 45-90 minutes total

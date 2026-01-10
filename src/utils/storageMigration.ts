@@ -1,0 +1,136 @@
+import type {
+  LegacyGardenState,
+  GardenLayout,
+  LayoutStorage,
+  ProfileStorage,
+  GardenProfile,
+} from '../types/garden'
+
+const LEGACY_KEY = 'hortilogic:garden'
+const LAYOUTS_KEY = 'hortilogic:layouts'
+const PROFILES_KEY = 'hortilogic:profiles'
+const MIGRATED_KEY = 'hortilogic:garden:migrated'
+
+export interface MigrationResult {
+  success: boolean
+  migrated: boolean
+  reason?: string
+}
+
+/**
+ * Generates a UUID v4 string
+ */
+function generateUUID(): string {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0
+    const v = c === 'x' ? r : (r & 0x3) | 0x8
+    return v.toString(16)
+  })
+}
+
+/**
+ * Creates default Denver-based garden profile
+ */
+function createDefaultProfile(): GardenProfile {
+  return {
+    name: 'My Garden',
+    hardiness_zone: '5b',
+    last_frost_date: '2024-05-15',
+    first_frost_date: '2024-10-01',
+    season_extension_weeks: 0,
+  }
+}
+
+/**
+ * Creates a default layout with empty bed
+ */
+function createDefaultLayout(profileId: string, bed: GardenLayout['bed']): GardenLayout {
+  const now = new Date().toISOString()
+  return {
+    id: generateUUID(),
+    name: 'My Garden',
+    createdAt: now,
+    updatedAt: now,
+    bed,
+    profileId,
+  }
+}
+
+/**
+ * Migrates from legacy single-layout schema to new multi-layout schema
+ *
+ * Detects old localStorage key "hortilogic:garden" and migrates to:
+ * - "hortilogic:layouts" (multiple layouts)
+ * - "hortilogic:profiles" (garden profiles)
+ *
+ * @returns Migration result with success status and reason
+ */
+export function migrateToLayoutsSchema(): MigrationResult {
+  try {
+    // Check if already migrated
+    const existingLayouts = localStorage.getItem(LAYOUTS_KEY)
+    if (existingLayouts) {
+      return {
+        success: true,
+        migrated: false,
+        reason: 'already_migrated',
+      }
+    }
+
+    // Check for legacy data
+    const legacyData = localStorage.getItem(LEGACY_KEY)
+    if (!legacyData) {
+      return {
+        success: true,
+        migrated: false,
+        reason: 'no_legacy_data',
+      }
+    }
+
+    // Parse legacy schema
+    const legacyState = JSON.parse(legacyData) as LegacyGardenState
+
+    // Create profile from legacy gardenProfile or use defaults
+    const profileId = generateUUID()
+    const profile: GardenProfile =
+      legacyState.gardenProfile || createDefaultProfile()
+
+    const profileStorage: ProfileStorage = {
+      version: 1,
+      profiles: {
+        [profileId]: profile,
+      },
+    }
+
+    // Create layout from legacy currentBed
+    const layout = createDefaultLayout(profileId, legacyState.currentBed)
+
+    const layoutStorage: LayoutStorage = {
+      version: 1,
+      activeLayoutId: layout.id,
+      layouts: {
+        [layout.id]: layout,
+      },
+    }
+
+    // Write new schema to localStorage
+    localStorage.setItem(PROFILES_KEY, JSON.stringify(profileStorage))
+    localStorage.setItem(LAYOUTS_KEY, JSON.stringify(layoutStorage))
+
+    // Mark old key as migrated (rename instead of delete for safety)
+    localStorage.setItem(MIGRATED_KEY, legacyData)
+    localStorage.removeItem(LEGACY_KEY)
+
+    return {
+      success: true,
+      migrated: true,
+    }
+  } catch (error) {
+    console.error('Migration failed:', error)
+    return {
+      success: false,
+      migrated: false,
+      reason: error instanceof Error ? error.message : 'unknown_error',
+    }
+  }
+}
