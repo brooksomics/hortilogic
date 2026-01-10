@@ -4,7 +4,7 @@
 
 **Before creating any new function, CHECK HERE FIRST.**
 
-Last updated: 2026-01-10 (TODO-016 complete - Multi-Box Dynamic Rendering)
+Last updated: 2026-01-10 (TODO-017 complete - Box Management UI)
 
 ---
 
@@ -51,9 +51,11 @@ Last updated: 2026-01-10 (TODO-016 complete - Multi-Box Dynamic Rendering)
 | `migrateToMultiBoxSchema()` | utils/storageMigration.ts:175 | Migrate from single-bed to multi-box storage schema |
 | `createLayout()` | hooks/useLayoutManager.ts:121 | Create new blank layout and switch to it |
 | `switchLayout()` | hooks/useLayoutManager.ts:129 | Switch active layout |
-| `renameLayout()` | hooks/useLayoutManager.ts:141 | Rename existing layout |
-| `deleteLayout()` | hooks/useLayoutManager.ts:157 | Delete layout (prevents deleting last one) |
-| `duplicateLayout()` | hooks/useLayoutManager.ts:194 | Copy layout with all box data |
+| `renameLayout()` | hooks/useLayoutManager.ts:154 | Rename existing layout |
+| `deleteLayout()` | hooks/useLayoutManager.ts:170 | Delete layout (prevents deleting last one) |
+| `duplicateLayout()` | hooks/useLayoutManager.ts:200 | Copy layout with all box data |
+| `addBox()` | hooks/useLayoutManager.ts:300 | Add a new garden box to active layout |
+| `removeBox()` | hooks/useLayoutManager.ts:324 | Remove a box from active layout (prevents removing last box) |
 
 **Key Concepts:**
 - Multiple layouts per user (e.g., "Spring 2026", "Fall 2026")
@@ -96,14 +98,16 @@ Last updated: 2026-01-10 (TODO-016 complete - Multi-Box Dynamic Rendering)
 | `CropLibrary` | components/CropLibrary.tsx | Crop selection sidebar with search and viability filtering |
 | `LayoutSelector` | components/LayoutSelector.tsx | Dropdown for switching/managing layouts |
 | `LayoutActionModal` | components/LayoutActionModal.tsx | Modal for create/rename/delete layout actions |
+| `BoxActionModal` | components/BoxActionModal.tsx | Modal for add/delete garden box actions |
 | `SettingsModal` | components/SettingsModal.tsx | Garden profile settings editor |
 
 **Component Responsibilities:**
-- **App**: Multi-box rendering, layout management integration, state coordination, migrations, Core 50 crop database
-- **GardenBed**: Dynamic grid rendering with custom width/height, click handlers, viability colors, accessibility labels
+- **App**: Multi-box rendering, layout/box management integration, state coordination, migrations, Core 50 crop database, total area summary
+- **GardenBed**: Dynamic grid rendering with custom width/height, click handlers, viability colors, accessibility labels, delete button
 - **CropLibrary**: Crop list, search filtering, crop count display, selection UI
 - **LayoutSelector**: Layout dropdown, CRUD action buttons, sorting
-- **LayoutActionModal**: Reusable modal for layout operations (3 modes)
+- **LayoutActionModal**: Reusable modal for layout operations (3 modes: create/rename/delete)
+- **BoxActionModal**: Reusable modal for box operations (2 modes: add/delete)
 - **SettingsModal**: Profile editing (currently disabled, to be re-enabled)
 
 **UI Patterns:**

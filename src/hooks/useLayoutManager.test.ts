@@ -211,7 +211,7 @@ describe('useLayoutManager', () => {
     expect(Object.keys(result.current.layouts)).toHaveLength(1)
   })
 
-  it('updates timestamps on modification', () => {
+  it('updates timestamps on modification', async () => {
     const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     const layoutId = result.current.activeLayoutId
@@ -220,16 +220,16 @@ describe('useLayoutManager', () => {
     const originalUpdatedAt = layout.updatedAt
 
     // Wait a bit to ensure timestamp changes
-    setTimeout(() => {
-      act(() => {
-        result.current.plantCrop(0, lettuce)
-      })
+    await new Promise(resolve => setTimeout(resolve, 10))
 
-      const updatedLayout = result.current.layouts[layoutId]
-      if (!updatedLayout) throw new Error('Layout not found after update')
-      const newUpdatedAt = updatedLayout.updatedAt
-      expect(newUpdatedAt).not.toBe(originalUpdatedAt)
-    }, 10)
+    act(() => {
+      result.current.plantCrop(0, lettuce)
+    })
+
+    const updatedLayout = result.current.layouts[layoutId]
+    if (!updatedLayout) throw new Error('Layout not found after update')
+    const newUpdatedAt = updatedLayout.updatedAt
+    expect(newUpdatedAt).not.toBe(originalUpdatedAt)
   })
 
   it('persists layouts to localStorage', () => {
