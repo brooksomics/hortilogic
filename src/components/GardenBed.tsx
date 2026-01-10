@@ -1,32 +1,50 @@
-import type { Crop } from '@/types'
+import { AlertTriangle } from 'lucide-react'
+import type { Crop, GardenProfile } from '@/types'
+import { isCropViable } from '@/utils/dateEngine'
 
 interface GardenSquareProps {
   crop?: Crop | null
   onClick?: () => void
+  /** Whether the crop is viable for current season (if planted) */
+  isViable?: boolean
 }
 
 /**
  * Single square in the garden bed
  * Displays crop info if planted, or shows as empty
  */
-function GardenSquare({ crop, onClick }: GardenSquareProps) {
+function GardenSquare({ crop, onClick, isViable = true }: GardenSquareProps) {
+  // Determine background color based on crop and viability
+  const bgColor = crop
+    ? isViable
+      ? 'bg-leaf-100 hover:bg-leaf-200 border-leaf-400'
+      : 'bg-orange-100 hover:bg-orange-200 border-orange-400'
+    : 'bg-soil-50 hover:bg-soil-100 border-soil-400'
+
   return (
     <button
       onClick={onClick}
       className={`
-        aspect-square border-2 border-soil-400 rounded
+        aspect-square border-2 rounded
         flex flex-col items-center justify-center p-2
-        transition-colors
-        ${crop
-          ? 'bg-leaf-100 hover:bg-leaf-200'
-          : 'bg-soil-50 hover:bg-soil-100'
-        }
+        transition-colors relative
+        ${bgColor}
       `}
       type="button"
-      aria-label={crop ? `Planted: ${crop.name || crop.id}` : 'Empty square'}
+      aria-label={
+        crop
+          ? `Planted: ${crop.name || crop.id}${!isViable ? ' (out of season)' : ''}`
+          : 'Empty square'
+      }
     >
       {crop && (
         <>
+          {!isViable && (
+            <AlertTriangle
+              className="absolute top-1 right-1 w-3 h-3 text-orange-600"
+              aria-label="Warning: Out of season"
+            />
+          )}
           <span className="text-sm font-semibold text-soil-900 text-center">
             {crop.name || crop.id}
           </span>
@@ -45,15 +63,32 @@ interface GardenBedProps {
 
   /** Optional callback when a square is clicked */
   onSquareClick?: (index: number) => void
+
+  /** Garden profile with frost dates for viability checking */
+  gardenProfile?: GardenProfile | null
+
+  /** Target date for viability check (defaults to today) */
+  checkDate?: Date
 }
 
 /**
  * 4'x8' Square Foot Garden bed represented as a CSS Grid of 32 cells
  * Layout: 4 rows x 8 columns = 32 one-foot squares
  */
-export function GardenBed({ squares = Array(32).fill(null), onSquareClick }: GardenBedProps) {
+export function GardenBed({
+  squares = Array(32).fill(null),
+  onSquareClick,
+  gardenProfile = null,
+  checkDate = new Date()
+}: GardenBedProps) {
   // Ensure we have exactly 32 squares
   const bedSquares = [...squares.slice(0, 32), ...Array(Math.max(0, 32 - squares.length)).fill(null)]
+
+  // Calculate viability for each planted crop
+  const viabilityMap = bedSquares.map(crop => {
+    if (!crop || !gardenProfile) return true // Default to viable if no profile set
+    return isCropViable(crop, gardenProfile, checkDate)
+  })
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -72,6 +107,7 @@ export function GardenBed({ squares = Array(32).fill(null), onSquareClick }: Gar
             key={index}
             crop={crop}
             onClick={() => onSquareClick?.(index)}
+            isViable={viabilityMap[index]}
           />
         ))}
       </div>
