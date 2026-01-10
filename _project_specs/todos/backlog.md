@@ -4,63 +4,6 @@ Future work, prioritized. Move to active.md when starting.
 
 ---
 
-## [TODO-005] Implement Feature 005: Layout Management (Save/Load)
-
-**Status:** pending
-**Priority:** medium
-**Estimate:** M-L
-
-### Description
-Enable users to manage multiple garden layouts (e.g., "Spring 2026" vs "Fall 2026"). Currently only supports one "Current Bed" - need full save/load/switch functionality.
-
-### Acceptance Criteria
-- [ ] User can create new blank layout named "Fall 2026"
-- [ ] User can switch between "Spring" and "Fall" layouts without losing data
-- [ ] Active layout persists on reload
-- [ ] User can duplicate layouts for succession planning
-- [ ] User can rename layouts
-- [ ] User can delete layouts (with confirmation)
-- [ ] Existing users' data migrates automatically without data loss
-
-### Validation
-- Manual: Create multiple layouts, switch between them, reload page
-- Automated: Test layout CRUD operations, migration, persistence
-
-### Test Cases
-| Input | Expected Output | Notes |
-|-------|-----------------|-------|
-| Create "Fall 2026" | New empty layout created | Layout management |
-| Switch to "Spring" | Spring layout displayed, Fall preserved | No data loss |
-| Duplicate "Spring" | "Spring Copy" with identical crops | Succession planning |
-| Rename layout | Layout renamed, data intact | Update metadata |
-| Delete layout | Layout removed, switch to default | Confirmation dialog |
-| Reload page | Active layout restored | Persistence |
-| Load old schema | Auto-migrate to new schema | Backward compatibility |
-
-### Dependencies
-- Depends on: None (independent feature)
-- Blocks: None
-- Recommended order: After F004 (Settings) for better UX
-
-### TDD Execution Log
-| Phase | Command | Result | Timestamp |
-|-------|---------|--------|-----------|
-| RED | - | - | - |
-| GREEN | - | - | - |
-| VALIDATE | - | - | - |
-| COMPLETE | - | - | - |
-
-### Technical Notes
-- Migrate LocalStorage schema from single object to layouts map
-- Use UUID or timestamp-based IDs for layouts
-- Implement migration utility for existing users
-- Add version number to storage schema
-- Layout selector in header (dropdown component)
-- Prevent deleting last remaining layout (keep at least 1)
-- Consider export/import for backup (future enhancement)
-
----
-
 ## [TODO-006] Expand Crop Database (Core 50)
 
 **Status:** pending
@@ -168,7 +111,7 @@ Quality improvements identified during Feature 004 code review. These are minor 
 
 ## [TODO-008] Code Quality Improvements from F005 Phase 1-4 Review
 
-**Status:** pending
+**Status:** partially-complete
 **Priority:** low
 **Estimate:** M-L
 
@@ -176,12 +119,12 @@ Quality improvements identified during Feature 004 code review. These are minor 
 Quality improvements identified during Feature 005 Phase 1-4 code reviews (migration foundation, layout manager, UI components, and App integration). These are minor enhancements that improve code quality and reduce duplication but don't block Phase 5 or future features.
 
 ### Acceptance Criteria
-- [ ] Extract shared UUID generation to `src/utils/uuid.ts`
+- [✅] Extract shared UUID generation to `src/utils/uuid.ts`
 - [ ] Extract shared `createDefaultProfile()` to single location
 - [ ] Extract layout helper functions to `src/utils/layoutHelpers.ts`
-- [ ] Consider using `crypto.randomUUID()` for cryptographically secure UUIDs
+- [✅] Consider using `crypto.randomUUID()` for cryptographically secure UUIDs
 - [ ] Add profile validation helper for date ranges
-- [ ] Add layout name and cell index validation
+- [✅] Add layout name and cell index validation
 - [ ] Add optional migration success logging
 - [ ] Extract shared test helpers to `src/test/helpers.ts`
 - [ ] Split useLayoutManager.test.ts into multiple focused files
