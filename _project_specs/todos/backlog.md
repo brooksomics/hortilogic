@@ -195,12 +195,14 @@ Quality improvements identified during Feature 005 Phase 1-4 code reviews (migra
 
 ## [TODO-009] Critical Fixes from Code Audit (Settings, Performance, File Size)
 
-**Status:** moved-to-active
+**Status:** ✅ completed (2026-01-10)
 **Priority:** high
 **Estimate:** M
 
 ### Description
 Address three critical issues identified in code audit: (1) Re-enable Settings functionality so users can change frost dates, (2) Fix autofill performance bottleneck causing multiple re-renders, (3) Refactor files exceeding 200-line Bootstrap limit.
+
+**See completed.md for full implementation details.**
 
 ### Acceptance Criteria
 - [ ] **Settings Re-enabled:** Users can click Settings button and change frost dates
