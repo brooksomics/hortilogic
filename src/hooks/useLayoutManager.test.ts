@@ -9,6 +9,9 @@ import { renderHook, act } from '@testing-library/react'
 import { useLayoutManager } from './useLayoutManager'
 import type { Crop } from '../types/garden'
 
+// Test profile ID (simulates the ID from useProfiles hook)
+const TEST_PROFILE_ID = 'test-profile-id'
+
 // Sample crops for testing
 const lettuce: Crop = {
   id: 'lettuce',
@@ -36,7 +39,7 @@ describe('useLayoutManager', () => {
   })
 
   it('initializes with default layout named "My Garden"', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     expect(result.current.layouts).toBeDefined()
     expect(Object.keys(result.current.layouts)).toHaveLength(1)
@@ -52,7 +55,7 @@ describe('useLayoutManager', () => {
   })
 
   it('sets activeLayoutId to the default layout', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     expect(result.current.activeLayoutId).toBeTruthy()
 
@@ -61,7 +64,7 @@ describe('useLayoutManager', () => {
   })
 
   it('provides activeLayout object for convenience', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     expect(result.current.activeLayout).toBeDefined()
     expect(result.current.activeLayout?.name).toBe('My Garden')
@@ -69,7 +72,7 @@ describe('useLayoutManager', () => {
   })
 
   it('creates new blank layout with given name', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     act(() => {
       result.current.createLayout('Spring 2026')
@@ -85,7 +88,7 @@ describe('useLayoutManager', () => {
   })
 
   it('switches to newly created layout automatically', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     let newLayoutId: string | undefined
 
@@ -98,7 +101,7 @@ describe('useLayoutManager', () => {
   })
 
   it('switches active layout without losing data', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     const layout1Id = result.current.activeLayoutId
 
@@ -122,7 +125,7 @@ describe('useLayoutManager', () => {
   })
 
   it('renames layout and preserves data', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     const layoutId = result.current.activeLayoutId
 
@@ -143,7 +146,7 @@ describe('useLayoutManager', () => {
   })
 
   it('duplicates layout with all bed data', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     const originalId = result.current.activeLayoutId
 
@@ -172,7 +175,7 @@ describe('useLayoutManager', () => {
   })
 
   it('deletes layout and switches to another', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     const layout1Id = result.current.activeLayoutId
 
@@ -193,7 +196,7 @@ describe('useLayoutManager', () => {
   })
 
   it('prevents deleting the last remaining layout', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     const onlyLayoutId = result.current.activeLayoutId
 
@@ -207,7 +210,7 @@ describe('useLayoutManager', () => {
   })
 
   it('updates timestamps on modification', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     const layoutId = result.current.activeLayoutId
     const layout = result.current.layouts[layoutId]
@@ -228,7 +231,7 @@ describe('useLayoutManager', () => {
   })
 
   it('persists layouts to localStorage', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     act(() => {
       result.current.createLayout('Test Layout')
@@ -247,7 +250,7 @@ describe('useLayoutManager', () => {
 
   it('restores layouts from localStorage on mount', () => {
     // First hook: create layouts
-    const { result: result1, unmount } = renderHook(() => useLayoutManager())
+    const { result: result1, unmount } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     let layoutId: string | undefined
 
@@ -265,7 +268,7 @@ describe('useLayoutManager', () => {
     unmount()
 
     // Second hook: restore from localStorage
-    const { result: result2 } = renderHook(() => useLayoutManager())
+    const { result: result2 } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     if (!layoutId) throw new Error('Layout ID not set')
     expect(Object.keys(result2.current.layouts)).toHaveLength(2)
@@ -277,7 +280,7 @@ describe('useLayoutManager', () => {
   })
 
   it('plantCrop updates only the active layout', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     const layout1Id = result.current.activeLayoutId
 
@@ -306,7 +309,7 @@ describe('useLayoutManager', () => {
   })
 
   it('removeCrop updates only the active layout', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     act(() => {
       result.current.plantCrop(0, lettuce)
@@ -324,7 +327,7 @@ describe('useLayoutManager', () => {
   })
 
   it('clearBed clears only the active layout', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     const layout1Id = result.current.activeLayoutId
 
@@ -366,7 +369,7 @@ describe('useLayoutManager', () => {
   })
 
   it('setBed updates entire bed in single operation', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     // Create a new bed with multiple crops
     const newBed: (Crop | null)[] = Array(32).fill(null)
@@ -389,7 +392,7 @@ describe('useLayoutManager', () => {
   })
 
   it('setBed updates only the active layout', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     const layout1Id = result.current.activeLayoutId
 
@@ -422,7 +425,7 @@ describe('useLayoutManager', () => {
   })
 
   it('returns current bed from active layout', () => {
-    const { result } = renderHook(() => useLayoutManager())
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     act(() => {
       result.current.plantCrop(0, lettuce)

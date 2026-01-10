@@ -20,8 +20,11 @@ function App() {
     migrateToLayoutsSchema()
   }, [])
 
+  // Profile management (must come before layout management to avoid Split Brain bug)
+  const { getProfile, updateProfile, defaultProfileId } = useProfiles()
+
   // Layout management
-  const layoutManager = useLayoutManager()
+  const layoutManager = useLayoutManager(defaultProfileId)
   const {
     layouts,
     activeLayoutId,
@@ -44,8 +47,6 @@ function App() {
     handleLayoutModalConfirm,
     handleLayoutModalClose,
   } = useLayoutActions(layoutManager)
-
-  const { getProfile, updateProfile, defaultProfileId } = useProfiles()
 
   // Get garden profile for active layout (with fallback to default profile)
   const gardenProfile = activeLayout
@@ -116,6 +117,7 @@ function App() {
               crops={CORE_50_CROPS}
               selectedCrop={selectedCrop}
               onSelectCrop={setSelectedCrop}
+              currentProfile={gardenProfile}
             />
             <GardenControls
               onAutoFill={handleAutoFill}

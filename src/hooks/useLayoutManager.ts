@@ -1,5 +1,4 @@
 import { useLocalStorage } from './useLocalStorage'
-import { useProfiles } from './useProfiles'
 import type { LayoutStorage, GardenLayout, Crop } from '../types/garden'
 import { generateUUID } from '../utils/uuid'
 
@@ -98,10 +97,10 @@ export interface UseLayoutManagerResult {
  * Enables users to create, switch, rename, delete, and duplicate layouts.
  * Each layout has its own bed of crops, enabling seasonal planning
  * (e.g., "Spring 2026" vs "Fall 2026").
+ *
+ * @param defaultProfileId - The default profile ID to use for new layouts
  */
-export function useLayoutManager(): UseLayoutManagerResult {
-  const { defaultProfileId } = useProfiles()
-
+export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResult {
   const [layoutStorage, setLayoutStorage] = useLocalStorage<LayoutStorage>(
     LAYOUTS_KEY,
     createDefaultLayoutStorage(defaultProfileId)
