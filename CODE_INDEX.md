@@ -4,7 +4,7 @@
 
 **Before creating any new function, CHECK HERE FIRST.**
 
-Last updated: 2026-01-09 (TODO-006 complete - Core 50 Crop Database with Search)
+Last updated: 2026-01-10 (TODO-016 complete - Multi-Box Dynamic Rendering)
 
 ---
 
@@ -28,37 +28,41 @@ Last updated: 2026-01-09 (TODO-006 complete - Core 50 Crop Database with Search)
 
 | Function | Location | Purpose |
 |----------|----------|---------|
-| `getNeighbors()` | utils/companionEngine.ts:5 | Get crops in 4 adjacent cells (Up/Down/Left/Right) |
-| `isCompatibleWithNeighbors()` | utils/companionEngine.ts:27 | Check if crop compatible with adjacent crops |
-| `autoFillBed()` | utils/companionEngine.ts:57 | Constraint satisfaction solver for garden bed |
+| `getNeighbors()` | utils/companionEngine.ts:13 | Get crops in 4 adjacent cells (Up/Down/Left/Right) with dynamic grid dimensions |
+| `checkCompanionConstraints()` | utils/companionEngine.ts:65 | Check if crop compatible with neighbor crop IDs |
+| `autoFillBed()` | utils/companionEngine.ts:103 | Constraint satisfaction solver for garden bed with custom dimensions |
 
 **Key Concepts:**
 - Companion rules: friends (beneficial) and enemies (incompatible)
 - Neighbor checking: 4-directional adjacency only (not diagonals)
+- **Dynamic dimensions**: Supports variable grid sizes (e.g., 4x8, 2x4, 3x3)
 - Constraint satisfaction: respects both viability AND compatibility
 - Preserves existing manual plantings
 
 ---
 
-## Layout Management (Feature 005)
+## Layout Management (Feature 005 + Feature 008)
 
 | Function | Location | Purpose |
 |----------|----------|---------|
 | `useLayoutManager()` | hooks/useLayoutManager.ts | Manage multiple garden layouts with CRUD operations |
 | `useProfiles()` | hooks/useProfiles.ts | Access garden profiles (zones, frost dates) |
-| `migrateToLayoutsSchema()` | utils/storageMigration.ts:71 | Migrate from single to multi-layout storage schema |
-| `createLayout()` | hooks/useLayoutManager.ts:122 | Create new blank layout and switch to it |
-| `switchLayout()` | hooks/useLayoutManager.ts:137 | Switch active layout |
-| `renameLayout()` | hooks/useLayoutManager.ts:149 | Rename existing layout |
-| `deleteLayout()` | hooks/useLayoutManager.ts:165 | Delete layout (prevents deleting last one) |
-| `duplicateLayout()` | hooks/useLayoutManager.ts:195 | Copy layout with all bed data |
+| `migrateToLayoutsSchema()` | utils/storageMigration.ts:79 | Migrate from single to multi-layout storage schema |
+| `migrateToMultiBoxSchema()` | utils/storageMigration.ts:175 | Migrate from single-bed to multi-box storage schema |
+| `createLayout()` | hooks/useLayoutManager.ts:121 | Create new blank layout and switch to it |
+| `switchLayout()` | hooks/useLayoutManager.ts:129 | Switch active layout |
+| `renameLayout()` | hooks/useLayoutManager.ts:141 | Rename existing layout |
+| `deleteLayout()` | hooks/useLayoutManager.ts:157 | Delete layout (prevents deleting last one) |
+| `duplicateLayout()` | hooks/useLayoutManager.ts:194 | Copy layout with all box data |
 
 **Key Concepts:**
 - Multiple layouts per user (e.g., "Spring 2026", "Fall 2026")
-- Each layout has its own bed (32 cells) and references a profile
+- **Multi-box support**: Each layout can contain multiple garden boxes of varying sizes
+- Each box has: id, name, width (columns), height (rows), and cells array
+- Default box: "Main Bed" (8x4 = 32 cells)
 - Profiles shared across layouts (same location, different seasons)
-- Migration preserves existing user data from single-layout schema
-- LocalStorage keys: `hortilogic:layouts`, `hortilogic:profiles`
+- Migration chain: Legacy → Multi-layout (v1) → Multi-box (v2)
+- LocalStorage keys: `hortilogic:layouts` (v2), `hortilogic:profiles`
 - Version numbers enable future schema migrations
 
 ---
@@ -87,16 +91,16 @@ Last updated: 2026-01-09 (TODO-006 complete - Core 50 Crop Database with Search)
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| `App` | App.tsx | Main application with layout management and grid |
-| `GardenBed` | components/GardenBed.tsx | 4×8 interactive grid display |
+| `App` | App.tsx | Main application with layout management and multi-box rendering |
+| `GardenBed` | components/GardenBed.tsx | Dynamic grid display with variable dimensions (e.g., 2x4, 4x8, 3x3) |
 | `CropLibrary` | components/CropLibrary.tsx | Crop selection sidebar with search and viability filtering |
 | `LayoutSelector` | components/LayoutSelector.tsx | Dropdown for switching/managing layouts |
 | `LayoutActionModal` | components/LayoutActionModal.tsx | Modal for create/rename/delete layout actions |
 | `SettingsModal` | components/SettingsModal.tsx | Garden profile settings editor |
 
 **Component Responsibilities:**
-- **App**: Layout management integration, state coordination, migration, Core 50 crop database
-- **GardenBed**: Grid rendering, click handlers, viability colors
+- **App**: Multi-box rendering, layout management integration, state coordination, migrations, Core 50 crop database
+- **GardenBed**: Dynamic grid rendering with custom width/height, click handlers, viability colors, accessibility labels
 - **CropLibrary**: Crop list, search filtering, crop count display, selection UI
 - **LayoutSelector**: Layout dropdown, CRUD action buttons, sorting
 - **LayoutActionModal**: Reusable modal for layout operations (3 modes)

@@ -58,7 +58,7 @@ function GardenSquare({ crop, onClick, isViable = true }: GardenSquareProps) {
 }
 
 interface GardenBedProps {
-  /** Array of 32 crops (or null for empty squares) */
+  /** Array of crops (or null for empty squares) */
   squares?: (Crop | null)[]
 
   /** Optional callback when a square is clicked */
@@ -69,23 +69,40 @@ interface GardenBedProps {
 
   /** Target date for viability check (defaults to today) */
   checkDate?: Date
+
+  /** Width of the bed in feet/columns (defaults to 8) */
+  width?: number
+
+  /** Height of the bed in feet/rows (defaults to 4) */
+  height?: number
+
+  /** Optional name/title for the bed */
+  bedName?: string
 }
 
 /**
- * 4'x8' Square Foot Garden bed represented as a CSS Grid of 32 cells
- * Layout: 4 rows x 8 columns = 32 one-foot squares
+ * Square Foot Garden bed represented as a CSS Grid
+ * Supports dynamic dimensions (e.g., 4x8, 2x4, 3x3)
  */
 export function GardenBed({
-  squares = Array(32).fill(null) as (Crop | null)[],
+  squares,
   onSquareClick,
   gardenProfile = null,
-  checkDate = new Date()
+  checkDate = new Date(),
+  width = 8,
+  height = 4,
+  bedName
 }: GardenBedProps) {
-  // Ensure we have exactly 32 squares
-  const bedSquares: (Crop | null)[] = [
-    ...squares.slice(0, 32),
-    ...Array(Math.max(0, 32 - squares.length)).fill(null) as (Crop | null)[]
-  ]
+  const totalCells = width * height
+  const defaultSquares = Array(totalCells).fill(null) as (Crop | null)[]
+
+  // Ensure we have the right number of squares
+  const bedSquares: (Crop | null)[] = squares
+    ? [
+        ...squares.slice(0, totalCells),
+        ...Array(Math.max(0, totalCells - squares.length)).fill(null) as (Crop | null)[]
+      ]
+    : defaultSquares
 
   // Calculate viability for each planted crop
   const viabilityMap = bedSquares.map(crop => {
@@ -93,17 +110,25 @@ export function GardenBed({
     return isCropViable(crop, gardenProfile, checkDate)
   })
 
+  // Generate Tailwind grid-cols class dynamically
+  const gridColsClass = `grid-cols-${width}`
+
+  // Display name - use bedName prop or default format
+  const displayName = bedName || `Garden Bed (${width}' × ${height}')`
+  const cellCount = totalCells
+
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="mb-4 text-center">
-        <h2 className="text-2xl font-bold text-soil-800">Garden Bed (4&apos; × 8&apos;)</h2>
-        <p className="text-soil-600">32 Square Foot Gardening cells</p>
+        <h2 className="text-2xl font-bold text-soil-800">{displayName}</h2>
+        <p className="text-soil-600">{cellCount} Square Foot Gardening cells</p>
       </div>
 
       <div
-        className="grid grid-cols-8 gap-2 p-4 bg-soil-200 rounded-lg shadow-lg"
+        className={`grid ${gridColsClass} gap-2 p-4 bg-soil-200 rounded-lg shadow-lg`}
+        style={{ gridTemplateColumns: `repeat(${width}, minmax(0, 1fr))` }}
         role="grid"
-        aria-label="4 by 8 foot garden bed with 32 squares"
+        aria-label={`${width} by ${height} foot garden bed with ${cellCount} squares`}
       >
         {bedSquares.map((crop, index) => (
           <GardenSquare

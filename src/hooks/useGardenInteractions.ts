@@ -58,11 +58,20 @@ export function useGardenInteractions({
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   const handleAutoFill = (): void => {
-    if (!gardenProfile || !activeLayout) {
+    if (!gardenProfile || !activeLayout || !activeLayout.boxes[0]) {
       return
     }
 
-    const newBed = autoFillBed(currentBed, CORE_50_CROPS, gardenProfile, new Date())
+    // Get dimensions from first box
+    const firstBox = activeLayout.boxes[0]
+    const newBed = autoFillBed(
+      currentBed,
+      CORE_50_CROPS,
+      gardenProfile,
+      firstBox.width,
+      firstBox.height,
+      new Date()
+    )
     setBed(newBed)
   }
 

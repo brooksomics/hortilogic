@@ -11,13 +11,16 @@ import { useLayoutManager } from './hooks/useLayoutManager'
 import { useLayoutActions } from './hooks/useLayoutActions'
 import { useGardenInteractions } from './hooks/useGardenInteractions'
 import { useProfiles } from './hooks/useProfiles'
-import { migrateToLayoutsSchema } from './utils/storageMigration'
+import { migrateToLayoutsSchema, migrateToMultiBoxSchema } from './utils/storageMigration'
 import { CORE_50_CROPS } from './data/crops'
 
 function App() {
-  // Run migration on app load
+  // Run migrations on app load
   useEffect(() => {
+    // First migrate from legacy schema to layouts (if needed)
     migrateToLayoutsSchema()
+    // Then migrate from single-bed to multi-box schema (if needed)
+    migrateToMultiBoxSchema()
   }, [])
 
   // Profile management (must come before layout management to avoid Split Brain bug)
@@ -126,13 +129,24 @@ function App() {
             />
           </div>
 
-          {/* Main: Garden Bed */}
-          <div className="order-1 lg:order-2">
-            <GardenBed
-              squares={currentBed}
-              onSquareClick={handleSquareClick}
-              gardenProfile={gardenProfile}
-            />
+          {/* Main: Garden Bed(s) */}
+          <div className="order-1 lg:order-2 space-y-8">
+            {activeLayout?.boxes.map((box, boxIndex) => (
+              <GardenBed
+                key={box.id}
+                squares={box.cells}
+                onSquareClick={(cellIndex) => {
+                  // For now, only support clicking on first box (backward compatibility)
+                  if (boxIndex === 0) {
+                    handleSquareClick(cellIndex)
+                  }
+                }}
+                gardenProfile={gardenProfile}
+                width={box.width}
+                height={box.height}
+                bedName={box.name}
+              />
+            ))}
             <GardenInstructions selectedCrop={selectedCrop} />
 
             {/* Feature Status */}

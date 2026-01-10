@@ -95,7 +95,7 @@ describe('storageMigration', () => {
       if (!layoutsStr) throw new Error('Layouts not found')
 
       const layouts = JSON.parse(layoutsStr) as LayoutStorage
-      expect(layouts.version).toBe(1)
+      expect(layouts.version).toBe(2)
 
       const layoutIds = Object.keys(layouts.layouts)
       expect(layoutIds).toHaveLength(1)
@@ -133,9 +133,9 @@ describe('storageMigration', () => {
       if (!layoutId) throw new Error('Layout ID not found')
       const layout = getLayout(layoutId, layouts)
 
-      expect(layout.bed[0]).toEqual(lettuce)
-      expect(layout.bed[5]).toEqual(tomato)
-      expect(layout.bed[1]).toBeNull()
+      expect(layout.boxes[0]!.cells[0]).toEqual(lettuce)
+      expect(layout.boxes[0]!.cells[5]).toEqual(tomato)
+      expect(layout.boxes[0]!.cells[1]).toBeNull()
     })
 
     it('creates profile from gardenProfile during migration', () => {
@@ -227,8 +227,8 @@ describe('storageMigration', () => {
       if (!layoutId) throw new Error('Layout ID not found')
       const layout = getLayout(layoutId, layouts)
 
-      expect(layout.bed).toHaveLength(32)
-      expect(layout.bed.every((cell: Crop | null) => cell === null)).toBe(true)
+      expect(layout.boxes[0]!.cells).toHaveLength(32)
+      expect(layout.boxes[0]!.cells.every((cell: Crop | null) => cell === null)).toBe(true)
     })
 
     it('generates valid UUID v4 for layout ID', () => {

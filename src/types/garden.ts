@@ -25,6 +25,27 @@ export interface GardenProfile {
 }
 
 /**
+ * Individual garden box/bed with custom dimensions
+ * Supports variable-sized raised beds (e.g., 4x8, 2x4, 3x3)
+ */
+export interface GardenBox {
+  /** Unique identifier (UUID v4) */
+  id: string
+
+  /** User-defined box name (e.g., "Main Bed", "Herb Box") */
+  name: string
+
+  /** Width in feet/columns */
+  width: number
+
+  /** Height in feet/rows */
+  height: number
+
+  /** Array of cells (width * height) with planted crops */
+  cells: (Crop | null)[]
+}
+
+/**
  * Individual garden layout with crops and timestamps
  * Multiple layouts enable seasonal planning (e.g., "Spring 2026" vs "Fall 2026")
  */
@@ -41,8 +62,8 @@ export interface GardenLayout {
   /** ISO timestamp when layout was last modified */
   updatedAt: string
 
-  /** Array of 32 cells (4x8 grid) with planted crops */
-  bed: (Crop | null)[]
+  /** Array of garden boxes (supports multiple beds of varying sizes) */
+  boxes: GardenBox[]
 
   /** Reference to garden profile ID */
   profileId: string
@@ -73,6 +94,30 @@ export interface ProfileStorage {
 
   /** Map of all profiles keyed by ID */
   profiles: Record<string, GardenProfile>
+}
+
+/**
+ * Legacy garden layout (pre-F008, single bed only)
+ * Used for migration to multi-box schema
+ */
+export interface LegacyGardenLayout {
+  /** Unique identifier (UUID v4) */
+  id: string
+
+  /** User-defined layout name */
+  name: string
+
+  /** ISO timestamp when layout was created */
+  createdAt: string
+
+  /** ISO timestamp when layout was last modified */
+  updatedAt: string
+
+  /** Array of 32 cells (4x8 grid) with planted crops */
+  bed: (Crop | null)[]
+
+  /** Reference to garden profile ID */
+  profileId: string
 }
 
 /**

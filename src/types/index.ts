@@ -1,1 +1,1 @@
-export type { GardenProfile, Crop, PlantingStrategy } from './garden'
+export type { GardenProfile, Crop, PlantingStrategy, GardenBox, GardenLayout } from './garden'

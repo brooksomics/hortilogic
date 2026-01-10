@@ -1,14 +1,20 @@
 import { useLocalStorage } from './useLocalStorage'
-import type { LayoutStorage, GardenLayout, Crop } from '../types/garden'
+import type { LayoutStorage, GardenLayout, GardenBox, Crop } from '../types/garden'
 import { generateUUID } from '../utils/uuid'
 
 const LAYOUTS_KEY = 'hortilogic:layouts'
 
 /**
- * Creates an empty bed with 32 null cells
+ * Creates an empty 4x8 garden box
  */
-function createEmptyBed(): (Crop | null)[] {
-  return Array(32).fill(null) as (Crop | null)[]
+function createEmptyBox(name = 'Main Bed'): GardenBox {
+  return {
+    id: generateUUID(),
+    name,
+    width: 8,
+    height: 4,
+    cells: Array(32).fill(null) as (Crop | null)[],
+  }
 }
 
 /**
@@ -21,7 +27,7 @@ function createNewLayout(name: string, profileId: string): GardenLayout {
     name,
     createdAt: now,
     updatedAt: now,
-    bed: createEmptyBed(),
+    boxes: [createEmptyBox('Main Bed')],
     profileId,
   }
 }
@@ -32,7 +38,7 @@ function createNewLayout(name: string, profileId: string): GardenLayout {
 function createDefaultLayoutStorage(profileId: string): LayoutStorage {
   const layout = createNewLayout('My Garden', profileId)
   return {
-    version: 1,
+    version: 2,
     activeLayoutId: layout.id,
     layouts: {
       [layout.id]: layout,
@@ -109,7 +115,8 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
   const layouts = layoutStorage.layouts
   const activeLayoutId = layoutStorage.activeLayoutId
   const activeLayout = layouts[activeLayoutId] ?? null
-  const currentBed = activeLayout?.bed ?? createEmptyBed()
+  // For backward compatibility, currentBed returns the first box's cells
+  const currentBed = activeLayout?.boxes[0]?.cells ?? []
 
   const createLayout = (name: string): string => {
     const newLayout = createNewLayout(name, defaultProfileId)
@@ -192,7 +199,12 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     }
 
     const duplicate = createNewLayout(newName, original.profileId)
-    duplicate.bed = [...original.bed]
+    // Deep copy boxes with their cells
+    duplicate.boxes = original.boxes.map(box => ({
+      ...box,
+      id: generateUUID(), // New ID for duplicated box
+      cells: [...box.cells],
+    }))
 
     setLayoutStorage({
       ...layoutStorage,
@@ -207,55 +219,74 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
   }
 
   const plantCrop = (cellIndex: number, crop: Crop): void => {
-    if (!activeLayout) return
+    if (!activeLayout || !activeLayout.boxes[0]) return
 
-    const newBed = [...activeLayout.bed]
-    newBed[cellIndex] = crop
+    const firstBox = activeLayout.boxes[0]
+    const newCells = [...firstBox.cells]
+    newCells[cellIndex] = crop
+
+    const updatedBoxes = [...activeLayout.boxes]
+    updatedBoxes[0] = { ...firstBox, cells: newCells }
 
     setLayoutStorage({
       ...layoutStorage,
       layouts: {
         ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, bed: newBed }),
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
       },
     })
   }
 
   const removeCrop = (cellIndex: number): void => {
-    if (!activeLayout) return
+    if (!activeLayout || !activeLayout.boxes[0]) return
 
-    const newBed = [...activeLayout.bed]
-    newBed[cellIndex] = null
+    const firstBox = activeLayout.boxes[0]
+    const newCells = [...firstBox.cells]
+    newCells[cellIndex] = null
+
+    const updatedBoxes = [...activeLayout.boxes]
+    updatedBoxes[0] = { ...firstBox, cells: newCells }
 
     setLayoutStorage({
       ...layoutStorage,
       layouts: {
         ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, bed: newBed }),
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
       },
     })
   }
 
   const clearBed = (): void => {
-    if (!activeLayout) return
+    if (!activeLayout || !activeLayout.boxes[0]) return
+
+    const firstBox = activeLayout.boxes[0]
+    const updatedBoxes = [...activeLayout.boxes]
+    updatedBoxes[0] = {
+      ...firstBox,
+      cells: Array(firstBox.width * firstBox.height).fill(null) as (Crop | null)[],
+    }
 
     setLayoutStorage({
       ...layoutStorage,
       layouts: {
         ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, bed: createEmptyBed() }),
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
       },
     })
   }
 
   const setBed = (newBed: (Crop | null)[]): void => {
-    if (!activeLayout) return
+    if (!activeLayout || !activeLayout.boxes[0]) return
+
+    const firstBox = activeLayout.boxes[0]
+    const updatedBoxes = [...activeLayout.boxes]
+    updatedBoxes[0] = { ...firstBox, cells: [...newBed] }
 
     setLayoutStorage({
       ...layoutStorage,
       layouts: {
         ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, bed: [...newBed] }),
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
       },
     })
   }

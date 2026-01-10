@@ -35,7 +35,7 @@ describe('getNeighbors', () => {
     grid[1] = tomato  // Right neighbor
     grid[8] = peas    // Bottom neighbor
 
-    const neighbors = getNeighbors(grid, 0)
+    const neighbors = getNeighbors(grid, 0, 8, 4)
 
     // Only right and bottom neighbors exist for corner cell
     expect(neighbors).toHaveLength(2)
@@ -51,7 +51,7 @@ describe('getNeighbors', () => {
     grid[10] = carrot  // Right
     grid[17] = tomato  // Bottom
 
-    const neighbors = getNeighbors(grid, 9)
+    const neighbors = getNeighbors(grid, 9, 8, 4)
 
     expect(neighbors).toHaveLength(4)
     expect(neighbors.filter(n => n === 'tomato')).toHaveLength(2)
@@ -64,7 +64,7 @@ describe('getNeighbors', () => {
     grid[1] = tomato  // Top neighbor of index 9
     // Other neighbors (8, 10, 17) are null
 
-    const neighbors = getNeighbors(grid, 9)
+    const neighbors = getNeighbors(grid, 9, 8, 4)
 
     expect(neighbors).toHaveLength(1)
     expect(neighbors).toEqual(['tomato'])
@@ -76,7 +76,7 @@ describe('getNeighbors', () => {
     grid[6] = peas    // Left
     grid[15] = carrot // Bottom
 
-    const neighbors = getNeighbors(grid, 7)
+    const neighbors = getNeighbors(grid, 7, 8, 4)
 
     expect(neighbors).toHaveLength(2)
     expect(neighbors).toContain('peas')
@@ -88,7 +88,7 @@ describe('getNeighbors', () => {
     grid[30] = tomato  // Left
     grid[23] = peas    // Top
 
-    const neighbors = getNeighbors(grid, 31)
+    const neighbors = getNeighbors(grid, 31, 8, 4)
 
     expect(neighbors).toHaveLength(2)
     expect(neighbors).toContain('tomato')
@@ -98,7 +98,7 @@ describe('getNeighbors', () => {
   it('returns empty array when all neighbors are null', () => {
     const grid = createGrid()
 
-    const neighbors = getNeighbors(grid, 9)
+    const neighbors = getNeighbors(grid, 9, 8, 4)
 
     expect(neighbors).toEqual([])
   })
@@ -191,7 +191,7 @@ describe('autoFillBed', () => {
     const crops = [tomato, carrot]
     const targetDate = new Date('2024-05-20') // Just after LFD - tomato and carrot are viable
 
-    const result = autoFillBed(grid, crops, profile, targetDate)
+    const result = autoFillBed(grid, crops, profile, 8, 4, targetDate)
 
     // Should have planted some crops
     const plantedCount = result.filter(cell => cell !== null).length
@@ -213,7 +213,7 @@ describe('autoFillBed', () => {
     const crops = [peas]
     const targetDate = new Date('2024-03-15') // Peas are viable
 
-    const result = autoFillBed(grid, crops, profile, targetDate)
+    const result = autoFillBed(grid, crops, profile, 8, 4, targetDate)
 
     // Original crops should still be there
     expect(result[0]).toEqual(tomato)
@@ -227,7 +227,7 @@ describe('autoFillBed', () => {
     const crops = [peas, carrot]
     const targetDate = new Date('2024-03-15') // Both peas and carrot are viable
 
-    const result = autoFillBed(grid, crops, profile, targetDate)
+    const result = autoFillBed(grid, crops, profile, 8, 4, targetDate)
 
     // Index 1 is to the right of tomato (index 0)
     // Should NOT plant peas there (enemy of tomato)
@@ -247,7 +247,7 @@ describe('autoFillBed', () => {
     const crops = [tomato, peas, carrot]
     const targetDate = new Date('2024-06-01') // Only tomato and carrot viable, peas window has passed
 
-    const result = autoFillBed(grid, crops, profile, targetDate)
+    const result = autoFillBed(grid, crops, profile, 8, 4, targetDate)
 
     // No peas should be planted
     const peasPlanted = result.some(cell => cell?.id === 'peas')
@@ -259,7 +259,7 @@ describe('autoFillBed', () => {
     const crops: Crop[] = []
     const targetDate = new Date('2024-05-20')
 
-    const result = autoFillBed(grid, crops, profile, targetDate)
+    const result = autoFillBed(grid, crops, profile, 8, 4, targetDate)
 
     // Should return grid unchanged (all null)
     expect(result.every(cell => cell === null)).toBe(true)
@@ -270,7 +270,7 @@ describe('autoFillBed', () => {
     const crops = [carrot]
     const targetDate = new Date('2024-05-20')
 
-    const result = autoFillBed(grid, crops, profile, targetDate)
+    const result = autoFillBed(grid, crops, profile, 8, 4, targetDate)
 
     // Should return grid unchanged (all tomato)
     expect(result.every(cell => cell?.id === 'tomato')).toBe(true)

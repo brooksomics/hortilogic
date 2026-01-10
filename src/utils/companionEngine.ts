@@ -2,29 +2,29 @@ import type { Crop, GardenProfile } from '@/types'
 import { isCropViable } from './dateEngine'
 
 /**
- * Grid dimensions for 4' x 8' bed
- * 4 rows x 8 columns = 32 cells
- */
-const GRID_ROWS = 4
-const GRID_COLS = 8
-
-/**
  * Get the crop IDs of all adjacent neighbors (up, down, left, right) for a given cell
  *
- * @param grid - The garden bed grid (32 cells)
- * @param cellIndex - Index of the cell to check (0-31)
+ * @param grid - The garden bed grid
+ * @param cellIndex - Index of the cell to check
+ * @param width - Width of the grid in columns
+ * @param height - Height of the grid in rows
  * @returns Array of crop IDs for adjacent neighbors (empty cells excluded)
  */
-export function getNeighbors(grid: (Crop | null)[], cellIndex: number): string[] {
+export function getNeighbors(
+  grid: (Crop | null)[],
+  cellIndex: number,
+  width: number,
+  height: number
+): string[] {
   const neighbors: string[] = []
 
   // Calculate row and column from cell index
-  const row = Math.floor(cellIndex / GRID_COLS)
-  const col = cellIndex % GRID_COLS
+  const row = Math.floor(cellIndex / width)
+  const col = cellIndex % width
 
   // Check top neighbor (row - 1)
   if (row > 0) {
-    const topIndex = (row - 1) * GRID_COLS + col
+    const topIndex = (row - 1) * width + col
     const topCrop = grid[topIndex]
     if (topCrop) {
       neighbors.push(topCrop.id)
@@ -32,8 +32,8 @@ export function getNeighbors(grid: (Crop | null)[], cellIndex: number): string[]
   }
 
   // Check bottom neighbor (row + 1)
-  if (row < GRID_ROWS - 1) {
-    const bottomIndex = (row + 1) * GRID_COLS + col
+  if (row < height - 1) {
+    const bottomIndex = (row + 1) * width + col
     const bottomCrop = grid[bottomIndex]
     if (bottomCrop) {
       neighbors.push(bottomCrop.id)
@@ -42,7 +42,7 @@ export function getNeighbors(grid: (Crop | null)[], cellIndex: number): string[]
 
   // Check left neighbor (col - 1)
   if (col > 0) {
-    const leftIndex = row * GRID_COLS + (col - 1)
+    const leftIndex = row * width + (col - 1)
     const leftCrop = grid[leftIndex]
     if (leftCrop) {
       neighbors.push(leftCrop.id)
@@ -50,8 +50,8 @@ export function getNeighbors(grid: (Crop | null)[], cellIndex: number): string[]
   }
 
   // Check right neighbor (col + 1)
-  if (col < GRID_COLS - 1) {
-    const rightIndex = row * GRID_COLS + (col + 1)
+  if (col < width - 1) {
+    const rightIndex = row * width + (col + 1)
     const rightCrop = grid[rightIndex]
     if (rightCrop) {
       neighbors.push(rightCrop.id)
@@ -92,9 +92,11 @@ export function checkCompanionConstraints(
  *    - If compatible with neighbors, plant it
  *    - Otherwise, try next crop or leave empty
  *
- * @param currentGrid - Current garden bed state (32 cells)
+ * @param currentGrid - Current garden bed state
  * @param cropLibrary - Available crops to choose from
  * @param gardenProfile - Garden profile with frost dates
+ * @param width - Width of the grid in columns (defaults to 8)
+ * @param height - Height of the grid in rows (defaults to 4)
  * @param targetDate - Date to check viability against (defaults to today)
  * @returns New grid with auto-filled crops (preserves existing crops)
  */
@@ -102,6 +104,8 @@ export function autoFillBed(
   currentGrid: (Crop | null)[],
   cropLibrary: Crop[],
   gardenProfile: GardenProfile,
+  width: number = 8,
+  height: number = 4,
   targetDate: Date = new Date()
 ): (Crop | null)[] {
   // Create a copy of the grid to avoid mutation
@@ -120,15 +124,17 @@ export function autoFillBed(
   // Shuffle viable crops for randomness (simple "Feeling Lucky" heuristic)
   const shuffledCrops = [...viableCrops].sort(() => Math.random() - 0.5)
 
+  const totalCells = width * height
+
   // Iterate through each cell
-  for (let cellIndex = 0; cellIndex < 32; cellIndex++) {
+  for (let cellIndex = 0; cellIndex < totalCells; cellIndex++) {
     // Skip if cell is already occupied (preserve existing crops)
     if (newGrid[cellIndex] !== null) {
       continue
     }
 
     // Get neighbor crop IDs
-    const neighborIds = getNeighbors(newGrid, cellIndex)
+    const neighborIds = getNeighbors(newGrid, cellIndex, width, height)
 
     // Try each viable crop to see if it's compatible
     for (const crop of shuffledCrops) {

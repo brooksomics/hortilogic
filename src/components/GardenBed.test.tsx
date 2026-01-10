@@ -103,7 +103,7 @@ describe('GardenBed', () => {
   it('renders grid header with bed dimensions', () => {
     render(<GardenBed />)
 
-    expect(screen.getByText(/Garden Bed \(4' × 8'\)/i)).toBeInTheDocument()
+    expect(screen.getByText(/Garden Bed \(8' × 4'\)/i)).toBeInTheDocument()
     expect(screen.getByText(/32 Square Foot Gardening cells/i)).toBeInTheDocument()
   })
 
@@ -122,7 +122,7 @@ describe('GardenBed', () => {
     render(<GardenBed squares={squares} />)
 
     // Grid should have accessible label
-    expect(screen.getByRole('grid')).toHaveAttribute('aria-label', '4 by 8 foot garden bed with 32 squares')
+    expect(screen.getByRole('grid')).toHaveAttribute('aria-label', '8 by 4 foot garden bed with 32 squares')
 
     // Planted square should have accessible label
     const plantedSquare = screen.getByLabelText('Planted: Sugar Snap Peas')
