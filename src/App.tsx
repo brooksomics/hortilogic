@@ -1,41 +1,46 @@
 import { useState, useEffect } from 'react'
-import { Sprout } from 'lucide-react'
+import { Sprout, Sparkles } from 'lucide-react'
 import { GardenBed } from './components/GardenBed'
 import { CropLibrary } from './components/CropLibrary'
 import { useGarden } from './hooks/useGarden'
 import type { Crop, GardenProfile } from './types'
 
-// Sample crops with planting strategies
+// Sample crops with planting strategies and companion rules
 const sampleCrops: Crop[] = [
   {
     id: 'lettuce',
     name: 'Lettuce',
     sfg_density: 4,
-    planting_strategy: { start_window_start: -4, start_window_end: 2 }
+    planting_strategy: { start_window_start: -4, start_window_end: 2 },
+    companions: { friends: ['carrot', 'radish'], enemies: [] }
   },
   {
     id: 'tomato',
     name: 'Tomato',
     sfg_density: 1,
-    planting_strategy: { start_window_start: 0, start_window_end: 4 }
+    planting_strategy: { start_window_start: 0, start_window_end: 4 },
+    companions: { friends: ['carrot', 'lettuce'], enemies: ['peas'] }
   },
   {
     id: 'carrot',
     name: 'Carrot',
     sfg_density: 16,
-    planting_strategy: { start_window_start: -2, start_window_end: 4 }
+    planting_strategy: { start_window_start: -2, start_window_end: 4 },
+    companions: { friends: ['lettuce', 'tomato', 'peas'], enemies: [] }
   },
   {
     id: 'peas',
     name: 'Sugar Snap Peas',
     sfg_density: 8,
-    planting_strategy: { start_window_start: -8, start_window_end: -2 }
+    planting_strategy: { start_window_start: -8, start_window_end: -2 },
+    companions: { friends: ['carrot', 'radish'], enemies: ['tomato'] }
   },
   {
     id: 'radish',
     name: 'Radish',
     sfg_density: 16,
-    planting_strategy: { start_window_start: -4, start_window_end: 8 }
+    planting_strategy: { start_window_start: -4, start_window_end: 8 },
+    companions: { friends: ['lettuce', 'peas', 'carrot'], enemies: [] }
   }
 ]
 
@@ -47,7 +52,7 @@ const defaultProfile: GardenProfile = {
 }
 
 function App() {
-  const { currentBed, gardenProfile, plantCrop, removeCrop, clearBed, setGardenProfile } = useGarden()
+  const { currentBed, gardenProfile, plantCrop, removeCrop, clearBed, setGardenProfile, autoFill } = useGarden()
   const [selectedCrop, setSelectedCrop] = useState<Crop | null>(null)
 
   // Initialize garden profile if not set
@@ -103,6 +108,15 @@ function App() {
               </h3>
 
               <button
+                onClick={() => autoFill(sampleCrops)}
+                className="w-full bg-leaf-600 hover:bg-leaf-700 text-white font-medium px-4 py-2 rounded transition-colors flex items-center justify-center gap-2 mb-3"
+                type="button"
+              >
+                <Sparkles className="w-4 h-4" />
+                Automagic Fill
+              </button>
+
+              <button
                 onClick={clearBed}
                 className="w-full bg-soil-600 hover:bg-soil-700 text-white font-medium px-4 py-2 rounded transition-colors"
                 type="button"
@@ -156,14 +170,14 @@ function App() {
             {/* Feature Status */}
             <div className="mt-6 bg-white rounded-lg shadow-lg p-6">
               <h3 className="text-lg font-semibold text-soil-900 mb-3">
-                ✓ Feature 002 Complete
+                ✓ Feature 003 Complete
               </h3>
               <div className="space-y-2 text-sm text-soil-700">
-                <p>✓ State management with LocalStorage persistence</p>
-                <p>✓ Interactive crop selection</p>
-                <p>✓ Click-to-plant functionality</p>
-                <p>✓ Visual viability feedback (green/warning)</p>
-                <p>✓ Reload page to verify persistence!</p>
+                <p>✓ Companion planting rules (friends & enemies)</p>
+                <p>✓ Automagic solver with constraint satisfaction</p>
+                <p>✓ Respects seasonality AND compatibility</p>
+                <p>✓ Preserves existing manual plantings</p>
+                <p>✓ Click "Automagic Fill" to try it!</p>
               </div>
             </div>
           </div>

@@ -100,4 +100,74 @@ describe('App', () => {
     expect(screen.getByText(/How to Use/i)).toBeInTheDocument()
     expect(screen.getByText(/Select a crop from the Crop Library/i)).toBeInTheDocument()
   })
+
+  it('renders Automagic Fill button', () => {
+    render(<App />)
+    expect(screen.getByRole('button', { name: /Automagic Fill/i })).toBeInTheDocument()
+  })
+
+  it('fills empty cells when Automagic Fill is clicked', async () => {
+    // Mock date to May (month 4) when most crops are viable
+    const RealDate = Date
+    const mockDate = new RealDate(2024, 4, 15)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    global.Date = class extends RealDate {
+      constructor() {
+        super()
+        return mockDate
+      }
+    } as any
+
+    const user = userEvent.setup()
+    render(<App />)
+
+    // Initially all squares should be empty
+    const emptySquaresBefore = screen.getAllByRole('button', { name: 'Empty square' })
+    expect(emptySquaresBefore).toHaveLength(32)
+
+    // Click Automagic Fill
+    const automagicButton = screen.getByRole('button', { name: /Automagic Fill/i })
+    await user.click(automagicButton)
+
+    // Should have planted some crops (exact number depends on randomness and viability)
+    const emptySquaresAfter = screen.queryAllByRole('button', { name: 'Empty square' })
+    expect(emptySquaresAfter.length).toBeLessThan(32)
+
+    global.Date = RealDate
+  })
+
+  it('preserves existing crops when Automagic Fill is clicked', async () => {
+    // Mock date to May (month 4) when most crops are viable
+    const RealDate = Date
+    const mockDate = new RealDate(2024, 4, 15)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    global.Date = class extends RealDate {
+      constructor() {
+        super()
+        return mockDate
+      }
+    } as any
+
+    const user = userEvent.setup()
+    render(<App />)
+
+    // Manually plant a crop first
+    const tomatoButton = screen.getByRole('button', { name: /Select Tomato for planting/i })
+    await user.click(tomatoButton)
+
+    const emptySquares = screen.getAllByRole('button', { name: 'Empty square' })
+    await user.click(emptySquares[0]!)
+
+    // Verify tomato was planted
+    expect(screen.getByLabelText(/Planted: Tomato/i)).toBeInTheDocument()
+
+    // Click Automagic Fill
+    const automagicButton = screen.getByRole('button', { name: /Automagic Fill/i })
+    await user.click(automagicButton)
+
+    // Original tomato should still be there
+    expect(screen.getByLabelText(/Planted: Tomato/i)).toBeInTheDocument()
+
+    global.Date = RealDate
+  })
 })

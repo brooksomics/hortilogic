@@ -9,19 +9,22 @@ const sampleCrops: Crop[] = [
     id: 'lettuce',
     name: 'Lettuce',
     sfg_density: 4,
-    planting_strategy: { start_window_start: -4, start_window_end: 2 }
+    planting_strategy: { start_window_start: -4, start_window_end: 2 },
+    companions: { friends: [], enemies: [] }
   },
   {
     id: 'tomato',
     name: 'Tomato',
     sfg_density: 1,
-    planting_strategy: { start_window_start: 0, start_window_end: 4 }
+    planting_strategy: { start_window_start: 0, start_window_end: 4 },
+    companions: { friends: [], enemies: [] }
   },
   {
     id: 'carrot',
     name: 'Carrot',
     sfg_density: 16,
-    planting_strategy: { start_window_start: -2, start_window_end: 4 }
+    planting_strategy: { start_window_start: -2, start_window_end: 4 },
+    companions: { friends: [], enemies: [] }
   }
 ]
 
@@ -102,7 +105,8 @@ describe('CropLibrary', () => {
     const cropWithoutName: Crop = {
       id: 'radish',
       sfg_density: 16,
-      planting_strategy: { start_window_start: -4, start_window_end: 2 }
+      planting_strategy: { start_window_start: -4, start_window_end: 2 },
+      companions: { friends: [], enemies: [] }
     }
 
     render(<CropLibrary crops={[cropWithoutName]} selectedCrop={null} onSelectCrop={vi.fn()} />)

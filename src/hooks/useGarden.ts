@@ -1,4 +1,5 @@
 import { useLocalStorage } from './useLocalStorage'
+import { autoFillBed } from '@/utils/companionEngine'
 import type { Crop, GardenProfile } from '@/types'
 
 interface GardenState {
@@ -83,12 +84,37 @@ export function useGarden() {
     }))
   }
 
+  /**
+   * Automagically fill empty cells with viable, compatible crops
+   * @param cropLibrary - Available crops to choose from
+   * @param targetDate - Date to check viability against (defaults to today)
+   */
+  const autoFill = (cropLibrary: Crop[], targetDate: Date = new Date()) => {
+    if (!gardenState.gardenProfile) {
+      console.error('Cannot auto-fill: garden profile not set')
+      return
+    }
+
+    const newBed = autoFillBed(
+      gardenState.currentBed,
+      cropLibrary,
+      gardenState.gardenProfile,
+      targetDate
+    )
+
+    setGardenState(prev => ({
+      ...prev,
+      currentBed: newBed
+    }))
+  }
+
   return {
     currentBed: gardenState.currentBed,
     gardenProfile: gardenState.gardenProfile,
     plantCrop,
     removeCrop,
     clearBed,
-    setGardenProfile
+    setGardenProfile,
+    autoFill
   }
 }

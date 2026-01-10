@@ -31,6 +31,17 @@ export interface PlantingStrategy {
 }
 
 /**
+ * Companion planting rules for a crop
+ */
+export interface CompanionRules {
+  /** Crop IDs that grow well together (beneficial companions) */
+  friends: string[]
+
+  /** Crop IDs that should NOT be planted adjacent (hard constraint) */
+  enemies: string[]
+}
+
+/**
  * Crop definition with spacing and planting requirements
  */
 export interface Crop {
@@ -46,6 +57,9 @@ export interface Crop {
 
   /** When this crop can be planted relative to frost dates */
   planting_strategy: PlantingStrategy
+
+  /** Companion planting rules for this crop */
+  companions: CompanionRules
 
   /** Display name for the crop (optional, can derive from id) */
   name?: string

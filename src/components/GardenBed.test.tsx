@@ -16,7 +16,8 @@ describe('GardenBed', () => {
       id: 'lettuce',
       name: 'Lettuce',
       sfg_density: 4,
-      planting_strategy: { start_window_start: -4, start_window_end: 2 }
+      planting_strategy: { start_window_start: -4, start_window_end: 2 },
+      companions: { friends: [], enemies: [] }
     }
 
     const squares = Array(32).fill(null)
@@ -32,7 +33,8 @@ describe('GardenBed', () => {
     const tomato: Crop = {
       id: 'tomato',
       sfg_density: 1,
-      planting_strategy: { start_window_start: 0, start_window_end: 4 }
+      planting_strategy: { start_window_start: 0, start_window_end: 4 },
+      companions: { friends: [], enemies: [] }
     }
 
     const squares = Array(32).fill(null)
@@ -65,7 +67,8 @@ describe('GardenBed', () => {
     const carrot: Crop = {
       id: 'carrot',
       sfg_density: 16,
-      planting_strategy: { start_window_start: -2, start_window_end: 4 }
+      planting_strategy: { start_window_start: -2, start_window_end: 4 },
+      companions: { friends: [], enemies: [] }
     }
 
     // Only provide 10 squares
@@ -105,7 +108,8 @@ describe('GardenBed', () => {
       id: 'peas',
       name: 'Sugar Snap Peas',
       sfg_density: 8,
-      planting_strategy: { start_window_start: -8, start_window_end: -2 }
+      planting_strategy: { start_window_start: -8, start_window_end: -2 },
+      companions: { friends: [], enemies: [] }
     }
 
     const squares = Array(32).fill(null)

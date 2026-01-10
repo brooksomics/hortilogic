@@ -8,14 +8,16 @@ const lettuce: Crop = {
   id: 'lettuce',
   name: 'Lettuce',
   sfg_density: 4,
-  planting_strategy: { start_window_start: -4, start_window_end: 2 }
+  planting_strategy: { start_window_start: -4, start_window_end: 2 },
+  companions: { friends: [], enemies: [] }
 }
 
 const tomato: Crop = {
   id: 'tomato',
   name: 'Tomato',
   sfg_density: 1,
-  planting_strategy: { start_window_start: 0, start_window_end: 4 }
+  planting_strategy: { start_window_start: 0, start_window_end: 4 },
+  companions: { friends: [], enemies: [] }
 }
 
 describe('useGarden', () => {

@@ -60,7 +60,8 @@ describe('isCropViable', () => {
     planting_strategy: {
       start_window_start: -4, // 4 weeks before LFD
       start_window_end: 2     // up to 2 weeks after LFD
-    }
+    },
+    companions: { friends: [], enemies: [] }
   }
 
   it('returns TRUE when target date falls within planting window', () => {
@@ -112,7 +113,8 @@ describe('isCropViable', () => {
       planting_strategy: {
         start_window_start: 0,  // At LFD
         start_window_end: 4     // Up to 4 weeks after
-      }
+      },
+      companions: { friends: [], enemies: [] }
     }
 
     // Before LFD should be invalid
@@ -135,7 +137,8 @@ describe('isCropViable', () => {
       planting_strategy: {
         start_window_start: -8, // 8 weeks before LFD
         start_window_end: -2    // Up to 2 weeks before LFD
-      }
+      },
+      companions: { friends: [], enemies: [] }
     }
 
     // 6 weeks before LFD should be valid (within -8 to -2 window)
