@@ -157,3 +157,59 @@ Move from 5 sample crops (Lettuce, Tomato, Carrot, Peas, Radish) to a comprehens
 - Consider virtual scrolling for performance with 50+ items
 - Source companion planting data from reliable gardening references
 - Include common names and varieties
+
+---
+
+## [TODO-007] Code Quality Improvements from F004 Review
+
+**Status:** pending
+**Priority:** low
+**Estimate:** S
+
+### Description
+Quality improvements identified during Feature 004 code review. These are minor enhancements that don't block functionality but improve maintainability and UX.
+
+### Acceptance Criteria
+- [ ] Extract magic number (max season extension weeks) to named constant
+- [ ] Review date validation edge case (same-day frost dates)
+- [ ] Add click-to-close on modal overlay
+- [ ] Fix pre-existing TypeScript errors in test files
+
+### Validation
+- Manual: Open Settings, test edge cases
+- Automated: All existing tests still pass
+
+### Test Cases
+| Input | Expected Output | Notes |
+|-------|-----------------|-------|
+| Extract MAX_SEASON_EXTENSION_WEEKS | Constant used in validation | Maintainability |
+| Set Last Frost = First Frost (same day) | Verify if valid or invalid | Edge case review |
+| Click outside Settings modal | Modal closes | UX enhancement |
+| Run typecheck | Zero errors | Type safety |
+
+### Dependencies
+- Depends on: F004 (User Settings) complete
+- Blocks: None
+
+### TDD Execution Log
+| Phase | Command | Result | Timestamp |
+|-------|---------|--------|-----------||
+| RED | - | - | - |
+| GREEN | - | - | - |
+| VALIDATE | - | - | - |
+| COMPLETE | - | - | - |
+
+### Technical Notes
+**From F004 Code Review:**
+
+**Medium Issues (3):**
+1. Date validation uses `>=` which blocks same-day frost dates - review if `>` is better
+2. Magic number `8` for max season extension - extract to `MAX_SEASON_EXTENSION_WEEKS`
+3. Pre-existing TypeScript errors in test files (HTMLElement | undefined checks)
+
+**Low Issues (3):**
+1. Modal overlay doesn't close on click - add onClick handler to overlay div
+2. Form state persists on cancel (minor) - already resets via useEffect on isOpen
+3. Season extension help text could include examples (0=outdoors, 2-4=row covers, 6-8=greenhouse)
+
+**Estimated effort:** 30-60 minutes total

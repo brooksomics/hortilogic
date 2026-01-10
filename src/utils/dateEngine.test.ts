@@ -49,6 +49,8 @@ describe('calculatePlantingDate', () => {
 
 describe('isCropViable', () => {
   const profile: GardenProfile = {
+    name: 'Test Garden',
+    hardiness_zone: '5b',
     last_frost_date: '2024-04-15',
     first_frost_date: '2024-10-15',
     season_extension_weeks: 0

@@ -155,6 +155,8 @@ describe('checkCompanionConstraints', () => {
 
 describe('autoFillBed', () => {
   const profile: GardenProfile = {
+    name: 'Test Garden',
+    hardiness_zone: '5b',
     last_frost_date: '2024-05-15',
     first_frost_date: '2024-10-01',
     season_extension_weeks: 0

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { useGarden } from './useGarden'
-import type { Crop } from '@/types'
+import type { Crop, GardenProfile } from '@/types'
 
 // Sample crops for testing
 const lettuce: Crop = {
@@ -123,7 +123,9 @@ describe('useGarden', () => {
   it('sets garden profile', () => {
     const { result } = renderHook(() => useGarden())
 
-    const profile = {
+    const profile: GardenProfile = {
+      name: 'Test Garden',
+      hardiness_zone: '5b',
       last_frost_date: '2024-05-15',
       first_frost_date: '2024-10-01',
       season_extension_weeks: 0
@@ -148,8 +150,10 @@ describe('useGarden', () => {
     expect(stored).toBeTruthy()
     expect(stored).not.toBeNull()
 
-    const parsedState = JSON.parse(stored) as { currentBed: (typeof lettuce | null)[] }
-    expect(parsedState.currentBed[0]).toEqual(lettuce)
+    if (stored) {
+      const parsedState = JSON.parse(stored) as { currentBed: (typeof lettuce | null)[] }
+      expect(parsedState.currentBed[0]).toEqual(lettuce)
+    }
   })
 
   it('restores state from localStorage on mount', () => {

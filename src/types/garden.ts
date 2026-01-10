@@ -2,6 +2,12 @@
  * Garden profile containing frost dates and season extension settings
  */
 export interface GardenProfile {
+  /** User-friendly name for the garden (e.g., "Backyard Bed") */
+  name: string
+
+  /** USDA hardiness zone (e.g., "5b", "10a") */
+  hardiness_zone: string
+
   /** ISO date string for last spring frost (e.g., "2024-04-15") */
   last_frost_date: string
 

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Sprout, Sparkles } from 'lucide-react'
+import { Sprout, Sparkles, Settings } from 'lucide-react'
 import { GardenBed } from './components/GardenBed'
 import { CropLibrary } from './components/CropLibrary'
+import { SettingsModal } from './components/SettingsModal'
 import { useGarden } from './hooks/useGarden'
 import type { Crop, GardenProfile } from './types'
 
@@ -46,6 +47,8 @@ const sampleCrops: Crop[] = [
 
 // Default garden profile (Denver, CO frost dates)
 const defaultProfile: GardenProfile = {
+  name: 'My Garden',
+  hardiness_zone: '5b',
   last_frost_date: '2024-05-15',
   first_frost_date: '2024-10-01',
   season_extension_weeks: 0
@@ -54,6 +57,7 @@ const defaultProfile: GardenProfile = {
 function App() {
   const { currentBed, gardenProfile, plantCrop, removeCrop, clearBed, setGardenProfile, autoFill } = useGarden()
   const [selectedCrop, setSelectedCrop] = useState<Crop | null>(null)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   // Initialize garden profile if not set
   useEffect(() => {
@@ -80,8 +84,18 @@ function App() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center items-center mb-4 gap-4">
             <Sprout className="w-12 h-12 text-leaf-600" />
+            <button
+              onClick={() => {
+                setIsSettingsOpen(true)
+              }}
+              className="ml-auto p-2 rounded-lg hover:bg-leaf-100 text-soil-700 hover:text-leaf-700 transition-colors"
+              aria-label="Open settings"
+              type="button"
+            >
+              <Settings className="w-6 h-6" />
+            </button>
           </div>
           <h1 className="text-4xl font-bold text-soil-900 mb-2">
             HortiLogic
@@ -184,6 +198,21 @@ function App() {
             </div>
           </div>
         </div>
+
+        {/* Settings Modal */}
+        {gardenProfile && (
+          <SettingsModal
+            isOpen={isSettingsOpen}
+            profile={gardenProfile}
+            onSave={(updatedProfile) => {
+              setGardenProfile(updatedProfile)
+              setIsSettingsOpen(false)
+            }}
+            onClose={() => {
+              setIsSettingsOpen(false)
+            }}
+          />
+        )}
       </div>
     </div>
   )
