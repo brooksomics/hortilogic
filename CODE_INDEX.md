@@ -4,7 +4,7 @@
 
 **Before creating any new function, CHECK HERE FIRST.**
 
-Last updated: 2026-01-09 (Feature 005 complete - Layout Management)
+Last updated: 2026-01-09 (TODO-006 complete - Core 50 Crop Database with Search)
 
 ---
 
@@ -89,15 +89,15 @@ Last updated: 2026-01-09 (Feature 005 complete - Layout Management)
 |-----------|----------|---------|
 | `App` | App.tsx | Main application with layout management and grid |
 | `GardenBed` | components/GardenBed.tsx | 4×8 interactive grid display |
-| `CropLibrary` | components/CropLibrary.tsx | Crop selection sidebar with viability indicators |
+| `CropLibrary` | components/CropLibrary.tsx | Crop selection sidebar with search and viability filtering |
 | `LayoutSelector` | components/LayoutSelector.tsx | Dropdown for switching/managing layouts |
 | `LayoutActionModal` | components/LayoutActionModal.tsx | Modal for create/rename/delete layout actions |
 | `SettingsModal` | components/SettingsModal.tsx | Garden profile settings editor |
 
 **Component Responsibilities:**
-- **App**: Layout management integration, state coordination, migration
+- **App**: Layout management integration, state coordination, migration, Core 50 crop database
 - **GardenBed**: Grid rendering, click handlers, viability colors
-- **CropLibrary**: Crop list, selection UI, viability badges
+- **CropLibrary**: Crop list, search filtering, crop count display, selection UI
 - **LayoutSelector**: Layout dropdown, CRUD action buttons, sorting
 - **LayoutActionModal**: Reusable modal for layout operations (3 modes)
 - **SettingsModal**: Profile editing (currently disabled, to be re-enabled)
@@ -134,17 +134,31 @@ Migration: LegacyGardenState → LayoutStorage + ProfileStorage
 
 ---
 
-## Sample Data
+## Crop Database (TODO-006)
 
 | Data | Location | Purpose |
 |------|----------|---------|
-| `sampleCrops` | App.tsx:9 | 5 example crops with companion rules |
-| `defaultProfile` | App.tsx:46 | Zone 9b (San Francisco) profile |
+| `CORE_50_CROPS` | data/crops.ts | 50 common garden crops with companion rules |
+| `CROPS_BY_ID` | data/crops.ts | Lookup object for quick crop retrieval by ID |
 
-**Sample Crops Included:**
-- Lettuce, Tomato, Carrot, Peas, Radish
-- Each has companions (friends/enemies)
-- Seasonality varies (early spring to summer)
+**Core 50 Crop Database:**
+- 10 Leafy Greens (Lettuce, Spinach, Kale, Arugula, etc.)
+- 6 Nightshades (Tomato, Cherry Tomato, Pepper, Eggplant, etc.)
+- 8 Brassicas (Broccoli, Cauliflower, Cabbage, etc.)
+- 6 Legumes (Peas, Green Beans, Fava Beans, etc.)
+- 8 Root Vegetables (Carrot, Beet, Onion, Garlic, etc.)
+- 6 Cucurbits (Cucumber, Zucchini, Pumpkin, etc.)
+- 6 Herbs (Basil, Cilantro, Parsley, Dill, etc.)
+
+**Data Sources:**
+- University Extension Companion Planting Guides
+- "Carrots Love Tomatoes" by Louise Riotte
+- Mother Earth News Companion Planting Chart
+
+**Search & Filter Capabilities:**
+- Text search by crop name (case-insensitive)
+- Crop count display (e.g., "23 of 50 crops")
+- Clear search button
 
 ---
 
@@ -163,6 +177,8 @@ Migration: LegacyGardenState → LayoutStorage + ProfileStorage
 | State management | `useGarden`, `useLocalStorage` |
 | Migration | `migrateToLayoutsSchema` |
 | Planting actions | `plantCrop`, `removeCrop`, `clearBed` |
+| Crop database | `CORE_50_CROPS`, `CROPS_BY_ID` |
+| Crop search/filtering | `CropLibrary` (search state), `filteredCrops` |
 | UI rendering | `GardenBed`, `CropLibrary`, `LayoutSelector` |
 
 ---

@@ -3,7 +3,8 @@
  * Falls back to Math.random() for older browsers
  */
 export function generateUUID(): string {
-  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (crypto.randomUUID) {
     return crypto.randomUUID()
   }
 

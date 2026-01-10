@@ -8,46 +8,8 @@ import { useLayoutManager } from './hooks/useLayoutManager'
 import { useProfiles } from './hooks/useProfiles'
 import { migrateToLayoutsSchema } from './utils/storageMigration'
 import { autoFillBed } from './utils/companionEngine'
+import { CORE_50_CROPS } from './data/crops'
 import type { Crop } from './types'
-
-// Sample crops with planting strategies and companion rules
-const sampleCrops: Crop[] = [
-  {
-    id: 'lettuce',
-    name: 'Lettuce',
-    sfg_density: 4,
-    planting_strategy: { start_window_start: -4, start_window_end: 2 },
-    companions: { friends: ['carrot', 'radish'], enemies: [] }
-  },
-  {
-    id: 'tomato',
-    name: 'Tomato',
-    sfg_density: 1,
-    planting_strategy: { start_window_start: 0, start_window_end: 4 },
-    companions: { friends: ['carrot', 'lettuce'], enemies: ['peas'] }
-  },
-  {
-    id: 'carrot',
-    name: 'Carrot',
-    sfg_density: 16,
-    planting_strategy: { start_window_start: -2, start_window_end: 4 },
-    companions: { friends: ['lettuce', 'tomato', 'peas'], enemies: [] }
-  },
-  {
-    id: 'peas',
-    name: 'Sugar Snap Peas',
-    sfg_density: 8,
-    planting_strategy: { start_window_start: -8, start_window_end: -2 },
-    companions: { friends: ['carrot', 'radish'], enemies: ['tomato'] }
-  },
-  {
-    id: 'radish',
-    name: 'Radish',
-    sfg_density: 16,
-    planting_strategy: { start_window_start: -4, start_window_end: 8 },
-    companions: { friends: ['lettuce', 'peas', 'carrot'], enemies: [] }
-  }
-]
 
 function App() {
   // Run migration on app load
@@ -129,7 +91,7 @@ function App() {
       return
     }
 
-    const newBed = autoFillBed(currentBed, sampleCrops, gardenProfile, new Date())
+    const newBed = autoFillBed(currentBed, CORE_50_CROPS, gardenProfile, new Date())
 
     // Replace entire bed in one operation to avoid multiple renders
     newBed.forEach((crop, index) => {
@@ -187,7 +149,7 @@ function App() {
           {/* Sidebar: Crop Library */}
           <div className="order-2 lg:order-1">
             <CropLibrary
-              crops={sampleCrops}
+              crops={CORE_50_CROPS}
               selectedCrop={selectedCrop}
               onSelectCrop={setSelectedCrop}
             />

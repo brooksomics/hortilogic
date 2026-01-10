@@ -127,4 +127,117 @@ describe('CropLibrary', () => {
     const buttons = screen.queryAllByRole('button')
     expect(buttons).toHaveLength(0)
   })
+
+  describe('Search and Filter', () => {
+    const largeCropList: Crop[] = [
+      ...sampleCrops,
+      {
+        id: 'cherry-tomato',
+        name: 'Cherry Tomato',
+        sfg_density: 1,
+        planting_strategy: { start_window_start: 0, start_window_end: 4 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'spinach',
+        name: 'Spinach',
+        sfg_density: 9,
+        planting_strategy: { start_window_start: -6, start_window_end: 0 },
+        companions: { friends: [], enemies: [] }
+      }
+    ]
+
+    it('renders search input field', () => {
+      render(<CropLibrary crops={largeCropList} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const searchInput = screen.getByPlaceholderText(/search crops/i)
+      expect(searchInput).toBeInTheDocument()
+    })
+
+    it('filters crops by search query', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={largeCropList} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const searchInput = screen.getByPlaceholderText(/search crops/i)
+      await user.type(searchInput, 'tom')
+
+      // Should show tomato crops
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Cherry Tomato')).toBeInTheDocument()
+
+      // Should not show other crops
+      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Carrot')).not.toBeInTheDocument()
+      expect(screen.queryByText('Spinach')).not.toBeInTheDocument()
+    })
+
+    it('is case insensitive when searching', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={largeCropList} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const searchInput = screen.getByPlaceholderText(/search crops/i)
+      await user.type(searchInput, 'LETTUCE')
+
+      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
+    })
+
+    it('shows all crops when search is empty', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={largeCropList} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const searchInput = screen.getByPlaceholderText(/search crops/i)
+
+      // Type and then clear
+      await user.type(searchInput, 'tom')
+      await user.clear(searchInput)
+
+      // All crops should be visible again
+      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Carrot')).toBeInTheDocument()
+      expect(screen.getByText('Spinach')).toBeInTheDocument()
+    })
+
+    it('displays crop count', () => {
+      render(<CropLibrary crops={largeCropList} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      expect(screen.getByText(/5 crops/i)).toBeInTheDocument()
+    })
+
+    it('updates crop count when filtered', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={largeCropList} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const searchInput = screen.getByPlaceholderText(/search crops/i)
+      await user.type(searchInput, 'tom')
+
+      expect(screen.getByText(/2 crops/i)).toBeInTheDocument()
+    })
+
+    it('shows clear button when search has text', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={largeCropList} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const searchInput = screen.getByPlaceholderText(/search crops/i)
+      await user.type(searchInput, 'tom')
+
+      const clearButton = screen.getByRole('button', { name: /clear search/i })
+      expect(clearButton).toBeInTheDocument()
+    })
+
+    it('clears search when clear button is clicked', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={largeCropList} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const searchInput = screen.getByPlaceholderText(/search crops/i)
+      await user.type(searchInput, 'tom')
+
+      const clearButton = screen.getByRole('button', { name: /clear search/i })
+      await user.click(clearButton)
+
+      expect(searchInput).toHaveValue('')
+      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+    })
+  })
 })

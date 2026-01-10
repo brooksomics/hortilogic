@@ -30,13 +30,14 @@ describe('App', () => {
     expect(screen.getByText('Crop Library')).toBeInTheDocument()
   })
 
-  it('displays all sample crops in library', () => {
+  it('displays Core 50 crops in library', () => {
     render(<App />)
+    // Should display some common crops from the Core 50
     expect(screen.getByText('Lettuce')).toBeInTheDocument()
     expect(screen.getByText('Tomato')).toBeInTheDocument()
     expect(screen.getByText('Carrot')).toBeInTheDocument()
-    expect(screen.getByText('Sugar Snap Peas')).toBeInTheDocument()
-    expect(screen.getByText('Radish')).toBeInTheDocument()
+    expect(screen.getByText('Spinach')).toBeInTheDocument()
+    expect(screen.getByText('Basil')).toBeInTheDocument()
   })
 
   it('allows selecting a crop from library', async () => {
@@ -176,5 +177,12 @@ describe('App', () => {
     expect(tomatoesAfterFill.length).toBeGreaterThanOrEqual(1)
 
     global.Date = RealDate
+  })
+
+  it('loads Core 50 crop database', () => {
+    render(<App />)
+
+    // Should display crop count showing 50 crops
+    expect(screen.getByText(/50 crops/i)).toBeInTheDocument()
   })
 })
