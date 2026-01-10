@@ -4,6 +4,11 @@ Future work, prioritized. Move to active.md when starting.
 
 ---
 
+<!-- TODO-012 moved to active.md (2026-01-10) -->
+<!-- TODO-011 moved to active.md (2026-01-10) -->
+
+---
+
 ## [TODO-007] Code Quality Improvements from F004 Review
 
 **Status:** pending
