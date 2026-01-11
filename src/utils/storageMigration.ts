@@ -172,7 +172,7 @@ export function migrateToMultiBoxSchema(): MigrationResult {
 
     // Check if any layout already has boxes property
     const hasBoxes = Object.values(layoutStorage.layouts).some(
-      (layout) => layout.boxes.length > 0
+      (layout) => Array.isArray(layout.boxes) && layout.boxes.length > 0
     )
     if (hasBoxes) {
       return {
