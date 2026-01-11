@@ -5,14 +5,32 @@ import { useState, useEffect } from 'react'
  *
  * @param key - The localStorage key
  * @param initialValue - The initial value if no stored value exists
+ * @param validator - Optional function to validate/transform the parsed data
  * @returns [storedValue, setValue] tuple similar to useState
  */
-export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((val: T) => T)) => void] {
+export function useLocalStorage<T>(
+  key: string,
+  initialValue: T,
+  validator?: (data: unknown) => T | null
+): [T, (value: T | ((val: T) => T)) => void] {
   // Get initial value from localStorage or use provided initialValue
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       const item = window.localStorage.getItem(key)
-      return item ? JSON.parse(item) as T : initialValue
+      if (!item) return initialValue
+
+      const parsed = JSON.parse(item)
+
+      if (validator) {
+        const validated = validator(parsed)
+        if (validated !== null) {
+          return validated
+        }
+        console.warn(`[useLocalStorage] Validation failed for key "${key}", using initial value.`)
+        return initialValue
+      }
+
+      return parsed as T
     } catch (error) {
       console.error(`Error reading localStorage key "${key}":`, error)
       return initialValue

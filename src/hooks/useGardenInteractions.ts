@@ -5,6 +5,8 @@ import type { Crop, GardenProfile, GardenLayout, GardenBox, GardenStash } from '
 import { autoFillAllBoxes, autoFillGaps } from '../utils/prioritySolver'
 import type { PlacementSummary } from '../components/StashSummary'
 
+import { StashStorageSchema } from '../schemas/garden'
+
 export interface UseGardenInteractionsResult {
   /** Currently selected crop */
   selectedCrop: Crop | null
@@ -91,11 +93,22 @@ export function useGardenInteractions({
   const [selectedCrop, setSelectedCrop] = useState<Crop | null>(null)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
+  // ...
+
   /* Stash Logic */
   const [stash, setStash] = useState<GardenStash>(() => {
     if (activeLayout?.id) {
       const saved = localStorage.getItem(`hortilogic_stash_${activeLayout.id}`)
-      return saved ? JSON.parse(saved) as GardenStash : {}
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved)
+          const result = StashStorageSchema.safeParse(parsed)
+          if (result.success) return result.data
+          console.error('[useGardenInteractions] Stash validation failed:', result.error)
+        } catch (e) {
+          console.error('[useGardenInteractions] Stash parse failed:', e)
+        }
+      }
     }
     return {}
   })
@@ -136,7 +149,14 @@ export function useGardenInteractions({
       const saved = localStorage.getItem(key)
       if (saved) {
         try {
-          setStash(JSON.parse(saved) as GardenStash)
+          const parsed = JSON.parse(saved)
+          const result = StashStorageSchema.safeParse(parsed)
+          if (result.success) {
+            setStash(result.data)
+          } else {
+            console.error('[useGardenInteractions] Stash validation failed:', result.error)
+            setStash({})
+          }
         } catch (e) {
           console.error("Failed to parse stash", e)
           setStash({})

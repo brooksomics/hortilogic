@@ -116,10 +116,22 @@ export interface UseLayoutManagerResult {
  *
  * @param defaultProfileId - The default profile ID to use for new layouts
  */
+import { LayoutStorageSchema } from '../schemas/garden'
+
+// ...
+
 export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResult {
   const [layoutStorage, setLayoutStorage] = useLocalStorage<LayoutStorage>(
     LAYOUTS_KEY,
-    createDefaultLayoutStorage(defaultProfileId)
+    createDefaultLayoutStorage(defaultProfileId),
+    (data) => {
+      const result = LayoutStorageSchema.safeParse(data)
+      if (result.success) {
+        return result.data
+      }
+      console.error('[useLayoutManager] Storage validation failed:', result.error)
+      return null
+    }
   )
 
   const layouts = layoutStorage.layouts
