@@ -257,20 +257,6 @@ function App() {
               />
             ))}
             <GardenInstructions selectedCrop={selectedCrop} />
-
-            {/* Feature Status */}
-            <div className="mt-6 bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-lg font-semibold text-soil-900 mb-3">
-                ✓ Feature 003 Complete
-              </h3>
-              <div className="space-y-2 text-sm text-soil-700">
-                <p>✓ Companion planting rules (friends & enemies)</p>
-                <p>✓ Automagic solver with constraint satisfaction</p>
-                <p>✓ Respects seasonality AND compatibility</p>
-                <p>✓ Preserves existing manual plantings</p>
-                <p>✓ Click &quot;Automagic Fill&quot; to try it!</p>
-              </div>
-            </div>
           </div>
         </div>
 

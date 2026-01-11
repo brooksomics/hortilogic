@@ -12,10 +12,30 @@ export function GardenInstructions({ selectedCrop }: GardenInstructionsProps) {
       </h3>
       <ol className="list-decimal list-inside space-y-2 text-soil-700">
         <li>Select a crop from the Crop Library</li>
-        <li>Click an empty square to plant it</li>
+        <li>Click an empty square to plant it manually</li>
         <li>Click a planted square to remove the crop</li>
         <li>Green squares are in season, orange squares are out of season</li>
       </ol>
+
+      <div className="mt-4 pt-4 border-t border-soil-200">
+        <h4 className="font-semibold text-soil-900 mb-2">Garden Stash</h4>
+        <p className="text-sm text-soil-700 mb-2">
+          Add crops to your Stash by clicking the + button in the Crop Library.
+          The Stash is a planning area where you can queue up crops before placing them.
+        </p>
+        <ul className="list-disc list-inside space-y-1 text-sm text-soil-700 ml-2">
+          <li>Click "Distribute Stash" to let the solver place your queued crops optimally</li>
+          <li>Toggle "Fill remaining gaps?" to automatically fill empty spaces with compatible companion crops</li>
+        </ul>
+      </div>
+
+      <div className="mt-4 pt-4 border-t border-soil-200">
+        <h4 className="font-semibold text-soil-900 mb-2">Automagic Fill</h4>
+        <p className="text-sm text-soil-700">
+          Click "Automagic Fill" in the Controls panel to automatically fill your entire garden
+          with compatible crops that respect companion planting rules and seasonality.
+        </p>
+      </div>
 
       {selectedCrop && (
         <div className="mt-4 p-3 bg-leaf-50 rounded border border-leaf-200">
