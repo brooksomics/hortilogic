@@ -34,15 +34,16 @@ function createDefaultProfile(): GardenProfile {
 }
 
 /**
- * Creates a default 4x8 garden box with empty cells
- * 4 feet wide (columns) x 8 feet long (rows) = 32 sq ft
+ * Creates a legacy-sized 8x4 garden box for migration purposes
+ * 8 feet wide (columns) x 4 feet long (rows) = 32 sq ft
+ * Used to preserve existing user data when migrating from old schema
  */
-function createDefaultBox(name = 'Main Bed', cells: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]): GardenBox {
+function createLegacyBox(name = 'Main Bed', cells: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]): GardenBox {
   return {
     id: generateUUID(),
     name,
-    width: 4,
-    height: 8,
+    width: 8,
+    height: 4,
     cells,
   }
 }
@@ -98,7 +99,8 @@ export function migrateToLayoutsSchema(): MigrationResult {
     const layoutId = generateUUID()
 
     // Convert to new multi-box format
-    const box = createDefaultBox('Main Bed', legacyState.currentBed)
+    // Use legacy box size (8x4) to preserve existing data
+    const box = createLegacyBox('Main Bed', legacyState.currentBed)
     const layout: GardenLayout = {
       id: layoutId,
       name: 'My Garden',
@@ -142,7 +144,7 @@ export function migrateToLayoutsSchema(): MigrationResult {
  * Migrates from single-bed layout schema to multi-box schema
  *
  * Converts layouts with `bed` array to layouts with `boxes` array.
- * Wraps existing bed data into a single "Main Bed" box (4x8).
+ * Wraps existing bed data into a single "Main Bed" box (8x4 to preserve legacy data).
  * Bumps storage version from 1 to 2.
  *
  * @returns Migration result with success status and reason
@@ -189,8 +191,8 @@ export function migrateToMultiBoxSchema(): MigrationResult {
       // eslint-disable-next-line @typescript-eslint/no-deprecated
       const cells = layout.bed || (Array(32).fill(null) as (Crop | null)[])
 
-      // Create box using helper function (8x4 dimensions)
-      const box = createDefaultBox('Main Bed', cells)
+      // Create box using helper function (8x4 dimensions for legacy data)
+      const box = createLegacyBox('Main Bed', cells)
 
       // Create migrated layout with boxes array
       migratedLayouts[layoutId] = {

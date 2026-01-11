@@ -30,14 +30,14 @@ export function BoxActionModal({
 }: BoxActionModalProps) {
   const [name, setName] = useState('')
   const [width, setWidth] = useState('4')
-  const [height, setHeight] = useState('8')
+  const [height, setHeight] = useState('4')
 
   // Reset form when modal opens
   useEffect(() => {
     if (isOpen && mode === 'add') {
       setName('')
       setWidth('4')
-      setHeight('8')
+      setHeight('4')
     }
   }, [isOpen, mode])
 

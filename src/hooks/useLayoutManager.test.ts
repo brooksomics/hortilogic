@@ -51,7 +51,7 @@ describe('useLayoutManager', () => {
 
     expect(defaultLayout?.name).toBe('My Garden')
     expect(defaultLayout?.boxes).toHaveLength(1)
-    expect(defaultLayout?.boxes[0]?.cells).toHaveLength(32)
+    expect(defaultLayout?.boxes[0]?.cells).toHaveLength(16)
     expect(defaultLayout?.boxes[0]?.cells.every((cell: Crop | null) => cell === null)).toBe(true)
   })
 
@@ -85,7 +85,7 @@ describe('useLayoutManager', () => {
     const springLayout = layouts.find((l) => l.name === 'Spring 2026')
     expect(springLayout).toBeDefined()
     expect(springLayout?.boxes).toHaveLength(1)
-    expect(springLayout?.boxes[0]?.cells).toHaveLength(32)
+    expect(springLayout?.boxes[0]?.cells).toHaveLength(16)
     expect(springLayout?.boxes[0]?.cells.every((cell) => cell === null)).toBe(true)
   })
 
@@ -435,7 +435,7 @@ describe('useLayoutManager', () => {
 
     expect(result.current.currentBed).toBeDefined()
     expect(result.current.currentBed[0]).toEqual(lettuce)
-    expect(result.current.currentBed).toHaveLength(32)
+    expect(result.current.currentBed).toHaveLength(16)
   })
 
   it('adds a new box to the active layout', () => {

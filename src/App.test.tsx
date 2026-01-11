@@ -128,7 +128,7 @@ describe('App', () => {
 
     // Initially all squares should be empty
     const emptySquaresBefore = screen.getAllByRole('button', { name: 'Empty square' })
-    expect(emptySquaresBefore).toHaveLength(32)
+    expect(emptySquaresBefore).toHaveLength(16)
 
     // Click Automagic Fill
     const automagicButton = screen.getByRole('button', { name: /Automagic Fill/i })
@@ -136,7 +136,7 @@ describe('App', () => {
 
     // Should have planted some crops (exact number depends on randomness and viability)
     const emptySquaresAfter = screen.queryAllByRole('button', { name: 'Empty square' })
-    expect(emptySquaresAfter.length).toBeLessThan(32)
+    expect(emptySquaresAfter.length).toBeLessThan(16)
 
     global.Date = RealDate
   })

@@ -25,8 +25,8 @@ function GardenSquare({ crop, onClick, isViable = true }: GardenSquareProps) {
     <button
       onClick={onClick}
       className={`
-        aspect-square border-2 rounded
-        flex flex-col items-center justify-center p-2
+        aspect-square border rounded
+        flex flex-col items-center justify-center p-0.5
         transition-colors relative
         ${bgColor}
       `}
@@ -41,19 +41,19 @@ function GardenSquare({ crop, onClick, isViable = true }: GardenSquareProps) {
         <>
           {!isViable && (
             <AlertTriangle
-              className="absolute top-1 right-1 w-3 h-3 text-orange-600"
+              className="absolute top-0 right-0 w-2 h-2 text-orange-600"
               aria-label="Warning: Out of season"
             />
           )}
           {crop.emoji && (
-            <span className="text-2xl mb-1" aria-hidden="true">
+            <span className="text-xs" aria-hidden="true">
               {crop.emoji}
             </span>
           )}
-          <span className="text-sm font-semibold text-soil-900 text-center">
+          <span className="text-[10px] font-semibold text-soil-900 text-center leading-tight">
             {crop.name || crop.id}
           </span>
-          <span className="text-xs text-soil-600 mt-1">
+          <span className="text-[8px] text-soil-600">
             {crop.sfg_density}/sq ft
           </span>
         </>
@@ -131,25 +131,25 @@ export function GardenBed({
   const cellCount = totalCells
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <div className="mb-4 text-center relative">
-        <h2 className="text-2xl font-bold text-soil-800">{displayName}</h2>
-        <p className="text-soil-600">{cellCount.toString()} Square Foot Gardening cells</p>
+    <div className="w-full max-w-xs mx-auto">
+      <div className="mb-2 text-center relative">
+        <h2 className="text-lg font-bold text-soil-800">{displayName}</h2>
+        <p className="text-xs text-soil-600">{cellCount.toString()} Square Foot Gardening cells</p>
         {showDelete && onDelete && (
           <button
             onClick={onDelete}
-            className="absolute top-0 right-0 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            className="absolute top-0 right-0 p-1 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             title="Delete this bed"
             type="button"
             aria-label={`Delete ${displayName}`}
           >
-            <Trash2 className="w-5 h-5" />
+            <Trash2 className="w-4 h-4" />
           </button>
         )}
       </div>
 
       <div
-        className={`grid ${gridColsClass} gap-2 p-4 bg-soil-200 rounded-lg shadow-lg`}
+        className={`grid ${gridColsClass} gap-0.5 p-1 bg-soil-200 rounded-lg shadow-lg`}
         style={{ gridTemplateColumns: `repeat(${width.toString()}, minmax(0, 1fr))` }}
         role="grid"
         aria-label={`${width.toString()} by ${height.toString()} foot garden bed with ${cellCount.toString()} squares`}

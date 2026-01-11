@@ -423,7 +423,7 @@ describe('storageMigration', () => {
       expect(layout.boxes[0]?.cells[1]).toBeNull()
     })
 
-    it('creates box with correct dimensions (4x8)', () => {
+    it('creates box with correct dimensions (8x4 for legacy data)', () => {
       const layoutId = 'test-layout-1'
       const profileId = 'test-profile-1'
       const layoutStorage: LayoutStorage = {
@@ -450,8 +450,8 @@ describe('storageMigration', () => {
       const layouts = JSON.parse(layoutsStr) as LayoutStorage
       const layout = getLayout(layoutId, layouts)
 
-      expect(layout.boxes[0]?.width).toBe(4)
-      expect(layout.boxes[0]?.height).toBe(8)
+      expect(layout.boxes[0]?.width).toBe(8)
+      expect(layout.boxes[0]?.height).toBe(4)
       expect(layout.boxes[0]?.cells).toHaveLength(32)
     })
 
