@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { useGardenInteractions } from './useGardenInteractions'
 import type { Crop, GardenProfile, GardenLayout, GardenBox } from '../types/garden'
@@ -64,9 +64,16 @@ describe('useGardenInteractions', () => {
       allBoxesUpdated = boxes
     }
 
-    mockPlantCrop = () => {}
-    mockRemoveCrop = () => {}
-    mockUpdateProfile = () => {}
+    mockPlantCrop = () => { }
+    mockRemoveCrop = () => { }
+    mockUpdateProfile = () => { }
+
+    // Clear local storage to prevent test pollution
+    localStorage.clear()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   describe('handleAutoFill - Multi-Box Support', () => {
@@ -195,6 +202,210 @@ describe('useGardenInteractions', () => {
         expect(updatedBox0.cells[0]).toEqual(lettuce)
         expect(updatedBox0.cells[3]).toEqual(lettuce)
       }
+    })
+  })
+
+  describe('Garden Stash (Planning Cart)', () => {
+    it('initializes with empty stash', () => {
+      const { result } = renderHook(() =>
+        useGardenInteractions({
+          currentBed: mockCurrentBed,
+          gardenProfile: mockProfile,
+          activeLayout: mockLayout,
+          setAllBoxes: mockSetAllBoxes,
+          plantCrop: mockPlantCrop,
+          removeCrop: mockRemoveCrop,
+          updateProfile: mockUpdateProfile,
+        })
+      )
+
+      expect(result.current).toMatchObject({
+        stash: {},
+        addToStash: expect.any(Function),
+        removeFromStash: expect.any(Function),
+        clearStash: expect.any(Function),
+        getStashTotalArea: expect.any(Function),
+        canAddToStash: expect.any(Function),
+        handleDistributeStash: expect.any(Function),
+        placementResult: null
+      })
+      expect(result.current.getStashTotalArea()).toBe(0)
+    })
+
+    it('addToStash increments quantity', () => {
+      const { result } = renderHook(() =>
+        useGardenInteractions({
+          currentBed: mockCurrentBed,
+          gardenProfile: mockProfile,
+          activeLayout: mockLayout,
+          setAllBoxes: mockSetAllBoxes,
+          plantCrop: mockPlantCrop,
+          removeCrop: mockRemoveCrop,
+          updateProfile: mockUpdateProfile,
+        })
+      )
+
+      act(() => {
+        result.current.addToStash('tomato', 1)
+      })
+
+      expect(result.current.stash['tomato']).toBe(1)
+
+      act(() => {
+        result.current.addToStash('tomato', 3)
+      })
+
+      expect(result.current.stash['tomato']).toBe(4)
+    })
+
+    it('removeFromStash decrements quantity and removes if zero', () => {
+      const { result } = renderHook(() =>
+        useGardenInteractions({
+          currentBed: mockCurrentBed,
+          gardenProfile: mockProfile,
+          activeLayout: mockLayout,
+          setAllBoxes: mockSetAllBoxes,
+          plantCrop: mockPlantCrop,
+          removeCrop: mockRemoveCrop,
+          updateProfile: mockUpdateProfile,
+        })
+      )
+
+      // Setup: 4 tomatoes
+      act(() => {
+        result.current.addToStash('tomato', 4)
+      })
+
+      act(() => {
+        result.current.removeFromStash('tomato', 1)
+      })
+
+      expect(result.current.stash['tomato']).toBe(3)
+
+      act(() => {
+        result.current.removeFromStash('tomato', 3)
+      })
+
+      // Should be removed completely
+      expect(result.current.stash['tomato']).toBeUndefined()
+    })
+
+    it('clearStash wipes all items', () => {
+      const { result } = renderHook(() =>
+        useGardenInteractions({
+          currentBed: mockCurrentBed,
+          gardenProfile: mockProfile,
+          activeLayout: mockLayout,
+          setAllBoxes: mockSetAllBoxes,
+          plantCrop: mockPlantCrop,
+          removeCrop: mockRemoveCrop,
+          updateProfile: mockUpdateProfile,
+        })
+      )
+
+      act(() => {
+        result.current.addToStash('tomato', 4)
+        result.current.addToStash('carrot', 16)
+      })
+
+      expect(Object.keys(result.current.stash)).toHaveLength(2)
+
+      act(() => {
+        result.current.clearStash()
+      })
+
+      expect(result.current.stash).toEqual({})
+    })
+
+    it('calculates total area correctly based on crop density', () => {
+      const { result } = renderHook(() =>
+        useGardenInteractions({
+          currentBed: mockCurrentBed,
+          gardenProfile: mockProfile,
+          activeLayout: mockLayout,
+          setAllBoxes: mockSetAllBoxes,
+          plantCrop: mockPlantCrop,
+          removeCrop: mockRemoveCrop,
+          updateProfile: mockUpdateProfile,
+        })
+      )
+
+      // We need to inject these mock crops into the hook? 
+      // The hook imports CORE_50_CROPS. We can't easily mock that import without vi.mock.
+      // But we can just use the real crop IDs if they strictly match CORE_50_CROPS.
+      // 'tomato' and 'carrot' exist in CORE_50_CROPS.
+
+      act(() => {
+        result.current.addToStash('tomato', 4)  // 4 sqft
+        result.current.addToStash('carrot', 17) // 16 + 1 = 2 sqft
+      })
+
+      expect(result.current.getStashTotalArea()).toBe(6)
+    })
+
+    it('canAddToStash checks bed capacity', () => {
+      const { result } = renderHook(() =>
+        useGardenInteractions({
+          currentBed: mockCurrentBed,
+          gardenProfile: mockProfile,
+          activeLayout: mockLayout, // Total area 21 (8 + 4 + 9) from beforeEach
+          setAllBoxes: mockSetAllBoxes,
+          plantCrop: mockPlantCrop,
+          removeCrop: mockRemoveCrop,
+          updateProfile: mockUpdateProfile,
+        })
+      )
+
+      // Tomato is density 1.
+      const tomato = { id: 'tomato', sfg_density: 1 } as Crop
+
+      // Total capacity is 21.
+      // Add 20 tomatoes.
+      act(() => {
+        result.current.addToStash('tomato', 20)
+      })
+
+      // 20/21 used. Can add 1? Yes.
+      expect(result.current.canAddToStash(tomato)).toBe(true)
+
+      // Add 1 more -> 21
+      act(() => {
+        result.current.addToStash('tomato', 1)
+      })
+
+      // 21/21 used. Can add 1? No.
+      expect(result.current.canAddToStash(tomato)).toBe(false)
+    })
+
+    it('persists stash to local storage', () => {
+      // Mock local storage
+      const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
+      const getItemSpy = vi.spyOn(Storage.prototype, 'getItem')
+
+      const { result } = renderHook(() =>
+        useGardenInteractions({
+          currentBed: mockCurrentBed,
+          gardenProfile: mockProfile,
+          activeLayout: mockLayout,
+          setAllBoxes: mockSetAllBoxes,
+          plantCrop: mockPlantCrop,
+          removeCrop: mockRemoveCrop,
+          updateProfile: mockUpdateProfile,
+        })
+      )
+
+      act(() => {
+        result.current.addToStash('tomato', 2)
+      })
+
+      expect(setItemSpy).toHaveBeenCalledWith(
+        `hortilogic_stash_${mockLayout.id}`,
+        JSON.stringify({ tomato: 2 })
+      )
+
+      // Cleanup
+      setItemSpy.mockRestore()
+      getItemSpy.mockRestore()
     })
   })
 })

@@ -191,3 +191,12 @@ export interface Crop {
   /** Emoji icon for visual display */
   emoji?: string
 }
+
+/**
+ * Garden Stash (Planning Cart)
+ * Maps crop ID to quantity desired
+ * Example: { "tomato": 4, "carrot": 8 }
+ */
+export interface GardenStash {
+  [cropId: string]: number
+}

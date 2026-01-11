@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Sprout, Settings, Plus } from 'lucide-react'
 import { GardenBed } from './components/GardenBed'
 import { CropLibrary } from './components/CropLibrary'
+import { StashSummary } from './components/StashSummary'
 import { GardenControls } from './components/GardenControls'
 import { GardenInstructions } from './components/GardenInstructions'
 import { LayoutSelector } from './components/LayoutSelector'
@@ -69,6 +70,17 @@ function App() {
     handleSettingsSave,
     handleSettingsClose,
     openSettings,
+    stash,
+    addToStash,
+    removeFromStash,
+    clearStash,
+    getStashTotalArea,
+    canAddToStash,
+    handleDistributeStash,
+    placementResult,
+    undo,
+    canUndo,
+    isDistributing
   } = useGardenInteractions({
     currentBed,
     gardenProfile,
@@ -166,7 +178,36 @@ function App() {
               selectedCrop={selectedCrop}
               onSelectCrop={setSelectedCrop}
               currentProfile={gardenProfile}
+              stash={stash}
+              onAddToStash={(id, amount) => {
+                // Check limit before adding
+                if (activeLayout) {
+                  const crop = CORE_50_CROPS.find(c => c.id === id)
+                  // Simplified signature call
+                  if (crop && canAddToStash(crop)) {
+                    addToStash(id, amount)
+                  } else {
+                    // Optional: Show error/toast
+                  }
+                }
+              }}
+              onRemoveFromStash={removeFromStash}
             />
+            {activeLayout && (
+              <StashSummary
+                stash={stash}
+                crops={CORE_50_CROPS}
+                totalArea={getStashTotalArea()}
+                maxArea={totalArea}
+                onClear={clearStash}
+                onRemoveItem={(id) => removeFromStash(id, 1)}
+                onDistribute={handleDistributeStash}
+                placementResult={placementResult}
+                isDistributing={isDistributing}
+                onUndo={undo}
+                canUndo={canUndo}
+              />
+            )}
             <GardenControls
               onAutoFill={handleAutoFill}
               onClearBed={clearBed}
