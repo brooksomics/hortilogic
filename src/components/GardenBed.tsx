@@ -131,7 +131,7 @@ export function GardenBed({
   const cellCount = totalCells
 
   return (
-    <div className="w-full max-w-xs mx-auto">
+    <div className="w-full max-w-4xl">
       <div className="mb-2 text-center relative">
         <h2 className="text-lg font-bold text-soil-800">{displayName}</h2>
         <p className="text-xs text-soil-600">{cellCount.toString()} Square Foot Gardening cells</p>
