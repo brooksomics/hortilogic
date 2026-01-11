@@ -187,4 +187,7 @@ export interface Crop {
 
   /** Display name for the crop (optional, can derive from id) */
   name?: string
+
+  /** Emoji icon for visual display */
+  emoji?: string
 }

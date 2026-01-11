@@ -152,12 +152,19 @@ export function CropLibrary({ crops, selectedCrop, onSelectCrop, currentProfile 
               aria-label={ariaLabel}
             >
               <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="font-semibold text-soil-900">
-                    {crop.name || crop.id}
-                  </div>
-                  <div className="text-xs text-soil-600 mt-1">
-                    {crop.sfg_density} per sq ft
+                <div className="flex items-center gap-2 flex-1">
+                  {crop.emoji && (
+                    <span className="text-2xl flex-shrink-0" aria-hidden="true">
+                      {crop.emoji}
+                    </span>
+                  )}
+                  <div className="flex-1">
+                    <div className="font-semibold text-soil-900">
+                      {crop.name || crop.id}
+                    </div>
+                    <div className="text-xs text-soil-600 mt-1">
+                      {crop.sfg_density} per sq ft
+                    </div>
                   </div>
                 </div>
 

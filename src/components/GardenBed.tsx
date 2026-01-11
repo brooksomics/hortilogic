@@ -45,6 +45,11 @@ function GardenSquare({ crop, onClick, isViable = true }: GardenSquareProps) {
               aria-label="Warning: Out of season"
             />
           )}
+          {crop.emoji && (
+            <span className="text-xs" aria-hidden="true">
+              {crop.emoji}
+            </span>
+          )}
           <span className="text-[10px] font-semibold text-soil-900 text-center leading-tight">
             {crop.name || crop.id}
           </span>
