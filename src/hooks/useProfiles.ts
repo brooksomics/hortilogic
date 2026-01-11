@@ -33,6 +33,7 @@ function createDefaultProfileStorage(): ProfileStorage {
     profiles: {
       [profileId]: profile,
     },
+    defaultProfileId: profileId,
   }
 }
 
@@ -76,8 +77,7 @@ export function useProfiles(): UseProfilesResult {
   )
 
   const profiles = profileStorage.profiles
-  const profileIds = Object.keys(profiles)
-  const defaultProfileId = profileIds[0] ?? ''
+  const defaultProfileId = profileStorage.defaultProfileId
 
   const getProfile = (id: string): GardenProfile | undefined => {
     return profiles[id]
@@ -90,7 +90,8 @@ export function useProfiles(): UseProfilesResult {
     }
 
     setProfileStorage({
-      ...profileStorage,
+      version: profileStorage.version,
+      defaultProfileId: profileStorage.defaultProfileId,
       profiles: {
         ...profiles,
         [id]: profile,
