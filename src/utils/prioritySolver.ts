@@ -256,7 +256,7 @@ export function autoFillGaps(
             }
         }
 
-        if (bestCrop && bestScore > 0) { // Require positive score (companions present)
+        if (bestCrop && bestScore >= -99) { // Allow neutral, reject enemies only
             workingBed[cellIndex] = bestCrop
             placed.push({ cropId: bestCrop.id, cellIndex })
             fills++

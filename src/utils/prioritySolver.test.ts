@@ -211,14 +211,14 @@ describe('autoFillGaps', () => {
     })
 
     it('does not place enemies', () => {
-        // Setup: Bed with Potato
+        // Setup: Bed with Brassica
         const bed = Array(4).fill(null)
-        const potato = mockCrops.find(c => c.id === 'potato')!
-        bed[0] = potato
+        const brassica = mockCrops.find(c => c.id === 'brassica')!
+        bed[0] = brassica
 
         const result = autoFillGaps(bed, mockCrops, 2)
 
-        // Should NOT place Tomato (enemy of Potato)
+        // Should NOT place Tomato (enemy of Brassica)
         const tomatoPlacements = result.filter(p => p.cropId === 'tomato')
         expect(tomatoPlacements.length).toBe(0)
     })
