@@ -412,6 +412,78 @@ Enable users to manage multiple garden layouts (e.g., "Spring 2026" vs "Fall 202
 
 ---
 
+## [TODO-015] Multi-Box Data Schema Refactor
+
+**Status:** ✅ completed
+**Priority:** medium
+**Estimate:** M
+**Completed:** 2026-01-10
+
+### Description
+Refactor the `GardenLayout` type to support multiple boxes instead of a single flat bed array. Create migration utility to convert existing single-bed layouts into a multi-box structure. Implemented as part of Feature 008 (Multi-Box Garden Beds).
+
+### User Story
+"As a gardener with multiple raised beds, I want the system to support multiple boxes of different sizes within a single layout, so I can plan my entire garden in one place instead of managing separate layouts for each bed."
+
+### Acceptance Criteria
+- [✅] `GardenBox` interface defined with id, name, dimensions, and cells
+- [✅] `GardenLayout` updated to hold `boxes: GardenBox[]`
+- [✅] `migrateToMultiBoxSchema` utility created
+- [✅] Existing user data migrates automatically on load without data loss
+- [✅] `useLayoutManager` updated to handle box operations (add/remove box)
+
+### TDD Execution Log
+| Phase | Command | Result | Timestamp |
+|-------|---------|--------|-----------|
+| RED | Write failing tests for migration | 5 tests failing ✅ | 2026-01-10 20:00 |
+| GREEN | Implement schema + migration | 22 tests passing | 2026-01-10 20:30 |
+| VALIDATE | npm test -- --run | All tests passing | 2026-01-10 20:40 |
+| COMPLETE | git commit + push | Included in F008 commits | 2026-01-10 21:00 |
+
+### Implementation Summary
+**Changes Made:**
+1. **Type Definitions** (`src/types/garden.ts`):
+   - Added `GardenBox` interface (id, name, width, height, cells)
+   - Updated `GardenLayout` to include `boxes: GardenBox[]`
+   - Marked `bed` field as `@deprecated` for backward compatibility
+   - Added `LegacyGardenLayout` type for migration
+
+2. **Migration Utility** (`src/utils/storageMigration.ts`):
+   - Implemented `migrateToMultiBoxSchema()` function
+   - Migrates legacy single-bed layouts to multi-box format
+   - Wraps old bed data in a "Main Bed" box (8x4 dimensions)
+   - Updates storage version to 2
+   - Comprehensive error handling and migration status reporting
+
+3. **Layout Manager** (`src/hooks/useLayoutManager.ts`):
+   - Added `addBox(name, width, height)` method
+   - Added `removeBox(boxId)` method
+   - Prevents removing the last box (safety check)
+   - Generates unique IDs for new boxes
+
+4. **App Integration** (`src/App.tsx`):
+   - Calls `migrateToMultiBoxSchema()` on startup
+   - Handles migration results gracefully
+
+**Test Coverage:**
+- Migration tests: 12 test cases covering all scenarios
+- Box operations tests: addBox, removeBox with edge cases
+- Integration tests: Full app migration flow
+- All 22+ tests passing
+
+**Files Modified:**
+- `src/types/garden.ts` - Multi-box schema
+- `src/utils/storageMigration.ts` - Migration utility
+- `src/utils/storageMigration.test.ts` - Migration tests
+- `src/hooks/useLayoutManager.ts` - Box operations
+- `src/hooks/useLayoutManager.test.ts` - Box operation tests
+- `CODE_INDEX.md` - Updated capabilities
+
+**Commits:**
+- Part of Feature 008 implementation (commits: ae3dd68 and related)
+
+---
+
 ## [TODO-016] Dynamic Grid Component
 
 **Status:** ✅ completed
