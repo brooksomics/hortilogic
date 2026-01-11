@@ -8,9 +8,11 @@ import { z } from 'zod';
 export const ProfileSchema = z.object({
   name: z.string(),
   hardiness_zone: z.string(),
+  location: z.string().optional(),
   last_frost_date: z.string(), // YYYY-MM-DD
   first_frost_date: z.string(), // YYYY-MM-DD
   season_extension_weeks: z.number().min(0).max(52),
+  targetPlantingDate: z.string().optional(),
 });
 
 export type Profile = z.infer<typeof ProfileSchema>;
