@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { useLayoutManager } from './useLayoutManager'
 import type { Crop } from '../types/garden'
@@ -32,10 +32,12 @@ const tomato: Crop = {
 describe('useLayoutManager', () => {
   beforeEach(() => {
     localStorage.clear()
+    vi.useFakeTimers()
   })
 
   afterEach(() => {
     localStorage.clear()
+    vi.useRealTimers()
   })
 
   it('initializes with default layout named "My Garden"', () => {
@@ -211,7 +213,7 @@ describe('useLayoutManager', () => {
     expect(Object.keys(result.current.layouts)).toHaveLength(1)
   })
 
-  it('updates timestamps on modification', async () => {
+  it('updates timestamps on modification', () => {
     const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 
     const layoutId = result.current.activeLayoutId
@@ -219,8 +221,10 @@ describe('useLayoutManager', () => {
     if (!layout) throw new Error('Layout not found')
     const originalUpdatedAt = layout.updatedAt
 
-    // Wait a bit to ensure timestamp changes
-    await new Promise(resolve => setTimeout(resolve, 10))
+    // Advance time to ensure timestamp changes
+    act(() => {
+      vi.advanceTimersByTime(10)
+    })
 
     act(() => {
       result.current.plantCrop(0, lettuce)
@@ -237,6 +241,11 @@ describe('useLayoutManager', () => {
 
     act(() => {
       result.current.createLayout('Test Layout')
+    })
+
+    // Advance timers to trigger debounced localStorage write
+    act(() => {
+      vi.runAllTimers()
     })
 
     const stored = localStorage.getItem('hortilogic:layouts')

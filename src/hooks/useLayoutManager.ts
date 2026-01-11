@@ -1,8 +1,9 @@
-import { useLocalStorage } from './useLocalStorage'
+import { useDebouncedLocalStorage } from './useDebouncedLocalStorage'
 import type { LayoutStorage, GardenLayout, GardenBox, Crop } from '../types/garden'
 import { generateUUID } from '../utils/uuid'
 
 const LAYOUTS_KEY = 'hortilogic:layouts'
+const DEBOUNCE_DELAY = 300 // ms - delay localStorage writes to batch rapid operations
 
 /**
  * Creates an empty 4x4 garden box
@@ -117,9 +118,10 @@ export interface UseLayoutManagerResult {
  * @param defaultProfileId - The default profile ID to use for new layouts
  */
 export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResult {
-  const [layoutStorage, setLayoutStorage] = useLocalStorage<LayoutStorage>(
+  const [layoutStorage, setLayoutStorage] = useDebouncedLocalStorage<LayoutStorage>(
     LAYOUTS_KEY,
-    createDefaultLayoutStorage(defaultProfileId)
+    createDefaultLayoutStorage(defaultProfileId),
+    DEBOUNCE_DELAY
   )
 
   const layouts = layoutStorage.layouts
