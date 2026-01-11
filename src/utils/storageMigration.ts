@@ -48,14 +48,15 @@ function createDefaultLayout(profileId: string, bed: GardenLayout['bed']): Garde
 }
 
 /**
- * Creates a default 8x4 garden box with empty cells
+ * Creates a default 4x8 garden box with empty cells
+ * 4 feet wide (columns) x 8 feet long (rows) = 32 sq ft
  */
 function createDefaultBox(name = 'Main Bed', cells: (typeof import('../types/garden').Crop | null)[] = Array(32).fill(null)): GardenBox {
   return {
     id: generateUUID(),
     name,
-    width: 8,
-    height: 4,
+    width: 4,
+    height: 8,
     cells,
   }
 }
@@ -107,10 +108,20 @@ export function migrateToLayoutsSchema(): MigrationResult {
     }
 
     // Create layout from legacy currentBed
-    const layout = createDefaultLayout(profileId, legacyState.currentBed)
+    const legacyLayout = createDefaultLayout(profileId, legacyState.currentBed)
+
+    // Convert to new multi-box format
+    const box = createDefaultBox('Main Bed', legacyLayout.bed)
+    const layout = {
+      ...legacyLayout,
+      boxes: [box],
+    }
+    // Remove the old 'bed' property
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (layout as any).bed
 
     const layoutStorage: LayoutStorage = {
-      version: 1,
+      version: 2,
       activeLayoutId: layout.id,
       layouts: {
         [layout.id]: layout,

@@ -6,13 +6,14 @@ const LAYOUTS_KEY = 'hortilogic:layouts'
 
 /**
  * Creates an empty 4x8 garden box
+ * 4 feet wide (columns) x 8 feet long (rows) = 32 sq ft
  */
 function createEmptyBox(name = 'Main Bed'): GardenBox {
   return {
     id: generateUUID(),
     name,
-    width: 8,
-    height: 4,
+    width: 4,
+    height: 8,
     cells: Array(32).fill(null) as (Crop | null)[],
   }
 }
