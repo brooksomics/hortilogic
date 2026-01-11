@@ -17,6 +17,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'lettuce',
     name: 'Lettuce',
+    emoji: '🥬',
     sfg_density: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
@@ -27,6 +28,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'spinach',
     name: 'Spinach',
+    emoji: '🥬',
     sfg_density: 9,
     planting_strategy: { start_window_start: -6, start_window_end: 0 },
     companions: {
@@ -37,6 +39,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'kale',
     name: 'Kale',
+    emoji: '🥬',
     sfg_density: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
@@ -47,6 +50,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'arugula',
     name: 'Arugula',
+    emoji: '🥗',
     sfg_density: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
@@ -57,6 +61,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'swiss-chard',
     name: 'Swiss Chard',
+    emoji: '🥬',
     sfg_density: 4,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
@@ -67,6 +72,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'bok-choy',
     name: 'Bok Choy',
+    emoji: '🥬',
     sfg_density: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
@@ -77,6 +83,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'collard-greens',
     name: 'Collard Greens',
+    emoji: '🥬',
     sfg_density: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
@@ -87,6 +94,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'mustard-greens',
     name: 'Mustard Greens',
+    emoji: '🥬',
     sfg_density: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
@@ -97,6 +105,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'endive',
     name: 'Endive',
+    emoji: '🥗',
     sfg_density: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
@@ -107,6 +116,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'radicchio',
     name: 'Radicchio',
+    emoji: '🥗',
     sfg_density: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
@@ -119,6 +129,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'tomato',
     name: 'Tomato',
+    emoji: '🍅',
     sfg_density: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
@@ -129,6 +140,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'cherry-tomato',
     name: 'Cherry Tomato',
+    emoji: '🍅',
     sfg_density: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
@@ -139,6 +151,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'pepper',
     name: 'Pepper',
+    emoji: '🌶️',
     sfg_density: 1,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
@@ -149,6 +162,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'eggplant',
     name: 'Eggplant',
+    emoji: '🍆',
     sfg_density: 1,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
@@ -159,6 +173,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'potato',
     name: 'Potato',
+    emoji: '🥔',
     sfg_density: 1,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
@@ -169,6 +184,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'tomatillo',
     name: 'Tomatillo',
+    emoji: '🍅',
     sfg_density: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
@@ -181,6 +197,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'broccoli',
     name: 'Broccoli',
+    emoji: '🥦',
     sfg_density: 1,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
@@ -191,6 +208,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'cauliflower',
     name: 'Cauliflower',
+    emoji: '🥦',
     sfg_density: 1,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
@@ -201,6 +219,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'cabbage',
     name: 'Cabbage',
+    emoji: '🥬',
     sfg_density: 1,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
@@ -211,6 +230,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'brussels-sprouts',
     name: 'Brussels Sprouts',
+    emoji: '🥬',
     sfg_density: 1,
     planting_strategy: { start_window_start: -6, start_window_end: -2 },
     companions: {
@@ -221,6 +241,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'kohlrabi',
     name: 'Kohlrabi',
+    emoji: '🥬',
     sfg_density: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
@@ -231,6 +252,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'radish',
     name: 'Radish',
+    emoji: '🥕',
     sfg_density: 16,
     planting_strategy: { start_window_start: -4, start_window_end: 8 },
     companions: {
@@ -241,6 +263,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'turnip',
     name: 'Turnip',
+    emoji: '🥕',
     sfg_density: 9,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
@@ -251,6 +274,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'rutabaga',
     name: 'Rutabaga',
+    emoji: '🥕',
     sfg_density: 9,
     planting_strategy: { start_window_start: -6, start_window_end: 0 },
     companions: {
@@ -263,6 +287,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'peas',
     name: 'Sugar Snap Peas',
+    emoji: '🫛',
     sfg_density: 9,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
@@ -273,6 +298,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'green-beans',
     name: 'Green Beans',
+    emoji: '🫘',
     sfg_density: 9,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
@@ -283,6 +309,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'bush-beans',
     name: 'Bush Beans',
+    emoji: '🫘',
     sfg_density: 9,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
@@ -293,6 +320,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'pole-beans',
     name: 'Pole Beans',
+    emoji: '🫘',
     sfg_density: 9,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
@@ -303,6 +331,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'fava-beans',
     name: 'Fava Beans',
+    emoji: '🫘',
     sfg_density: 4,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
@@ -313,6 +342,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'edamame',
     name: 'Edamame',
+    emoji: '🫛',
     sfg_density: 9,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
@@ -325,6 +355,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'carrot',
     name: 'Carrot',
+    emoji: '🥕',
     sfg_density: 16,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
@@ -335,6 +366,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'beet',
     name: 'Beet',
+    emoji: '🥕',
     sfg_density: 9,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
@@ -345,6 +377,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'onion',
     name: 'Onion',
+    emoji: '🧅',
     sfg_density: 16,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
@@ -355,6 +388,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'garlic',
     name: 'Garlic',
+    emoji: '🧄',
     sfg_density: 16,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
@@ -365,6 +399,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'parsnip',
     name: 'Parsnip',
+    emoji: '🥕',
     sfg_density: 16,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
@@ -375,6 +410,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'shallot',
     name: 'Shallot',
+    emoji: '🧅',
     sfg_density: 16,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
@@ -385,6 +421,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'leek',
     name: 'Leek',
+    emoji: '🧅',
     sfg_density: 9,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
@@ -395,6 +432,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'horseradish',
     name: 'Horseradish',
+    emoji: '🌿',
     sfg_density: 1,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
@@ -407,6 +445,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'cucumber',
     name: 'Cucumber',
+    emoji: '🥒',
     sfg_density: 1,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
@@ -417,6 +456,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'zucchini',
     name: 'Zucchini',
+    emoji: '🥒',
     sfg_density: 1,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
@@ -427,6 +467,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'yellow-squash',
     name: 'Yellow Squash',
+    emoji: '🥒',
     sfg_density: 1,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
@@ -437,6 +478,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'pumpkin',
     name: 'Pumpkin',
+    emoji: '🎃',
     sfg_density: 1,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
@@ -447,6 +489,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'butternut-squash',
     name: 'Butternut Squash',
+    emoji: '🥒',
     sfg_density: 1,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
@@ -457,6 +500,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'watermelon',
     name: 'Watermelon',
+    emoji: '🍉',
     sfg_density: 1,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
@@ -469,6 +513,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'basil',
     name: 'Basil',
+    emoji: '🌿',
     sfg_density: 4,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
@@ -479,6 +524,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'cilantro',
     name: 'Cilantro',
+    emoji: '🌿',
     sfg_density: 4,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
@@ -489,6 +535,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'parsley',
     name: 'Parsley',
+    emoji: '🌿',
     sfg_density: 4,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
@@ -499,6 +546,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'dill',
     name: 'Dill',
+    emoji: '🌿',
     sfg_density: 4,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
@@ -509,6 +557,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'oregano',
     name: 'Oregano',
+    emoji: '🌿',
     sfg_density: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
@@ -519,6 +568,7 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'thyme',
     name: 'Thyme',
+    emoji: '🌿',
     sfg_density: 4,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
