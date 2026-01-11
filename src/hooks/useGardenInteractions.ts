@@ -95,7 +95,7 @@ export function useGardenInteractions({
   const [stash, setStash] = useState<GardenStash>(() => {
     if (activeLayout?.id) {
       const saved = localStorage.getItem(`hortilogic_stash_${activeLayout.id}`)
-      return saved ? JSON.parse(saved) : {}
+      return saved ? JSON.parse(saved) as GardenStash : {}
     }
     return {}
   })
@@ -136,7 +136,7 @@ export function useGardenInteractions({
       const saved = localStorage.getItem(key)
       if (saved) {
         try {
-          setStash(JSON.parse(saved))
+          setStash(JSON.parse(saved) as GardenStash)
         } catch (e) {
           console.error("Failed to parse stash", e)
           setStash({})
@@ -155,6 +155,7 @@ export function useGardenInteractions({
       const key = `hortilogic_stash_${activeLayout.id}`
       localStorage.setItem(key, JSON.stringify(stash))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stash, activeLayout?.id])
 
   const addToStash = (cropId: string, amount: number) => {
@@ -169,6 +170,7 @@ export function useGardenInteractions({
       const current = prev[cropId] || 0
       const updated = current - amount
       if (updated <= 0) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [cropId]: _, ...rest } = prev
         return rest
       }
@@ -333,7 +335,7 @@ export function useGardenInteractions({
     handleSquareClick,
     handleSettingsSave,
     handleSettingsClose,
-    openSettings: () => setIsSettingsOpen(true),
+    openSettings: () => { setIsSettingsOpen(true); },
     stash,
     addToStash,
     removeFromStash,

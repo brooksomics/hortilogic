@@ -200,7 +200,7 @@ function App() {
                 totalArea={getStashTotalArea()}
                 maxArea={totalArea}
                 onClear={clearStash}
-                onRemoveItem={(id) => removeFromStash(id, 1)}
+                onRemoveItem={(id) => { removeFromStash(id, 1); }}
                 onDistribute={handleDistributeStash}
                 placementResult={placementResult}
                 isDistributing={isDistributing}

@@ -219,13 +219,20 @@ describe('useGardenInteractions', () => {
         })
       )
 
+       
       expect(result.current).toMatchObject({
         stash: {},
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         addToStash: expect.any(Function),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         removeFromStash: expect.any(Function),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         clearStash: expect.any(Function),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         getStashTotalArea: expect.any(Function),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         canAddToStash: expect.any(Function),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         handleDistributeStash: expect.any(Function),
         placementResult: null
       })

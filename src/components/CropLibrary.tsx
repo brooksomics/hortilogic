@@ -165,7 +165,7 @@ export function CropLibrary({
               <div className="flex items-center justify-between mb-2">
                 {/* Crop Info Header - Clickable to select for painting */}
                 <button
-                  onClick={() => onSelectCrop(crop)}
+                  onClick={() => { onSelectCrop(crop); }}
                   className="flex items-center gap-2 flex-1 text-left"
                   type="button"
                   aria-pressed={isSelected}
@@ -204,7 +204,7 @@ export function CropLibrary({
                       }}
                       className="w-6 h-6 flex items-center justify-center rounded bg-white border border-soil-300 text-soil-700 hover:bg-soil-100 disabled:opacity-50"
                       disabled={stashQty === 0}
-                      aria-label={`Remove ${crop.name} from stash`}
+                      aria-label={`Remove ${crop.name ?? crop.id} from stash`}
                       type="button"
                     >
                       -
@@ -218,7 +218,7 @@ export function CropLibrary({
                         onAddToStash(crop.id, 1)
                       }}
                       className="w-6 h-6 flex items-center justify-center rounded bg-white border border-soil-300 text-soil-700 hover:bg-soil-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                      aria-label={`Add ${crop.name} to stash`}
+                      aria-label={`Add ${crop.name ?? crop.id} to stash`}
                       type="button"
                       disabled={false} // Todo: connect to canAddToStash
                     >

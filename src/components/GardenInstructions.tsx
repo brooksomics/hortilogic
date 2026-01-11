@@ -24,15 +24,15 @@ export function GardenInstructions({ selectedCrop }: GardenInstructionsProps) {
           The Stash is a planning area where you can queue up crops before placing them.
         </p>
         <ul className="list-disc list-inside space-y-1 text-sm text-soil-700 ml-2">
-          <li>Click "Distribute Stash" to let the solver place your queued crops optimally</li>
-          <li>Toggle "Fill remaining gaps?" to automatically fill empty spaces with compatible companion crops</li>
+          <li>Click &quot;Distribute Stash&quot; to let the solver place your queued crops optimally</li>
+          <li>Toggle &quot;Fill remaining gaps?&quot; to automatically fill empty spaces with compatible companion crops</li>
         </ul>
       </div>
 
       <div className="mt-4 pt-4 border-t border-soil-200">
         <h4 className="font-semibold text-soil-900 mb-2">Automagic Fill</h4>
         <p className="text-sm text-soil-700">
-          Click "Automagic Fill" in the Controls panel to automatically fill your entire garden
+          Click &quot;Automagic Fill&quot; in the Controls panel to automatically fill your entire garden
           with compatible crops that respect companion planting rules and seasonality.
         </p>
       </div>
