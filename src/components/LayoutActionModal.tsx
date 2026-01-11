@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 
+export type LayoutActionMode = 'create' | 'rename' | 'delete'
+
 export interface LayoutActionModalProps {
   isOpen: boolean
-  mode: 'create' | 'rename' | 'delete'
+  mode: LayoutActionMode
   currentName?: string
   onConfirm: (name: string) => void
   onClose: () => void

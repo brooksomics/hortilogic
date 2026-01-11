@@ -13,7 +13,7 @@ describe('autoFillBed - Determinism (TODO-023)', () => {
   }
 
   const testDate = new Date(2024, 4, 15) // May 15, 2024
-  const emptyBed: (null)[] = Array(32).fill(null)
+  const emptyBed = Array(32).fill(null) as (null)[]
 
   it('SHOULD produce identical results when called multiple times with same seed', () => {
     // This test WILL FAIL initially (proving non-determinism)

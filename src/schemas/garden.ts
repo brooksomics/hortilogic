@@ -18,7 +18,7 @@ export type Profile = z.infer<typeof ProfileSchema>;
 export const ProfileStorageSchema = z.object({
   version: z.literal(1),
   profiles: z.record(z.string(), ProfileSchema), // Key is UUID
-  defaultProfileId: z.string().uuid(),
+  defaultProfileId: z.uuid(),
 });
 
 export type ValidatedProfileStorage = z.infer<typeof ProfileStorageSchema>;
@@ -35,7 +35,7 @@ export const CellSchema = z.object({
 export type Cell = z.infer<typeof CellSchema>;
 
 export const BoxSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   name: z.string(),
   width: z.number().int().positive(),
   height: z.number().int().positive(),
@@ -45,9 +45,9 @@ export const BoxSchema = z.object({
 export type Box = z.infer<typeof BoxSchema>;
 
 export const LayoutSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   name: z.string(),
-  profileId: z.string().uuid(),
+  profileId: z.uuid(),
   boxes: z.array(BoxSchema),
   createdAt: z.string(),
   updatedAt: z.string(),
@@ -58,7 +58,7 @@ export type Layout = z.infer<typeof LayoutSchema>;
 export const LayoutStorageSchema = z.object({
   version: z.literal(2),
   layouts: z.record(z.string(), LayoutSchema), // Key is UUID
-  activeLayoutId: z.string().uuid(),
+  activeLayoutId: z.uuid(),
 });
 
 export type ValidatedLayoutStorage = z.infer<typeof LayoutStorageSchema>;

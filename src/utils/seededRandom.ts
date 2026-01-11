@@ -63,7 +63,9 @@ export class SeededRandom {
     const arr = [...array]
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(this.next() * (i + 1))
-      ;[arr[i], arr[j]] = [arr[j]!, arr[i]!]
+      const temp = arr[i] as T
+      arr[i] = arr[j] as T
+      arr[j] = temp
     }
     return arr
   }

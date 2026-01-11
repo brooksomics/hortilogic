@@ -11,7 +11,7 @@
  * - Type-safe parsing
  */
 
-import { ZodSchema, ZodError } from 'zod'
+import { z, ZodError } from 'zod'
 import {
   ProfileStorageSchema,
   LayoutStorageSchema,
@@ -30,7 +30,7 @@ import {
  */
 function parseWithSchema<T>(
   data: unknown,
-  schema: ZodSchema<T>,
+  schema: z.ZodType<T>,
   errorContext: string
 ): T | null {
   try {
@@ -38,7 +38,7 @@ function parseWithSchema<T>(
   } catch (error) {
     if (error instanceof ZodError) {
       console.error(`[StorageValidation] ${errorContext}:`, {
-        errors: error.errors,
+        issues: error.issues,
         data,
       })
     } else {
@@ -58,7 +58,7 @@ export function readProfileStorage(key: string): ValidatedProfileStorage | null 
     const raw = localStorage.getItem(key)
     if (!raw) return null
 
-    const parsed = JSON.parse(raw)
+    const parsed = JSON.parse(raw) as unknown
     return parseWithSchema(parsed, ProfileStorageSchema, `readProfileStorage(${key})`)
   } catch (error) {
     console.error(`[StorageValidation] Failed to read ProfileStorage from key "${key}":`, error)
@@ -76,7 +76,7 @@ export function readLayoutStorage(key: string): ValidatedLayoutStorage | null {
     const raw = localStorage.getItem(key)
     if (!raw) return null
 
-    const parsed = JSON.parse(raw)
+    const parsed = JSON.parse(raw) as unknown
     return parseWithSchema(parsed, LayoutStorageSchema, `readLayoutStorage(${key})`)
   } catch (error) {
     console.error(`[StorageValidation] Failed to read LayoutStorage from key "${key}":`, error)
@@ -94,7 +94,7 @@ export function readStashStorage(key: string): ValidatedGardenStash {
     const raw = localStorage.getItem(key)
     if (!raw) return {}
 
-    const parsed = JSON.parse(raw)
+    const parsed = JSON.parse(raw) as unknown
     const validated = parseWithSchema(parsed, StashStorageSchema, `readStashStorage(${key})`)
     return validated ?? {}
   } catch (error) {
@@ -179,12 +179,12 @@ export function writeStashStorage(key: string, data: unknown): boolean {
  * @param fallback - Default value if read/parse fails
  * @returns Validated data or fallback
  */
-export function safeRead<T>(key: string, schema: ZodSchema<T>, fallback: T): T {
+export function safeRead<T>(key: string, schema: z.ZodType<T>, fallback: T): T {
   try {
     const raw = localStorage.getItem(key)
     if (!raw) return fallback
 
-    const parsed = JSON.parse(raw)
+    const parsed = JSON.parse(raw) as unknown
     const validated = parseWithSchema(parsed, schema, `safeRead(${key})`)
     return validated ?? fallback
   } catch (error) {

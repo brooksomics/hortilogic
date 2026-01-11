@@ -19,7 +19,7 @@ export function useLocalStorage<T>(
       const item = window.localStorage.getItem(key)
       if (!item) return initialValue
 
-      const parsed = JSON.parse(item)
+      const parsed = JSON.parse(item) as unknown
 
       if (validator) {
         const validated = validator(parsed)

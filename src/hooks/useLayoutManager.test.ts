@@ -285,7 +285,7 @@ describe('useLayoutManager', () => {
 
     expect(Object.keys(result.current.layouts)).toHaveLength(1)
     expect(result.current.layouts[layoutId]).toBeDefined()
-    expect(result.current.layouts[layoutId].name).toBe('Restored Layout')
+    expect(result.current.layouts[layoutId]?.name).toBe('Restored Layout')
   })
 
   it('plantCrop updates only the active layout', () => {

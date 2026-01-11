@@ -101,7 +101,7 @@ export function useGardenInteractions({
       const saved = localStorage.getItem(`hortilogic_stash_${activeLayout.id}`)
       if (saved) {
         try {
-          const parsed = JSON.parse(saved)
+          const parsed = JSON.parse(saved) as unknown
           const result = StashStorageSchema.safeParse(parsed)
           if (result.success) return result.data
           console.error('[useGardenInteractions] Stash validation failed:', result.error)
@@ -149,7 +149,7 @@ export function useGardenInteractions({
       const saved = localStorage.getItem(key)
       if (saved) {
         try {
-          const parsed = JSON.parse(saved)
+          const parsed = JSON.parse(saved) as unknown
           const result = StashStorageSchema.safeParse(parsed)
           if (result.success) {
             setStash(result.data)

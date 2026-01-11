@@ -20,7 +20,7 @@ import type { PlacementSummary } from '../components/StashSummary'
  */
 export interface GardenContextValue {
   // Profile Management
-  getProfile: (id: string) => GardenProfile | null
+  getProfile: (id: string) => GardenProfile | undefined
   updateProfile: (id: string, profile: GardenProfile) => void
   defaultProfileId: string
 
@@ -41,12 +41,12 @@ export interface GardenContextValue {
 
   // Layout Actions
   layoutModalMode: LayoutActionMode | null
-  targetLayoutId: string
+  targetLayoutId: string | null
   handleCreateLayout: () => void
   handleRenameLayout: (id: string) => void
   handleDuplicateLayout: (id: string) => void
   handleDeleteLayout: (id: string) => void
-  handleLayoutModalConfirm: (name?: string) => void
+  handleLayoutModalConfirm: (name: string) => void
   handleLayoutModalClose: () => void
 
   // Garden Interactions
@@ -85,7 +85,7 @@ export interface GardenProviderProps {
  * Garden Provider Component
  * Wraps the app and provides all garden state and actions via context
  */
-export function GardenProvider({ children }: GardenProviderProps): JSX.Element {
+export function GardenProvider({ children }: GardenProviderProps): React.JSX.Element {
   // Run migrations on mount
   useEffect(() => {
     migrateToLayoutsSchema()

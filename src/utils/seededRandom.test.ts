@@ -114,8 +114,9 @@ describe('SeededRandom', () => {
 
     it('returns undefined for empty array', () => {
       const rng = new SeededRandom('test')
+      const emptyArray: string[] = []
 
-      const choice = rng.choice([])
+      const choice = rng.choice(emptyArray)
 
       expect(choice).toBeUndefined()
     })
