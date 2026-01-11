@@ -79,7 +79,7 @@ export function BoxActionModal({
     >
       <div
         className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => { e.stopPropagation() }}
       >
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
@@ -112,7 +112,7 @@ export function BoxActionModal({
                   type="text"
                   id="box-name"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => { setName(e.target.value) }}
                   placeholder="e.g., Herb Box, Main Bed"
                   className="w-full px-3 py-2 border border-soil-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-leaf-500"
                   required
@@ -131,7 +131,7 @@ export function BoxActionModal({
                   type="number"
                   id="box-width"
                   value={width}
-                  onChange={(e) => setWidth(e.target.value)}
+                  onChange={(e) => { setWidth(e.target.value) }}
                   min="1"
                   max="12"
                   className="w-full px-3 py-2 border border-soil-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-leaf-500"
@@ -151,7 +151,7 @@ export function BoxActionModal({
                   type="number"
                   id="box-height"
                   value={height}
-                  onChange={(e) => setHeight(e.target.value)}
+                  onChange={(e) => { setHeight(e.target.value) }}
                   min="1"
                   max="12"
                   className="w-full px-3 py-2 border border-soil-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-leaf-500"

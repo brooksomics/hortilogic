@@ -9,6 +9,7 @@
  * FIX: useLayoutManager now accepts defaultProfileId as a parameter
  * instead of calling useProfiles() internally.
  */
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -89,7 +90,7 @@ describe('Settings Persistence - Split Brain Bug Regression (TODO-012)', () => {
     })
 
     // Set location
-    const locationInput = screen.getByLabelText(/location/i) as HTMLInputElement
+    const locationInput = screen.getByLabelText(/location/i)
     await user.type(locationInput, 'Escondido, CA')
 
     // Save

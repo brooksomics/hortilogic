@@ -33,7 +33,6 @@ interface UseGardenInteractionsProps {
   currentBed: (Crop | null)[]
   gardenProfile: GardenProfile | null
   activeLayout: GardenLayout | null
-  setBed: (bed: (Crop | null)[]) => void
   setAllBoxes: (boxes: GardenBox[]) => void
   plantCrop: (index: number, crop: Crop) => void
   removeCrop: (index: number) => void
@@ -50,7 +49,6 @@ export function useGardenInteractions({
   currentBed,
   gardenProfile,
   activeLayout,
-  setBed,
   setAllBoxes,
   plantCrop,
   removeCrop,
@@ -70,9 +68,9 @@ export function useGardenInteractions({
         box.cells,
         CORE_50_CROPS,
         gardenProfile,
+        new Date(),
         box.width,
-        box.height,
-        new Date()
+        box.height
       )
       return { ...box, cells: filledCells }
     })

@@ -5,6 +5,7 @@ import type {
   ProfileStorage,
   GardenProfile,
   GardenBox,
+  Crop,
 } from '../types/garden'
 import { generateUUID } from './uuid'
 
@@ -33,25 +34,10 @@ function createDefaultProfile(): GardenProfile {
 }
 
 /**
- * Creates a default layout with empty bed
- */
-function createDefaultLayout(profileId: string, bed: GardenLayout['bed']): GardenLayout {
-  const now = new Date().toISOString()
-  return {
-    id: generateUUID(),
-    name: 'My Garden',
-    createdAt: now,
-    updatedAt: now,
-    bed,
-    profileId,
-  }
-}
-
-/**
  * Creates a default 4x8 garden box with empty cells
  * 4 feet wide (columns) x 8 feet long (rows) = 32 sq ft
  */
-function createDefaultBox(name = 'Main Bed', cells: (typeof import('../types/garden').Crop | null)[] = Array(32).fill(null)): GardenBox {
+function createDefaultBox(name = 'Main Bed', cells: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]): GardenBox {
   return {
     id: generateUUID(),
     name,
@@ -108,17 +94,19 @@ export function migrateToLayoutsSchema(): MigrationResult {
     }
 
     // Create layout from legacy currentBed
-    const legacyLayout = createDefaultLayout(profileId, legacyState.currentBed)
+    const now = new Date().toISOString()
+    const layoutId = generateUUID()
 
     // Convert to new multi-box format
-    const box = createDefaultBox('Main Bed', legacyLayout.bed)
-    const layout = {
-      ...legacyLayout,
+    const box = createDefaultBox('Main Bed', legacyState.currentBed)
+    const layout: GardenLayout = {
+      id: layoutId,
+      name: 'My Garden',
+      createdAt: now,
+      updatedAt: now,
       boxes: [box],
+      profileId,
     }
-    // Remove the old 'bed' property
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    delete (layout as any).bed
 
     const layoutStorage: LayoutStorage = {
       version: 2,
@@ -184,7 +172,7 @@ export function migrateToMultiBoxSchema(): MigrationResult {
 
     // Check if any layout already has boxes property
     const hasBoxes = Object.values(layoutStorage.layouts).some(
-      (layout) => Boolean(layout.boxes && layout.boxes.length > 0)
+      (layout) => layout.boxes.length > 0
     )
     if (hasBoxes) {
       return {

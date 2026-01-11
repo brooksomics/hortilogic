@@ -6,7 +6,6 @@ import type { Crop, GardenProfile, GardenLayout, GardenBox } from '../types/gard
 describe('useGardenInteractions', () => {
   let mockProfile: GardenProfile
   let mockLayout: GardenLayout
-  let mockSetBed: (bed: (Crop | null)[]) => void
   let mockSetAllBoxes: (boxes: GardenBox[]) => void
   let mockPlantCrop: (index: number, crop: Crop) => void
   let mockRemoveCrop: (index: number) => void
@@ -16,14 +15,13 @@ describe('useGardenInteractions', () => {
 
   beforeEach(() => {
     mockProfile = {
-      id: 'test-profile',
       name: 'Test Garden',
       location: 'Denver, CO',
-      hardinessZone: '5b',
-      lastFrostDate: '05-15',
-      firstFrostDate: '10-01',
+      hardiness_zone: '5b',
+      last_frost_date: '05-15',
+      first_frost_date: '10-01',
       targetPlantingDate: '03-01',
-      seasonExtensionWeeks: 0,
+      season_extension_weeks: 0,
     }
 
     // Create layout with 3 boxes of different sizes
@@ -58,13 +56,8 @@ describe('useGardenInteractions', () => {
       profileId: 'test-profile',
     }
 
-    mockCurrentBed = mockLayout.boxes[0]!.cells
+    mockCurrentBed = mockLayout.boxes[0]?.cells ?? []
     allBoxesUpdated = []
-
-    // Mock setBed to capture first box updates
-    mockSetBed = (bed: (Crop | null)[]) => {
-      mockCurrentBed = bed
-    }
 
     // Mock setAllBoxes to capture all box updates
     mockSetAllBoxes = (boxes: GardenBox[]) => {
@@ -83,7 +76,6 @@ describe('useGardenInteractions', () => {
           currentBed: mockCurrentBed,
           gardenProfile: mockProfile,
           activeLayout: mockLayout,
-          setBed: mockSetBed,
           setAllBoxes: mockSetAllBoxes,
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
@@ -105,14 +97,17 @@ describe('useGardenInteractions', () => {
       expect(allBoxesUpdated).toHaveLength(3)
 
       // Verify each box maintains correct dimensions
-      expect(allBoxesUpdated[0]!.cells).toHaveLength(8) // 4x2
-      expect(allBoxesUpdated[1]!.cells).toHaveLength(4) // 2x2
-      expect(allBoxesUpdated[2]!.cells).toHaveLength(9) // 3x3
+      expect(allBoxesUpdated[0]).toBeDefined()
+      expect(allBoxesUpdated[0]?.cells).toHaveLength(8) // 4x2
+      expect(allBoxesUpdated[1]).toBeDefined()
+      expect(allBoxesUpdated[1]?.cells).toHaveLength(4) // 2x2
+      expect(allBoxesUpdated[2]).toBeDefined()
+      expect(allBoxesUpdated[2]?.cells).toHaveLength(9) // 3x3
 
       // Verify each box maintains its identity
-      expect(allBoxesUpdated[0]!.id).toBe('box-1')
-      expect(allBoxesUpdated[1]!.id).toBe('box-2')
-      expect(allBoxesUpdated[2]!.id).toBe('box-3')
+      expect(allBoxesUpdated[0]?.id).toBe('box-1')
+      expect(allBoxesUpdated[1]?.id).toBe('box-2')
+      expect(allBoxesUpdated[2]?.id).toBe('box-3')
 
       // The key test: ALL boxes were processed (not just the first one)
       // This proves multi-box support is working
@@ -138,7 +133,6 @@ describe('useGardenInteractions', () => {
           currentBed: smallBox.cells,
           gardenProfile: mockProfile,
           activeLayout: layoutWithSmallBox,
-          setBed: mockSetBed,
           setAllBoxes: mockSetAllBoxes,
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
@@ -152,35 +146,37 @@ describe('useGardenInteractions', () => {
 
       // After autofill, box should have 4 cells (2x2), not 8 or 32
       expect(allBoxesUpdated).toHaveLength(1)
-      expect(allBoxesUpdated[0]!.cells).toHaveLength(4)
+      expect(allBoxesUpdated[0]).toBeDefined()
+      expect(allBoxesUpdated[0]?.cells).toHaveLength(4)
     })
 
     it('preserves existing crops when autofilling multiple boxes', () => {
       const lettuce: Crop = {
         id: 'lettuce',
         name: 'Lettuce',
-        scientificName: 'Lactuca sativa',
-        plantingDepth: '0.25-0.5',
-        spacing: 6,
-        daysToMaturity: '45-55',
-        sunRequirement: 'Full Sun to Partial Shade',
-        wateringNeeds: 'Moderate',
-        companionPlants: ['carrots', 'radishes'],
-        avoidPlants: [],
-        offsetWeeks: -4,
-        seasonalCategory: 'spring',
+        sfg_density: 4,
+        planting_strategy: {
+          start_window_start: -4,
+          start_window_end: 2,
+        },
+        companions: {
+          friends: ['carrots', 'radishes'],
+          enemies: [],
+        },
       }
 
       // Pre-fill some cells in box 1
-      mockLayout.boxes[0]!.cells[0] = lettuce
-      mockLayout.boxes[0]!.cells[3] = lettuce
+      const mockBox0 = mockLayout.boxes[0]
+      if (mockBox0) {
+        mockBox0.cells[0] = lettuce
+        mockBox0.cells[3] = lettuce
+      }
 
       const { result } = renderHook(() =>
         useGardenInteractions({
-          currentBed: mockLayout.boxes[0]!.cells,
+          currentBed: mockLayout.boxes[0]?.cells ?? [],
           gardenProfile: mockProfile,
           activeLayout: mockLayout,
-          setBed: mockSetBed,
           setAllBoxes: mockSetAllBoxes,
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
@@ -193,8 +189,12 @@ describe('useGardenInteractions', () => {
       })
 
       // Existing crops should be preserved in first box
-      expect(allBoxesUpdated[0]!.cells[0]).toEqual(lettuce)
-      expect(allBoxesUpdated[0]!.cells[3]).toEqual(lettuce)
+      expect(allBoxesUpdated[0]).toBeDefined()
+      const updatedBox0 = allBoxesUpdated[0]
+      if (updatedBox0) {
+        expect(updatedBox0.cells[0]).toEqual(lettuce)
+        expect(updatedBox0.cells[3]).toEqual(lettuce)
+      }
     })
   })
 })

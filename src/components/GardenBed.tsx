@@ -119,17 +119,17 @@ export function GardenBed({
   })
 
   // Generate Tailwind grid-cols class dynamically
-  const gridColsClass = `grid-cols-${width}`
+  const gridColsClass = `grid-cols-${width.toString()}`
 
   // Display name - use bedName prop or default format
-  const displayName = bedName || `Garden Bed (${width}' × ${height}')`
+  const displayName = bedName || `Garden Bed (${width.toString()}' × ${height.toString()}')`
   const cellCount = totalCells
 
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="mb-4 text-center relative">
         <h2 className="text-2xl font-bold text-soil-800">{displayName}</h2>
-        <p className="text-soil-600">{cellCount} Square Foot Gardening cells</p>
+        <p className="text-soil-600">{cellCount.toString()} Square Foot Gardening cells</p>
         {showDelete && onDelete && (
           <button
             onClick={onDelete}
@@ -145,9 +145,9 @@ export function GardenBed({
 
       <div
         className={`grid ${gridColsClass} gap-2 p-4 bg-soil-200 rounded-lg shadow-lg`}
-        style={{ gridTemplateColumns: `repeat(${width}, minmax(0, 1fr))` }}
+        style={{ gridTemplateColumns: `repeat(${width.toString()}, minmax(0, 1fr))` }}
         role="grid"
-        aria-label={`${width} by ${height} foot garden bed with ${cellCount} squares`}
+        aria-label={`${width.toString()} by ${height.toString()} foot garden bed with ${cellCount.toString()} squares`}
       >
         {bedSquares.map((crop, index) => (
           <GardenSquare

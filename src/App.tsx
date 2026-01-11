@@ -38,7 +38,6 @@ function App() {
     plantCrop,
     removeCrop,
     clearBed,
-    setBed,
     setAllBoxes,
     addBox,
     removeBox,
@@ -74,7 +73,6 @@ function App() {
     currentBed,
     gardenProfile,
     activeLayout,
-    setBed,
     setAllBoxes,
     plantCrop,
     removeCrop,
@@ -213,7 +211,7 @@ function App() {
                 width={box.width}
                 height={box.height}
                 bedName={box.name}
-                onDelete={() => handleDeleteBoxClick(box.id, box.name)}
+                onDelete={() => { handleDeleteBoxClick(box.id, box.name) }}
                 showDelete={activeLayout.boxes.length > 1}
               />
             ))}

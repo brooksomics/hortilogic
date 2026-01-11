@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { LayoutSelector } from './LayoutSelector'
 import type { GardenLayout, Crop } from '../types/garden'
+import { generateUUID } from '../utils/uuid'
 
 describe('LayoutSelector', () => {
   const mockOnSwitch = vi.fn()
@@ -15,7 +16,13 @@ describe('LayoutSelector', () => {
     name,
     createdAt: '2026-01-01T00:00:00.000Z',
     updatedAt,
-    bed: Array(32).fill(null) as (Crop | null)[],
+    boxes: [{
+      id: generateUUID(),
+      name: 'Main Bed',
+      width: 4,
+      height: 8,
+      cells: Array(32).fill(null) as (Crop | null)[],
+    }],
     profileId: 'profile-1',
   })
 
