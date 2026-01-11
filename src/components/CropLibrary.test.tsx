@@ -33,7 +33,6 @@ describe('CropLibrary', () => {
     render(<CropLibrary crops={sampleCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
 
     expect(screen.getByText('Crop Library')).toBeInTheDocument()
-    expect(screen.getByText('Select a crop to plant in your garden')).toBeInTheDocument()
   })
 
   it('displays all provided crops', () => {
@@ -71,21 +70,14 @@ describe('CropLibrary', () => {
     render(<CropLibrary crops={sampleCrops} selectedCrop={selectedCrop} onSelectCrop={vi.fn()} />)
 
     const tomatoButton = screen.getByRole('button', { name: /Select Tomato for planting/i })
-    expect(tomatoButton).toHaveClass('border-leaf-500')
     expect(tomatoButton).toHaveAttribute('aria-pressed', 'true')
+
+    // Border is now on the card container
+    const card = screen.getByTestId('crop-card-tomato')
+    expect(card).toHaveClass('border-leaf-500')
   })
 
-  it('shows check icon for selected crop', () => {
-    const selectedCrop = sampleCrops[0] // Lettuce
-    if (!selectedCrop) throw new Error('Selected crop not found')
-
-    render(<CropLibrary crops={sampleCrops} selectedCrop={selectedCrop} onSelectCrop={vi.fn()} />)
-
-    // Check that the selected crop's button contains the check icon
-    const lettuceButton = screen.getByRole('button', { name: /Select Lettuce for planting/i })
-    const checkIcon = lettuceButton.querySelector('svg[aria-hidden="true"]')
-    expect(checkIcon).toBeInTheDocument()
-  })
+  // Check icon test removed as we use border style and aria-pressed for selection state
 
   it('displays selection hint when a crop is selected', () => {
     const selectedCrop = sampleCrops[0]
@@ -93,15 +85,15 @@ describe('CropLibrary', () => {
 
     render(<CropLibrary crops={sampleCrops} selectedCrop={selectedCrop} onSelectCrop={vi.fn()} />)
 
-    expect(screen.getByText(/Selected: Lettuce/i)).toBeInTheDocument()
-    expect(screen.getByText('Click an empty square to plant')).toBeInTheDocument()
+    expect(screen.getByText(/Selected for Painting: Lettuce/i)).toBeInTheDocument()
+    expect(screen.getByText(/Click empty squares to plant manually/i)).toBeInTheDocument()
   })
 
   it('does not display selection hint when no crop is selected', () => {
     render(<CropLibrary crops={sampleCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
 
-    expect(screen.queryByText(/Selected:/i)).not.toBeInTheDocument()
-    expect(screen.queryByText('Click an empty square to plant')).not.toBeInTheDocument()
+    expect(screen.queryByText(/Selected for Painting:/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Click empty squares to plant/i)).not.toBeInTheDocument()
   })
 
   it('uses crop id as fallback when name is not provided', () => {
@@ -263,8 +255,8 @@ describe('CropLibrary', () => {
         />
       )
 
-      const lettuceButton = screen.getByRole('button', { name: /Select Lettuce for planting/i })
-      expect(lettuceButton).toHaveClass('border-green-500')
+      const card = screen.getByTestId('crop-card-lettuce')
+      expect(card).toHaveClass('border-green-500')
     })
 
     it('shows gray border for out-of-season crops', () => {
@@ -282,9 +274,9 @@ describe('CropLibrary', () => {
         />
       )
 
-      const lettuceButton = screen.getByRole('button', { name: /Select Lettuce for planting/i })
-      expect(lettuceButton).toHaveClass('border-gray-300')
-      expect(lettuceButton).toHaveClass('opacity-60')
+      const card = screen.getByTestId('crop-card-lettuce')
+      expect(card).toHaveClass('border-gray-300')
+      expect(card).toHaveClass('opacity-60')
     })
 
     it('displays viability icon for each crop', () => {

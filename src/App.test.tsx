@@ -48,7 +48,7 @@ describe('App', () => {
     await user.click(lettuceButton)
 
     // Should show selection hint (there will be two instances - one in sidebar, one in instructions)
-    expect(screen.getAllByText(/Selected: Lettuce/i)).toHaveLength(2)
+    expect(screen.getAllByText(/Selected.*Lettuce/i)).toHaveLength(2)
   })
 
   it('allows planting a crop in garden bed', async () => {

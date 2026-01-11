@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
-import { Sprout, Check, X } from 'lucide-react'
-import type { Crop, GardenProfile } from '@/types'
+import { Sprout, X } from 'lucide-react'
+import type { Crop, GardenProfile, GardenStash } from '../types/garden'
 import { getCropViabilityStatus, getViabilityStyles } from '@/utils/cropViabilityHelper'
 
 interface CropLibraryProps {
@@ -15,13 +15,30 @@ interface CropLibraryProps {
 
   /** Optional garden profile for viability indicators */
   currentProfile?: GardenProfile | null
+
+  /** Current stash for quantities */
+  stash?: GardenStash
+
+  /** Add crop to stash */
+  onAddToStash?: (cropId: string, amount: number) => void
+
+  /** Remove crop from stash */
+  onRemoveFromStash?: (cropId: string, amount: number) => void
 }
 
 /**
  * Crop Library sidebar component
  * Displays available crops and allows selection for planting
  */
-export function CropLibrary({ crops, selectedCrop, onSelectCrop, currentProfile }: CropLibraryProps) {
+export function CropLibrary({
+  crops,
+  selectedCrop,
+  onSelectCrop,
+  currentProfile,
+  stash,
+  onAddToStash,
+  onRemoveFromStash
+}: CropLibraryProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [hideOutOfSeason, setHideOutOfSeason] = useState(false)
 
@@ -57,10 +74,6 @@ export function CropLibrary({ crops, selectedCrop, onSelectCrop, currentProfile 
           Crop Library
         </h2>
       </div>
-
-      <p className="text-sm text-soil-600 mb-4">
-        Select a crop to plant in your garden
-      </p>
 
       {/* Search Input */}
       <div className="mb-4 relative">
@@ -112,6 +125,9 @@ export function CropLibrary({ crops, selectedCrop, onSelectCrop, currentProfile 
         {filteredCrops.map((crop) => {
           const isSelected = selectedCrop?.id === crop.id
 
+          // Current quantity in stash
+          const stashQty = stash ? (stash[crop.id] || 0) : 0
+
           // Get viability status and styles
           let viabilityStyles = null
           let viabilityStatus = null
@@ -130,7 +146,7 @@ export function CropLibrary({ crops, selectedCrop, onSelectCrop, currentProfile 
             ? 'border-leaf-500 bg-leaf-50'
             : viabilityStyles
               ? viabilityStyles.className
-              : 'border-soil-200 hover:border-soil-400 bg-white'
+              : 'border-soil-200 bg-white'
 
           // Create aria-label with viability info
           const ariaLabel = viabilityStyles
@@ -138,21 +154,23 @@ export function CropLibrary({ crops, selectedCrop, onSelectCrop, currentProfile 
             : `Select ${crop.name || crop.id} for planting`
 
           return (
-            <button
+            <div
               key={crop.id}
-              onClick={() => {
-                onSelectCrop(crop)
-              }}
               className={`
-                w-full text-left p-3 rounded-lg border-2 transition-all
+                w-full p-3 rounded-lg border-2 transition-all group
                 ${borderClass}
               `}
-              type="button"
-              aria-pressed={isSelected}
-              aria-label={ariaLabel}
+              data-testid={`crop-card-${crop.id}`}
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 flex-1">
+              <div className="flex items-center justify-between mb-2">
+                {/* Crop Info Header - Clickable to select for painting */}
+                <button
+                  onClick={() => onSelectCrop(crop)}
+                  className="flex items-center gap-2 flex-1 text-left"
+                  type="button"
+                  aria-pressed={isSelected}
+                  aria-label={ariaLabel}
+                >
                   {crop.emoji && (
                     <span className="text-2xl flex-shrink-0" aria-hidden="true">
                       {crop.emoji}
@@ -166,21 +184,50 @@ export function CropLibrary({ crops, selectedCrop, onSelectCrop, currentProfile 
                       {crop.sfg_density} per sq ft
                     </div>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-2 flex-shrink-0">
                   {/* Viability Icon */}
                   {ViabilityIcon && (
-                    <ViabilityIcon className="w-4 h-4 viability-icon" aria-hidden="true" />
+                    <ViabilityIcon className="w-4 h-4 viability-icon mr-1" aria-hidden="true" />
                   )}
-
-                  {/* Selection Check */}
-                  {isSelected && (
-                    <Check className="w-5 h-5 text-leaf-600" aria-hidden="true" />
-                  )}
-                </div>
+                </button>
               </div>
-            </button>
+
+              {/* Stash Controls */}
+              {onAddToStash && onRemoveFromStash && (
+                <div className="flex items-center justify-between bg-soil-50 rounded p-1">
+                  <span className="text-xs text-soil-600 px-2">Stash:</span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onRemoveFromStash(crop.id, 1)
+                      }}
+                      className="w-6 h-6 flex items-center justify-center rounded bg-white border border-soil-300 text-soil-700 hover:bg-soil-100 disabled:opacity-50"
+                      disabled={stashQty === 0}
+                      aria-label={`Remove ${crop.name} from stash`}
+                      type="button"
+                    >
+                      -
+                    </button>
+                    <span className="w-6 text-center text-sm font-medium text-soil-900">
+                      {stashQty}
+                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onAddToStash(crop.id, 1)
+                      }}
+                      className="w-6 h-6 flex items-center justify-center rounded bg-white border border-soil-300 text-soil-700 hover:bg-soil-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                      aria-label={`Add ${crop.name} to stash`}
+                      type="button"
+                      disabled={false} // Todo: connect to canAddToStash
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           )
         })}
       </div>
@@ -188,10 +235,10 @@ export function CropLibrary({ crops, selectedCrop, onSelectCrop, currentProfile 
       {selectedCrop && (
         <div className="mt-4 p-3 bg-leaf-50 rounded border border-leaf-200">
           <p className="text-sm text-leaf-900 font-medium">
-            Selected: {selectedCrop.name || selectedCrop.id}
+            Selected for Painting: {selectedCrop.name || selectedCrop.id}
           </p>
           <p className="text-xs text-leaf-700 mt-1">
-            Click an empty square to plant
+            Click empty squares to plant manually, or use Stash to plan.
           </p>
         </div>
       )}
