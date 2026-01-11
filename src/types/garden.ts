@@ -25,6 +25,27 @@ export interface GardenProfile {
 }
 
 /**
+ * Garden box (bed) with custom dimensions
+ * A layout can contain multiple boxes of different sizes
+ */
+export interface GardenBox {
+  /** Unique identifier (UUID v4) */
+  id: string
+
+  /** User-friendly box name (e.g., "North Bed", "Herb Box") */
+  name: string
+
+  /** Width in feet/columns */
+  width: number
+
+  /** Height in feet/rows */
+  height: number
+
+  /** Array of cells with planted crops (length = width * height) */
+  cells: (Crop | null)[]
+}
+
+/**
  * Individual garden layout with crops and timestamps
  * Multiple layouts enable seasonal planning (e.g., "Spring 2026" vs "Fall 2026")
  */
@@ -41,11 +62,14 @@ export interface GardenLayout {
   /** ISO timestamp when layout was last modified */
   updatedAt: string
 
-  /** Array of 32 cells (4x8 grid) with planted crops */
-  bed: (Crop | null)[]
+  /** Array of garden boxes (supports multiple beds of different sizes) */
+  boxes: GardenBox[]
 
   /** Reference to garden profile ID */
   profileId: string
+
+  /** @deprecated Legacy single-bed array (pre-F008), kept for migration compatibility */
+  bed?: (Crop | null)[]
 }
 
 /**

@@ -1,5 +1,5 @@
 import { useLocalStorage } from './useLocalStorage'
-import type { LayoutStorage, GardenLayout, Crop } from '../types/garden'
+import type { LayoutStorage, GardenLayout, Crop, GardenBox } from '../types/garden'
 import { generateUUID } from '../utils/uuid'
 
 const LAYOUTS_KEY = 'hortilogic:layouts'
@@ -12,27 +12,44 @@ function createEmptyBed(): (Crop | null)[] {
 }
 
 /**
+ * Creates a new garden box with given dimensions
+ */
+function createEmptyBox(name: string, width: number, height: number): GardenBox {
+  return {
+    id: generateUUID(),
+    name,
+    width,
+    height,
+    cells: Array(width * height).fill(null) as (Crop | null)[],
+  }
+}
+
+/**
  * Creates a new layout with given name and profile
+ * New layouts use the multi-box schema with one "Main Bed" box (4x8)
  */
 function createNewLayout(name: string, profileId: string): GardenLayout {
   const now = new Date().toISOString()
+  const mainBox = createEmptyBox('Main Bed', 4, 8)
+
   return {
     id: generateUUID(),
     name,
     createdAt: now,
     updatedAt: now,
-    bed: createEmptyBed(),
+    boxes: [mainBox],
     profileId,
   }
 }
 
 /**
  * Creates default layout storage with one layout
+ * Uses version 2 (multi-box schema)
  */
 function createDefaultLayoutStorage(profileId: string): LayoutStorage {
   const layout = createNewLayout('My Garden', profileId)
   return {
-    version: 1,
+    version: 2,
     activeLayoutId: layout.id,
     layouts: {
       [layout.id]: layout,
@@ -109,7 +126,11 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
   const layouts = layoutStorage.layouts
   const activeLayoutId = layoutStorage.activeLayoutId
   const activeLayout = layouts[activeLayoutId] ?? null
-  const currentBed = activeLayout?.bed ?? createEmptyBed()
+
+  // Get current bed from boxes (multi-box schema) or fall back to legacy bed
+  // eslint-disable-next-line @typescript-eslint/no-deprecated, @typescript-eslint/no-unnecessary-condition
+  const currentBed =
+    activeLayout?.boxes?.[0]?.cells ?? activeLayout?.bed ?? createEmptyBed()
 
   const createLayout = (name: string): string => {
     const newLayout = createNewLayout(name, defaultProfileId)
@@ -192,7 +213,22 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     }
 
     const duplicate = createNewLayout(newName, original.profileId)
-    duplicate.bed = [...original.bed]
+
+    // Copy boxes from original layout (multi-box schema)
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (original.boxes && original.boxes.length > 0) {
+      duplicate.boxes = original.boxes.map((box) => ({
+        ...box,
+        id: generateUUID(), // Generate new ID for duplicated box
+        cells: [...box.cells],
+      }))
+    }
+    // Fall back to legacy bed if boxes don't exist
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    else if (original.bed && duplicate.boxes[0]) {
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      duplicate.boxes[0].cells = [...original.bed]
+    }
 
     setLayoutStorage({
       ...layoutStorage,
@@ -209,55 +245,141 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
   const plantCrop = (cellIndex: number, crop: Crop): void => {
     if (!activeLayout) return
 
-    const newBed = [...activeLayout.bed]
-    newBed[cellIndex] = crop
+    // Update boxes array (multi-box schema)
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (activeLayout.boxes && activeLayout.boxes.length > 0) {
+      const newBoxes = [...activeLayout.boxes]
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const newCells = [...newBoxes[0]!.cells]
+      newCells[cellIndex] = crop
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      newBoxes[0] = { ...newBoxes[0]!, cells: newCells }
 
-    setLayoutStorage({
-      ...layoutStorage,
-      layouts: {
-        ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, bed: newBed }),
-      },
-    })
+      setLayoutStorage({
+        ...layoutStorage,
+        layouts: {
+          ...layouts,
+          [activeLayoutId]: touchLayout({ ...activeLayout, boxes: newBoxes }),
+        },
+      })
+    }
+    // Fall back to legacy bed for backward compatibility
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    else if (activeLayout.bed) {
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      const newBed = [...activeLayout.bed]
+      newBed[cellIndex] = crop
+
+      setLayoutStorage({
+        ...layoutStorage,
+        layouts: {
+          ...layouts,
+          [activeLayoutId]: touchLayout({ ...activeLayout, bed: newBed }),
+        },
+      })
+    }
   }
 
   const removeCrop = (cellIndex: number): void => {
     if (!activeLayout) return
 
-    const newBed = [...activeLayout.bed]
-    newBed[cellIndex] = null
+    // Update boxes array (multi-box schema)
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (activeLayout.boxes && activeLayout.boxes.length > 0) {
+      const newBoxes = [...activeLayout.boxes]
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const newCells = [...newBoxes[0]!.cells]
+      newCells[cellIndex] = null
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      newBoxes[0] = { ...newBoxes[0]!, cells: newCells }
 
-    setLayoutStorage({
-      ...layoutStorage,
-      layouts: {
-        ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, bed: newBed }),
-      },
-    })
+      setLayoutStorage({
+        ...layoutStorage,
+        layouts: {
+          ...layouts,
+          [activeLayoutId]: touchLayout({ ...activeLayout, boxes: newBoxes }),
+        },
+      })
+    }
+    // Fall back to legacy bed for backward compatibility
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    else if (activeLayout.bed) {
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      const newBed = [...activeLayout.bed]
+      newBed[cellIndex] = null
+
+      setLayoutStorage({
+        ...layoutStorage,
+        layouts: {
+          ...layouts,
+          [activeLayoutId]: touchLayout({ ...activeLayout, bed: newBed }),
+        },
+      })
+    }
   }
 
   const clearBed = (): void => {
     if (!activeLayout) return
 
-    setLayoutStorage({
-      ...layoutStorage,
-      layouts: {
-        ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, bed: createEmptyBed() }),
-      },
-    })
+    // Update boxes array (multi-box schema)
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (activeLayout.boxes && activeLayout.boxes.length > 0) {
+      const newBoxes = [...activeLayout.boxes]
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const firstBox = newBoxes[0]!
+      newBoxes[0] = {
+        ...firstBox,
+        cells: Array(firstBox.width * firstBox.height).fill(null) as (Crop | null)[],
+      }
+
+      setLayoutStorage({
+        ...layoutStorage,
+        layouts: {
+          ...layouts,
+          [activeLayoutId]: touchLayout({ ...activeLayout, boxes: newBoxes }),
+        },
+      })
+    }
+    // Fall back to legacy bed for backward compatibility
+    else {
+      setLayoutStorage({
+        ...layoutStorage,
+        layouts: {
+          ...layouts,
+          [activeLayoutId]: touchLayout({ ...activeLayout, bed: createEmptyBed() }),
+        },
+      })
+    }
   }
 
   const setBed = (newBed: (Crop | null)[]): void => {
     if (!activeLayout) return
 
-    setLayoutStorage({
-      ...layoutStorage,
-      layouts: {
-        ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, bed: [...newBed] }),
-      },
-    })
+    // Update boxes array (multi-box schema)
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (activeLayout.boxes && activeLayout.boxes.length > 0) {
+      const newBoxes = [...activeLayout.boxes]
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      newBoxes[0] = { ...newBoxes[0]!, cells: [...newBed] }
+
+      setLayoutStorage({
+        ...layoutStorage,
+        layouts: {
+          ...layouts,
+          [activeLayoutId]: touchLayout({ ...activeLayout, boxes: newBoxes }),
+        },
+      })
+    }
+    // Fall back to legacy bed for backward compatibility
+    else {
+      setLayoutStorage({
+        ...layoutStorage,
+        layouts: {
+          ...layouts,
+          [activeLayoutId]: touchLayout({ ...activeLayout, bed: [...newBed] }),
+        },
+      })
+    }
   }
 
   return {

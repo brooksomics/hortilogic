@@ -4,7 +4,7 @@
 
 **Before creating any new function, CHECK HERE FIRST.**
 
-Last updated: 2026-01-09 (TODO-006 complete - Core 50 Crop Database with Search)
+Last updated: 2026-01-10 (TODO-015 complete - Multi-Box Data Schema Refactor)
 
 ---
 
@@ -47,7 +47,8 @@ Last updated: 2026-01-09 (TODO-006 complete - Core 50 Crop Database with Search)
 | `useLayoutManager()` | hooks/useLayoutManager.ts | Manage multiple garden layouts with CRUD operations |
 | `useProfiles()` | hooks/useProfiles.ts | Access garden profiles (zones, frost dates) |
 | `migrateToLayoutsSchema()` | utils/storageMigration.ts:71 | Migrate from single to multi-layout storage schema |
-| `createLayout()` | hooks/useLayoutManager.ts:122 | Create new blank layout and switch to it |
+| `migrateToMultiBoxSchema()` | utils/storageMigration.ts:138 | Migrate layouts from single-bed to multi-box schema |
+| `createLayout()` | hooks/useLayoutManager.ts:133 | Create new blank layout with multi-box schema |
 | `switchLayout()` | hooks/useLayoutManager.ts:137 | Switch active layout |
 | `renameLayout()` | hooks/useLayoutManager.ts:149 | Rename existing layout |
 | `deleteLayout()` | hooks/useLayoutManager.ts:165 | Delete layout (prevents deleting last one) |
@@ -55,11 +56,14 @@ Last updated: 2026-01-09 (TODO-006 complete - Core 50 Crop Database with Search)
 
 **Key Concepts:**
 - Multiple layouts per user (e.g., "Spring 2026", "Fall 2026")
-- Each layout has its own bed (32 cells) and references a profile
+- Each layout contains one or more garden boxes (beds) of custom sizes
+- New layouts created with multi-box schema (boxes array with "Main Bed" 4x8)
 - Profiles shared across layouts (same location, different seasons)
-- Migration preserves existing user data from single-layout schema
+- Migration preserves existing user data:
+  - V1: Single layout → Multiple layouts (`migrateToLayoutsSchema`)
+  - V2: Single bed → Multi-box schema (`migrateToMultiBoxSchema`)
 - LocalStorage keys: `hortilogic:layouts`, `hortilogic:profiles`
-- Version numbers enable future schema migrations
+- Storage version bumped from 1 to 2 for multi-box schema
 
 ---
 
@@ -114,14 +118,15 @@ Last updated: 2026-01-09 (TODO-006 complete - Core 50 Crop Database with Search)
 
 | Type | Location | Purpose |
 |------|----------|---------|
-| `Crop` | types/garden.ts:36 | Crop definition with spacing, planting strategy, companions |
-| `PlantingStrategy` | types/garden.ts:22 | Planting window (weeks relative to frost date) |
-| `CompanionRules` | types/garden.ts:10 | Friends and enemies for companion planting |
-| `GardenProfile` | types/garden.ts:53 | USDA zone and frost dates |
-| `GardenLayout` | types/garden.ts:77 | Layout with ID, name, bed, timestamps, profileId |
-| `LayoutStorage` | types/garden.ts:88 | Multi-layout storage schema (version 1) |
-| `ProfileStorage` | types/garden.ts:95 | Profile storage schema (version 1) |
-| `LegacyGardenState` | types/garden.ts:102 | Old single-layout schema (for migration) |
+| `Crop` | types/garden.ts:122 | Crop definition with spacing, planting strategy, companions |
+| `PlantingStrategy` | types/garden.ts:94 | Planting window (weeks relative to frost date) |
+| `CompanionRules` | types/garden.ts:112 | Friends and enemies for companion planting |
+| `GardenProfile` | types/garden.ts:4 | USDA zone and frost dates |
+| `GardenBox` | types/garden.ts:31 | Individual garden box/bed with dimensions and cells |
+| `GardenLayout` | types/garden.ts:52 | Layout with ID, name, boxes array, timestamps, profileId |
+| `LayoutStorage` | types/garden.ts:76 | Multi-layout storage schema (version 2 with multi-box) |
+| `ProfileStorage` | types/garden.ts:83 | Profile storage schema (version 1) |
+| `LegacyGardenState` | types/garden.ts:90 | Old single-layout schema (for migration) |
 
 **Type Relationships:**
 ```
@@ -175,7 +180,7 @@ Migration: LegacyGardenState → LayoutStorage + ProfileStorage
 | Layout management | `useLayoutManager`, `createLayout`, `switchLayout` |
 | Profile management | `useProfiles`, `getProfile` |
 | State management | `useGarden`, `useLocalStorage` |
-| Migration | `migrateToLayoutsSchema` |
+| Migration | `migrateToLayoutsSchema`, `migrateToMultiBoxSchema` |
 | Planting actions | `plantCrop`, `removeCrop`, `clearBed` |
 | Crop database | `CORE_50_CROPS`, `CROPS_BY_ID` |
 | Crop search/filtering | `CropLibrary` (search state), `filteredCrops` |

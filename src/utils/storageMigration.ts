@@ -4,6 +4,7 @@ import type {
   LayoutStorage,
   ProfileStorage,
   GardenProfile,
+  GardenBox,
 } from '../types/garden'
 import { generateUUID } from './uuid'
 
@@ -117,6 +118,98 @@ export function migrateToLayoutsSchema(): MigrationResult {
     }
   } catch (error) {
     console.error('Migration failed:', error)
+    return {
+      success: false,
+      migrated: false,
+      reason: error instanceof Error ? error.message : 'unknown_error',
+    }
+  }
+}
+
+/**
+ * Migrates from single-bed layout schema to multi-box schema
+ *
+ * Converts layouts with `bed` array to layouts with `boxes` array.
+ * Wraps existing bed data into a single "Main Bed" box (4x8).
+ * Bumps storage version from 1 to 2.
+ *
+ * @returns Migration result with success status and reason
+ */
+export function migrateToMultiBoxSchema(): MigrationResult {
+  try {
+    // Check if layouts exist
+    const layoutsData = localStorage.getItem(LAYOUTS_KEY)
+    if (!layoutsData) {
+      return {
+        success: true,
+        migrated: false,
+        reason: 'no_layouts_data',
+      }
+    }
+
+    const layoutStorage = JSON.parse(layoutsData) as LayoutStorage
+
+    // Check if already migrated (version 2 or has boxes)
+    if (layoutStorage.version >= 2) {
+      return {
+        success: true,
+        migrated: false,
+        reason: 'already_migrated',
+      }
+    }
+
+    // Check if any layout already has boxes property
+    const hasBoxes = Object.values(layoutStorage.layouts).some(
+      (layout) => Boolean(layout.boxes && layout.boxes.length > 0)
+    )
+    if (hasBoxes) {
+      return {
+        success: true,
+        migrated: false,
+        reason: 'already_migrated',
+      }
+    }
+
+    // Migrate each layout
+    const migratedLayouts: Record<string, GardenLayout> = {}
+    for (const [layoutId, layout] of Object.entries(layoutStorage.layouts)) {
+      // Create a GardenBox from the legacy bed array
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      const cells = layout.bed || (Array(32).fill(null) as (Crop | null)[])
+      const box: GardenBox = {
+        id: generateUUID(),
+        name: 'Main Bed',
+        width: 4,
+        height: 8,
+        cells,
+      }
+
+      // Create migrated layout with boxes array
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      migratedLayouts[layoutId] = {
+        ...layout,
+        boxes: [box],
+        // Keep the old bed property temporarily for safety (marked as deprecated)
+        bed: layout.bed,
+      }
+    }
+
+    // Update storage with migrated layouts and bumped version
+    const updatedStorage: LayoutStorage = {
+      ...layoutStorage,
+      version: 2,
+      layouts: migratedLayouts,
+    }
+
+    // Write updated storage to localStorage
+    localStorage.setItem(LAYOUTS_KEY, JSON.stringify(updatedStorage))
+
+    return {
+      success: true,
+      migrated: true,
+    }
+  } catch (error) {
+    console.error('Multi-box migration failed:', error)
     return {
       success: false,
       migrated: false,
