@@ -98,9 +98,9 @@ export function StashSummary({
                             <div key={cropId} className="flex justify-between items-center text-sm group">
                                 <div className="flex items-center gap-2">
                                     <button
-                                        onClick={() => onRemoveItem(cropId)}
+                                        onClick={() => { onRemoveItem(cropId); }}
                                         className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
-                                        title={`Remove ${crop.name} from stash`}
+                                        title={`Remove ${crop.name ?? crop.id} from stash`}
                                         type="button"
                                         disabled={isDistributing}
                                     >
@@ -133,7 +133,7 @@ export function StashSummary({
                     <div className="w-full bg-soil-100 rounded-full h-2.5">
                         <div
                             className={`h-2.5 rounded-full transition-all ${isOverLimit ? 'bg-red-500' : 'bg-leaf-500'}`}
-                            style={{ width: `${Math.min((totalArea / maxArea) * 100, 100)}%` }}
+                            style={{ width: `${String(Math.min((totalArea / maxArea) * 100, 100))}%` }}
                         />
                     </div>
 
@@ -154,7 +154,7 @@ export function StashSummary({
                                 type="checkbox"
                                 className="sr-only peer"
                                 checked={fillGaps}
-                                onChange={(e) => setFillGaps(e.target.checked)}
+                                onChange={(e) => { setFillGaps(e.target.checked); }}
                                 disabled={isDistributing}
                             />
                             <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-leaf-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-leaf-600"></div>
@@ -163,7 +163,7 @@ export function StashSummary({
                     </div>
 
                     <button
-                        onClick={() => onDistribute(fillGaps)}
+                        onClick={() => { onDistribute(fillGaps); }}
                         disabled={isOverLimit || isDistributing}
                         className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${isOverLimit
                             ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
