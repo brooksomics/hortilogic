@@ -5,16 +5,16 @@ import { generateUUID } from '../utils/uuid'
 const LAYOUTS_KEY = 'hortilogic:layouts'
 
 /**
- * Creates an empty 4x8 garden box
- * 4 feet wide (columns) x 8 feet long (rows) = 32 sq ft
+ * Creates an empty 4x4 garden box
+ * 4 feet wide (columns) x 4 feet long (rows) = 16 sq ft
  */
 function createEmptyBox(name = 'Main Bed'): GardenBox {
   return {
     id: generateUUID(),
     name,
     width: 4,
-    height: 8,
-    cells: Array(32).fill(null) as (Crop | null)[],
+    height: 4,
+    cells: Array(16).fill(null) as (Crop | null)[],
   }
 }
 
