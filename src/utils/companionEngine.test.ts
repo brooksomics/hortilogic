@@ -102,6 +102,108 @@ describe('getNeighbors', () => {
 
     expect(neighbors).toEqual([])
   })
+
+  describe('custom grid widths', () => {
+    it('handles 2x4 grid (8 cells, width=2)', () => {
+      const grid: (Crop | null)[] = Array(8).fill(null) as (Crop | null)[]
+      // Grid layout (2 cols x 4 rows):
+      // [0][1]
+      // [2][3]
+      // [4][5]
+      // [6][7]
+
+      grid[0] = tomato  // Top-left
+      grid[1] = peas    // Top-right
+      grid[2] = carrot  // Below tomato
+      grid[3] = peas    // Right of cell 2
+      grid[4] = tomato  // Below cell 2
+
+      // Cell 2 (row 1, col 0) should have neighbors: 0 (top), 3 (right), 4 (bottom)
+      const neighbors = getNeighbors(grid, 2, 2)
+
+      expect(neighbors).toHaveLength(3)
+      expect(neighbors.filter(n => n === 'tomato')).toHaveLength(2) // top and bottom
+      expect(neighbors).toContain('peas') // right
+    })
+
+    it('handles 3x3 grid (9 cells, width=3)', () => {
+      const grid: (Crop | null)[] = Array(9).fill(null) as (Crop | null)[]
+      // Grid layout (3 cols x 3 rows):
+      // [0][1][2]
+      // [3][4][5]
+      // [6][7][8]
+
+      grid[1] = tomato   // Top
+      grid[3] = peas     // Left
+      grid[5] = carrot   // Right
+      grid[7] = tomato   // Bottom
+
+      // Cell 4 (center) should have all 4 neighbors
+      const neighbors = getNeighbors(grid, 4, 3)
+
+      expect(neighbors).toHaveLength(4)
+      expect(neighbors.filter(n => n === 'tomato')).toHaveLength(2)
+      expect(neighbors).toContain('peas')
+      expect(neighbors).toContain('carrot')
+    })
+
+    it('handles 6x4 grid with correct right edge detection', () => {
+      const grid: (Crop | null)[] = Array(24).fill(null) as (Crop | null)[]
+      // Grid layout (6 cols x 4 rows)
+      // Cell 5 is on right edge (row 0, col 5)
+
+      grid[4] = peas     // Left of cell 5
+      grid[11] = carrot  // Below cell 5 (5 + 6 = 11)
+
+      const neighbors = getNeighbors(grid, 5, 6)
+
+      // Should have left and bottom neighbors only (no right or top)
+      expect(neighbors).toHaveLength(2)
+      expect(neighbors).toContain('peas')
+      expect(neighbors).toContain('carrot')
+    })
+
+    it('handles 1x10 grid (single column)', () => {
+      const grid: (Crop | null)[] = Array(10).fill(null) as (Crop | null)[]
+
+      grid[4] = tomato   // Above cell 5
+      grid[6] = peas     // Below cell 5
+
+      // Cell 5 in single column should only have top and bottom neighbors
+      const neighbors = getNeighbors(grid, 5, 1)
+
+      expect(neighbors).toHaveLength(2)
+      expect(neighbors).toContain('tomato')
+      expect(neighbors).toContain('peas')
+    })
+
+    it('handles 10x1 grid (single row)', () => {
+      const grid: (Crop | null)[] = Array(10).fill(null) as (Crop | null)[]
+
+      grid[4] = tomato   // Left of cell 5
+      grid[6] = peas     // Right of cell 5
+
+      // Cell 5 in single row should only have left and right neighbors
+      const neighbors = getNeighbors(grid, 5, 10)
+
+      expect(neighbors).toHaveLength(2)
+      expect(neighbors).toContain('tomato')
+      expect(neighbors).toContain('peas')
+    })
+
+    it('maintains backward compatibility with default width=8', () => {
+      const grid = createGrid()
+      grid[1] = tomato   // Top
+      grid[8] = peas     // Left
+      grid[10] = carrot  // Right
+      grid[17] = tomato  // Bottom
+
+      // Cell 9 with no width param should default to 8 (4x8 grid)
+      const neighbors = getNeighbors(grid, 9)
+
+      expect(neighbors).toHaveLength(4)
+    })
+  })
 })
 
 describe('checkCompanionConstraints', () => {
@@ -274,5 +376,71 @@ describe('autoFillBed', () => {
 
     // Should return grid unchanged (all tomato)
     expect(result.every(cell => cell?.id === 'tomato')).toBe(true)
+  })
+
+  describe('custom dimensions', () => {
+    it('handles 2x4 grid (8 cells)', () => {
+      const grid: (Crop | null)[] = Array(8).fill(null) as (Crop | null)[]
+      const crops = [tomato, carrot]
+      const targetDate = new Date('2024-05-20')
+
+      const result = autoFillBed(grid, crops, profile, targetDate, 2, 4)
+
+      // Should fill the 8-cell grid
+      expect(result).toHaveLength(8)
+      const plantedCount = result.filter(cell => cell !== null).length
+      expect(plantedCount).toBeGreaterThan(0)
+    })
+
+    it('handles 3x3 grid (9 cells)', () => {
+      const grid: (Crop | null)[] = Array(9).fill(null) as (Crop | null)[]
+      const crops = [tomato, carrot, peas]
+      const targetDate = new Date('2024-05-20')
+
+      const result = autoFillBed(grid, crops, profile, targetDate, 3, 3)
+
+      // Should fill the 9-cell grid
+      expect(result).toHaveLength(9)
+      const plantedCount = result.filter(cell => cell !== null).length
+      expect(plantedCount).toBeGreaterThan(0)
+    })
+
+    it('respects companion rules with custom dimensions', () => {
+      const grid: (Crop | null)[] = Array(6).fill(null) as (Crop | null)[]
+      // 2x3 grid:
+      // [0][1]
+      // [2][3]
+      // [4][5]
+      grid[0] = tomato  // Plant tomato at top-left
+
+      const crops = [peas, carrot]
+      const targetDate = new Date('2024-03-15') // Both peas and carrot are viable
+
+      const result = autoFillBed(grid, crops, profile, targetDate, 2, 3)
+
+      // Cell 1 is to the right of tomato (enemy of peas)
+      if (result[1]) {
+        expect(result[1].id).not.toBe('peas')
+      }
+
+      // Cell 2 is below tomato (enemy of peas)
+      if (result[2]) {
+        expect(result[2].id).not.toBe('peas')
+      }
+    })
+
+    it('maintains backward compatibility with default dimensions (4x8)', () => {
+      const grid: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]
+      const crops = [tomato, carrot]
+      const targetDate = new Date('2024-05-20')
+
+      // Call without width/height parameters
+      const result = autoFillBed(grid, crops, profile, targetDate)
+
+      // Should work as before (32 cells)
+      expect(result).toHaveLength(32)
+      const plantedCount = result.filter(cell => cell !== null).length
+      expect(plantedCount).toBeGreaterThan(0)
+    })
   })
 })

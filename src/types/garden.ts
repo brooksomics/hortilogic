@@ -25,14 +25,14 @@ export interface GardenProfile {
 }
 
 /**
- * Individual garden box/bed with custom dimensions
- * Supports variable-sized raised beds (e.g., 4x8, 2x4, 3x3)
+ * Garden box (bed) with custom dimensions
+ * A layout can contain multiple boxes of different sizes
  */
 export interface GardenBox {
   /** Unique identifier (UUID v4) */
   id: string
 
-  /** User-defined box name (e.g., "Main Bed", "Herb Box") */
+  /** User-friendly box name (e.g., "North Bed", "Herb Box") */
   name: string
 
   /** Width in feet/columns */
@@ -41,7 +41,7 @@ export interface GardenBox {
   /** Height in feet/rows */
   height: number
 
-  /** Array of cells (width * height) with planted crops */
+  /** Array of cells with planted crops (length = width * height) */
   cells: (Crop | null)[]
 }
 
@@ -62,11 +62,14 @@ export interface GardenLayout {
   /** ISO timestamp when layout was last modified */
   updatedAt: string
 
-  /** Array of garden boxes (supports multiple beds of varying sizes) */
+  /** Array of garden boxes (supports multiple beds of different sizes) */
   boxes: GardenBox[]
 
   /** Reference to garden profile ID */
   profileId: string
+
+  /** @deprecated Legacy single-bed array (pre-F008), kept for migration compatibility */
+  bed?: (Crop | null)[]
 }
 
 /**

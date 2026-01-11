@@ -1,11 +1,10 @@
 import type {
   LegacyGardenState,
-  LegacyGardenLayout,
   GardenLayout,
-  GardenBox,
   LayoutStorage,
   ProfileStorage,
   GardenProfile,
+  GardenBox,
 } from '../types/garden'
 import { generateUUID } from './uuid'
 
@@ -34,9 +33,9 @@ function createDefaultProfile(): GardenProfile {
 }
 
 /**
- * Creates a default layout with empty bed (legacy version for F005 migration)
+ * Creates a default layout with empty bed
  */
-function createDefaultLegacyLayout(profileId: string, bed: (typeof import('../types/garden').Crop | null)[]): LegacyGardenLayout {
+function createDefaultLayout(profileId: string, bed: GardenLayout['bed']): GardenLayout {
   const now = new Date().toISOString()
   return {
     id: generateUUID(),
@@ -49,22 +48,7 @@ function createDefaultLegacyLayout(profileId: string, bed: (typeof import('../ty
 }
 
 /**
- * Creates a default layout with a single 4x8 box
- */
-function createDefaultLayout(profileId: string, boxes: GardenBox[]): GardenLayout {
-  const now = new Date().toISOString()
-  return {
-    id: generateUUID(),
-    name: 'My Garden',
-    createdAt: now,
-    updatedAt: now,
-    boxes,
-    profileId,
-  }
-}
-
-/**
- * Creates a default 4x8 garden box with empty cells
+ * Creates a default 8x4 garden box with empty cells
  */
 function createDefaultBox(name = 'Main Bed', cells: (typeof import('../types/garden').Crop | null)[] = Array(32).fill(null)): GardenBox {
   return {
@@ -123,20 +107,10 @@ export function migrateToLayoutsSchema(): MigrationResult {
     }
 
     // Create layout from legacy currentBed
-    const legacyLayout = createDefaultLegacyLayout(profileId, legacyState.currentBed)
-
-    // Convert to new multi-box format
-    const box = createDefaultBox('Main Bed', legacyLayout.bed)
-    const layout = {
-      ...legacyLayout,
-      boxes: [box],
-    }
-    // Remove the old 'bed' property
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    delete (layout as any).bed
+    const layout = createDefaultLayout(profileId, legacyState.currentBed)
 
     const layoutStorage: LayoutStorage = {
-      version: 2,
+      version: 1,
       activeLayoutId: layout.id,
       layouts: {
         [layout.id]: layout,
@@ -166,9 +140,11 @@ export function migrateToLayoutsSchema(): MigrationResult {
 }
 
 /**
- * Migrates from single-bed layouts (version 1) to multi-box layouts (version 2)
+ * Migrates from single-bed layout schema to multi-box schema
  *
- * Converts layouts with 'bed' property to 'boxes' array containing a single "Main Bed"
+ * Converts layouts with `bed` array to layouts with `boxes` array.
+ * Wraps existing bed data into a single "Main Bed" box (4x8).
+ * Bumps storage version from 1 to 2.
  *
  * @returns Migration result with success status and reason
  */
@@ -186,7 +162,7 @@ export function migrateToMultiBoxSchema(): MigrationResult {
 
     const layoutStorage = JSON.parse(layoutsData) as LayoutStorage
 
-    // Check if already migrated to version 2
+    // Check if already migrated (version 2 or has boxes)
     if (layoutStorage.version >= 2) {
       return {
         success: true,
@@ -195,35 +171,43 @@ export function migrateToMultiBoxSchema(): MigrationResult {
       }
     }
 
-    // Migrate each layout from single bed to boxes
-    const migratedLayouts: Record<string, GardenLayout> = {}
-
-    for (const [layoutId, layout] of Object.entries(layoutStorage.layouts)) {
-      const legacyLayout = layout as unknown as LegacyGardenLayout
-
-      // Create a single box from the bed data
-      const box = createDefaultBox('Main Bed', legacyLayout.bed)
-
-      // Create new layout with boxes
-      const migratedLayout: GardenLayout = {
-        id: legacyLayout.id,
-        name: legacyLayout.name,
-        createdAt: legacyLayout.createdAt,
-        updatedAt: legacyLayout.updatedAt,
-        boxes: [box],
-        profileId: legacyLayout.profileId,
+    // Check if any layout already has boxes property
+    const hasBoxes = Object.values(layoutStorage.layouts).some(
+      (layout) => Boolean(layout.boxes && layout.boxes.length > 0)
+    )
+    if (hasBoxes) {
+      return {
+        success: true,
+        migrated: false,
+        reason: 'already_migrated',
       }
-
-      migratedLayouts[layoutId] = migratedLayout
     }
 
-    // Update storage with version 2 and migrated layouts
+    // Migrate each layout
+    const migratedLayouts: Record<string, GardenLayout> = {}
+    for (const [layoutId, layout] of Object.entries(layoutStorage.layouts)) {
+      // Create a GardenBox from the legacy bed array
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      const cells = layout.bed || (Array(32).fill(null) as (Crop | null)[])
+
+      // Create box using helper function (8x4 dimensions)
+      const box = createDefaultBox('Main Bed', cells)
+
+      // Create migrated layout with boxes array
+      migratedLayouts[layoutId] = {
+        ...layout,
+        boxes: [box],
+      }
+    }
+
+    // Update storage with migrated layouts and bumped version
     const updatedStorage: LayoutStorage = {
+      ...layoutStorage,
       version: 2,
-      activeLayoutId: layoutStorage.activeLayoutId,
       layouts: migratedLayouts,
     }
 
+    // Write updated storage to localStorage
     localStorage.setItem(LAYOUTS_KEY, JSON.stringify(updatedStorage))
 
     return {
