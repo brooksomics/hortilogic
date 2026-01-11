@@ -97,6 +97,9 @@ export interface ProfileStorage {
 
   /** Map of all profiles keyed by ID */
   profiles: Record<string, GardenProfile>
+
+  /** ID of the default profile */
+  defaultProfileId: string
 }
 
 /**

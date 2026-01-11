@@ -33,6 +33,7 @@ function createDefaultProfileStorage(): ProfileStorage {
     profiles: {
       [profileId]: profile,
     },
+    defaultProfileId: profileId,
   }
 }
 
@@ -57,15 +58,26 @@ export interface UseProfilesResult {
  * Profiles are shared across layouts - a "Spring Plan" and "Fall Plan"
  * typically share the same location and frost dates.
  */
+import { ProfileStorageSchema } from '../schemas/garden'
+
+// ...
+
 export function useProfiles(): UseProfilesResult {
   const [profileStorage, setProfileStorage] = useLocalStorage<ProfileStorage>(
     PROFILES_KEY,
-    createDefaultProfileStorage()
+    createDefaultProfileStorage(),
+    (data) => {
+      const result = ProfileStorageSchema.safeParse(data)
+      if (result.success) {
+        return result.data
+      }
+      console.error('[useProfiles] Storage validation failed:', result.error)
+      return null
+    }
   )
 
   const profiles = profileStorage.profiles
-  const profileIds = Object.keys(profiles)
-  const defaultProfileId = profileIds[0] ?? ''
+  const defaultProfileId = profileStorage.defaultProfileId
 
   const getProfile = (id: string): GardenProfile | undefined => {
     return profiles[id]
@@ -78,7 +90,8 @@ export function useProfiles(): UseProfilesResult {
     }
 
     setProfileStorage({
-      ...profileStorage,
+      version: profileStorage.version,
+      defaultProfileId: profileStorage.defaultProfileId,
       profiles: {
         ...profiles,
         [id]: profile,

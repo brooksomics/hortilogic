@@ -1,5 +1,5 @@
- 
- 
+
+
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
@@ -37,6 +37,7 @@ describe('useProfiles', () => {
   })
 
   it('loads existing profiles from localStorage', () => {
+    const profileId = '123e4567-e89b-12d3-a456-426614174000'
     const existingProfile: GardenProfile = {
       name: 'Test Garden',
       hardiness_zone: '10b',
@@ -45,12 +46,12 @@ describe('useProfiles', () => {
       season_extension_weeks: 4,
     }
 
-    const profileId = 'test-profile-id'
     const storage: ProfileStorage = {
       version: 1,
       profiles: {
         [profileId]: existingProfile,
       },
+      defaultProfileId: profileId,
     }
 
     localStorage.setItem('hortilogic:profiles', JSON.stringify(storage))
@@ -79,12 +80,13 @@ describe('useProfiles', () => {
       season_extension_weeks: 2,
     }
 
-    const profileId = 'custom-id'
+    const profileId = '123e4567-e89b-12d3-a456-426614174001'
     const storage: ProfileStorage = {
       version: 1,
       profiles: {
         [profileId]: testProfile,
       },
+      defaultProfileId: profileId,
     }
 
     localStorage.setItem('hortilogic:profiles', JSON.stringify(storage))
@@ -144,12 +146,16 @@ describe('useProfiles', () => {
       season_extension_weeks: 2,
     }
 
+    const id1 = '123e4567-e89b-12d3-a456-426614174001'
+    const id2 = '123e4567-e89b-12d3-a456-426614174002'
+
     const storage: ProfileStorage = {
       version: 1,
       profiles: {
-        'id-1': profile1,
-        'id-2': profile2,
+        [id1]: profile1,
+        [id2]: profile2,
       },
+      defaultProfileId: id1,
     }
 
     localStorage.setItem('hortilogic:profiles', JSON.stringify(storage))
@@ -158,7 +164,7 @@ describe('useProfiles', () => {
 
     // Should return one of the profile IDs as default
     const defaultId = result.current.defaultProfileId
-    expect(['id-1', 'id-2']).toContain(defaultId)
+    expect([id1, id2]).toContain(defaultId)
 
     const defaultProfile = result.current.profiles[defaultId]
     expect(defaultProfile).toBeDefined()

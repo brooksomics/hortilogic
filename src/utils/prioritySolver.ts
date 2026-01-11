@@ -1,5 +1,6 @@
 import type { Crop, GardenStash } from '../types/garden'
 import { getNeighbors } from './companionEngine'
+import { SeededRandom } from './seededRandom'
 
 export interface CropPlacement {
     cropId: string
@@ -74,7 +75,8 @@ function findBestCell(
     bed: (Crop | null)[],
     cropId: string,
     allCrops: Crop[],
-    width: number
+    width: number,
+    rng: SeededRandom
 ): number | null {
     // Find all empty cells
     const emptyIndices = bed
@@ -96,8 +98,8 @@ function findBestCell(
             maxScore = score
             bestIndex = idx
         } else if (score === maxScore) {
-            // Tie-breaker
-            if (Math.random() > 0.5) {
+            // Deterministic tie-breaker using seeded RNG (TODO-023)
+            if (rng.next() > 0.5) {
                 bestIndex = idx
             }
         }
@@ -110,7 +112,8 @@ export function autoFillFromStash(
     currentBed: (Crop | null)[],
     stash: GardenStash,
     allCrops: Crop[],
-    width: number
+    width: number,
+    seed?: string | number
 ): PlacementResult {
     // Clone bed to simulate placement
     // NOTE: In the real app, currentBed actually stores `Crop` objects, not strings.
@@ -120,11 +123,14 @@ export function autoFillFromStash(
     const placed: CropPlacement[] = []
     const failed: FailedPlacement[] = []
 
+    // Create seeded RNG for deterministic placement (TODO-023)
+    const rng = new SeededRandom(seed ?? 'default')
+
     const priorityList = sortByPriority(stash, allCrops)
 
     for (const { cropId, quantity, crop } of priorityList) {
         for (let i = 0; i < quantity; i++) {
-            const bestCell = findBestCell(workingBed, cropId, allCrops, width)
+            const bestCell = findBestCell(workingBed, cropId, allCrops, width, rng)
 
             if (bestCell !== null) {
                 workingBed[bestCell] = crop
@@ -168,7 +174,8 @@ export interface BoxPlacementResult extends PlacementResult {
 export function autoFillAllBoxes(
     layoutBoxes: { id: string; cells: (Crop | null)[]; width: number }[],
     initialStash: GardenStash,
-    allCrops: Crop[]
+    allCrops: Crop[],
+    seed?: string | number
 ): { boxResults: BoxPlacementResult[]; remainingStash: GardenStash } {
     let currentStash = { ...initialStash }
     const boxResults: BoxPlacementResult[] = []
@@ -178,7 +185,7 @@ export function autoFillAllBoxes(
             break
         }
 
-        const { placed, failed } = autoFillFromStash(box.cells, currentStash, allCrops, box.width)
+        const { placed, failed } = autoFillFromStash(box.cells, currentStash, allCrops, box.width, seed)
 
         boxResults.push({
             boxId: box.id,
@@ -212,10 +219,14 @@ export function autoFillGaps(
     bed: (Crop | null)[],
     allCrops: Crop[],
     width: number,
-    maxFills: number = Infinity
+    maxFills: number = Infinity,
+    seed?: string | number
 ): CropPlacement[] {
     const placed: CropPlacement[] = []
     const workingBed = [...bed]
+
+    // Create seeded RNG for deterministic gap filling (TODO-023)
+    const rng = new SeededRandom(seed ?? 'default')
 
     const emptyIndices = workingBed
         .map((crop, idx) => (crop === null ? idx : null))
@@ -242,7 +253,7 @@ export function autoFillGaps(
 
             // Strict requirement for gap filling: Must replace valid space AND prefer friends.
             // Score > 0 implies at least one friend (and NO enemies).
-            // Score 0 means neutral. 
+            // Score 0 means neutral.
             // Let's require > 0 to ensure we only add BENEFICIAL additions.
             // Or at least >= 0.
             if (score <= -100) continue // Enemy
@@ -251,8 +262,8 @@ export function autoFillGaps(
                 bestScore = score
                 bestCrop = crop
             } else if (score === bestScore) {
-                // Random tie breaker
-                if (Math.random() > 0.5) bestCrop = crop
+                // Deterministic tie breaker using seeded RNG (TODO-023)
+                if (rng.next() > 0.5) bestCrop = crop
             }
         }
 

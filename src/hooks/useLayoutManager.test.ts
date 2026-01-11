@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
- 
+
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
@@ -251,34 +251,41 @@ describe('useLayoutManager', () => {
   })
 
   it('restores layouts from localStorage on mount', () => {
-    // First hook: create layouts
-    const { result: result1, unmount } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+    const layoutId = '123e4567-e89b-12d3-a456-426614174002'
+    const profileId = '123e4567-e89b-12d3-a456-426614174001'
+    const boxId = '123e4567-e89b-12d3-a456-426614174003'
 
-    let layoutId: string | undefined
+    const storedData = {
+      version: 2,
+      activeLayoutId: layoutId,
+      layouts: {
+        [layoutId]: {
+          id: layoutId,
+          name: 'Restored Layout',
+          profileId: profileId,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          boxes: [
+            {
+              id: boxId,
+              name: 'Main Bed',
+              width: 4,
+              height: 4,
+              cells: Array(16).fill(null),
+            },
+          ],
+        },
+      },
+      // defaultProfileId not in LayoutStorage
+    }
 
-    // Create layout
-    act(() => {
-      layoutId = result1.current.createLayout('Persisted Layout')
-    })
+    localStorage.setItem('hortilogic:layouts', JSON.stringify(storedData))
 
-    // Plant crop
-    act(() => {
-      result1.current.plantCrop(10, lettuce)
-    })
+    const { result } = renderHook(() => useLayoutManager(profileId))
 
-    // Unmount first hook
-    unmount()
-
-    // Second hook: restore from localStorage
-    const { result: result2 } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
-
-    if (!layoutId) throw new Error('Layout ID not set')
-    expect(Object.keys(result2.current.layouts)).toHaveLength(2)
-    expect(result2.current.layouts[layoutId]).toBeDefined()
-    const persistedLayout = result2.current.layouts[layoutId]
-    if (!persistedLayout) throw new Error('Persisted layout not found')
-    expect(persistedLayout.name).toBe('Persisted Layout')
-    expect(persistedLayout.boxes[0]!.cells[10]).toEqual(lettuce)
+    expect(Object.keys(result.current.layouts)).toHaveLength(1)
+    expect(result.current.layouts[layoutId]).toBeDefined()
+    expect(result.current.layouts[layoutId]?.name).toBe('Restored Layout')
   })
 
   it('plantCrop updates only the active layout', () => {

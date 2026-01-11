@@ -38,6 +38,53 @@ Last updated: 2026-01-10 (TODO-018 complete - Multi-Box Automagic Fill)
 - **Dynamic dimensions**: Supports variable grid sizes (e.g., 4x8, 2x4, 3x3)
 - Constraint satisfaction: respects both viability AND compatibility
 - Preserves existing manual plantings
+- **Deterministic (TODO-023)**: Uses seeded RNG based on layout.id for reproducible results
+
+---
+
+## Deterministic Random Number Generation (TODO-023)
+
+| Class/Function | Location | Purpose |
+|----------------|----------|---------|
+| `SeededRandom` | utils/seededRandom.ts:14 | Deterministic RNG using Linear Congruential Generator (LCG) |
+| `next()` | utils/seededRandom.ts:48 | Generate next random number (0-1) |
+| `shuffle()` | utils/seededRandom.ts:59 | Fisher-Yates shuffle with seeded randomness |
+| `choice()` | utils/seededRandom.ts:72 | Select random element from array |
+| `randInt()` | utils/seededRandom.ts:83 | Generate random integer in range |
+
+**Key Concepts:**
+- **Determinism**: Same seed always produces same sequence of random numbers
+- **Reproducibility**: Clicking "Automagic Fill" multiple times on same layout produces identical results
+- **Debuggability**: Bugs in solver are reproducible with same layout ID
+- **User trust**: Users can rely on consistent behavior
+- **Seed source**: All solver functions use `activeLayout.id` as seed
+
+**Usage:**
+```typescript
+// Create RNG with seed
+const rng = new SeededRandom('my-seed')
+
+// Generate random numbers
+const value = rng.next() // 0.123...
+
+// Shuffle array deterministically
+const shuffled = rng.shuffle([1, 2, 3, 4, 5])
+
+// Pick random element
+const choice = rng.choice(['a', 'b', 'c'])
+```
+
+**Solver Integration:**
+- `autoFillBed()` - Uses layout.id as seed for crop shuffling
+- `autoFillFromStash()` - Uses layout.id for tie-breaking in cell selection
+- `autoFillGaps()` - Uses layout.id for tie-breaking in gap filling
+- `autoFillAllBoxes()` - Passes layout.id to autoFillFromStash
+
+**Benefits:**
+1. Same empty bed + same seed → same autofill result every time
+2. Different seeds → different layouts (variety)
+3. Reproducible bugs and test cases
+4. No unexpected layout shifts when clicking "Fill" again
 
 ---
 
@@ -91,6 +138,49 @@ Last updated: 2026-01-10 (TODO-018 complete - Multi-Box Automagic Fill)
 
 ---
 
+## React Context Architecture (TODO-022)
+
+| Context/Hook | Location | Purpose |
+|--------------|----------|---------|
+| `GardenProvider` | context/GardenContext.tsx | Root provider wrapping entire app with garden state |
+| `useGardenContext()` | context/GardenContext.tsx:233 | Hook to access all garden state and actions |
+| `GardenContextValue` | context/GardenContext.tsx:20 | TypeScript interface for context value |
+
+**Key Concepts:**
+- **Eliminates prop drilling**: Components access state directly via context instead of receiving props from App.tsx
+- **Centralized state**: All hooks (useLayoutManager, useGardenInteractions, useProfiles) managed in GardenProvider
+- **Single source of truth**: Context provides unified interface to all garden functionality
+- **Simplified App.tsx**: Reduced from ~295 lines with complex hook orchestration to 257 lines of clean UI logic
+
+**Context Value Sections:**
+1. **Profile Management**: getProfile, updateProfile, defaultProfileId
+2. **Layout Management**: layouts, activeLayout, switchLayout, plantCrop, removeCrop, clearBed, setAllBoxes, addBox, removeBox
+3. **Layout Actions**: Modal state and handlers for create/rename/duplicate/delete
+4. **Garden Interactions**: selectedCrop, handleAutoFill, handleSquareClick, settings modal state
+5. **Stash Management**: stash CRUD, distribution, placement results, undo/redo
+6. **History**: undo, canUndo
+
+**Usage Pattern:**
+```typescript
+// Before (App.tsx with prop drilling)
+const layoutManager = useLayoutManager(defaultProfileId)
+const { activeLayout, plantCrop, removeCrop } = layoutManager
+const interactions = useGardenInteractions({ activeLayout, plantCrop, ... })
+// Pass props to children...
+
+// After (components access context directly)
+function MyComponent() {
+  const { activeLayout, plantCrop, removeCrop } = useGardenContext()
+  // Use directly, no props needed
+}
+```
+
+**Testing:**
+- Wrap test components in `<GardenProvider>` for integration tests
+- See `App.test.tsx` and `SettingsModal.splitbrain.test.tsx` for examples
+
+---
+
 ## UI Components
 
 | Component | Location | Purpose |
@@ -104,7 +194,7 @@ Last updated: 2026-01-10 (TODO-018 complete - Multi-Box Automagic Fill)
 | `SettingsModal` | components/SettingsModal.tsx | Garden profile settings editor |
 
 **Component Responsibilities:**
-- **App**: Multi-box rendering, layout/box management integration, state coordination, migrations, Core 50 crop database, total area summary
+- **App**: Multi-box rendering, consumes GardenContext for all state/actions, box modal management, renders layout selector and settings
 - **GardenBed**: Dynamic grid rendering with custom width/height, click handlers, viability colors, accessibility labels, delete button
 - **CropLibrary**: Crop list, search filtering, crop count display, selection UI
 - **LayoutSelector**: Layout dropdown, CRUD action buttons, sorting

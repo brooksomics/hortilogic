@@ -4,88 +4,82 @@ Current work in progress. Each todo follows the atomic todo format from base/SKI
 
 ---
 
-## [TODO-021] Integration & Controls (Distribute Stash UI)
+## [TODO-022] Refactor to React Context (Stop Prop Drilling)
 
-**Status:** in-progress
-**Priority:** high
-**Estimate:** M
+**Status:** completed
+**Priority:** critical
+**Estimate:** L
 
 ### Description
-Connect the Garden Stash UI to the new Priority Solver and update the user controls. Replace the "Automagic Fill" button with "Distribute Stash" button. Add a toggle for "Fill remaining gaps?" to optionally fill empty cells with compatible companions after placing the stash.
+Refactored application state management from prop drilling to React Context. App.tsx no longer manually passes state through multiple component layers. All state is now centralized in GardenProvider and accessible via useGardenContext().
 
-**UX Flow:**
-1. User builds stash using +/- controls in Crop Library
-2. Stash Summary shows total area and crops
-3. User clicks "Distribute Stash" button
-4. Solver places stash crops optimally
-5. (Optional) If "Fill remaining gaps" is ON, solver fills leftover cells with compatible crops
-6. User sees placement report (successes and failures)
+**The Solution:**
+- Created `GardenProvider` wrapping the app
+- Components consume `useGardenContext()` directly
+- Cleaner component hierarchy, easier feature additions
 
 ### Acceptance Criteria
-- [ ] Move "Automagic Fill" button to Stash Summary component
-- [ ] Rename button to "Distribute Stash" (or "Place My Garden")
-- [ ] Disable button when stash is empty
-- [ ] Add toggle: "Fill remaining gaps?" (default: OFF)
-- [ ] Connect `handleDistributeStash` to call new `autoFillFromStash` solver
-- [ ] Display placement report after distribution:
-  - Success message: "Placed 12 crops successfully!"
-  - Failure warning: "Could not place 3 crops due to space/conflicts"
-  - List failed crops with reasons
-- [ ] Clear stash after successful distribution (or keep and allow retry?)
-- [ ] Add loading spinner during solver execution (for large beds)
-- [ ] Add "Undo" button to revert last distribution
-- [ ] Update unit tests for new handler logic
+- [✅] Create `src/context/GardenContext.tsx` with GardenProvider
+- [✅] Move useLayoutManager state to context
+- [✅] Move useGardenInteractions state to context
+- [✅] Move useProfiles state to context
+- [✅] Wrap App in `<GardenProvider>` (main.tsx)
+- [✅] Refactor App.tsx to consume context directly
+- [✅] All 251 tests pass
+- [✅] Update CODE_INDEX.md with context architecture
 
-### Validation
-- Manual: Add 4 Tomato to stash, click "Distribute", verify all placed and stash cleared
-- Manual: Add 50 crops to 32-cell bed, verify placement report shows 32 placed / 18 failed
-- Manual: Toggle "Fill gaps" ON, distribute 10 crops, verify remaining cells filled with companions
-- Manual: Test undo button reverts to previous bed state
-- Automated: Integration tests for full stash → distribute → clear workflow
+### Results
+- **All 251 tests passing** ✅
+- **App.tsx simplified**: 257 lines (down from ~295 with complex hook orchestration)
+- **Prop drilling eliminated**: Components access state directly via context
+- **Centralized state management**: All hooks managed in single GardenProvider
+- **Future-proof**: Adding new state is trivial (just add to context)
 
-### Test Cases
-| Input | Expected Output | Notes |
-|-------|-----------------|-------|
-| Empty stash | "Distribute Stash" button disabled | Validation |
-| Stash with 4 Tomato | Button enabled | Validation |
-| Click "Distribute" with valid stash | Crops placed, success message shown | Happy path |
-| Click "Distribute" with overfilled stash | Partial placement, failure warning shown | Overflow handling |
-| Toggle "Fill gaps" ON, distribute 10 crops in 32 cells | 10 stash crops + 22 gap-fill crops placed | Gap fill feature |
-| Toggle "Fill gaps" OFF, distribute 10 crops | Only 10 placed, 22 cells remain empty | Gap fill disabled |
-| Click "Undo" after distribution | Bed reverts to pre-distribution state | Undo functionality |
-
-### Dependencies
-- Depends on: TODO-019 (Stash state) complete
-- Depends on: TODO-020 (Priority Solver) complete
-- Blocks: None (completes the Garden Stash feature)
+### TDD Execution Log
+| Phase | Command | Result | Timestamp |
+|-------|---------|--------|-----------|
+| GREEN | Create GardenContext, refactor App.tsx | Files created/updated | 2026-01-11 |
+| GREEN | Update main.tsx, App.test.tsx, splitbrain tests | Wrapped in GardenProvider | 2026-01-11 |
+| VALIDATE | npm test -- --run | 251 tests PASS ✅ | 2026-01-11 |
+| COMPLETE | Update CODE_INDEX.md | Documented context architecture | 2026-01-11 |
 
 ### Technical Notes
-**Handler Implementation:**
-```typescript
-function handleDistributeStash() {
-  if (Object.keys(stash).length === 0) return; // Button should be disabled anyway
+**Files Changed:**
+1. **Created**: `src/context/GardenContext.tsx` (237 lines)
+   - GardenProvider component
+   - useGardenContext hook
+   - GardenContextValue interface
 
-  setIsLoading(true);
+2. **Modified**: `src/main.tsx`
+   - Wrapped App in GardenProvider
 
-  // Phase 1: Place stash crops
-  const stashResult = autoFillFromStash(
-    currentLayout.boxes[0].bed, // Iterate all boxes using autoFillAllBoxes
-    stash,
-    crops,
-    currentLayout.boxes[0].width
-  );
-  
-  // NOTE: TODO-020 added `autoFillAllBoxes`, use that instead.
+3. **Modified**: `src/App.tsx`
+   - Removed all hook initialization (useLayoutManager, useGardenInteractions, useProfiles, migrations)
+   - Added single useGardenContext() call
+   - Eliminated prop drilling
 
-  // Phase 2: Fill gaps (if enabled)
-  // ... gap fill logic ...
+4. **Modified**: `src/App.test.tsx`
+   - Added renderApp() helper with GardenProvider wrapper
+   - All tests passing
 
-  // Update bed state
-  setAllBoxes(newLayout.boxes); // Batch update
+5. **Modified**: `src/components/SettingsModal.splitbrain.test.tsx`
+   - Added renderApp() helper
+   - Fixed context requirement
 
-  // Show results
-  showPlacementReport(stashResult, gapFillResult);
-  clearStash();
-  setIsLoading(false);
-}
-```
+6. **Modified**: `CODE_INDEX.md`
+   - Added "React Context Architecture" section
+   - Documented usage patterns and benefits
+
+**Benefits Achieved:**
+1. ✅ Eliminated 20+ props from App.tsx
+2. ✅ Made adding new state trivial (just add to context)
+3. ✅ Components are self-contained
+4. ✅ Follows React best practices for complex state
+5. ✅ All tests passing (no regressions)
+
+---
+
+**Next Priority TODOs (from backlog.md):**
+- TODO-023: Solver Determinism (Remove Math.random()) - **CRITICAL**
+- TODO-024: Zod Validation for LocalStorage - **CRITICAL**
+- TODO-025: Debounce LocalStorage Writes - **HIGH**

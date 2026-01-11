@@ -1,5 +1,6 @@
 import type { Crop, GardenProfile } from '@/types'
 import { isCropViable } from './dateEngine'
+import { SeededRandom } from './seededRandom'
 
 /**
  * Default grid dimensions for 4' x 8' bed (backward compatibility)
@@ -113,7 +114,8 @@ export function autoFillBed(
   gardenProfile: GardenProfile,
   targetDate: Date = new Date(),
   gridWidth: number = DEFAULT_GRID_WIDTH,
-  gridHeight: number = 4
+  gridHeight: number = 4,
+  seed?: string | number
 ): (Crop | null)[] {
   // Create a copy of the grid to avoid mutation
   const newGrid = [...currentGrid]
@@ -128,8 +130,11 @@ export function autoFillBed(
     return newGrid
   }
 
-  // Shuffle viable crops for randomness (simple "Feeling Lucky" heuristic)
-  const shuffledCrops = [...viableCrops].sort(() => Math.random() - 0.5)
+  // Create seeded RNG for deterministic randomness (TODO-023)
+  const rng = new SeededRandom(seed ?? 'default')
+
+  // Shuffle viable crops using seeded randomness
+  const shuffledCrops = rng.shuffle(viableCrops)
 
   // Calculate total cells based on dimensions
   const totalCells = gridWidth * gridHeight

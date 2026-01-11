@@ -92,6 +92,7 @@ export function migrateToLayoutsSchema(): MigrationResult {
       profiles: {
         [profileId]: profile,
       },
+      defaultProfileId: profileId,
     }
 
     // Create layout from legacy currentBed
