@@ -221,7 +221,8 @@ export function useGardenInteractions({
         gardenProfile,
         new Date(),
         box.width,
-        box.height
+        box.height,
+        activeLayout.id // Deterministic seed (TODO-023)
       )
       return { ...box, cells: filledCells }
     })
@@ -268,7 +269,7 @@ export function useGardenInteractions({
       saveToHistory() // Save state before changes
 
       try {
-        const { boxResults, remainingStash } = autoFillAllBoxes(solverInput, stash, CORE_50_CROPS)
+        const { boxResults, remainingStash } = autoFillAllBoxes(solverInput, stash, CORE_50_CROPS, activeLayout.id) // Deterministic seed (TODO-023)
 
         // Aggregate results for report
         let placedCount = 0
@@ -295,7 +296,7 @@ export function useGardenInteractions({
 
           if (fillGaps) {
             // Run gap filler on the bed state AFTER stash placement
-            const gapPlacements = autoFillGaps(newBed, CORE_50_CROPS, originalBox.width)
+            const gapPlacements = autoFillGaps(newBed, CORE_50_CROPS, originalBox.width, Infinity, activeLayout.id) // Deterministic seed (TODO-023)
 
             gapPlacements.forEach(p => {
               const crop = CORE_50_CROPS.find(c => c.id === p.cropId)

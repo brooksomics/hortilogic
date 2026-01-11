@@ -38,6 +38,53 @@ Last updated: 2026-01-10 (TODO-018 complete - Multi-Box Automagic Fill)
 - **Dynamic dimensions**: Supports variable grid sizes (e.g., 4x8, 2x4, 3x3)
 - Constraint satisfaction: respects both viability AND compatibility
 - Preserves existing manual plantings
+- **Deterministic (TODO-023)**: Uses seeded RNG based on layout.id for reproducible results
+
+---
+
+## Deterministic Random Number Generation (TODO-023)
+
+| Class/Function | Location | Purpose |
+|----------------|----------|---------|
+| `SeededRandom` | utils/seededRandom.ts:14 | Deterministic RNG using Linear Congruential Generator (LCG) |
+| `next()` | utils/seededRandom.ts:48 | Generate next random number (0-1) |
+| `shuffle()` | utils/seededRandom.ts:59 | Fisher-Yates shuffle with seeded randomness |
+| `choice()` | utils/seededRandom.ts:72 | Select random element from array |
+| `randInt()` | utils/seededRandom.ts:83 | Generate random integer in range |
+
+**Key Concepts:**
+- **Determinism**: Same seed always produces same sequence of random numbers
+- **Reproducibility**: Clicking "Automagic Fill" multiple times on same layout produces identical results
+- **Debuggability**: Bugs in solver are reproducible with same layout ID
+- **User trust**: Users can rely on consistent behavior
+- **Seed source**: All solver functions use `activeLayout.id` as seed
+
+**Usage:**
+```typescript
+// Create RNG with seed
+const rng = new SeededRandom('my-seed')
+
+// Generate random numbers
+const value = rng.next() // 0.123...
+
+// Shuffle array deterministically
+const shuffled = rng.shuffle([1, 2, 3, 4, 5])
+
+// Pick random element
+const choice = rng.choice(['a', 'b', 'c'])
+```
+
+**Solver Integration:**
+- `autoFillBed()` - Uses layout.id as seed for crop shuffling
+- `autoFillFromStash()` - Uses layout.id for tie-breaking in cell selection
+- `autoFillGaps()` - Uses layout.id for tie-breaking in gap filling
+- `autoFillAllBoxes()` - Passes layout.id to autoFillFromStash
+
+**Benefits:**
+1. Same empty bed + same seed → same autofill result every time
+2. Different seeds → different layouts (variety)
+3. Reproducible bugs and test cases
+4. No unexpected layout shifts when clicking "Fill" again
 
 ---
 
