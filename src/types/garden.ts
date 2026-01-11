@@ -100,6 +100,30 @@ export interface ProfileStorage {
 }
 
 /**
+ * Legacy garden layout (pre-F008, single bed only)
+ * Used for migration to multi-box schema
+ */
+export interface LegacyGardenLayout {
+  /** Unique identifier (UUID v4) */
+  id: string
+
+  /** User-defined layout name */
+  name: string
+
+  /** ISO timestamp when layout was created */
+  createdAt: string
+
+  /** ISO timestamp when layout was last modified */
+  updatedAt: string
+
+  /** Array of 32 cells (4x8 grid) with planted crops */
+  bed: (Crop | null)[]
+
+  /** Reference to garden profile ID */
+  profileId: string
+}
+
+/**
  * Legacy storage schema (pre-F005)
  * Used for migration detection
  * Stored at localStorage key: "hortilogic:garden" (old schema)

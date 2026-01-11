@@ -1,50 +1,40 @@
 import { useLocalStorage } from './useLocalStorage'
-import type { LayoutStorage, GardenLayout, Crop, GardenBox } from '../types/garden'
+import type { LayoutStorage, GardenLayout, GardenBox, Crop } from '../types/garden'
 import { generateUUID } from '../utils/uuid'
 
 const LAYOUTS_KEY = 'hortilogic:layouts'
 
 /**
- * Creates an empty bed with 32 null cells
+ * Creates an empty 4x8 garden box
+ * 4 feet wide (columns) x 8 feet long (rows) = 32 sq ft
  */
-function createEmptyBed(): (Crop | null)[] {
-  return Array(32).fill(null) as (Crop | null)[]
-}
-
-/**
- * Creates a new garden box with given dimensions
- */
-function createEmptyBox(name: string, width: number, height: number): GardenBox {
+function createEmptyBox(name = 'Main Bed'): GardenBox {
   return {
     id: generateUUID(),
     name,
-    width,
-    height,
-    cells: Array(width * height).fill(null) as (Crop | null)[],
+    width: 4,
+    height: 8,
+    cells: Array(32).fill(null) as (Crop | null)[],
   }
 }
 
 /**
  * Creates a new layout with given name and profile
- * New layouts use the multi-box schema with one "Main Bed" box (4x8)
  */
 function createNewLayout(name: string, profileId: string): GardenLayout {
   const now = new Date().toISOString()
-  const mainBox = createEmptyBox('Main Bed', 4, 8)
-
   return {
     id: generateUUID(),
     name,
     createdAt: now,
     updatedAt: now,
-    boxes: [mainBox],
+    boxes: [createEmptyBox('Main Bed')],
     profileId,
   }
 }
 
 /**
  * Creates default layout storage with one layout
- * Uses version 2 (multi-box schema)
  */
 function createDefaultLayoutStorage(profileId: string): LayoutStorage {
   const layout = createNewLayout('My Garden', profileId)
@@ -106,6 +96,15 @@ export interface UseLayoutManagerResult {
 
   /** Replace entire bed in single operation (batch update) */
   setBed: (newBed: (Crop | null)[]) => void
+
+  /** Update all boxes in the active layout (for multi-box operations) */
+  setAllBoxes: (boxes: GardenBox[]) => void
+
+  /** Add a new box to the active layout */
+  addBox: (name: string, width: number, height: number) => string
+
+  /** Remove a box from the active layout */
+  removeBox: (boxId: string) => void
 }
 
 /**
@@ -126,11 +125,8 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
   const layouts = layoutStorage.layouts
   const activeLayoutId = layoutStorage.activeLayoutId
   const activeLayout = layouts[activeLayoutId] ?? null
-
-  // Get current bed from boxes (multi-box schema) or fall back to legacy bed
-  // eslint-disable-next-line @typescript-eslint/no-deprecated, @typescript-eslint/no-unnecessary-condition
-  const currentBed =
-    activeLayout?.boxes?.[0]?.cells ?? activeLayout?.bed ?? createEmptyBed()
+  // For backward compatibility, currentBed returns the first box's cells
+  const currentBed = activeLayout?.boxes[0]?.cells ?? []
 
   const createLayout = (name: string): string => {
     const newLayout = createNewLayout(name, defaultProfileId)
@@ -213,22 +209,12 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     }
 
     const duplicate = createNewLayout(newName, original.profileId)
-
-    // Copy boxes from original layout (multi-box schema)
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (original.boxes && original.boxes.length > 0) {
-      duplicate.boxes = original.boxes.map((box) => ({
-        ...box,
-        id: generateUUID(), // Generate new ID for duplicated box
-        cells: [...box.cells],
-      }))
-    }
-    // Fall back to legacy bed if boxes don't exist
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    else if (original.bed && duplicate.boxes[0]) {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      duplicate.boxes[0].cells = [...original.bed]
-    }
+    // Deep copy boxes with their cells
+    duplicate.boxes = original.boxes.map(box => ({
+      ...box,
+      id: generateUUID(), // New ID for duplicated box
+      cells: [...box.cells],
+    }))
 
     setLayoutStorage({
       ...layoutStorage,
@@ -243,143 +229,132 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
   }
 
   const plantCrop = (cellIndex: number, crop: Crop): void => {
-    if (!activeLayout) return
+    if (!activeLayout || !activeLayout.boxes[0]) return
 
-    // Update boxes array (multi-box schema)
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (activeLayout.boxes && activeLayout.boxes.length > 0) {
-      const newBoxes = [...activeLayout.boxes]
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const newCells = [...newBoxes[0]!.cells]
-      newCells[cellIndex] = crop
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      newBoxes[0] = { ...newBoxes[0]!, cells: newCells }
+    const firstBox = activeLayout.boxes[0]
+    const newCells = [...firstBox.cells]
+    newCells[cellIndex] = crop
 
-      setLayoutStorage({
-        ...layoutStorage,
-        layouts: {
-          ...layouts,
-          [activeLayoutId]: touchLayout({ ...activeLayout, boxes: newBoxes }),
-        },
-      })
-    }
-    // Fall back to legacy bed for backward compatibility
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    else if (activeLayout.bed) {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      const newBed = [...activeLayout.bed]
-      newBed[cellIndex] = crop
+    const updatedBoxes = [...activeLayout.boxes]
+    updatedBoxes[0] = { ...firstBox, cells: newCells }
 
-      setLayoutStorage({
-        ...layoutStorage,
-        layouts: {
-          ...layouts,
-          [activeLayoutId]: touchLayout({ ...activeLayout, bed: newBed }),
-        },
-      })
-    }
+    setLayoutStorage({
+      ...layoutStorage,
+      layouts: {
+        ...layouts,
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
+      },
+    })
   }
 
   const removeCrop = (cellIndex: number): void => {
-    if (!activeLayout) return
+    if (!activeLayout || !activeLayout.boxes[0]) return
 
-    // Update boxes array (multi-box schema)
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (activeLayout.boxes && activeLayout.boxes.length > 0) {
-      const newBoxes = [...activeLayout.boxes]
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const newCells = [...newBoxes[0]!.cells]
-      newCells[cellIndex] = null
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      newBoxes[0] = { ...newBoxes[0]!, cells: newCells }
+    const firstBox = activeLayout.boxes[0]
+    const newCells = [...firstBox.cells]
+    newCells[cellIndex] = null
 
-      setLayoutStorage({
-        ...layoutStorage,
-        layouts: {
-          ...layouts,
-          [activeLayoutId]: touchLayout({ ...activeLayout, boxes: newBoxes }),
-        },
-      })
-    }
-    // Fall back to legacy bed for backward compatibility
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    else if (activeLayout.bed) {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      const newBed = [...activeLayout.bed]
-      newBed[cellIndex] = null
+    const updatedBoxes = [...activeLayout.boxes]
+    updatedBoxes[0] = { ...firstBox, cells: newCells }
 
-      setLayoutStorage({
-        ...layoutStorage,
-        layouts: {
-          ...layouts,
-          [activeLayoutId]: touchLayout({ ...activeLayout, bed: newBed }),
-        },
-      })
-    }
+    setLayoutStorage({
+      ...layoutStorage,
+      layouts: {
+        ...layouts,
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
+      },
+    })
   }
 
   const clearBed = (): void => {
-    if (!activeLayout) return
+    if (!activeLayout || !activeLayout.boxes[0]) return
 
-    // Update boxes array (multi-box schema)
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (activeLayout.boxes && activeLayout.boxes.length > 0) {
-      const newBoxes = [...activeLayout.boxes]
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const firstBox = newBoxes[0]!
-      newBoxes[0] = {
-        ...firstBox,
-        cells: Array(firstBox.width * firstBox.height).fill(null) as (Crop | null)[],
-      }
+    const firstBox = activeLayout.boxes[0]
+    const updatedBoxes = [...activeLayout.boxes]
+    updatedBoxes[0] = {
+      ...firstBox,
+      cells: Array(firstBox.width * firstBox.height).fill(null) as (Crop | null)[],
+    }
 
-      setLayoutStorage({
-        ...layoutStorage,
-        layouts: {
-          ...layouts,
-          [activeLayoutId]: touchLayout({ ...activeLayout, boxes: newBoxes }),
-        },
-      })
-    }
-    // Fall back to legacy bed for backward compatibility
-    else {
-      setLayoutStorage({
-        ...layoutStorage,
-        layouts: {
-          ...layouts,
-          [activeLayoutId]: touchLayout({ ...activeLayout, bed: createEmptyBed() }),
-        },
-      })
-    }
+    setLayoutStorage({
+      ...layoutStorage,
+      layouts: {
+        ...layouts,
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
+      },
+    })
   }
 
   const setBed = (newBed: (Crop | null)[]): void => {
+    if (!activeLayout || !activeLayout.boxes[0]) return
+
+    const firstBox = activeLayout.boxes[0]
+    const updatedBoxes = [...activeLayout.boxes]
+    updatedBoxes[0] = { ...firstBox, cells: [...newBed] }
+
+    setLayoutStorage({
+      ...layoutStorage,
+      layouts: {
+        ...layouts,
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
+      },
+    })
+  }
+
+  const setAllBoxes = (boxes: GardenBox[]): void => {
     if (!activeLayout) return
 
-    // Update boxes array (multi-box schema)
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (activeLayout.boxes && activeLayout.boxes.length > 0) {
-      const newBoxes = [...activeLayout.boxes]
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      newBoxes[0] = { ...newBoxes[0]!, cells: [...newBed] }
+    setLayoutStorage({
+      ...layoutStorage,
+      layouts: {
+        ...layouts,
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes }),
+      },
+    })
+  }
 
-      setLayoutStorage({
-        ...layoutStorage,
-        layouts: {
-          ...layouts,
-          [activeLayoutId]: touchLayout({ ...activeLayout, boxes: newBoxes }),
-        },
-      })
+  const addBox = (name: string, width: number, height: number): string => {
+    if (!activeLayout) return ''
+
+    const newBox: GardenBox = {
+      id: generateUUID(),
+      name,
+      width,
+      height,
+      cells: Array(width * height).fill(null) as (Crop | null)[],
     }
-    // Fall back to legacy bed for backward compatibility
-    else {
-      setLayoutStorage({
-        ...layoutStorage,
-        layouts: {
-          ...layouts,
-          [activeLayoutId]: touchLayout({ ...activeLayout, bed: [...newBed] }),
-        },
-      })
+
+    const updatedBoxes = [...activeLayout.boxes, newBox]
+
+    setLayoutStorage({
+      ...layoutStorage,
+      layouts: {
+        ...layouts,
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
+      },
+    })
+
+    return newBox.id
+  }
+
+  const removeBox = (boxId: string): void => {
+    if (!activeLayout) return
+
+    // Prevent removing the last remaining box
+    if (activeLayout.boxes.length <= 1) {
+      console.warn('Cannot remove the last remaining box')
+      return
     }
+
+    const updatedBoxes = activeLayout.boxes.filter(box => box.id !== boxId)
+
+    setLayoutStorage({
+      ...layoutStorage,
+      layouts: {
+        ...layouts,
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
+      },
+    })
   }
 
   return {
@@ -396,5 +371,8 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     removeCrop,
     clearBed,
     setBed,
+    setAllBoxes,
+    addBox,
+    removeBox,
   }
 }

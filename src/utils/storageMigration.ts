@@ -5,6 +5,7 @@ import type {
   ProfileStorage,
   GardenProfile,
   GardenBox,
+  Crop,
 } from '../types/garden'
 import { generateUUID } from './uuid'
 
@@ -33,17 +34,16 @@ function createDefaultProfile(): GardenProfile {
 }
 
 /**
- * Creates a default layout with empty bed
+ * Creates a default 4x8 garden box with empty cells
+ * 4 feet wide (columns) x 8 feet long (rows) = 32 sq ft
  */
-function createDefaultLayout(profileId: string, bed: GardenLayout['bed']): GardenLayout {
-  const now = new Date().toISOString()
+function createDefaultBox(name = 'Main Bed', cells: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]): GardenBox {
   return {
     id: generateUUID(),
-    name: 'My Garden',
-    createdAt: now,
-    updatedAt: now,
-    bed,
-    profileId,
+    name,
+    width: 4,
+    height: 8,
+    cells,
   }
 }
 
@@ -94,10 +94,22 @@ export function migrateToLayoutsSchema(): MigrationResult {
     }
 
     // Create layout from legacy currentBed
-    const layout = createDefaultLayout(profileId, legacyState.currentBed)
+    const now = new Date().toISOString()
+    const layoutId = generateUUID()
+
+    // Convert to new multi-box format
+    const box = createDefaultBox('Main Bed', legacyState.currentBed)
+    const layout: GardenLayout = {
+      id: layoutId,
+      name: 'My Garden',
+      createdAt: now,
+      updatedAt: now,
+      boxes: [box],
+      profileId,
+    }
 
     const layoutStorage: LayoutStorage = {
-      version: 1,
+      version: 2,
       activeLayoutId: layout.id,
       layouts: {
         [layout.id]: layout,
@@ -160,7 +172,7 @@ export function migrateToMultiBoxSchema(): MigrationResult {
 
     // Check if any layout already has boxes property
     const hasBoxes = Object.values(layoutStorage.layouts).some(
-      (layout) => Boolean(layout.boxes && layout.boxes.length > 0)
+      (layout) => Array.isArray(layout.boxes) && layout.boxes.length > 0
     )
     if (hasBoxes) {
       return {
@@ -176,21 +188,14 @@ export function migrateToMultiBoxSchema(): MigrationResult {
       // Create a GardenBox from the legacy bed array
       // eslint-disable-next-line @typescript-eslint/no-deprecated
       const cells = layout.bed || (Array(32).fill(null) as (Crop | null)[])
-      const box: GardenBox = {
-        id: generateUUID(),
-        name: 'Main Bed',
-        width: 4,
-        height: 8,
-        cells,
-      }
+
+      // Create box using helper function (8x4 dimensions)
+      const box = createDefaultBox('Main Bed', cells)
 
       // Create migrated layout with boxes array
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       migratedLayouts[layoutId] = {
         ...layout,
         boxes: [box],
-        // Keep the old bed property temporarily for safety (marked as deprecated)
-        bed: layout.bed,
       }
     }
 

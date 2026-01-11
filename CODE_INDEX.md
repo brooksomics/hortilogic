@@ -4,7 +4,7 @@
 
 **Before creating any new function, CHECK HERE FIRST.**
 
-Last updated: 2026-01-10 (TODO-015 complete - Multi-Box Data Schema Refactor)
+Last updated: 2026-01-10 (TODO-018 complete - Multi-Box Automagic Fill)
 
 ---
 
@@ -28,42 +28,46 @@ Last updated: 2026-01-10 (TODO-015 complete - Multi-Box Data Schema Refactor)
 
 | Function | Location | Purpose |
 |----------|----------|---------|
-| `getNeighbors()` | utils/companionEngine.ts:5 | Get crops in 4 adjacent cells (Up/Down/Left/Right) |
-| `isCompatibleWithNeighbors()` | utils/companionEngine.ts:27 | Check if crop compatible with adjacent crops |
-| `autoFillBed()` | utils/companionEngine.ts:57 | Constraint satisfaction solver for garden bed |
+| `getNeighbors()` | utils/companionEngine.ts:13 | Get crops in 4 adjacent cells (Up/Down/Left/Right) with dynamic grid dimensions |
+| `checkCompanionConstraints()` | utils/companionEngine.ts:65 | Check if crop compatible with neighbor crop IDs |
+| `autoFillBed()` | utils/companionEngine.ts:103 | Constraint satisfaction solver for garden bed with custom dimensions |
 
 **Key Concepts:**
 - Companion rules: friends (beneficial) and enemies (incompatible)
 - Neighbor checking: 4-directional adjacency only (not diagonals)
+- **Dynamic dimensions**: Supports variable grid sizes (e.g., 4x8, 2x4, 3x3)
 - Constraint satisfaction: respects both viability AND compatibility
 - Preserves existing manual plantings
 
 ---
 
-## Layout Management (Feature 005)
+## Layout Management (Feature 005 + Feature 008)
 
 | Function | Location | Purpose |
 |----------|----------|---------|
 | `useLayoutManager()` | hooks/useLayoutManager.ts | Manage multiple garden layouts with CRUD operations |
 | `useProfiles()` | hooks/useProfiles.ts | Access garden profiles (zones, frost dates) |
-| `migrateToLayoutsSchema()` | utils/storageMigration.ts:71 | Migrate from single to multi-layout storage schema |
-| `migrateToMultiBoxSchema()` | utils/storageMigration.ts:138 | Migrate layouts from single-bed to multi-box schema |
-| `createLayout()` | hooks/useLayoutManager.ts:133 | Create new blank layout with multi-box schema |
-| `switchLayout()` | hooks/useLayoutManager.ts:137 | Switch active layout |
-| `renameLayout()` | hooks/useLayoutManager.ts:149 | Rename existing layout |
-| `deleteLayout()` | hooks/useLayoutManager.ts:165 | Delete layout (prevents deleting last one) |
-| `duplicateLayout()` | hooks/useLayoutManager.ts:195 | Copy layout with all bed data |
+| `migrateToLayoutsSchema()` | utils/storageMigration.ts:79 | Migrate from single to multi-layout storage schema |
+| `migrateToMultiBoxSchema()` | utils/storageMigration.ts:175 | Migrate from single-bed to multi-box storage schema |
+| `createLayout()` | hooks/useLayoutManager.ts:121 | Create new blank layout and switch to it |
+| `switchLayout()` | hooks/useLayoutManager.ts:129 | Switch active layout |
+| `renameLayout()` | hooks/useLayoutManager.ts:154 | Rename existing layout |
+| `deleteLayout()` | hooks/useLayoutManager.ts:170 | Delete layout (prevents deleting last one) |
+| `duplicateLayout()` | hooks/useLayoutManager.ts:200 | Copy layout with all box data |
+| `addBox()` | hooks/useLayoutManager.ts:315 | Add a new garden box to active layout |
+| `removeBox()` | hooks/useLayoutManager.ts:339 | Remove a box from active layout (prevents removing last box) |
+| `setAllBoxes()` | hooks/useLayoutManager.ts:303 | Update all boxes in active layout (for multi-box batch operations) |
 
 **Key Concepts:**
 - Multiple layouts per user (e.g., "Spring 2026", "Fall 2026")
-- Each layout contains one or more garden boxes (beds) of custom sizes
-- New layouts created with multi-box schema (boxes array with "Main Bed" 4x8)
+- **Multi-box support**: Each layout can contain multiple garden boxes of varying sizes
+- Each box has: id, name, width (columns), height (rows), and cells array
+- Default box: "Main Bed" (8x4 = 32 cells)
+- **Multi-box operations**: Automagic Fill processes ALL boxes in parallel with correct dimensions
 - Profiles shared across layouts (same location, different seasons)
-- Migration preserves existing user data:
-  - V1: Single layout → Multiple layouts (`migrateToLayoutsSchema`)
-  - V2: Single bed → Multi-box schema (`migrateToMultiBoxSchema`)
-- LocalStorage keys: `hortilogic:layouts`, `hortilogic:profiles`
-- Storage version bumped from 1 to 2 for multi-box schema
+- Migration chain: Legacy → Multi-layout (v1) → Multi-box (v2)
+- LocalStorage keys: `hortilogic:layouts` (v2), `hortilogic:profiles`
+- Version numbers enable future schema migrations
 
 ---
 
@@ -91,19 +95,21 @@ Last updated: 2026-01-10 (TODO-015 complete - Multi-Box Data Schema Refactor)
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| `App` | App.tsx | Main application with layout management and grid |
-| `GardenBed` | components/GardenBed.tsx | 4×8 interactive grid display |
+| `App` | App.tsx | Main application with layout management and multi-box rendering |
+| `GardenBed` | components/GardenBed.tsx | Dynamic grid display with variable dimensions (e.g., 2x4, 4x8, 3x3) |
 | `CropLibrary` | components/CropLibrary.tsx | Crop selection sidebar with search and viability filtering |
 | `LayoutSelector` | components/LayoutSelector.tsx | Dropdown for switching/managing layouts |
 | `LayoutActionModal` | components/LayoutActionModal.tsx | Modal for create/rename/delete layout actions |
+| `BoxActionModal` | components/BoxActionModal.tsx | Modal for add/delete garden box actions |
 | `SettingsModal` | components/SettingsModal.tsx | Garden profile settings editor |
 
 **Component Responsibilities:**
-- **App**: Layout management integration, state coordination, migration, Core 50 crop database
-- **GardenBed**: Grid rendering, click handlers, viability colors
+- **App**: Multi-box rendering, layout/box management integration, state coordination, migrations, Core 50 crop database, total area summary
+- **GardenBed**: Dynamic grid rendering with custom width/height, click handlers, viability colors, accessibility labels, delete button
 - **CropLibrary**: Crop list, search filtering, crop count display, selection UI
 - **LayoutSelector**: Layout dropdown, CRUD action buttons, sorting
-- **LayoutActionModal**: Reusable modal for layout operations (3 modes)
+- **LayoutActionModal**: Reusable modal for layout operations (3 modes: create/rename/delete)
+- **BoxActionModal**: Reusable modal for box operations (2 modes: add/delete)
 - **SettingsModal**: Profile editing (currently disabled, to be re-enabled)
 
 **UI Patterns:**
@@ -118,15 +124,14 @@ Last updated: 2026-01-10 (TODO-015 complete - Multi-Box Data Schema Refactor)
 
 | Type | Location | Purpose |
 |------|----------|---------|
-| `Crop` | types/garden.ts:122 | Crop definition with spacing, planting strategy, companions |
-| `PlantingStrategy` | types/garden.ts:94 | Planting window (weeks relative to frost date) |
-| `CompanionRules` | types/garden.ts:112 | Friends and enemies for companion planting |
-| `GardenProfile` | types/garden.ts:4 | USDA zone and frost dates |
-| `GardenBox` | types/garden.ts:31 | Individual garden box/bed with dimensions and cells |
-| `GardenLayout` | types/garden.ts:52 | Layout with ID, name, boxes array, timestamps, profileId |
-| `LayoutStorage` | types/garden.ts:76 | Multi-layout storage schema (version 2 with multi-box) |
-| `ProfileStorage` | types/garden.ts:83 | Profile storage schema (version 1) |
-| `LegacyGardenState` | types/garden.ts:90 | Old single-layout schema (for migration) |
+| `Crop` | types/garden.ts:36 | Crop definition with spacing, planting strategy, companions |
+| `PlantingStrategy` | types/garden.ts:22 | Planting window (weeks relative to frost date) |
+| `CompanionRules` | types/garden.ts:10 | Friends and enemies for companion planting |
+| `GardenProfile` | types/garden.ts:53 | USDA zone and frost dates |
+| `GardenLayout` | types/garden.ts:77 | Layout with ID, name, bed, timestamps, profileId |
+| `LayoutStorage` | types/garden.ts:88 | Multi-layout storage schema (version 1) |
+| `ProfileStorage` | types/garden.ts:95 | Profile storage schema (version 1) |
+| `LegacyGardenState` | types/garden.ts:102 | Old single-layout schema (for migration) |
 
 **Type Relationships:**
 ```
@@ -180,7 +185,7 @@ Migration: LegacyGardenState → LayoutStorage + ProfileStorage
 | Layout management | `useLayoutManager`, `createLayout`, `switchLayout` |
 | Profile management | `useProfiles`, `getProfile` |
 | State management | `useGarden`, `useLocalStorage` |
-| Migration | `migrateToLayoutsSchema`, `migrateToMultiBoxSchema` |
+| Migration | `migrateToLayoutsSchema` |
 | Planting actions | `plantCrop`, `removeCrop`, `clearBed` |
 | Crop database | `CORE_50_CROPS`, `CROPS_BY_ID` |
 | Crop search/filtering | `CropLibrary` (search state), `filteredCrops` |

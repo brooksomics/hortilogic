@@ -1,23 +1,27 @@
-import { useEffect } from 'react'
-import { Sprout, Settings } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Sprout, Settings, Plus } from 'lucide-react'
 import { GardenBed } from './components/GardenBed'
 import { CropLibrary } from './components/CropLibrary'
 import { GardenControls } from './components/GardenControls'
 import { GardenInstructions } from './components/GardenInstructions'
 import { LayoutSelector } from './components/LayoutSelector'
 import { LayoutActionModal } from './components/LayoutActionModal'
+import { BoxActionModal, type BoxData, type BoxActionMode } from './components/BoxActionModal'
 import { SettingsModal } from './components/SettingsModal'
 import { useLayoutManager } from './hooks/useLayoutManager'
 import { useLayoutActions } from './hooks/useLayoutActions'
 import { useGardenInteractions } from './hooks/useGardenInteractions'
 import { useProfiles } from './hooks/useProfiles'
-import { migrateToLayoutsSchema } from './utils/storageMigration'
+import { migrateToLayoutsSchema, migrateToMultiBoxSchema } from './utils/storageMigration'
 import { CORE_50_CROPS } from './data/crops'
 
 function App() {
-  // Run migration on app load
+  // Run migrations on app load
   useEffect(() => {
+    // First migrate from legacy schema to layouts (if needed)
     migrateToLayoutsSchema()
+    // Then migrate from single-bed to multi-box schema (if needed)
+    migrateToMultiBoxSchema()
   }, [])
 
   // Profile management (must come before layout management to avoid Split Brain bug)
@@ -34,7 +38,9 @@ function App() {
     plantCrop,
     removeCrop,
     clearBed,
-    setBed,
+    setAllBoxes,
+    addBox,
+    removeBox,
   } = layoutManager
 
   const {
@@ -67,11 +73,53 @@ function App() {
     currentBed,
     gardenProfile,
     activeLayout,
-    setBed,
+    setAllBoxes,
     plantCrop,
     removeCrop,
     updateProfile,
   })
+
+  // Box modal state
+  const [isBoxModalOpen, setIsBoxModalOpen] = useState(false)
+  const [boxModalMode, setBoxModalMode] = useState<BoxActionMode>('add')
+  const [targetBoxId, setTargetBoxId] = useState<string>('')
+  const [targetBoxName, setTargetBoxName] = useState<string>('')
+
+  // Box modal handlers
+  const handleAddBoxClick = () => {
+    setBoxModalMode('add')
+    setIsBoxModalOpen(true)
+  }
+
+  const handleDeleteBoxClick = (boxId: string, boxName: string) => {
+    setTargetBoxId(boxId)
+    setTargetBoxName(boxName)
+    setBoxModalMode('delete')
+    setIsBoxModalOpen(true)
+  }
+
+  const handleBoxModalConfirm = (data?: BoxData) => {
+    if (boxModalMode === 'add' && data) {
+      addBox(data.name, data.width, data.height)
+    } else if (boxModalMode === 'delete' && targetBoxId) {
+      removeBox(targetBoxId)
+    }
+    setIsBoxModalOpen(false)
+    setTargetBoxId('')
+    setTargetBoxName('')
+  }
+
+  const handleBoxModalClose = () => {
+    setIsBoxModalOpen(false)
+    setTargetBoxId('')
+    setTargetBoxName('')
+  }
+
+  // Calculate total area for all boxes
+  const totalArea = activeLayout?.boxes.reduce(
+    (sum, box) => sum + box.width * box.height,
+    0
+  ) ?? 0
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-leaf-50 to-soil-50">
@@ -126,13 +174,47 @@ function App() {
             />
           </div>
 
-          {/* Main: Garden Bed */}
-          <div className="order-1 lg:order-2">
-            <GardenBed
-              squares={currentBed}
-              onSquareClick={handleSquareClick}
-              gardenProfile={gardenProfile}
-            />
+          {/* Main: Garden Bed(s) */}
+          <div className="order-1 lg:order-2 space-y-8">
+            {/* Total Area Summary */}
+            <div className="bg-white rounded-lg shadow-lg p-4 flex justify-between items-center">
+              <div>
+                <h3 className="text-lg font-semibold text-soil-900">
+                  {activeLayout?.boxes.length ?? 0} {activeLayout?.boxes.length === 1 ? 'Bed' : 'Beds'}
+                </h3>
+                <p className="text-sm text-soil-600">
+                  Total: {totalArea} sq ft
+                </p>
+              </div>
+              <button
+                onClick={handleAddBoxClick}
+                className="flex items-center gap-2 px-4 py-2 bg-leaf-600 hover:bg-leaf-700 text-white rounded-lg transition-colors"
+                type="button"
+              >
+                <Plus className="w-5 h-5" />
+                Add Bed
+              </button>
+            </div>
+
+            {/* Garden Beds */}
+            {activeLayout?.boxes.map((box, boxIndex) => (
+              <GardenBed
+                key={box.id}
+                squares={box.cells}
+                onSquareClick={(cellIndex) => {
+                  // For now, only support clicking on first box (backward compatibility)
+                  if (boxIndex === 0) {
+                    handleSquareClick(cellIndex)
+                  }
+                }}
+                gardenProfile={gardenProfile}
+                width={box.width}
+                height={box.height}
+                bedName={box.name}
+                onDelete={() => { handleDeleteBoxClick(box.id, box.name) }}
+                showDelete={activeLayout.boxes.length > 1}
+              />
+            ))}
             <GardenInstructions selectedCrop={selectedCrop} />
 
             {/* Feature Status */}
@@ -171,6 +253,15 @@ function App() {
             onClose={handleLayoutModalClose}
           />
         )}
+
+        {/* Box Action Modal */}
+        <BoxActionModal
+          isOpen={isBoxModalOpen}
+          mode={boxModalMode}
+          boxName={targetBoxName}
+          onConfirm={handleBoxModalConfirm}
+          onClose={handleBoxModalClose}
+        />
       </div>
     </div>
   )

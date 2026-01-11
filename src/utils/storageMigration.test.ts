@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+ 
+ 
+ 
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { migrateToLayoutsSchema, migrateToMultiBoxSchema } from './storageMigration'
@@ -96,7 +96,7 @@ describe('storageMigration', () => {
       if (!layoutsStr) throw new Error('Layouts not found')
 
       const layouts = JSON.parse(layoutsStr) as LayoutStorage
-      expect(layouts.version).toBe(1)
+      expect(layouts.version).toBe(2)
 
       const layoutIds = Object.keys(layouts.layouts)
       expect(layoutIds).toHaveLength(1)
@@ -134,9 +134,13 @@ describe('storageMigration', () => {
       if (!layoutId) throw new Error('Layout ID not found')
       const layout = getLayout(layoutId, layouts)
 
-      expect(layout.bed[0]).toEqual(lettuce)
-      expect(layout.bed[5]).toEqual(tomato)
-      expect(layout.bed[1]).toBeNull()
+      const box0 = layout.boxes[0]
+      expect(box0).toBeDefined()
+      if (box0) {
+        expect(box0.cells[0]).toEqual(lettuce)
+        expect(box0.cells[5]).toEqual(tomato)
+        expect(box0.cells[1]).toBeNull()
+      }
     })
 
     it('creates profile from gardenProfile during migration', () => {
@@ -228,8 +232,12 @@ describe('storageMigration', () => {
       if (!layoutId) throw new Error('Layout ID not found')
       const layout = getLayout(layoutId, layouts)
 
-      expect(layout.bed).toHaveLength(32)
-      expect(layout.bed.every((cell: Crop | null) => cell === null)).toBe(true)
+      const box0 = layout.boxes[0]
+      expect(box0).toBeDefined()
+      if (box0) {
+        expect(box0.cells).toHaveLength(32)
+        expect(box0.cells.every((cell: Crop | null) => cell === null)).toBe(true)
+      }
     })
 
     it('generates valid UUID v4 for layout ID', () => {

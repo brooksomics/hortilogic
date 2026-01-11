@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+ 
+ 
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
@@ -30,8 +30,8 @@ describe('useProfiles', () => {
     const currentYear = new Date().getFullYear()
     expect(defaultProfile.name).toBe('My Garden')
     expect(defaultProfile.hardiness_zone).toBe('5b')
-    expect(defaultProfile.last_frost_date).toBe(`${currentYear}-05-15`)
-    expect(defaultProfile.first_frost_date).toBe(`${currentYear}-10-01`)
+    expect(defaultProfile.last_frost_date).toBe(`${currentYear.toString()}-05-15`)
+    expect(defaultProfile.first_frost_date).toBe(`${currentYear.toString()}-10-01`)
     expect(defaultProfile.season_extension_weeks).toBe(0)
     expect(defaultProfile.targetPlantingDate).toBeDefined()
   })

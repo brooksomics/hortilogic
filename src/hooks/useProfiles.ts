@@ -14,8 +14,8 @@ function createDefaultProfile(): GardenProfile {
   return {
     name: 'My Garden',
     hardiness_zone: '5b',
-    last_frost_date: `${currentYear}-05-15`,
-    first_frost_date: `${currentYear}-10-01`,
+    last_frost_date: `${currentYear.toString()}-05-15`,
+    first_frost_date: `${currentYear.toString()}-10-01`,
     season_extension_weeks: 0,
     targetPlantingDate: new Date().toISOString().split('T')[0], // Default to today
   }

@@ -22,7 +22,7 @@ describe('App', () => {
   it('renders Garden Bed component', () => {
     render(<App />)
     expect(screen.getByRole('grid')).toBeInTheDocument()
-    expect(screen.getByText(/Garden Bed \(4' × 8'\)/i)).toBeInTheDocument()
+    expect(screen.getByText(/Main Bed/i)).toBeInTheDocument()
   })
 
   it('renders Crop Library', () => {

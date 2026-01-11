@@ -3,13 +3,15 @@
  *
  * Tests the full flow: open Settings → change values → save → reopen → verify persistence
  */
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { SettingsModal } from './SettingsModal'
 import { useProfiles } from '../hooks/useProfiles'
 import { useGardenInteractions } from '../hooks/useGardenInteractions'
-import type { GardenProfile, GardenLayout } from '../types/garden'
+import type { GardenProfile, GardenLayout, Crop } from '../types/garden'
+import { generateUUID } from '../utils/uuid'
 
 /**
  * Test harness component that integrates all the hooks together
@@ -23,7 +25,13 @@ function SettingsTestHarness() {
     id: 'test-layout-id',
     name: 'Test Layout',
     profileId: defaultProfileId,
-    bed: Array(32).fill(null),
+    boxes: [{
+      id: generateUUID(),
+      name: 'Main Bed',
+      width: 4,
+      height: 8,
+      cells: Array(32).fill(null) as (Crop | null)[],
+    }],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   }
@@ -36,10 +44,10 @@ function SettingsTestHarness() {
     handleSettingsClose,
     openSettings,
   } = useGardenInteractions({
-    currentBed: activeLayout.bed,
+    currentBed: activeLayout.boxes[0]?.cells || [],
     gardenProfile,
     activeLayout,
-    setBed: () => {},
+    setAllBoxes: () => {},
     plantCrop: () => {},
     removeCrop: () => {},
     updateProfile,
