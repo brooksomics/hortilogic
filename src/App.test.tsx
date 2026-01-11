@@ -2,6 +2,16 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import App from './App'
+import { GardenProvider } from './context/GardenContext'
+
+// Helper to render App with GardenProvider
+function renderApp() {
+  return render(
+    <GardenProvider>
+      <App />
+    </GardenProvider>
+  )
+}
 
 describe('App', () => {
   beforeEach(() => {
@@ -10,28 +20,28 @@ describe('App', () => {
   })
 
   it('renders HortiLogic heading', () => {
-    render(<App />)
+    renderApp()
     expect(screen.getByText('HortiLogic')).toBeInTheDocument()
   })
 
   it('renders Interactive Garden Planner subtitle', () => {
-    render(<App />)
+    renderApp()
     expect(screen.getByText(/Interactive Garden Planner/i)).toBeInTheDocument()
   })
 
   it('renders Garden Bed component', () => {
-    render(<App />)
+    renderApp()
     expect(screen.getByRole('grid')).toBeInTheDocument()
     expect(screen.getByText(/Main Bed/i)).toBeInTheDocument()
   })
 
   it('renders Crop Library', () => {
-    render(<App />)
+    renderApp()
     expect(screen.getByText('Crop Library')).toBeInTheDocument()
   })
 
   it('displays Core 50 crops in library', () => {
-    render(<App />)
+    renderApp()
     // Should display some common crops from the Core 50
     expect(screen.getByText('Lettuce')).toBeInTheDocument()
     expect(screen.getByText('Tomato')).toBeInTheDocument()
@@ -42,7 +52,7 @@ describe('App', () => {
 
   it('allows selecting a crop from library', async () => {
     const user = userEvent.setup()
-    render(<App />)
+    renderApp()
 
     const lettuceButton = screen.getByRole('button', { name: /Select Lettuce for planting/i })
     await user.click(lettuceButton)
@@ -53,7 +63,7 @@ describe('App', () => {
 
   it('allows planting a crop in garden bed', async () => {
     const user = userEvent.setup()
-    render(<App />)
+    renderApp()
 
     // Select a crop
     const tomatoButton = screen.getByRole('button', { name: /Select Tomato for planting/i })
@@ -72,7 +82,7 @@ describe('App', () => {
 
   it('allows removing a planted crop', async () => {
     const user = userEvent.setup()
-    render(<App />)
+    renderApp()
 
     // Select and plant a crop
     const carrotButton = screen.getByRole('button', { name: /Select Carrot for planting/i })
@@ -96,18 +106,18 @@ describe('App', () => {
   })
 
   it('renders clear all crops button', () => {
-    render(<App />)
+    renderApp()
     expect(screen.getByRole('button', { name: /Clear All Crops/i })).toBeInTheDocument()
   })
 
   it('renders how to use instructions', () => {
-    render(<App />)
+    renderApp()
     expect(screen.getByText(/How to Use/i)).toBeInTheDocument()
     expect(screen.getByText(/Select a crop from the Crop Library/i)).toBeInTheDocument()
   })
 
   it('renders Automagic Fill button', () => {
-    render(<App />)
+    renderApp()
     expect(screen.getByRole('button', { name: /Automagic Fill/i })).toBeInTheDocument()
   })
 
@@ -124,7 +134,7 @@ describe('App', () => {
     }
 
     const user = userEvent.setup()
-    render(<App />)
+    renderApp()
 
     // Initially all squares should be empty
     const emptySquaresBefore = screen.getAllByRole('button', { name: 'Empty square' })
@@ -154,7 +164,7 @@ describe('App', () => {
     }
 
     const user = userEvent.setup()
-    render(<App />)
+    renderApp()
 
     // Manually plant a crop first
     const tomatoButton = screen.getByRole('button', { name: /Select Tomato for planting/i })
@@ -180,7 +190,7 @@ describe('App', () => {
   })
 
   it('loads Core 50 crop database', () => {
-    render(<App />)
+    renderApp()
 
     // Should display crop count showing 50 crops
     expect(screen.getByText(/50 crops/i)).toBeInTheDocument()

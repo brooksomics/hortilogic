@@ -91,6 +91,49 @@ Last updated: 2026-01-10 (TODO-018 complete - Multi-Box Automagic Fill)
 
 ---
 
+## React Context Architecture (TODO-022)
+
+| Context/Hook | Location | Purpose |
+|--------------|----------|---------|
+| `GardenProvider` | context/GardenContext.tsx | Root provider wrapping entire app with garden state |
+| `useGardenContext()` | context/GardenContext.tsx:233 | Hook to access all garden state and actions |
+| `GardenContextValue` | context/GardenContext.tsx:20 | TypeScript interface for context value |
+
+**Key Concepts:**
+- **Eliminates prop drilling**: Components access state directly via context instead of receiving props from App.tsx
+- **Centralized state**: All hooks (useLayoutManager, useGardenInteractions, useProfiles) managed in GardenProvider
+- **Single source of truth**: Context provides unified interface to all garden functionality
+- **Simplified App.tsx**: Reduced from ~295 lines with complex hook orchestration to 257 lines of clean UI logic
+
+**Context Value Sections:**
+1. **Profile Management**: getProfile, updateProfile, defaultProfileId
+2. **Layout Management**: layouts, activeLayout, switchLayout, plantCrop, removeCrop, clearBed, setAllBoxes, addBox, removeBox
+3. **Layout Actions**: Modal state and handlers for create/rename/duplicate/delete
+4. **Garden Interactions**: selectedCrop, handleAutoFill, handleSquareClick, settings modal state
+5. **Stash Management**: stash CRUD, distribution, placement results, undo/redo
+6. **History**: undo, canUndo
+
+**Usage Pattern:**
+```typescript
+// Before (App.tsx with prop drilling)
+const layoutManager = useLayoutManager(defaultProfileId)
+const { activeLayout, plantCrop, removeCrop } = layoutManager
+const interactions = useGardenInteractions({ activeLayout, plantCrop, ... })
+// Pass props to children...
+
+// After (components access context directly)
+function MyComponent() {
+  const { activeLayout, plantCrop, removeCrop } = useGardenContext()
+  // Use directly, no props needed
+}
+```
+
+**Testing:**
+- Wrap test components in `<GardenProvider>` for integration tests
+- See `App.test.tsx` and `SettingsModal.splitbrain.test.tsx` for examples
+
+---
+
 ## UI Components
 
 | Component | Location | Purpose |
@@ -104,7 +147,7 @@ Last updated: 2026-01-10 (TODO-018 complete - Multi-Box Automagic Fill)
 | `SettingsModal` | components/SettingsModal.tsx | Garden profile settings editor |
 
 **Component Responsibilities:**
-- **App**: Multi-box rendering, layout/box management integration, state coordination, migrations, Core 50 crop database, total area summary
+- **App**: Multi-box rendering, consumes GardenContext for all state/actions, box modal management, renders layout selector and settings
 - **GardenBed**: Dynamic grid rendering with custom width/height, click handlers, viability colors, accessibility labels, delete button
 - **CropLibrary**: Crop list, search filtering, crop count display, selection UI
 - **LayoutSelector**: Layout dropdown, CRUD action buttons, sorting

@@ -14,6 +14,16 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import App from '../App'
+import { GardenProvider } from '../context/GardenContext'
+
+// Helper to render App with GardenProvider
+function renderApp() {
+  return render(
+    <GardenProvider>
+      <App />
+    </GardenProvider>
+  )
+}
 
 describe('Settings Persistence - Split Brain Bug Regression (TODO-012)', () => {
   beforeEach(() => {
@@ -28,7 +38,7 @@ describe('Settings Persistence - Split Brain Bug Regression (TODO-012)', () => {
     const user = userEvent.setup()
 
     // Render the actual App component
-    render(<App />)
+    renderApp()
 
     // Wait for app to load
     await waitFor(() => {
@@ -77,7 +87,7 @@ describe('Settings Persistence - Split Brain Bug Regression (TODO-012)', () => {
 
   it('CRITICAL: Location field persists correctly in actual App', async () => {
     const user = userEvent.setup()
-    render(<App />)
+    renderApp()
 
     await waitFor(() => {
       expect(screen.getByText('HortiLogic')).toBeInTheDocument()
@@ -111,7 +121,7 @@ describe('Settings Persistence - Split Brain Bug Regression (TODO-012)', () => {
 
   it('CRITICAL: Frost dates persist correctly in actual App', async () => {
     const user = userEvent.setup()
-    render(<App />)
+    renderApp()
 
     await waitFor(() => {
       expect(screen.getByText('HortiLogic')).toBeInTheDocument()

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Sprout, Settings, Plus } from 'lucide-react'
 import { GardenBed } from './components/GardenBed'
 import { CropLibrary } from './components/CropLibrary'
@@ -9,42 +9,23 @@ import { LayoutSelector } from './components/LayoutSelector'
 import { LayoutActionModal } from './components/LayoutActionModal'
 import { BoxActionModal, type BoxData, type BoxActionMode } from './components/BoxActionModal'
 import { SettingsModal } from './components/SettingsModal'
-import { useLayoutManager } from './hooks/useLayoutManager'
-import { useLayoutActions } from './hooks/useLayoutActions'
-import { useGardenInteractions } from './hooks/useGardenInteractions'
-import { useProfiles } from './hooks/useProfiles'
-import { migrateToLayoutsSchema, migrateToMultiBoxSchema } from './utils/storageMigration'
+import { useGardenContext } from './context/GardenContext'
 import { CORE_50_CROPS } from './data/crops'
 
 function App() {
-  // Run migrations on app load
-  useEffect(() => {
-    // First migrate from legacy schema to layouts (if needed)
-    migrateToLayoutsSchema()
-    // Then migrate from single-bed to multi-box schema (if needed)
-    migrateToMultiBoxSchema()
-  }, [])
-
-  // Profile management (must come before layout management to avoid Split Brain bug)
-  const { getProfile, updateProfile, defaultProfileId } = useProfiles()
-
-  // Layout management
-  const layoutManager = useLayoutManager(defaultProfileId)
+  // Access all state and actions from context - no more prop drilling!
   const {
+    // Layout state
     layouts,
     activeLayoutId,
     activeLayout,
-    currentBed,
+    gardenProfile,
+    totalArea,
+
+    // Layout actions
     switchLayout,
-    plantCrop,
-    removeCrop,
-    clearBed,
-    setAllBoxes,
     addBox,
     removeBox,
-  } = layoutManager
-
-  const {
     layoutModalMode,
     targetLayoutId,
     handleCreateLayout,
@@ -53,23 +34,19 @@ function App() {
     handleDeleteLayout,
     handleLayoutModalConfirm,
     handleLayoutModalClose,
-  } = useLayoutActions(layoutManager)
 
-  // Get garden profile for active layout (with fallback to default profile)
-  const gardenProfile = activeLayout
-    ? (getProfile(activeLayout.profileId) || getProfile(defaultProfileId) || null)
-    : null
-
-  // Garden interactions
-  const {
+    // Garden interactions
     selectedCrop,
     setSelectedCrop,
     isSettingsOpen,
-    handleAutoFill,
     handleSquareClick,
     handleSettingsSave,
     handleSettingsClose,
     openSettings,
+    handleAutoFill,
+    clearBed,
+
+    // Stash
     stash,
     addToStash,
     removeFromStash,
@@ -78,20 +55,12 @@ function App() {
     canAddToStash,
     handleDistributeStash,
     placementResult,
+    isDistributing,
     undo,
     canUndo,
-    isDistributing
-  } = useGardenInteractions({
-    currentBed,
-    gardenProfile,
-    activeLayout,
-    setAllBoxes,
-    plantCrop,
-    removeCrop,
-    updateProfile,
-  })
+  } = useGardenContext()
 
-  // Box modal state
+  // Box modal state (local to App component)
   const [isBoxModalOpen, setIsBoxModalOpen] = useState(false)
   const [boxModalMode, setBoxModalMode] = useState<BoxActionMode>('add')
   const [targetBoxId, setTargetBoxId] = useState<string>('')
@@ -126,12 +95,6 @@ function App() {
     setTargetBoxId('')
     setTargetBoxName('')
   }
-
-  // Calculate total area for all boxes
-  const totalArea = activeLayout?.boxes.reduce(
-    (sum, box) => sum + box.width * box.height,
-    0
-  ) ?? 0
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-leaf-50 to-soil-50">
@@ -183,11 +146,8 @@ function App() {
                 // Check limit before adding
                 if (activeLayout) {
                   const crop = CORE_50_CROPS.find(c => c.id === id)
-                  // Simplified signature call
                   if (crop && canAddToStash(crop)) {
                     addToStash(id, amount)
-                  } else {
-                    // Optional: Show error/toast
                   }
                 }
               }}
@@ -200,7 +160,7 @@ function App() {
                 totalArea={getStashTotalArea()}
                 maxArea={totalArea}
                 onClear={clearStash}
-                onRemoveItem={(id) => { removeFromStash(id, 1); }}
+                onRemoveItem={(id) => { removeFromStash(id, 1) }}
                 onDistribute={handleDistributeStash}
                 placementResult={placementResult}
                 isDistributing={isDistributing}
