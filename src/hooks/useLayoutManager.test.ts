@@ -7,7 +7,8 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { useLayoutManager } from './useLayoutManager'
-import type { Crop } from '../types/garden'
+import type { Crop, GardenProfile } from '../types/garden'
+import type { ExportedLayout } from '../utils/layoutExportImport'
 
 // Test profile ID (simulates the ID from useProfiles hook)
 const TEST_PROFILE_ID = 'test-profile-id'
@@ -570,5 +571,127 @@ describe('useLayoutManager', () => {
 
     // Should still have 1 box
     expect(result.current.activeLayout?.boxes).toHaveLength(1)
+  })
+
+  describe('Export/Import', () => {
+    const mockProfile: GardenProfile = {
+      name: 'Test Garden',
+      hardiness_zone: '5b',
+      location: 'Denver, CO',
+      last_frost_date: '2024-04-15',
+      first_frost_date: '2024-10-15',
+      season_extension_weeks: 2,
+      targetPlantingDate: '2024-05-01',
+    }
+
+    it('exports active layout with profile', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      // Plant some crops
+      act(() => {
+        result.current.plantCrop(0, lettuce)
+      })
+      act(() => {
+        result.current.plantCrop(5, tomato)
+      })
+
+      // Verify crops were planted
+      expect(result.current.activeLayout?.boxes[0]!.cells[0]).toEqual(lettuce)
+      expect(result.current.activeLayout?.boxes[0]!.cells[5]).toEqual(tomato)
+
+      // Export layout
+      const exportData = result.current.exportLayout(mockProfile)
+
+      expect(exportData).toBeDefined()
+      expect(exportData.version).toBe(1)
+      expect(exportData.exportedAt).toBeDefined()
+      expect(exportData.layout).toBeDefined()
+      expect(exportData.profile).toEqual(mockProfile)
+      expect(exportData.layout.boxes[0]?.cells[0]).toEqual(lettuce)
+      expect(exportData.layout.boxes[0]?.cells[5]).toEqual(tomato)
+    })
+
+    it('exports active layout without profile', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      let exportData: ExportedLayout | undefined
+      act(() => {
+        exportData = result.current.exportLayout()
+      })
+
+      expect(exportData).toBeDefined()
+      if (!exportData) throw new Error('Export data is undefined')
+      expect(exportData.version).toBe(1)
+      expect(exportData.profile).toBeUndefined()
+    })
+
+    it('imports layout and creates new layout with new IDs', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      // Plant crops and export
+      act(() => {
+        result.current.plantCrop(0, lettuce)
+      })
+      act(() => {
+        result.current.plantCrop(5, tomato)
+      })
+
+      const exportData = result.current.exportLayout(mockProfile)
+      const originalLayoutId = result.current.activeLayoutId
+      const originalBoxId = result.current.activeLayout?.boxes[0]?.id
+
+      // Import the layout
+      let importedId: string | undefined
+      act(() => {
+        importedId = result.current.importLayout(exportData, 'Imported Layout')
+      })
+
+      // Verify new layout was created
+      expect(importedId).toBeDefined()
+      expect(importedId).not.toBe(originalLayoutId)
+
+      // Verify imported layout is now active
+      expect(result.current.activeLayoutId).toBe(importedId)
+
+      // Verify layout has new IDs
+      const importedLayout = result.current.activeLayout
+      expect(importedLayout?.id).toBe(importedId)
+      expect(importedLayout?.name).toBe('Imported Layout')
+      expect(importedLayout?.boxes[0]?.id).not.toBe(originalBoxId)
+
+      // Verify crops were preserved
+      expect(importedLayout?.boxes[0]?.cells[0]).toEqual(lettuce)
+      expect(importedLayout?.boxes[0]?.cells[5]).toEqual(tomato)
+    })
+
+    it('imports layout with custom name', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      const exportData = result.current.exportLayout()
+
+      let importedId: string | undefined
+      act(() => {
+        importedId = result.current.importLayout(exportData, 'January 2025 Plan')
+      })
+
+      if (!importedId) throw new Error('Import failed')
+      const importedLayout = result.current.layouts[importedId]
+      expect(importedLayout?.name).toBe('January 2025 Plan')
+    })
+
+    it('throws error when importing invalid data', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      const invalidData = {
+        version: 999,
+        exportedAt: new Date().toISOString(),
+      } as unknown as ExportedLayout
+
+      expect(() => {
+        act(() => {
+          result.current.importLayout(invalidData, 'Invalid')
+        })
+      }).toThrow()
+    })
   })
 })

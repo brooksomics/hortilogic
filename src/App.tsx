@@ -34,6 +34,8 @@ function App() {
     handleDeleteLayout,
     handleLayoutModalConfirm,
     handleLayoutModalClose,
+    exportLayout,
+    importLayout,
 
     // Garden interactions
     selectedCrop,
@@ -113,6 +115,9 @@ function App() {
                 onRename={handleRenameLayout}
                 onDuplicate={handleDuplicateLayout}
                 onDelete={handleDeleteLayout}
+                onExport={exportLayout}
+                onImport={importLayout}
+                gardenProfile={gardenProfile}
               />
               <button
                 onClick={openSettings}
