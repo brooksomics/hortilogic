@@ -177,35 +177,85 @@ export function autoFillAllBoxes(
     allCrops: Crop[],
     seed?: string | number
 ): { boxResults: BoxPlacementResult[]; remainingStash: GardenStash } {
-    let currentStash = { ...initialStash }
-    const boxResults: BoxPlacementResult[] = []
+    // Calculate available space in each box
+    const boxSpaces = layoutBoxes.map(box => ({
+        id: box.id,
+        emptyCount: box.cells.filter(cell => cell === null).length
+    }))
 
-    for (const box of layoutBoxes) {
-        if (Object.keys(currentStash).length === 0) {
-            break
+    const totalSpace = boxSpaces.reduce((sum, box) => sum + box.emptyCount, 0)
+    const totalStashSize = Object.values(initialStash).reduce((sum, qty) => sum + qty, 0)
+
+    // Allocate stash items proportionally to each box based on available space
+    const boxAllocations: Map<string, GardenStash> = new Map()
+
+    if (totalSpace === 0 || totalStashSize === 0) {
+        // No space or nothing to place
+        return {
+            boxResults: layoutBoxes.map(box => ({ boxId: box.id, placed: [], failed: [] })),
+            remainingStash: initialStash
+        }
+    }
+
+    // Distribute items across boxes proportionally
+    const remainingItems: GardenStash = { ...initialStash }
+
+    for (let i = 0; i < layoutBoxes.length; i++) {
+        const box = layoutBoxes[i]
+        const boxSpace = boxSpaces[i]
+        if (!box || !boxSpace) continue // Should never happen, but satisfies linter
+
+        const allocation: GardenStash = {}
+
+        // Calculate this box's share of each crop type
+        for (const [cropId, quantity] of Object.entries(remainingItems)) {
+            if (quantity === 0) continue
+
+            // For the last box, give it everything remaining
+            if (i === layoutBoxes.length - 1) {
+                allocation[cropId] = quantity
+            } else {
+                // Allocate proportional to space (but at least try to give each box something)
+                const proportion = boxSpace.emptyCount / totalSpace
+                const allocated = Math.max(1, Math.floor(quantity * proportion))
+                allocation[cropId] = Math.min(allocated, quantity)
+            }
+
+            remainingItems[cropId] = (remainingItems[cropId] || 0) - (allocation[cropId] || 0)
         }
 
-        const { placed, failed } = autoFillFromStash(box.cells, currentStash, allCrops, box.width, seed)
+        boxAllocations.set(box.id, allocation)
+    }
+
+    // Now place allocated items in each box
+    const boxResults: BoxPlacementResult[] = []
+    let unplacedItems: GardenStash = {}
+
+    for (const box of layoutBoxes) {
+        const allocation = boxAllocations.get(box.id) || {}
+
+        // Combine this box's allocation with any unplaced items from previous boxes
+        const stashForThisBox: GardenStash = { ...unplacedItems }
+        for (const [cropId, qty] of Object.entries(allocation)) {
+            stashForThisBox[cropId] = (stashForThisBox[cropId] || 0) + qty
+        }
+
+        const { placed, failed } = autoFillFromStash(box.cells, stashForThisBox, allCrops, box.width, seed)
 
         boxResults.push({
             boxId: box.id,
             placed,
-            failed // Note: These failed items will be retried in next box or returned as final remaining
+            failed
         })
 
-        // Update currentStash: remove placed items
-        // Reconstruct stash from FAILED items. 
-        // `failed` contains everything that wasn't placed.
-
-        // Convert 'failed' list back to Stash map
-        const newStash: GardenStash = {}
+        // Items that failed to place will be tried in the next box
+        unplacedItems = {}
         for (const fail of failed) {
-            newStash[fail.cropId] = (newStash[fail.cropId] || 0) + 1
+            unplacedItems[fail.cropId] = (unplacedItems[fail.cropId] || 0) + 1
         }
-        currentStash = newStash
     }
 
-    return { boxResults, remainingStash: currentStash }
+    return { boxResults, remainingStash: unplacedItems }
 }
 
 /**

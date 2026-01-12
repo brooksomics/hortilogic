@@ -166,8 +166,8 @@ describe('Priority Solver Logic', () => {
     })
 
     describe('autoFillAllBoxes', () => {
-        it('distributes stash across multiple boxes', () => {
-            // Box 1: 2x2. Box 2: 2x2.
+        it('distributes stash proportionally across equal-sized boxes', () => {
+            // Box 1: 2x2. Box 2: 2x2. Equal size boxes should get roughly equal allocation.
             const box1 = { id: 'b1', cells: Array(4).fill(null) as (Crop | null)[], width: 2 }
             const box2 = { id: 'b2', cells: Array(4).fill(null) as (Crop | null)[], width: 2 }
             const stash = { 'tomato': 6 }
@@ -177,9 +177,32 @@ describe('Priority Solver Logic', () => {
             const r1 = result.boxResults.find(r => r.boxId === 'b1')!
             const r2 = result.boxResults.find(r => r.boxId === 'b2')!
 
-            expect(r1.placed.length).toBe(4)
-            expect(r2.placed.length).toBe(2)
+            // With proportional distribution, each box should get 3 tomatoes (6 * 0.5)
+            expect(r1.placed.length).toBe(3)
+            expect(r2.placed.length).toBe(3)
             expect(result.remainingStash['tomato']).toBeUndefined() // Fully placed
+        })
+
+        it('distributes stash evenly when first box can fit everything', () => {
+            // Bug: When first box is large enough, it takes everything and leaves nothing for other boxes
+            // Box 1: 4x4 = 16 cells (plenty of space). Box 2: 3x3 = 9 cells.
+            const box1 = { id: 'b1', cells: Array(16).fill(null) as (Crop | null)[], width: 4 }
+            const box2 = { id: 'b2', cells: Array(9).fill(null) as (Crop | null)[], width: 3 }
+            const stash = { 'tomato': 4, 'basil': 2 }
+
+            const result = autoFillAllBoxes([box1, box2], stash, mockCrops)
+
+            const r1 = result.boxResults.find(r => r.boxId === 'b1')!
+            const r2 = result.boxResults.find(r => r.boxId === 'b2')!
+
+            // Should distribute items across both boxes, not put everything in box1
+            expect(r1.placed.length).toBeGreaterThan(0)
+            expect(r2.placed.length).toBeGreaterThan(0) // This will fail with current buggy implementation
+
+            // Total should be 6 items placed
+            expect(r1.placed.length + r2.placed.length).toBe(6)
+            expect(result.remainingStash['tomato']).toBeUndefined()
+            expect(result.remainingStash['basil']).toBeUndefined()
         })
 
         it('returns remaining stash if all boxes full', () => {
