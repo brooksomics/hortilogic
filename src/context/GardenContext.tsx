@@ -13,6 +13,7 @@ import type {
 } from '../types/garden'
 import type { LayoutActionMode } from '../components/LayoutActionModal'
 import type { PlacementSummary } from '../components/StashSummary'
+import type { ExportedLayout } from '../utils/layoutExportImport'
 
 /**
  * Garden Context Value Interface
@@ -48,6 +49,10 @@ export interface GardenContextValue {
   handleDeleteLayout: (id: string) => void
   handleLayoutModalConfirm: (name: string) => void
   handleLayoutModalClose: () => void
+
+  // Export/Import
+  exportLayout: (profile?: GardenProfile) => ExportedLayout
+  importLayout: (exportData: ExportedLayout, newName: string) => string
 
   // Garden Interactions
   selectedCrop: Crop | null
@@ -109,6 +114,8 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
     setAllBoxes,
     addBox,
     removeBox,
+    exportLayout,
+    importLayout,
   } = layoutManager
 
   // Layout actions
@@ -195,6 +202,10 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
     handleDeleteLayout,
     handleLayoutModalConfirm,
     handleLayoutModalClose,
+
+    // Export/Import
+    exportLayout,
+    importLayout,
 
     // Garden Interactions
     selectedCrop,

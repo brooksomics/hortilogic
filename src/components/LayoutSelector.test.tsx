@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { LayoutSelector } from './LayoutSelector'
-import type { GardenLayout, Crop } from '../types/garden'
+import type { GardenLayout, Crop, GardenProfile } from '../types/garden'
+import type { ExportedLayout } from '../utils/layoutExportImport'
 import { generateUUID } from '../utils/uuid'
 
 describe('LayoutSelector', () => {
@@ -10,6 +11,16 @@ describe('LayoutSelector', () => {
   const mockOnRename = vi.fn()
   const mockOnDuplicate = vi.fn()
   const mockOnDelete = vi.fn()
+  const mockOnExport = vi.fn(() => ({} as ExportedLayout))
+  const mockOnImport = vi.fn(() => 'imported-id')
+
+  const mockProfile: GardenProfile = {
+    name: 'Test Garden',
+    hardiness_zone: '5b',
+    last_frost_date: '2024-04-15',
+    first_frost_date: '2024-10-15',
+    season_extension_weeks: 2,
+  }
 
   const createLayout = (id: string, name: string, updatedAt: string): GardenLayout => ({
     id,
@@ -39,6 +50,9 @@ describe('LayoutSelector', () => {
   it('displays active layout name', () => {
     render(
       <LayoutSelector
+        onExport={mockOnExport}
+        onImport={mockOnImport}
+        gardenProfile={mockProfile}
         layouts={layouts}
         activeLayoutId="layout-1"
         onSwitch={mockOnSwitch}
@@ -55,6 +69,9 @@ describe('LayoutSelector', () => {
   it('opens dropdown when button clicked', () => {
     render(
       <LayoutSelector
+        onExport={mockOnExport}
+        onImport={mockOnImport}
+        gardenProfile={mockProfile}
         layouts={layouts}
         activeLayoutId="layout-1"
         onSwitch={mockOnSwitch}
@@ -76,6 +93,9 @@ describe('LayoutSelector', () => {
   it('shows layouts sorted by updatedAt descending', () => {
     render(
       <LayoutSelector
+        onExport={mockOnExport}
+        onImport={mockOnImport}
+        gardenProfile={mockProfile}
         layouts={layouts}
         activeLayoutId="layout-1"
         onSwitch={mockOnSwitch}
@@ -104,6 +124,9 @@ describe('LayoutSelector', () => {
   it('calls onSwitch when different layout clicked', () => {
     render(
       <LayoutSelector
+        onExport={mockOnExport}
+        onImport={mockOnImport}
+        gardenProfile={mockProfile}
         layouts={layouts}
         activeLayoutId="layout-1"
         onSwitch={mockOnSwitch}
@@ -128,6 +151,9 @@ describe('LayoutSelector', () => {
   it('calls onCreate when "New Layout" button clicked', () => {
     render(
       <LayoutSelector
+        onExport={mockOnExport}
+        onImport={mockOnImport}
+        gardenProfile={mockProfile}
         layouts={layouts}
         activeLayoutId="layout-1"
         onSwitch={mockOnSwitch}
@@ -152,6 +178,9 @@ describe('LayoutSelector', () => {
   it('calls onRename when rename action clicked', () => {
     render(
       <LayoutSelector
+        onExport={mockOnExport}
+        onImport={mockOnImport}
+        gardenProfile={mockProfile}
         layouts={layouts}
         activeLayoutId="layout-1"
         onSwitch={mockOnSwitch}
@@ -178,6 +207,9 @@ describe('LayoutSelector', () => {
   it('calls onDuplicate when duplicate action clicked', () => {
     render(
       <LayoutSelector
+        onExport={mockOnExport}
+        onImport={mockOnImport}
+        gardenProfile={mockProfile}
         layouts={layouts}
         activeLayoutId="layout-1"
         onSwitch={mockOnSwitch}
@@ -204,6 +236,9 @@ describe('LayoutSelector', () => {
   it('calls onDelete when delete action clicked', () => {
     render(
       <LayoutSelector
+        onExport={mockOnExport}
+        onImport={mockOnImport}
+        gardenProfile={mockProfile}
         layouts={layouts}
         activeLayoutId="layout-1"
         onSwitch={mockOnSwitch}
@@ -236,6 +271,9 @@ describe('LayoutSelector', () => {
 
     render(
       <LayoutSelector
+        onExport={mockOnExport}
+        onImport={mockOnImport}
+        gardenProfile={mockProfile}
         layouts={singleLayout}
         activeLayoutId="layout-1"
         onSwitch={mockOnSwitch}
@@ -259,6 +297,9 @@ describe('LayoutSelector', () => {
     render(
       <div data-testid="outside">
         <LayoutSelector
+        onExport={mockOnExport}
+        onImport={mockOnImport}
+        gardenProfile={mockProfile}
           layouts={layouts}
           activeLayoutId="layout-1"
           onSwitch={mockOnSwitch}
@@ -288,6 +329,9 @@ describe('LayoutSelector', () => {
   it('closes dropdown when Escape key pressed', () => {
     render(
       <LayoutSelector
+        onExport={mockOnExport}
+        onImport={mockOnImport}
+        gardenProfile={mockProfile}
         layouts={layouts}
         activeLayoutId="layout-1"
         onSwitch={mockOnSwitch}

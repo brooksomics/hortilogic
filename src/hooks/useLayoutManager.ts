@@ -1,6 +1,8 @@
 import { useDebouncedLocalStorage } from './useDebouncedLocalStorage'
-import type { LayoutStorage, GardenLayout, GardenBox, Crop } from '../types/garden'
+import type { LayoutStorage, GardenLayout, GardenBox, Crop, GardenProfile } from '../types/garden'
 import { generateUUID } from '../utils/uuid'
+import { exportLayoutToJSON, importLayoutFromJSON } from '../utils/layoutExportImport'
+import type { ExportedLayout } from '../utils/layoutExportImport'
 
 const LAYOUTS_KEY = 'hortilogic:layouts'
 const DEBOUNCE_DELAY = 300 // ms - delay localStorage writes to batch rapid operations
@@ -106,6 +108,12 @@ export interface UseLayoutManagerResult {
 
   /** Remove a box from the active layout */
   removeBox: (boxId: string) => void
+
+  /** Export active layout to JSON format */
+  exportLayout: (profile?: GardenProfile) => ExportedLayout
+
+  /** Import layout from JSON and create new layout */
+  importLayout: (exportData: ExportedLayout, newName: string) => string
 }
 
 /**
@@ -358,6 +366,37 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     })
   }
 
+  const exportLayout = (profile?: GardenProfile): ExportedLayout => {
+    if (!activeLayout) {
+      throw new Error('No active layout to export')
+    }
+
+    return exportLayoutToJSON(activeLayout, profile)
+  }
+
+  const importLayout = (exportData: ExportedLayout, newName: string): string => {
+    // Import and generate new IDs
+    const importResult = importLayoutFromJSON(exportData, defaultProfileId)
+
+    // Apply custom name
+    const importedLayout: GardenLayout = {
+      ...importResult.layout,
+      name: newName,
+    }
+
+    // Add to layouts and switch to it
+    setLayoutStorage({
+      ...layoutStorage,
+      activeLayoutId: importedLayout.id,
+      layouts: {
+        ...layouts,
+        [importedLayout.id]: importedLayout,
+      },
+    })
+
+    return importedLayout.id
+  }
+
   return {
     layouts,
     activeLayoutId,
@@ -375,5 +414,7 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     setAllBoxes,
     addBox,
     removeBox,
+    exportLayout,
+    importLayout,
   }
 }

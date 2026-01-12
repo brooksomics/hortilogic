@@ -88,7 +88,7 @@ const choice = rng.choice(['a', 'b', 'c'])
 
 ---
 
-## Layout Management (Feature 005 + Feature 008)
+## Layout Management (Feature 005 + Feature 008 + Export/Import)
 
 | Function | Location | Purpose |
 |----------|----------|---------|
@@ -104,6 +104,8 @@ const choice = rng.choice(['a', 'b', 'c'])
 | `addBox()` | hooks/useLayoutManager.ts:315 | Add a new garden box to active layout |
 | `removeBox()` | hooks/useLayoutManager.ts:339 | Remove a box from active layout (prevents removing last box) |
 | `setAllBoxes()` | hooks/useLayoutManager.ts:303 | Update all boxes in active layout (for multi-box batch operations) |
+| `exportLayout()` | hooks/useLayoutManager.ts:369 | Export active layout to JSON format with optional profile |
+| `importLayout()` | hooks/useLayoutManager.ts:377 | Import layout from JSON and create new layout with new IDs |
 
 **Key Concepts:**
 - Multiple layouts per user (e.g., "Spring 2026", "Fall 2026")
@@ -115,6 +117,37 @@ const choice = rng.choice(['a', 'b', 'c'])
 - Migration chain: Legacy → Multi-layout (v1) → Multi-box (v2)
 - LocalStorage keys: `hortilogic:layouts` (v2), `hortilogic:profiles`
 - Version numbers enable future schema migrations
+- **Export/Import**: Layouts can be exported to JSON files and imported to restore previous configurations
+
+---
+
+## Export/Import (Layout Backup & Sharing)
+
+| Function | Location | Purpose |
+|----------|----------|---------|
+| `exportLayoutToJSON()` | utils/layoutExportImport.ts:49 | Convert layout to exportable JSON format with versioning |
+| `importLayoutFromJSON()` | utils/layoutExportImport.ts:118 | Parse and validate imported JSON, generate new IDs |
+| `validateImportedLayout()` | utils/layoutExportImport.ts:64 | Validate imported data structure and version compatibility |
+| `downloadLayoutAsJSON()` | utils/layoutExportImport.ts:158 | Trigger browser download of layout as JSON file |
+| `readJSONFile()` | utils/layoutExportImport.ts:184 | Read and parse JSON file from file input |
+
+**Key Concepts:**
+- **Export format**: Versioned JSON with layout data and optional profile for portability
+- **Import safety**: Generates new IDs for layouts and boxes to avoid conflicts with existing data
+- **Version compatibility**: Current version is 1, future versions will be validated
+- **Profile portability**: Can optionally include garden profile in export for sharing across users
+- **Data preservation**: All crops, box dimensions, and layout metadata preserved during export/import
+- **Use cases**: Backup layouts, share configurations, restore previous season's layout
+
+**Export Data Structure:**
+```typescript
+{
+  version: 1,
+  exportedAt: "2026-01-12T...",
+  layout: { /* GardenLayout object */ },
+  profile?: { /* GardenProfile object (optional) */ }
+}
+```
 
 ---
 
@@ -318,6 +351,7 @@ Migration: LegacyGardenState → LayoutStorage + ProfileStorage
 | Crop database | `CORE_50_CROPS`, `CROPS_BY_ID` |
 | Crop search/filtering | `CropLibrary` (search state), `filteredCrops` |
 | UI rendering | `GardenBed`, `CropLibrary`, `LayoutSelector` |
+| Export/Import | `exportLayoutToJSON`, `importLayoutFromJSON`, `downloadLayoutAsJSON` |
 
 ---
 

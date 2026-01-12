@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
-import { ChevronDown, Plus, Edit2, Copy, Trash2 } from 'lucide-react'
-import type { GardenLayout } from '../types/garden'
+import { ChevronDown, Plus, Edit2, Copy, Trash2, Download, Upload } from 'lucide-react'
+import type { GardenLayout, GardenProfile } from '../types/garden'
+import type { ExportedLayout } from '../utils/layoutExportImport'
+import { downloadLayoutAsJSON, readJSONFile } from '../utils/layoutExportImport'
 
 export interface LayoutSelectorProps {
   layouts: Record<string, GardenLayout>
@@ -10,6 +12,9 @@ export interface LayoutSelectorProps {
   onRename: (layoutId: string) => void
   onDuplicate: (layoutId: string) => void
   onDelete: (layoutId: string) => void
+  onExport: (profile?: GardenProfile) => ExportedLayout
+  onImport: (exportData: ExportedLayout, newName: string) => string
+  gardenProfile: GardenProfile | null
 }
 
 export function LayoutSelector({
@@ -20,9 +25,13 @@ export function LayoutSelector({
   onRename,
   onDuplicate,
   onDelete,
+  onExport,
+  onImport,
+  gardenProfile,
 }: LayoutSelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const activeLayout = layouts[activeLayoutId]
   const layoutCount = Object.keys(layouts).length
@@ -72,6 +81,46 @@ export function LayoutSelector({
   const handleAction = (action: () => void): void => {
     action()
     setIsOpen(false)
+  }
+
+  const handleExport = () => {
+    const exportData = onExport(gardenProfile ?? undefined)
+    downloadLayoutAsJSON(exportData)
+    setIsOpen(false)
+  }
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    // Handle async file read in a separate function
+    void (async () => {
+      try {
+        const data = await readJSONFile(file)
+        const layoutName = `Imported ${file.name.replace('.json', '')}`
+        onImport(data as ExportedLayout, layoutName)
+        setIsOpen(false)
+
+        // Reset file input for subsequent imports
+        if (fileInputRef.current) {
+          fileInputRef.current.value = ''
+        }
+      } catch (err) {
+        console.error('Failed to import layout:', err)
+        alert(
+          'Failed to import layout. Please ensure the file is a valid HortiLogic layout export.'
+        )
+
+        // Reset file input
+        if (fileInputRef.current) {
+          fileInputRef.current.value = ''
+        }
+      }
+    })()
   }
 
   return (
@@ -175,6 +224,33 @@ export function LayoutSelector({
               <Plus className="w-4 h-4" />
               New Layout
             </button>
+          </div>
+
+          {/* Export/Import Buttons */}
+          <div className="border-t border-soil-200 py-1">
+            <button
+              onClick={handleExport}
+              className="w-full flex items-center gap-2 px-4 py-2 text-left text-soil-700 hover:bg-soil-50"
+            >
+              <Download className="w-4 h-4" />
+              Export Layout
+            </button>
+            <button
+              onClick={handleImportClick}
+              className="w-full flex items-center gap-2 px-4 py-2 text-left text-soil-700 hover:bg-soil-50"
+            >
+              <Upload className="w-4 h-4" />
+              Import Layout
+            </button>
+            {/* Hidden file input */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json,application/json"
+              onChange={handleFileChange}
+              className="hidden"
+              aria-label="Import layout file"
+            />
           </div>
         </div>
       )}
