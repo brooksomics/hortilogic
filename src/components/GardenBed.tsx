@@ -46,7 +46,7 @@ function GardenSquare({ crop, onClick, isViable = true }: GardenSquareProps) {
             />
           )}
           {crop.emoji && (
-            <span className="text-xs" aria-hidden="true">
+            <span className="text-5xl leading-none" aria-hidden="true">
               {crop.emoji}
             </span>
           )}
