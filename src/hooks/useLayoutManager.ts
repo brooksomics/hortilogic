@@ -269,14 +269,13 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
   }
 
   const clearBed = (): void => {
-    if (!activeLayout || !activeLayout.boxes[0]) return
+    if (!activeLayout || activeLayout.boxes.length === 0) return
 
-    const firstBox = activeLayout.boxes[0]
-    const updatedBoxes = [...activeLayout.boxes]
-    updatedBoxes[0] = {
-      ...firstBox,
-      cells: Array(firstBox.width * firstBox.height).fill(null) as (Crop | null)[],
-    }
+    // Clear all boxes in the layout
+    const updatedBoxes = activeLayout.boxes.map((box) => ({
+      ...box,
+      cells: Array(box.width * box.height).fill(null) as (Crop | null)[],
+    }))
 
     setLayoutStorage({
       ...layoutStorage,

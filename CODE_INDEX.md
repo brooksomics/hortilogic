@@ -125,7 +125,7 @@ const choice = rng.choice(['a', 'b', 'c'])
 | `useGarden()` | hooks/useGarden.ts | Main garden state hook with LocalStorage persistence |
 | `plantCrop()` | hooks/useGarden.ts:31 | Plant a crop at specific cell index |
 | `removeCrop()` | hooks/useGarden.ts:49 | Remove crop from cell |
-| `clearBed()` | hooks/useGarden.ts:67 | Clear all crops from bed |
+| `clearBed()` | hooks/useLayoutManager.ts:271 | Clear all crops from ALL boxes in active layout |
 | `setGardenProfile()` | hooks/useGarden.ts:75 | Update garden profile (zone, frost dates) |
 | `autoFill()` | hooks/useGarden.ts:92 | Auto-fill empty cells with viable crops |
 | `useLocalStorage()` | hooks/useLocalStorage.ts | Generic LocalStorage persistence hook |

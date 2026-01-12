@@ -386,6 +386,58 @@ describe('useLayoutManager', () => {
     expect(l1.boxes[0]!.cells[5]).toEqual(tomato)
   })
 
+  it('clearBed clears all boxes in multi-box layout', () => {
+    const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+    // Add a second box
+    act(() => {
+      result.current.addBox('Second Bed', 4, 4)
+    })
+
+    // Get current layout and set up crops in both boxes
+    const layout = result.current.activeLayout
+    if (!layout) throw new Error('No active layout')
+    expect(layout.boxes.length).toBe(2)
+
+    const updatedBoxes = [...layout.boxes]
+
+    // Plant crops in first box
+    const box1Cells = [...updatedBoxes[0]!.cells]
+    box1Cells[0] = lettuce
+    box1Cells[5] = tomato
+    updatedBoxes[0] = { ...updatedBoxes[0]!, cells: box1Cells }
+
+    // Plant crops in second box
+    const box2Cells = [...updatedBoxes[1]!.cells]
+    box2Cells[0] = lettuce
+    box2Cells[3] = tomato
+    updatedBoxes[1] = { ...updatedBoxes[1]!, cells: box2Cells }
+
+    // Update layout with crops in both boxes
+    act(() => {
+      result.current.setAllBoxes(updatedBoxes)
+    })
+
+    // Verify both boxes have crops
+    const layoutBefore = result.current.activeLayout
+    if (!layoutBefore) throw new Error('No active layout')
+    expect(layoutBefore.boxes[0]!.cells[0]).toEqual(lettuce)
+    expect(layoutBefore.boxes[0]!.cells[5]).toEqual(tomato)
+    expect(layoutBefore.boxes[1]!.cells[0]).toEqual(lettuce)
+    expect(layoutBefore.boxes[1]!.cells[3]).toEqual(tomato)
+
+    // Clear all crops
+    act(() => {
+      result.current.clearBed()
+    })
+
+    // Verify ALL boxes are cleared (not just the first one)
+    const layoutAfter = result.current.activeLayout
+    if (!layoutAfter) throw new Error('No active layout')
+    expect(layoutAfter.boxes[0]!.cells.every((cell: Crop | null) => cell === null)).toBe(true)
+    expect(layoutAfter.boxes[1]!.cells.every((cell: Crop | null) => cell === null)).toBe(true)
+  })
+
   it('setBed updates entire bed in single operation', () => {
     const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
 

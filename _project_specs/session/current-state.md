@@ -9,16 +9,16 @@ After each task, ask: Decision made? >10 tool calls? Feature done?
 
 # Current Session State
 
-*Last updated: 2026-01-10 22:15*
+*Last updated: 2026-01-11 23:56*
 
 ## Active Task
-✅ **TODO-018: Multi-Box Automagic Fill - COMPLETE**
+✅ **Bug Fix: Clear All Crops now works across all beds - COMPLETE**
 
 ## Current Status
-- **Phase**: Feature 008 (Multi-Box Garden Beds) - ✅ **COMPLETE**
-- **Progress**: All 4 TODOs complete (015, 016, 017, 018)
+- **Phase**: Bug fix - Multi-box clearBed functionality
+- **Progress**: Complete (TDD workflow followed)
 - **Blocking Issues**: None
-- **Ready For**: Next feature or quality improvements
+- **Ready For**: Commit and push
 
 ## Context Summary
 Feature 008 (Multi-Box Garden Beds) is now **100% complete**:
@@ -156,11 +156,54 @@ All multi-box functionality is now fully implemented and tested:
   - b962a8f: TODO-017 Part 2 (Box Management UI)
   - a350553: TODO-018 complete (Multi-Box Automagic Fill) ← **CURRENT HEAD**
 
+## Bug Fix Summary (2026-01-11)
+
+### Issue Reported
+- User reported: "clear all crops" only clears crops from first bed
+- When 2 beds exist, no way to delete crops from second bed
+- Need functionality to clear crops from all beds
+
+### Root Cause
+- `clearBed()` in `useLayoutManager.ts:271` only operated on `boxes[0]`
+- Never cleared boxes[1], boxes[2], etc.
+- Test coverage gap: existing test only verified first box was cleared
+
+### Fix Implemented (TDD Workflow)
+1. **RED**: Wrote failing test `clearBed clears all boxes in multi-box layout`
+   - Created 2 boxes, planted crops in both
+   - Called `clearBed()`
+   - Expected both boxes to be cleared
+   - Test failed on box[1] assertion (proved bug exists)
+
+2. **GREEN**: Fixed `clearBed()` to iterate all boxes
+   - Changed from hardcoded `boxes[0]` to `boxes.map()`
+   - Clears all boxes in the layout with correct dimensions for each
+   - All 301 tests pass
+
+3. **VALIDATE**: Full quality checks passed
+   - Lint: ✅ Pass (0 errors, 1 pre-existing warning)
+   - TypeCheck: ✅ Pass
+   - Tests: ✅ 301 passing (added 1 new test)
+
+### Files Modified
+1. **useLayoutManager.ts:271-287**: Fixed `clearBed()` to clear all boxes
+2. **useLayoutManager.test.ts:389-439**: Added regression test for multi-box clearing
+3. **CODE_INDEX.md:128**: Updated `clearBed()` documentation to reflect multi-box behavior
+4. **current-state.md**: Updated session state
+
+### Behavior Change
+- **Before**: "Clear All Crops" button only cleared first bed
+- **After**: "Clear All Crops" button clears ALL beds in layout (consistent with "Automagic Fill")
+
+### Test Coverage
+- Added test: `clearBed clears all boxes in multi-box layout`
+- Verifies both boxes are cleared after calling `clearBed()`
+- Total test count: 302 tests (301 + 1 new)
+
 ## Session Success Metrics
-- **TODOs Completed**: 4 (TODO-015 through TODO-018)
-- **Feature Complete**: Feature 008 (Multi-Box Garden Beds)
-- **Tests Added**: 20 new tests (10 from TODO-017 + 3 from TODO-018 + 7 from BoxActionModal)
-- **Total Test Count**: 201 (all passing)
-- **Commits Made**: 4 (ae3dd68, fa2384e, b962a8f, a350553)
+- **Bug Fixed**: clearBed now works for multi-box layouts
+- **Tests Added**: 1 regression test
+- **Total Test Count**: 302 (all passing)
+- **TDD Compliance**: ✅ RED → GREEN → VALIDATE
 - **Bootstrap Compliance**: 100% (all requirements met)
 - **No Breaking Changes**: All existing functionality preserved
