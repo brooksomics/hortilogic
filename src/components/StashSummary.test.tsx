@@ -6,7 +6,7 @@ import { CROP_DATABASE } from '../data/crops'
 describe('StashSummary', () => {
     const mockCrops = CROP_DATABASE
     const mockStash = {
-        'tomato': 4,
+        'tomato-beefsteak': 4,
         'carrot': 16
     }
 
@@ -38,7 +38,7 @@ describe('StashSummary', () => {
 
         expect(screen.getByText('Garden Stash')).toBeInTheDocument()
         expect(screen.getByText('4x')).toBeInTheDocument()
-        expect(screen.getByText('Tomato')).toBeInTheDocument()
+        expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
         expect(screen.getByText('16x')).toBeInTheDocument()
         expect(screen.getByText('Carrot')).toBeInTheDocument()
         expect(screen.getByText('5 / 32 sq ft')).toBeInTheDocument()
@@ -56,9 +56,9 @@ describe('StashSummary', () => {
         render(<StashSummary {...defaultProps} />)
 
         // Find remove button by title attribute since text is hidden/icon
-        const removeTomatoBtn = screen.getByTitle('Remove Tomato from stash')
+        const removeTomatoBtn = screen.getByTitle('Remove Beefsteak Tomato from stash')
         fireEvent.click(removeTomatoBtn)
-        expect(defaultProps.onRemoveItem).toHaveBeenCalledWith('tomato')
+        expect(defaultProps.onRemoveItem).toHaveBeenCalledWith('tomato-beefsteak')
     })
 
     it('calls onDistribute with false (default) when distribute button clicked', () => {
@@ -129,7 +129,7 @@ describe('StashSummary', () => {
         const result = {
             placed: 5,
             failed: [
-                { cropId: 'tomato', reason: 'No space' },
+                { cropId: 'tomato-beefsteak', reason: 'No space' },
                 { cropId: 'carrot', reason: 'Enemies nearby' }
             ]
         }
@@ -145,7 +145,7 @@ describe('StashSummary', () => {
         )
 
         expect(screen.getByText(/could not place 2 crops/i)).toBeInTheDocument()
-        expect(screen.getByText('Tomato')).toBeInTheDocument()
+        expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
         expect(screen.getByText(': No space')).toBeInTheDocument()
         expect(screen.getByText('Carrot')).toBeInTheDocument()
         expect(screen.getByText(': Enemies nearby')).toBeInTheDocument()
