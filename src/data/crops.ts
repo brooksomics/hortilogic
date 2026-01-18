@@ -27,7 +27,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 55,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['carrot', 'radish', 'cucumber', 'strawberry'],
+      friends: ['carrot', 'radish-red', 'cucumber', 'strawberry'],
       enemies: [],
     },
   },
@@ -42,7 +42,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 70,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['carrot', 'radish', 'cucumber'],
+      friends: ['carrot', 'radish-red', 'cucumber'],
       enemies: [],
     },
   },
@@ -57,7 +57,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 45,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['carrot', 'radish', 'cucumber'],
+      friends: ['carrot', 'radish-red', 'cucumber'],
       enemies: [],
     },
   },
@@ -72,7 +72,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 85,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['carrot', 'radish'],
+      friends: ['carrot', 'radish-red'],
       enemies: [],
     },
   },
@@ -87,7 +87,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 40,
     planting_strategy: { start_window_start: -6, start_window_end: 0 },
     companions: {
-      friends: ['peas', 'radish', 'strawberry', 'cilantro'],
+      friends: ['peas-sugar-snap', 'radish-red', 'strawberry', 'cilantro'],
       enemies: [],
     },
   },
@@ -102,8 +102,8 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 55,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['onion', 'garlic', 'dill', 'nasturtium'],
-      enemies: ['tomato', 'strawberry'],
+      friends: ['onion-yellow', 'garlic', 'dill', 'nasturtium'],
+      enemies: ['tomato-beefsteak', 'strawberry'],
     },
   },
   {
@@ -117,8 +117,8 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 60,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['onion', 'garlic', 'dill'],
-      enemies: ['tomato'],
+      friends: ['onion-yellow', 'garlic', 'dill'],
+      enemies: ['tomato-beefsteak'],
     },
   },
   {
@@ -147,7 +147,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 50,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
-      friends: ['onion', 'garlic', 'radish'],
+      friends: ['onion-yellow', 'garlic', 'radish-red'],
       enemies: [],
     },
   },
@@ -162,7 +162,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 55,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
-      friends: ['onion', 'garlic', 'radish'],
+      friends: ['onion-yellow', 'garlic', 'radish-red'],
       enemies: [],
     },
   },
@@ -177,8 +177,8 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 45,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
-      friends: ['onion', 'dill', 'garlic'],
-      enemies: ['tomato'],
+      friends: ['onion-yellow', 'dill', 'garlic'],
+      enemies: ['tomato-beefsteak'],
     },
   },
   {
@@ -192,8 +192,8 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 60,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['onion', 'garlic', 'dill'],
-      enemies: ['tomato'],
+      friends: ['onion-yellow', 'garlic', 'dill'],
+      enemies: ['tomato-beefsteak'],
     },
   },
   {
@@ -207,7 +207,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 40,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['radish', 'peas', 'lettuce-leaf'],
+      friends: ['radish-red', 'peas-sugar-snap', 'lettuce-leaf'],
       enemies: [],
     },
   },
@@ -222,7 +222,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 85,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['lettuce-leaf', 'radish'],
+      friends: ['lettuce-leaf', 'radish-red'],
       enemies: [],
     },
   },
@@ -282,7 +282,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 45,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
-      friends: ['onion', 'garlic'],
+      friends: ['onion-yellow', 'garlic'],
       enemies: [],
     },
   },
@@ -329,8 +329,8 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 85,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
-      friends: ['carrot', 'basil', 'parsley', 'onion', 'marigold', 'nasturtium'],
-      enemies: ['potato', 'kale-curly', 'bok-choy', 'collard-greens', 'peas'],
+      friends: ['carrot', 'basil-sweet', 'parsley-flat', 'onion-yellow', 'marigold-french', 'nasturtium'],
+      enemies: ['potato', 'kale-curly', 'bok-choy', 'collard-greens', 'peas-sugar-snap'],
     },
   },
   {
@@ -344,8 +344,8 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 65,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
-      friends: ['carrot', 'basil', 'parsley', 'onion', 'marigold'],
-      enemies: ['potato', 'kale-curly', 'bok-choy', 'collard-greens', 'peas'],
+      friends: ['carrot', 'basil-sweet', 'parsley-flat', 'onion-yellow', 'marigold-french'],
+      enemies: ['potato', 'kale-curly', 'bok-choy', 'collard-greens', 'peas-sugar-snap'],
     },
   },
   {
@@ -359,8 +359,8 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 75,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
-      friends: ['carrot', 'basil', 'parsley', 'onion'],
-      enemies: ['potato', 'peas'],
+      friends: ['carrot', 'basil-sweet', 'parsley-flat', 'onion-yellow'],
+      enemies: ['potato', 'peas-sugar-snap'],
     },
   },
   {
@@ -374,8 +374,8 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 80,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
-      friends: ['carrot', 'basil', 'parsley', 'onion', 'marigold'],
-      enemies: ['potato', 'peas'],
+      friends: ['carrot', 'basil-sweet', 'parsley-flat', 'onion-yellow', 'marigold-french'],
+      enemies: ['potato', 'peas-sugar-snap'],
     },
   },
   {
@@ -389,7 +389,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 70,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
-      friends: ['basil', 'onion', 'carrot', 'marigold'],
+      friends: ['basil-sweet', 'onion-yellow', 'carrot', 'marigold-french'],
       enemies: [],
     },
   },
@@ -404,7 +404,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 75,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
-      friends: ['basil', 'onion', 'carrot'],
+      friends: ['basil-sweet', 'onion-yellow', 'carrot'],
       enemies: [],
     },
   },
@@ -419,7 +419,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 100,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
-      friends: ['basil', 'oregano'],
+      friends: ['basil-sweet', 'oregano'],
       enemies: [],
     },
   },
@@ -434,7 +434,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 65,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
-      friends: ['basil', 'onion'],
+      friends: ['basil-sweet', 'onion-yellow'],
       enemies: [],
     },
   },
@@ -449,7 +449,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 80,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
-      friends: ['basil', 'thyme', 'oregano', 'marigold'],
+      friends: ['basil-sweet', 'thyme', 'oregano', 'marigold-french'],
       enemies: [],
     },
   },
@@ -464,7 +464,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 90,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
-      friends: ['peas', 'cabbage', 'horseradish'],
+      friends: ['peas-sugar-snap', 'cabbage', 'horseradish'],
       enemies: ['tomato-beefsteak', 'tomato-cherry', 'cucumber', 'pumpkin'],
     },
   },
@@ -479,7 +479,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 75,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
-      friends: ['basil', 'carrot', 'onion'],
+      friends: ['basil-sweet', 'carrot', 'onion-yellow'],
       enemies: ['potato'],
     },
   },
@@ -494,7 +494,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 70,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
-      friends: ['basil', 'carrot'],
+      friends: ['basil-sweet', 'carrot'],
       enemies: [],
     },
   },
@@ -511,7 +511,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 70,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
-      friends: ['onion', 'dill', 'garlic', 'nasturtium', 'marigold'],
+      friends: ['onion-yellow', 'dill', 'garlic', 'nasturtium', 'marigold-french'],
       enemies: ['strawberry'],
     },
   },
@@ -526,7 +526,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 75,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
-      friends: ['onion', 'dill', 'garlic', 'nasturtium'],
+      friends: ['onion-yellow', 'dill', 'garlic', 'nasturtium'],
       enemies: ['strawberry'],
     },
   },
@@ -541,7 +541,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 70,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
-      friends: ['onion', 'dill', 'potato', 'nasturtium'],
+      friends: ['onion-yellow', 'dill', 'potato', 'nasturtium'],
       enemies: ['strawberry'],
     },
   },
@@ -556,7 +556,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 90,
     planting_strategy: { start_window_start: -6, start_window_end: -2 },
     companions: {
-      friends: ['onion', 'dill', 'garlic'],
+      friends: ['onion-yellow', 'dill', 'garlic'],
       enemies: [],
     },
   },
@@ -571,7 +571,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 55,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['onion', 'garlic'],
+      friends: ['onion-yellow', 'garlic'],
       enemies: [],
     },
   },
@@ -586,7 +586,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 25,
     planting_strategy: { start_window_start: -4, start_window_end: 8 },
     companions: {
-      friends: ['lettuce-leaf', 'peas', 'carrot', 'spinach', 'cucumber'],
+      friends: ['lettuce-leaf', 'peas-sugar-snap', 'carrot', 'spinach', 'cucumber'],
       enemies: [],
     },
   },
@@ -601,7 +601,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 60,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['lettuce-leaf', 'peas', 'carrot'],
+      friends: ['lettuce-leaf', 'peas-sugar-snap', 'carrot'],
       enemies: [],
     },
   },
@@ -616,7 +616,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 50,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['peas', 'radish-red'],
+      friends: ['peas-sugar-snap', 'radish-red'],
       enemies: ['potato'],
     },
   },
@@ -631,7 +631,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 90,
     planting_strategy: { start_window_start: -6, start_window_end: 0 },
     companions: {
-      friends: ['peas', 'onion'],
+      friends: ['peas-sugar-snap', 'onion-yellow'],
       enemies: [],
     },
   },
@@ -646,7 +646,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 45,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
-      friends: ['onion', 'dill'],
+      friends: ['onion-yellow', 'dill'],
       enemies: [],
     },
   },
@@ -661,7 +661,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 70,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
-      friends: ['onion', 'dill'],
+      friends: ['onion-yellow', 'dill'],
       enemies: [],
     },
   },
@@ -691,7 +691,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 50,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['onion', 'garlic'],
+      friends: ['onion-yellow', 'garlic'],
       enemies: ['tomato-beefsteak'],
     },
   },
@@ -706,7 +706,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 65,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
-      friends: ['onion', 'garlic'],
+      friends: ['onion-yellow', 'garlic'],
       enemies: [],
     },
   },
@@ -721,7 +721,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 40,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
-      friends: ['onion', 'dill'],
+      friends: ['onion-yellow', 'dill'],
       enemies: [],
     },
   },
@@ -739,7 +739,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['carrot', 'radish-red', 'turnip', 'cucumber'],
-      enemies: ['tomato-beefsteak', 'tomato-cherry', 'onion', 'garlic'],
+      enemies: ['tomato-beefsteak', 'tomato-cherry', 'onion-yellow', 'garlic'],
     },
   },
   {
@@ -754,7 +754,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['carrot', 'radish-red', 'turnip'],
-      enemies: ['tomato-beefsteak', 'onion', 'garlic'],
+      enemies: ['tomato-beefsteak', 'onion-yellow', 'garlic'],
     },
   },
   {
@@ -769,7 +769,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['carrot', 'radish-red', 'turnip'],
-      enemies: ['onion', 'garlic'],
+      enemies: ['onion-yellow', 'garlic'],
     },
   },
   {
@@ -783,8 +783,8 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 50,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
-      friends: ['carrot', 'cucumber', 'radish-red', 'nasturtium', 'marigold'],
-      enemies: ['onion', 'garlic'],
+      friends: ['carrot', 'cucumber', 'radish-red', 'nasturtium', 'marigold-french'],
+      enemies: ['onion-yellow', 'garlic'],
     },
   },
   {
@@ -798,8 +798,8 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 65,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
-      friends: ['carrot', 'cucumber', 'radish-red', 'corn'],
-      enemies: ['onion', 'garlic'],
+      friends: ['carrot', 'cucumber', 'radish-red', 'corn-sweet'],
+      enemies: ['onion-yellow', 'garlic'],
     },
   },
   {
@@ -814,7 +814,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber', 'radish-red'],
-      enemies: ['onion', 'garlic'],
+      enemies: ['onion-yellow', 'garlic'],
     },
   },
   {
@@ -829,7 +829,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['potato', 'carrot'],
-      enemies: ['onion', 'garlic'],
+      enemies: ['onion-yellow', 'garlic'],
     },
   },
   {
@@ -844,7 +844,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber'],
-      enemies: ['onion', 'garlic'],
+      enemies: ['onion-yellow', 'garlic'],
     },
   },
   {
@@ -859,7 +859,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber'],
-      enemies: ['onion', 'garlic'],
+      enemies: ['onion-yellow', 'garlic'],
     },
   },
   {
@@ -873,8 +873,8 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 70,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
-      friends: ['carrot', 'cucumber', 'corn'],
-      enemies: ['onion', 'garlic'],
+      friends: ['carrot', 'cucumber', 'corn-sweet'],
+      enemies: ['onion-yellow', 'garlic'],
     },
   },
   {
@@ -889,7 +889,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: ['carrot'],
-      enemies: ['onion', 'garlic'],
+      enemies: ['onion-yellow', 'garlic'],
     },
   },
   {
@@ -904,7 +904,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot'],
-      enemies: ['onion', 'garlic'],
+      enemies: ['onion-yellow', 'garlic'],
     },
   },
 
@@ -920,7 +920,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 70,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
-      friends: ['lettuce-leaf', 'tomato-beefsteak', 'peas-sugar-snap', 'onion', 'leek'],
+      friends: ['lettuce-leaf', 'tomato-beefsteak', 'peas-sugar-snap', 'onion-yellow', 'leek'],
       enemies: ['dill'],
     },
   },
@@ -935,7 +935,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 55,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
-      friends: ['onion', 'lettuce-leaf', 'cabbage'],
+      friends: ['onion-yellow', 'lettuce-leaf', 'cabbage'],
       enemies: [],
     },
   },
@@ -1192,7 +1192,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 60,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
-      friends: ['peas-sugar-snap', 'radish-red', 'lettuce-leaf', 'nasturtium', 'marigold'],
+      friends: ['peas-sugar-snap', 'radish-red', 'lettuce-leaf', 'nasturtium', 'marigold-french'],
       enemies: ['potato'],
     },
   },
@@ -1237,7 +1237,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 100,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
-      friends: ['corn', 'nasturtium'],
+      friends: ['corn-sweet', 'nasturtium'],
       enemies: ['potato'],
     },
   },
@@ -1252,7 +1252,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 85,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
-      friends: ['radish-red', 'corn', 'nasturtium'],
+      friends: ['radish-red', 'corn-sweet', 'nasturtium'],
       enemies: ['potato'],
     },
   },
@@ -1312,7 +1312,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 85,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
-      friends: ['corn', 'radish-red'],
+      friends: ['corn-sweet', 'radish-red'],
       enemies: ['potato'],
     },
   },
@@ -1389,7 +1389,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 730,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['tomato-beefsteak', 'parsley', 'basil'],
+      friends: ['tomato-beefsteak', 'parsley-flat', 'basil-sweet'],
       enemies: ['onion-yellow', 'garlic'],
     },
   },
@@ -1781,7 +1781,7 @@ export const CROP_DATABASE: Crop[] = [
     days_to_maturity: 70,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
-      friends: ['tomato-beefsteak', 'squash'],
+      friends: ['tomato-beefsteak', 'yellow-squash'],
       enemies: [],
     },
   },
