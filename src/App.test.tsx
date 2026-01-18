@@ -40,25 +40,26 @@ describe('App', () => {
     expect(screen.getByText('Crop Library')).toBeInTheDocument()
   })
 
-  it('displays Core 50 crops in library', () => {
+  it('displays crops from expanded database (162 crops) in library', () => {
     renderApp()
-    // Should display some common crops from the Core 50
-    expect(screen.getByText('Lettuce')).toBeInTheDocument()
-    expect(screen.getByText('Tomato')).toBeInTheDocument()
-    expect(screen.getByText('Carrot')).toBeInTheDocument()
-    expect(screen.getByText('Spinach')).toBeInTheDocument()
-    expect(screen.getByText('Basil')).toBeInTheDocument()
+    // Should display crops from the expanded database (TODO-027: 162 crops)
+    // Check for specific varieties that exist in the new database
+    expect(screen.getByText(/Butterhead Lettuce/i)).toBeInTheDocument()
+    expect(screen.getByText(/Beefsteak Tomato/i)).toBeInTheDocument()
+    expect(screen.getByText(/Carrot/i)).toBeInTheDocument()
+    expect(screen.getByText(/Spinach/i)).toBeInTheDocument()
+    expect(screen.getByText(/Sweet Basil/i)).toBeInTheDocument()
   })
 
   it('allows selecting a crop from library', async () => {
     const user = userEvent.setup()
     renderApp()
 
-    const lettuceButton = screen.getByRole('button', { name: /Select Lettuce for planting/i })
+    const lettuceButton = screen.getByRole('button', { name: /Select Butterhead Lettuce for planting/i })
     await user.click(lettuceButton)
 
     // Should show selection hint (there will be two instances - one in sidebar, one in instructions)
-    expect(screen.getAllByText(/Selected.*Lettuce/i)).toHaveLength(2)
+    expect(screen.getAllByText(/Selected.*Butterhead Lettuce/i)).toHaveLength(2)
   })
 
   it('allows planting a crop in garden bed', async () => {
@@ -66,7 +67,7 @@ describe('App', () => {
     renderApp()
 
     // Select a crop
-    const tomatoButton = screen.getByRole('button', { name: /Select Tomato for planting/i })
+    const tomatoButton = screen.getByRole('button', { name: /Select Beefsteak Tomato for planting/i })
     await user.click(tomatoButton)
 
     // Click an empty square (first square)
@@ -77,7 +78,7 @@ describe('App', () => {
     await user.click(firstSquare)
 
     // Square should now show the planted crop
-    expect(screen.getByLabelText(/Planted: Tomato/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/Planted: Beefsteak Tomato/i)).toBeInTheDocument()
   })
 
   it('allows removing a planted crop', async () => {
@@ -167,7 +168,7 @@ describe('App', () => {
     renderApp()
 
     // Manually plant a crop first
-    const tomatoButton = screen.getByRole('button', { name: /Select Tomato for planting/i })
+    const tomatoButton = screen.getByRole('button', { name: /Select Beefsteak Tomato for planting/i })
     await user.click(tomatoButton)
 
     const emptySquares = screen.getAllByRole('button', { name: 'Empty square' })
@@ -176,23 +177,23 @@ describe('App', () => {
     await user.click(firstEmptySquare)
 
     // Verify tomato was planted
-    expect(screen.getByLabelText(/Planted: Tomato/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/Planted: Beefsteak Tomato/i)).toBeInTheDocument()
 
     // Click Automagic Fill
     const automagicButton = screen.getByRole('button', { name: /Automagic Fill/i })
     await user.click(automagicButton)
 
     // Original tomato should still be there (may have additional tomatoes planted by autoFill)
-    const tomatoesAfterFill = screen.getAllByLabelText(/Planted: Tomato/i)
+    const tomatoesAfterFill = screen.getAllByLabelText(/Planted: Beefsteak Tomato/i)
     expect(tomatoesAfterFill.length).toBeGreaterThanOrEqual(1)
 
     global.Date = RealDate
   })
 
-  it('loads Core 50 crop database', () => {
+  it('loads expanded crop database (162 crops)', () => {
     renderApp()
 
-    // Should display crop count showing 50 crops
-    expect(screen.getByText(/50 crops/i)).toBeInTheDocument()
+    // Should display crop count showing 162 crops from TODO-027
+    expect(screen.getByText(/162 crops/i)).toBeInTheDocument()
   })
 })

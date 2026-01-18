@@ -131,9 +131,16 @@ describe('CropLibrary', () => {
     // Should still render the heading
     expect(screen.getByText('Crop Library')).toBeInTheDocument()
 
-    // Should not have any crop buttons
-    const buttons = screen.queryAllByRole('button')
-    expect(buttons).toHaveLength(0)
+    // Should still render category tabs and sun filter pills
+    expect(screen.getByRole('button', { name: /^All$/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /☀️ Full Sun/i })).toBeInTheDocument()
+
+    // Should show 0 crops
+    expect(screen.getByText('0 crops')).toBeInTheDocument()
+
+    // Should not have any crop selection buttons (buttons with "Select" in aria-label)
+    const cropButtons = screen.queryAllByRole('button', { name: /Select .* for planting/i })
+    expect(cropButtons).toHaveLength(0)
   })
 
   describe('Search and Filter', () => {
@@ -392,6 +399,569 @@ describe('CropLibrary', () => {
       expect(screen.getByText('Lettuce')).toBeInTheDocument()
       expect(screen.getByText('Tomato')).toBeInTheDocument()
       expect(screen.getByText('Carrot')).toBeInTheDocument()
+    })
+  })
+
+  describe('Category Tabs (TODO-028)', () => {
+    const mixedCrops: Crop[] = [
+      {
+        id: 'lettuce',
+        name: 'Lettuce',
+        type: 'vegetable',
+        botanical_family: 'Asteraceae',
+        sun: 'partial',
+        days_to_maturity: 55,
+        sfg_density: 4,
+        planting_strategy: { start_window_start: -4, start_window_end: 2 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'tomato',
+        name: 'Tomato',
+        type: 'vegetable',
+        botanical_family: 'Solanaceae',
+        sun: 'full',
+        days_to_maturity: 80,
+        sfg_density: 1,
+        planting_strategy: { start_window_start: 0, start_window_end: 4 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'basil',
+        name: 'Basil',
+        type: 'herb',
+        botanical_family: 'Lamiaceae',
+        sun: 'full',
+        days_to_maturity: 60,
+        sfg_density: 4,
+        planting_strategy: { start_window_start: 0, start_window_end: 4 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'cilantro',
+        name: 'Cilantro',
+        type: 'herb',
+        botanical_family: 'Apiaceae',
+        sun: 'partial',
+        days_to_maturity: 45,
+        sfg_density: 9,
+        planting_strategy: { start_window_start: -4, start_window_end: 2 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'marigold',
+        name: 'Marigold',
+        type: 'flower',
+        botanical_family: 'Asteraceae',
+        sun: 'full',
+        days_to_maturity: 50,
+        sfg_density: 4,
+        planting_strategy: { start_window_start: 0, start_window_end: 4 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'nasturtium',
+        name: 'Nasturtium',
+        type: 'flower',
+        botanical_family: 'Tropaeolaceae',
+        sun: 'full',
+        days_to_maturity: 45,
+        sfg_density: 2,
+        planting_strategy: { start_window_start: 0, start_window_end: 4 },
+        companions: { friends: [], enemies: [] }
+      }
+    ]
+
+    it('renders category tabs (All, Vegetables, Herbs, Flowers)', () => {
+      render(<CropLibrary crops={mixedCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      expect(screen.getByRole('button', { name: /^All$/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /^Vegetables$/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /^Herbs$/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /^Flowers$/i })).toBeInTheDocument()
+    })
+
+    it('shows all crops when "All" tab is active (default)', () => {
+      render(<CropLibrary crops={mixedCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Basil')).toBeInTheDocument()
+      expect(screen.getByText('Cilantro')).toBeInTheDocument()
+      expect(screen.getByText('Marigold')).toBeInTheDocument()
+      expect(screen.getByText('Nasturtium')).toBeInTheDocument()
+    })
+
+    it('shows only vegetables when "Vegetables" tab is clicked', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={mixedCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const vegTab = screen.getByRole('button', { name: /^Vegetables$/i })
+      await user.click(vegTab)
+
+      // Should show vegetables
+      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+
+      // Should NOT show herbs or flowers
+      expect(screen.queryByText('Basil')).not.toBeInTheDocument()
+      expect(screen.queryByText('Cilantro')).not.toBeInTheDocument()
+      expect(screen.queryByText('Marigold')).not.toBeInTheDocument()
+      expect(screen.queryByText('Nasturtium')).not.toBeInTheDocument()
+    })
+
+    it('shows only herbs when "Herbs" tab is clicked', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={mixedCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const herbTab = screen.getByRole('button', { name: /^Herbs$/i })
+      await user.click(herbTab)
+
+      // Should show herbs
+      expect(screen.getByText('Basil')).toBeInTheDocument()
+      expect(screen.getByText('Cilantro')).toBeInTheDocument()
+
+      // Should NOT show vegetables or flowers
+      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
+      expect(screen.queryByText('Marigold')).not.toBeInTheDocument()
+      expect(screen.queryByText('Nasturtium')).not.toBeInTheDocument()
+    })
+
+    it('shows only flowers when "Flowers" tab is clicked', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={mixedCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const flowerTab = screen.getByRole('button', { name: /^Flowers$/i })
+      await user.click(flowerTab)
+
+      // Should show flowers
+      expect(screen.getByText('Marigold')).toBeInTheDocument()
+      expect(screen.getByText('Nasturtium')).toBeInTheDocument()
+
+      // Should NOT show vegetables or herbs
+      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
+      expect(screen.queryByText('Basil')).not.toBeInTheDocument()
+      expect(screen.queryByText('Cilantro')).not.toBeInTheDocument()
+    })
+
+    it('works with search filtering (combined filters)', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={mixedCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      // Select Vegetables tab
+      const vegTab = screen.getByRole('button', { name: /^Vegetables$/i })
+      await user.click(vegTab)
+
+      // Search for "tom"
+      const searchInput = screen.getByPlaceholderText(/search crops/i)
+      await user.type(searchInput, 'tom')
+
+      // Should only show Tomato (vegetable + matches search)
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+
+      // Should NOT show Lettuce (vegetable but doesn't match search)
+      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+
+      // Should NOT show herbs/flowers
+      expect(screen.queryByText('Basil')).not.toBeInTheDocument()
+      expect(screen.queryByText('Marigold')).not.toBeInTheDocument()
+    })
+  })
+
+  describe('Sun Filter Pills (TODO-028)', () => {
+    const sunVarietyCrops: Crop[] = [
+      {
+        id: 'lettuce',
+        name: 'Lettuce',
+        type: 'vegetable',
+        botanical_family: 'Asteraceae',
+        sun: 'partial',
+        days_to_maturity: 55,
+        sfg_density: 4,
+        planting_strategy: { start_window_start: -4, start_window_end: 2 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'tomato',
+        name: 'Tomato',
+        type: 'vegetable',
+        botanical_family: 'Solanaceae',
+        sun: 'full',
+        days_to_maturity: 80,
+        sfg_density: 1,
+        planting_strategy: { start_window_start: 0, start_window_end: 4 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'hostas',
+        name: 'Hostas',
+        type: 'flower',
+        botanical_family: 'Asparagaceae',
+        sun: 'shade',
+        days_to_maturity: 90,
+        sfg_density: 1,
+        planting_strategy: { start_window_start: -2, start_window_end: 2 },
+        companions: { friends: [], enemies: [] }
+      }
+    ]
+
+    it('renders sun filter pills (Full Sun, Partial Shade, Shade)', () => {
+      render(<CropLibrary crops={sunVarietyCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      expect(screen.getByRole('button', { name: /☀️ Full Sun/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /⛅ Partial Shade/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /🌙 Shade/i })).toBeInTheDocument()
+    })
+
+    it('shows all crops when no sun filter is selected (default)', () => {
+      render(<CropLibrary crops={sunVarietyCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Hostas')).toBeInTheDocument()
+    })
+
+    it('shows only full sun crops when "Full Sun" pill is clicked', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={sunVarietyCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const fullSunPill = screen.getByRole('button', { name: /☀️ Full Sun/i })
+      await user.click(fullSunPill)
+
+      // Should show full sun crops
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+
+      // Should NOT show partial/shade crops
+      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Hostas')).not.toBeInTheDocument()
+    })
+
+    it('shows only partial shade crops when "Partial Shade" pill is clicked', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={sunVarietyCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const partialPill = screen.getByRole('button', { name: /⛅ Partial Shade/i })
+      await user.click(partialPill)
+
+      // Should show partial shade crops
+      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+
+      // Should NOT show full/shade crops
+      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
+      expect(screen.queryByText('Hostas')).not.toBeInTheDocument()
+    })
+
+    it('shows only shade crops when "Shade" pill is clicked', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={sunVarietyCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const shadePill = screen.getByRole('button', { name: /🌙 Shade/i })
+      await user.click(shadePill)
+
+      // Should show shade crops
+      expect(screen.getByText('Hostas')).toBeInTheDocument()
+
+      // Should NOT show full/partial crops
+      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
+    })
+
+    it('works with category tabs (combined filters)', async () => {
+      const user = userEvent.setup()
+      const mixedCrops: Crop[] = [
+        ...sunVarietyCrops,
+        {
+          id: 'basil',
+          name: 'Basil',
+          type: 'herb',
+          botanical_family: 'Lamiaceae',
+          sun: 'full',
+          days_to_maturity: 60,
+          sfg_density: 4,
+          planting_strategy: { start_window_start: 0, start_window_end: 4 },
+          companions: { friends: [], enemies: [] }
+        }
+      ]
+
+      render(<CropLibrary crops={mixedCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      // Select Vegetables tab
+      const vegTab = screen.getByRole('button', { name: /^Vegetables$/i })
+      await user.click(vegTab)
+
+      // Select Full Sun pill
+      const fullSunPill = screen.getByRole('button', { name: /☀️ Full Sun/i })
+      await user.click(fullSunPill)
+
+      // Should only show Tomato (vegetable + full sun)
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+
+      // Should NOT show Lettuce (vegetable but partial sun)
+      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+
+      // Should NOT show Basil (full sun but herb)
+      expect(screen.queryByText('Basil')).not.toBeInTheDocument()
+
+      // Should NOT show Hostas (not vegetable)
+      expect(screen.queryByText('Hostas')).not.toBeInTheDocument()
+    })
+
+    it('can deselect sun filter by clicking again', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={sunVarietyCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const fullSunPill = screen.getByRole('button', { name: /☀️ Full Sun/i })
+
+      // Click to select
+      await user.click(fullSunPill)
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+
+      // Click again to deselect
+      await user.click(fullSunPill)
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Hostas')).toBeInTheDocument()
+    })
+  })
+
+  describe('Botanical Family Grouping (TODO-028)', () => {
+    const familyTestCrops: Crop[] = [
+      {
+        id: 'lettuce',
+        name: 'Lettuce',
+        type: 'vegetable',
+        botanical_family: 'Asteraceae',
+        sun: 'partial',
+        days_to_maturity: 55,
+        sfg_density: 4,
+        planting_strategy: { start_window_start: -4, start_window_end: 2 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'tomato',
+        name: 'Tomato',
+        type: 'vegetable',
+        botanical_family: 'Solanaceae',
+        sun: 'full',
+        days_to_maturity: 80,
+        sfg_density: 1,
+        planting_strategy: { start_window_start: 0, start_window_end: 4 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'pepper',
+        name: 'Bell Pepper',
+        type: 'vegetable',
+        botanical_family: 'Solanaceae',
+        sun: 'full',
+        days_to_maturity: 75,
+        sfg_density: 1,
+        planting_strategy: { start_window_start: 0, start_window_end: 4 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'basil',
+        name: 'Basil',
+        type: 'herb',
+        botanical_family: 'Lamiaceae',
+        sun: 'full',
+        days_to_maturity: 60,
+        sfg_density: 4,
+        planting_strategy: { start_window_start: 0, start_window_end: 4 },
+        companions: { friends: [], enemies: [] }
+      }
+    ]
+
+    it('groups crops by botanical family when "Vegetables" tab is selected', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={familyTestCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const vegTab = screen.getByRole('button', { name: /^Vegetables$/i })
+      await user.click(vegTab)
+
+      // Should display family headers
+      expect(screen.getByText(/Asteraceae/i)).toBeInTheDocument()
+      expect(screen.getByText(/Solanaceae/i)).toBeInTheDocument()
+    })
+
+    it('displays crops under correct family headers', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={familyTestCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const vegTab = screen.getByRole('button', { name: /^Vegetables$/i })
+      await user.click(vegTab)
+
+      // Verify Asteraceae group contains Lettuce
+      const asteraceaeSection = screen.getByText(/Asteraceae/i).closest('[data-testid*="family-group"]')
+      expect(asteraceaeSection).toBeInTheDocument()
+
+      // Verify Solanaceae group contains Tomato and Pepper
+      const solanaceaeSection = screen.getByText(/Solanaceae/i).closest('[data-testid*="family-group"]')
+      expect(solanaceaeSection).toBeInTheDocument()
+    })
+
+    it('does not group when "All" tab is selected', () => {
+      render(<CropLibrary crops={familyTestCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      // Family headers should NOT appear on All tab
+      expect(screen.queryByText(/Asteraceae/i)).not.toBeInTheDocument()
+      expect(screen.queryByText(/Solanaceae/i)).not.toBeInTheDocument()
+
+      // But crops should still be visible
+      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+    })
+
+    it('does not group when "Herbs" tab is selected', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={familyTestCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const herbTab = screen.getByRole('button', { name: /^Herbs$/i })
+      await user.click(herbTab)
+
+      // Family headers should NOT appear on Herbs tab
+      expect(screen.queryByText(/Lamiaceae/i)).not.toBeInTheDocument()
+
+      // But herb should be visible
+      expect(screen.getByText('Basil')).toBeInTheDocument()
+    })
+
+    it('does not group when "Flowers" tab is selected', async () => {
+      const user = userEvent.setup()
+      const cropsWithFlower: Crop[] = [
+        ...familyTestCrops,
+        {
+          id: 'marigold',
+          name: 'Marigold',
+          type: 'flower',
+          botanical_family: 'Asteraceae',
+          sun: 'full',
+          days_to_maturity: 50,
+          sfg_density: 4,
+          planting_strategy: { start_window_start: 0, start_window_end: 4 },
+          companions: { friends: [], enemies: [] }
+        }
+      ]
+
+      render(<CropLibrary crops={cropsWithFlower} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const flowerTab = screen.getByRole('button', { name: /^Flowers$/i })
+      await user.click(flowerTab)
+
+      // Family headers should NOT appear on Flowers tab
+      expect(screen.queryByText(/Asteraceae/i)).not.toBeInTheDocument()
+
+      // But flower should be visible
+      expect(screen.getByText('Marigold')).toBeInTheDocument()
+    })
+  })
+
+  describe('Enhanced Search (TODO-028)', () => {
+    const searchTestCrops: Crop[] = [
+      {
+        id: 'lettuce',
+        name: 'Lettuce',
+        type: 'vegetable',
+        botanical_family: 'Asteraceae',
+        sun: 'partial',
+        days_to_maturity: 55,
+        sfg_density: 4,
+        planting_strategy: { start_window_start: -4, start_window_end: 2 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'tomato',
+        name: 'Tomato',
+        type: 'vegetable',
+        botanical_family: 'Solanaceae',
+        sun: 'full',
+        days_to_maturity: 80,
+        sfg_density: 1,
+        planting_strategy: { start_window_start: 0, start_window_end: 4 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'pepper',
+        name: 'Bell Pepper',
+        type: 'vegetable',
+        botanical_family: 'Solanaceae',
+        sun: 'full',
+        days_to_maturity: 75,
+        sfg_density: 1,
+        planting_strategy: { start_window_start: 0, start_window_end: 4 },
+        companions: { friends: [], enemies: [] }
+      },
+      {
+        id: 'eggplant',
+        name: 'Eggplant',
+        type: 'vegetable',
+        botanical_family: 'Solanaceae',
+        sun: 'full',
+        days_to_maturity: 85,
+        sfg_density: 1,
+        planting_strategy: { start_window_start: 0, start_window_end: 4 },
+        companions: { friends: [], enemies: [] }
+      }
+    ]
+
+    it('searches by botanical family name (e.g., "Solanaceae" shows tomatoes)', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={searchTestCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const searchInput = screen.getByPlaceholderText(/search crops/i)
+      await user.type(searchInput, 'Solanaceae')
+
+      // Should show all Solanaceae crops
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Bell Pepper')).toBeInTheDocument()
+      expect(screen.getByText('Eggplant')).toBeInTheDocument()
+
+      // Should NOT show Asteraceae crops
+      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+    })
+
+    it('still matches crop names (existing functionality)', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={searchTestCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const searchInput = screen.getByPlaceholderText(/search crops/i)
+      await user.type(searchInput, 'pepper')
+
+      // Should show Bell Pepper
+      expect(screen.getByText('Bell Pepper')).toBeInTheDocument()
+
+      // Should NOT show other crops
+      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
+      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+    })
+
+    it('search is case insensitive for botanical family', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={searchTestCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const searchInput = screen.getByPlaceholderText(/search crops/i)
+      await user.type(searchInput, 'solanaceae')
+
+      // Should show all Solanaceae crops (case insensitive)
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Bell Pepper')).toBeInTheDocument()
+      expect(screen.getByText('Eggplant')).toBeInTheDocument()
+    })
+
+    it('searches by partial botanical family name', async () => {
+      const user = userEvent.setup()
+      render(<CropLibrary crops={searchTestCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
+
+      const searchInput = screen.getByPlaceholderText(/search crops/i)
+      await user.type(searchInput, 'Solan')
+
+      // Should show all Solanaceae crops
+      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Bell Pepper')).toBeInTheDocument()
+      expect(screen.getByText('Eggplant')).toBeInTheDocument()
     })
   })
 })
