@@ -694,4 +694,136 @@ describe('useLayoutManager', () => {
       }).toThrow()
     })
   })
+
+  describe('Disliked Crops (Don\'t Like)', () => {
+    it('initializes with empty dislikedCropIds array', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      expect(result.current.activeLayout?.dislikedCropIds).toBeUndefined()
+    })
+
+    it('adds crop to disliked list when not already disliked', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      act(() => {
+        result.current.toggleDislikedCrop('tomato')
+      })
+
+      expect(result.current.activeLayout?.dislikedCropIds).toContain('tomato')
+    })
+
+    it('removes crop from disliked list when already disliked', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      // Add tomato to disliked list
+      act(() => {
+        result.current.toggleDislikedCrop('tomato')
+      })
+
+      expect(result.current.activeLayout?.dislikedCropIds).toContain('tomato')
+
+      // Remove tomato from disliked list
+      act(() => {
+        result.current.toggleDislikedCrop('tomato')
+      })
+
+      expect(result.current.activeLayout?.dislikedCropIds).not.toContain('tomato')
+    })
+
+    it('handles multiple disliked crops', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      act(() => {
+        result.current.toggleDislikedCrop('tomato')
+        result.current.toggleDislikedCrop('carrot')
+        result.current.toggleDislikedCrop('lettuce')
+      })
+
+      expect(result.current.activeLayout?.dislikedCropIds).toEqual(
+        expect.arrayContaining(['tomato', 'carrot', 'lettuce'])
+      )
+      expect(result.current.activeLayout?.dislikedCropIds).toHaveLength(3)
+    })
+
+    it('persists disliked crops to localStorage', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      act(() => {
+        result.current.toggleDislikedCrop('tomato')
+      })
+
+      // Advance timers to trigger debounced localStorage write
+      act(() => {
+        vi.runAllTimers()
+      })
+
+      const stored = localStorage.getItem('hortilogic:layouts')
+      expect(stored).not.toBeNull()
+
+      if (!stored) return
+
+      const parsed = JSON.parse(stored)
+      const layoutId = result.current.activeLayoutId
+      expect(parsed.layouts[layoutId].dislikedCropIds).toContain('tomato')
+    })
+
+    it('restores disliked crops from localStorage on mount', () => {
+      const layoutId = '123e4567-e89b-12d3-a456-426614174002'
+      const profileId = '123e4567-e89b-12d3-a456-426614174001'
+      const boxId = '123e4567-e89b-12d3-a456-426614174003'
+
+      const storedData = {
+        version: 2,
+        activeLayoutId: layoutId,
+        layouts: {
+          [layoutId]: {
+            id: layoutId,
+            name: 'Restored Layout',
+            profileId: profileId,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            dislikedCropIds: ['tomato', 'carrot'],
+            boxes: [
+              {
+                id: boxId,
+                name: 'Main Bed',
+                width: 4,
+                height: 4,
+                cells: Array(16).fill(null),
+              },
+            ],
+          },
+        },
+      }
+
+      localStorage.setItem('hortilogic:layouts', JSON.stringify(storedData))
+
+      const { result } = renderHook(() => useLayoutManager(profileId))
+
+      expect(result.current.activeLayout?.dislikedCropIds).toEqual(['tomato', 'carrot'])
+    })
+
+    it('updates timestamps when toggling disliked crops', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      const layoutId = result.current.activeLayoutId
+      const layout = result.current.layouts[layoutId]
+      if (!layout) throw new Error('Layout not found')
+      const originalUpdatedAt = layout.updatedAt
+
+      // Advance time to ensure timestamp changes
+      act(() => {
+        vi.advanceTimersByTime(10)
+      })
+
+      act(() => {
+        result.current.toggleDislikedCrop('tomato')
+      })
+
+      const updatedLayout = result.current.layouts[layoutId]
+      if (!updatedLayout) throw new Error('Layout not found after update')
+      const newUpdatedAt = updatedLayout.updatedAt
+      expect(newUpdatedAt).not.toBe(originalUpdatedAt)
+    })
+  })
 })

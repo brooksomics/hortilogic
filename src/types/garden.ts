@@ -68,6 +68,9 @@ export interface GardenLayout {
   /** Reference to garden profile ID */
   profileId: string
 
+  /** Array of crop IDs that user has marked as "don't like" (filtered from automagic fill) */
+  dislikedCropIds?: string[]
+
   /** @deprecated Legacy single-bed array (pre-F008), kept for migration compatibility */
   bed?: (Crop | null)[]
 }
