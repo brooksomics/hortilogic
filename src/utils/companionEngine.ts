@@ -89,16 +89,36 @@ export function checkCompanionConstraints(
 }
 
 /**
+ * Score a crop for a specific cell based on companion relationships
+ *
+ * @param crop - Crop being considered
+ * @param neighborIds - IDs of adjacent crops
+ * @returns Score (higher is better, -1000 for enemies, +1 per friend, 0 neutral)
+ */
+function scoreCropForCell(crop: Crop, neighborIds: string[]): number {
+  let score = 0
+
+  for (const neighborId of neighborIds) {
+    if (crop.companions.enemies.includes(neighborId)) {
+      score -= 1000 // Heavy penalty for enemies
+    } else if (crop.companions.friends.includes(neighborId)) {
+      score += 1 // Bonus for friends (mutualism)
+    }
+  }
+
+  return score
+}
+
+/**
  * Automagically fill empty cells in the garden bed with compatible, viable crops
  *
  * Algorithm:
  * 1. Identify empty cells
  * 2. Filter crop library for seasonally viable crops
  * 3. For each empty cell:
- *    - Get neighbors
- *    - Try each viable crop
- *    - If compatible with neighbors, plant it
- *    - Otherwise, try next crop or leave empty
+ *    - Score all viable crops based on neighbor relationships
+ *    - Apply variety penalty to encourage crop diversity
+ *    - Pick the best scoring crop
  *
  * @param currentGrid - Current garden bed state
  * @param cropLibrary - Available crops to choose from
@@ -133,8 +153,15 @@ export function autoFillBed(
   // Create seeded RNG for deterministic randomness (TODO-023)
   const rng = new SeededRandom(seed ?? 'default')
 
-  // Shuffle viable crops using seeded randomness
-  const shuffledCrops = rng.shuffle(viableCrops)
+  // Track planted crop counts for variety optimization
+  const plantedCounts: Record<string, number> = {}
+
+  // Count existing crops
+  newGrid.forEach(cell => {
+    if (cell) {
+      plantedCounts[cell.id] = (plantedCounts[cell.id] || 0) + 1
+    }
+  })
 
   // Calculate total cells based on dimensions
   const totalCells = gridWidth * gridHeight
@@ -149,16 +176,38 @@ export function autoFillBed(
     // Get neighbor crop IDs with custom grid width
     const neighborIds = getNeighbors(newGrid, cellIndex, gridWidth)
 
-    // Try each viable crop to see if it's compatible
-    for (const crop of shuffledCrops) {
-      if (checkCompanionConstraints(crop, neighborIds)) {
-        // Found a compatible crop - plant it!
-        newGrid[cellIndex] = crop
-        break // Move to next cell
+    // Score all viable crops for this cell
+    let bestCrop: Crop | null = null
+    let bestScore = -Infinity
+
+    for (const crop of viableCrops) {
+      // Base score from companion relationships
+      let score = scoreCropForCell(crop, neighborIds)
+
+      // Skip crops with enemies nearby (hard constraint)
+      if (score <= -100) continue
+
+      // Variety penalty: reduce score for crops we've already planted a lot
+      const timesPlanted = plantedCounts[crop.id] || 0
+      score -= timesPlanted * 0.5
+
+      // Track best crop
+      if (score > bestScore) {
+        bestScore = score
+        bestCrop = crop
+      } else if (score === bestScore && bestCrop) {
+        // Deterministic tie-breaking using seeded RNG
+        if (rng.next() > 0.5) {
+          bestCrop = crop
+        }
       }
     }
 
-    // If no compatible crop found, cell remains empty
+    // Plant the best crop if found
+    if (bestCrop) {
+      newGrid[cellIndex] = bestCrop
+      plantedCounts[bestCrop.id] = (plantedCounts[bestCrop.id] || 0) + 1
+    }
   }
 
   return newGrid
