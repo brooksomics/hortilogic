@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Sprout, X } from 'lucide-react'
+import { Sprout, X, ThumbsDown } from 'lucide-react'
 import type { Crop, GardenProfile, GardenStash } from '../types/garden'
 import { getCropViabilityStatus, getViabilityStyles } from '@/utils/cropViabilityHelper'
 
@@ -24,6 +24,12 @@ interface CropLibraryProps {
 
   /** Remove crop from stash */
   onRemoveFromStash?: (cropId: string, amount: number) => void
+
+  /** List of disliked crop IDs */
+  dislikedCropIds?: string[]
+
+  /** Callback when a crop is marked/unmarked as disliked */
+  onToggleDislikedCrop?: (cropId: string) => void
 }
 
 type CropCategory = 'all' | 'vegetable' | 'herb' | 'flower'
@@ -40,7 +46,9 @@ export function CropLibrary({
   currentProfile,
   stash,
   onAddToStash,
-  onRemoveFromStash
+  onRemoveFromStash,
+  dislikedCropIds,
+  onToggleDislikedCrop
 }: CropLibraryProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [hideOutOfSeason, setHideOutOfSeason] = useState(false)
@@ -137,6 +145,8 @@ export function CropLibrary({
       ? `Select ${crop.name || crop.id} for planting - ${viabilityStyles.label}`
       : `Select ${crop.name || crop.id} for planting`
 
+    const isDisliked = dislikedCropIds?.includes(crop.id) ?? false
+
     return (
       <div
         key={crop.id}
@@ -174,6 +184,34 @@ export function CropLibrary({
               <ViabilityIcon className="w-4 h-4 viability-icon mr-1" aria-hidden="true" />
             )}
           </button>
+
+          {/* Don't Like Button */}
+          {onToggleDislikedCrop && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                onToggleDislikedCrop(crop.id)
+              }}
+              className={`
+                p-1.5 rounded transition-colors
+                ${isDisliked
+                  ? 'text-red-600 hover:bg-red-50'
+                  : 'text-soil-400 hover:bg-soil-100 hover:text-soil-600'
+                }
+              `}
+              aria-label={
+                isDisliked
+                  ? `Unmark ${crop.name || crop.id} as don't like`
+                  : `Mark ${crop.name || crop.id} as don't like`
+              }
+              type="button"
+            >
+              <ThumbsDown
+                className={`w-4 h-4 ${isDisliked ? 'fill-current' : ''}`}
+                aria-hidden="true"
+              />
+            </button>
+          )}
         </div>
 
         {/* Stash Controls */}
