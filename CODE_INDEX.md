@@ -4,7 +4,7 @@
 
 **Before creating any new function, CHECK HERE FIRST.**
 
-Last updated: 2026-01-18 (TODO-028 complete - CropLibrary Taxonomy & Filtering)
+Last updated: 2026-01-18 (TODO-029 complete - Flower-Vegetable Companion Bonus)
 
 ---
 
@@ -38,6 +38,7 @@ Last updated: 2026-01-18 (TODO-028 complete - CropLibrary Taxonomy & Filtering)
 - Neighbor checking: 4-directional adjacency only (not diagonals)
 - **Dynamic dimensions**: Supports variable grid sizes (e.g., 4x8, 2x4, 3x3)
 - **Mutualism optimization**: Prefers planting friends next to existing crops (+1 bonus per friend)
+- **Flower-Vegetable Bonus (TODO-029)**: Extra +1 bonus when flowers and vegetables are friends (+2 total)
 - **Variety optimization**: Tracks planted counts and penalizes monoculture (-0.5 per duplicate)
 - **Smart scoring**: Evaluates ALL crops for each cell and picks the best fit
 - Constraint satisfaction: respects both viability AND compatibility

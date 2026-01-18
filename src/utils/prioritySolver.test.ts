@@ -23,7 +23,7 @@ const mockCrops: Crop[] = [
         sun: 'full',
         days_to_maturity: 80,
         companions: {
-            friends: ['basil', 'carrot'],
+            friends: ['basil', 'carrot', 'marigold'],
             enemies: ['brassica', 'potato']
         },
         // Mock other required fields
@@ -73,6 +73,21 @@ const mockCrops: Crop[] = [
             enemies: []
         },
         planting_strategy: { start_window_start: 0, start_window_end: 4 }
+    },
+    {
+        id: 'marigold',
+        name: 'Marigold',
+        type: 'flower',
+        botanical_family: 'Asteraceae',
+        emoji: '🌼',
+        sfg_density: 4,
+        sun: 'full',
+        days_to_maturity: 50,
+        companions: {
+            friends: ['tomato', 'basil'],
+            enemies: []
+        },
+        planting_strategy: { start_window_start: 0, start_window_end: 6 }
     }
 ]
 
@@ -128,6 +143,71 @@ describe('Priority Solver Logic', () => {
             const bed = [null, null, null, null]
             const score = scoreCell(0, 'lettuce', bed, mockCrops, 2)
             expect(score).toBe(0)
+        })
+
+        it('gives extra bonus for flower-vegetable friendship', () => {
+            // Tomato (vegetable) at index 1, testing Marigold (flower) at index 0
+            const bed = [null, mockCrops.find(c => c.id === 'tomato')!, null, null]
+
+            const marigoldScore = scoreCell(0, 'marigold', bed, mockCrops, 2)
+
+            // Marigold and Tomato are friends
+            // Standard friend bonus: +1
+            // Flower-vegetable bonus: +1
+            // Total expected: +2
+            expect(marigoldScore).toBe(2)
+        })
+
+        it('gives extra bonus for vegetable-flower friendship', () => {
+            // Marigold (flower) at index 1, testing Tomato (vegetable) at index 0
+            const bed = [null, mockCrops.find(c => c.id === 'marigold')!, null, null]
+
+            const tomatoScore = scoreCell(0, 'tomato', bed, mockCrops, 2)
+
+            // Tomato and Marigold are friends
+            // Standard friend bonus: +1
+            // Vegetable-flower bonus: +1
+            // Total expected: +2
+            expect(tomatoScore).toBe(2)
+        })
+
+        it('gives standard bonus for herb-vegetable friendship (no flower bonus)', () => {
+            // Basil (herb) at index 1, testing Tomato (vegetable) at index 0
+            const bed = [null, mockCrops.find(c => c.id === 'basil')!, null, null]
+
+            const tomatoScore = scoreCell(0, 'tomato', bed, mockCrops, 2)
+
+            // Tomato and Basil are friends, but neither is a flower
+            // Standard friend bonus only: +1
+            expect(tomatoScore).toBe(1)
+        })
+
+        it('gives standard bonus for vegetable-vegetable friendship (no flower bonus)', () => {
+            // Tomato at index 1, Carrot at index 0 (they're friends in the actual DB)
+            const carrot: Crop = {
+                id: 'carrot',
+                name: 'Carrot',
+                type: 'vegetable',
+                botanical_family: 'Apiaceae',
+                emoji: '🥕',
+                sfg_density: 16,
+                sun: 'full',
+                days_to_maturity: 70,
+                companions: {
+                    friends: ['tomato'],
+                    enemies: []
+                },
+                planting_strategy: { start_window_start: 0, start_window_end: 4 }
+            }
+
+            const bed = [null, mockCrops.find(c => c.id === 'tomato')!, null, null]
+            const cropsWithCarrot = [...mockCrops, carrot]
+
+            const carrotScore = scoreCell(0, 'carrot', bed, cropsWithCarrot, 2)
+
+            // Carrot and Tomato are friends, but neither is a flower
+            // Standard friend bonus only: +1
+            expect(carrotScore).toBe(1)
         })
     })
 
@@ -237,30 +317,38 @@ describe('Priority Solver Logic', () => {
 
 describe('autoFillGaps', () => {
     it('fills empty cells with friendly crops', () => {
-        // Setup: Bed with 1 Tomato (needs Basil)
+        // Setup: Bed with 1 Tomato (needs Basil or Marigold)
         const bed = Array(4).fill(null)
         const tomato = mockCrops.find(c => c.id === 'tomato')!
         bed[0] = tomato
 
-        // Should fill remaining 3 slots with Basil (or others) preference
+        // Should fill remaining 3 slots with friendly crops (Basil or Marigold)
         const result = autoFillGaps(bed, mockCrops, 4)
 
         expect(result.length).toBeGreaterThan(0)
-        expect(result.length).toBeGreaterThan(0)
-        expect(result.some(p => p.cropId === 'basil')).toBe(true)
-        expect(result.some(p => p.cropId === 'basil')).toBe(true)
+        // At least one placement should be a friend of tomato (basil or marigold)
+        const hasFriendlyPlacement = result.some(p =>
+            p.cropId === 'basil' || p.cropId === 'marigold'
+        )
+        expect(hasFriendlyPlacement).toBe(true)
     })
 
-    it('does not place enemies', () => {
-        // Setup: Bed with Brassica
+    it('does not place enemies adjacent to each other', () => {
+        // Setup: Bed with Brassica at position 0 in a 2x2 grid (width=2)
+        // Grid: [Brassica, ?, ?, ?]
+        // Position 1 (right) and 2 (below) are adjacent to position 0
         const bed = Array(4).fill(null)
         const brassica = mockCrops.find(c => c.id === 'brassica')!
         bed[0] = brassica
 
         const result = autoFillGaps(bed, mockCrops, 2)
 
-        // Should NOT place Tomato (enemy of Brassica)
-        const tomatoPlacements = result.filter(p => p.cropId === 'tomato')
-        expect(tomatoPlacements.length).toBe(0)
+        // Tomato is enemy of Brassica, but can be placed at position 3 (not adjacent)
+        // So we just verify that enemies aren't placed in adjacent cells (positions 1 and 2)
+        const tomatoAt1 = result.some(p => p.cropId === 'tomato' && p.cellIndex === 1)
+        const tomatoAt2 = result.some(p => p.cropId === 'tomato' && p.cellIndex === 2)
+
+        expect(tomatoAt1).toBe(false) // Position 1 is adjacent (right)
+        expect(tomatoAt2).toBe(false) // Position 2 is adjacent (below)
     })
 })

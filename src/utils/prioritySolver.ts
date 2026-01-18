@@ -65,6 +65,18 @@ export function scoreCell(
             score -= 1000 // Heavy penalty for enemies
         } else if (candidateCrop.companions.friends.includes(neighborId)) {
             score += 1 // Bonus for friends
+
+            // Extra bonus for flower-vegetable mutualism (TODO-029)
+            const neighborCrop = allCrops.find(c => c.id === neighborId)
+            if (neighborCrop) {
+                const isFlowerVegPair =
+                    (candidateCrop.type === 'flower' && neighborCrop.type === 'vegetable') ||
+                    (candidateCrop.type === 'vegetable' && neighborCrop.type === 'flower')
+
+                if (isFlowerVegPair) {
+                    score += 1 // Additional bonus for beneficial flower-vegetable relationship
+                }
+            }
         }
     }
 
