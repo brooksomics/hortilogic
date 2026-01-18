@@ -69,7 +69,7 @@ describe('CropLibrary', () => {
 
     render(<CropLibrary crops={sampleCrops} selectedCrop={null} onSelectCrop={handleSelect} />)
 
-    const lettuceButton = screen.getByRole('button', { name: /Select Lettuce for planting/i })
+    const lettuceButton = screen.getByRole('button', { name: /Select Butterhead Lettuce for planting/i })
     await user.click(lettuceButton)
 
     expect(handleSelect).toHaveBeenCalledWith(sampleCrops[0])
@@ -81,7 +81,7 @@ describe('CropLibrary', () => {
 
     render(<CropLibrary crops={sampleCrops} selectedCrop={selectedCrop} onSelectCrop={vi.fn()} />)
 
-    const tomatoButton = screen.getByRole('button', { name: /Select Tomato for planting/i })
+    const tomatoButton = screen.getByRole('button', { name: /Select Beefsteak Tomato for planting/i })
     expect(tomatoButton).toHaveAttribute('aria-pressed', 'true')
 
     // Border is now on the card container
@@ -97,7 +97,7 @@ describe('CropLibrary', () => {
 
     render(<CropLibrary crops={sampleCrops} selectedCrop={selectedCrop} onSelectCrop={vi.fn()} />)
 
-    expect(screen.getByText(/Selected for Painting: Lettuce/i)).toBeInTheDocument()
+    expect(screen.getByText(/Selected for Painting: Butterhead Lettuce/i)).toBeInTheDocument()
     expect(screen.getByText(/Click empty squares to plant manually/i)).toBeInTheDocument()
   })
 
@@ -321,7 +321,7 @@ describe('CropLibrary', () => {
       )
 
       // Each crop button should have a viability icon
-      const lettuceButton = screen.getByRole('button', { name: /Select Lettuce for planting/i })
+      const lettuceButton = screen.getByRole('button', { name: /Select Butterhead Lettuce for planting/i })
       const viabilityIcon = lettuceButton.querySelector('svg.viability-icon')
       expect(viabilityIcon).toBeInTheDocument()
     })
@@ -337,7 +337,7 @@ describe('CropLibrary', () => {
       )
 
       // Button should include viability status in aria-label
-      const lettuceButton = screen.getByRole('button', { name: /Select Lettuce for planting - Plantable now/i })
+      const lettuceButton = screen.getByRole('button', { name: /Select Butterhead Lettuce for planting - Plantable now/i })
       expect(lettuceButton).toBeInTheDocument()
     })
 
