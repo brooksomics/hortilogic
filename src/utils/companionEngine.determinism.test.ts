@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { autoFillBed } from './companionEngine'
-import { CORE_50_CROPS } from '../data/crops'
+import { CROP_DATABASE } from '../data/crops'
 import type { GardenProfile } from '../types/garden'
 
 describe('autoFillBed - Determinism (TODO-023)', () => {
@@ -25,7 +25,7 @@ describe('autoFillBed - Determinism (TODO-023)', () => {
     for (let i = 0; i < 10; i++) {
       const filled = autoFillBed(
         [...emptyBed],
-        CORE_50_CROPS,
+        CROP_DATABASE,
         testProfile,
         testDate,
         8, // width
@@ -48,7 +48,7 @@ describe('autoFillBed - Determinism (TODO-023)', () => {
   it('SHOULD produce different results with different seeds', () => {
     const result1 = autoFillBed(
       [...emptyBed],
-      CORE_50_CROPS,
+      CROP_DATABASE,
       testProfile,
       testDate,
       8,
@@ -58,7 +58,7 @@ describe('autoFillBed - Determinism (TODO-023)', () => {
 
     const result2 = autoFillBed(
       [...emptyBed],
-      CORE_50_CROPS,
+      CROP_DATABASE,
       testProfile,
       testDate,
       8,

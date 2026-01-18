@@ -342,9 +342,9 @@ describe('useGardenInteractions', () => {
       )
 
       // We need to inject these mock crops into the hook? 
-      // The hook imports CORE_50_CROPS. We can't easily mock that import without vi.mock.
-      // But we can just use the real crop IDs if they strictly match CORE_50_CROPS.
-      // 'tomato' and 'carrot' exist in CORE_50_CROPS.
+      // The hook imports CROP_DATABASE. We can't easily mock that import without vi.mock.
+      // But we can just use the real crop IDs if they strictly match CROP_DATABASE.
+      // 'tomato' and 'carrot' exist in CROP_DATABASE.
 
       act(() => {
         result.current.addToStash('tomato', 4)  // 4 sqft
