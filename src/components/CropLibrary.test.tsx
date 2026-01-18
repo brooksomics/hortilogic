@@ -405,7 +405,7 @@ describe('CropLibrary', () => {
   describe('Category Tabs (TODO-028)', () => {
     const mixedCrops: Crop[] = [
       {
-        id: 'lettuce',
+        id: 'lettuce-butterhead',
         name: 'Butterhead Lettuce',
         type: 'vegetable',
         botanical_family: 'Asteraceae',
@@ -416,18 +416,18 @@ describe('CropLibrary', () => {
         companions: { friends: [], enemies: [] }
       },
       {
-        id: 'tomato',
+        id: 'tomato-beefsteak',
         name: 'Beefsteak Tomato',
         type: 'vegetable',
         botanical_family: 'Solanaceae',
         sun: 'full',
-        days_to_maturity: 80,
+        days_to_maturity: 85,
         sfg_density: 1,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
       },
       {
-        id: 'basil',
+        id: 'basil-sweet',
         name: 'Basil',
         type: 'herb',
         botanical_family: 'Lamiaceae',
@@ -573,7 +573,7 @@ describe('CropLibrary', () => {
   describe('Sun Filter Pills (TODO-028)', () => {
     const sunVarietyCrops: Crop[] = [
       {
-        id: 'lettuce',
+        id: 'lettuce-butterhead',
         name: 'Butterhead Lettuce',
         type: 'vegetable',
         botanical_family: 'Asteraceae',
@@ -584,12 +584,12 @@ describe('CropLibrary', () => {
         companions: { friends: [], enemies: [] }
       },
       {
-        id: 'tomato',
+        id: 'tomato-beefsteak',
         name: 'Beefsteak Tomato',
         type: 'vegetable',
         botanical_family: 'Solanaceae',
         sun: 'full',
-        days_to_maturity: 80,
+        days_to_maturity: 85,
         sfg_density: 1,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
@@ -673,7 +673,7 @@ describe('CropLibrary', () => {
       const mixedCrops: Crop[] = [
         ...sunVarietyCrops,
         {
-          id: 'basil',
+          id: 'basil-sweet',
           name: 'Basil',
           type: 'herb',
           botanical_family: 'Lamiaceae',
@@ -730,7 +730,7 @@ describe('CropLibrary', () => {
   describe('Botanical Family Grouping (TODO-028)', () => {
     const familyTestCrops: Crop[] = [
       {
-        id: 'lettuce',
+        id: 'lettuce-butterhead',
         name: 'Butterhead Lettuce',
         type: 'vegetable',
         botanical_family: 'Asteraceae',
@@ -741,18 +741,18 @@ describe('CropLibrary', () => {
         companions: { friends: [], enemies: [] }
       },
       {
-        id: 'tomato',
+        id: 'tomato-beefsteak',
         name: 'Beefsteak Tomato',
         type: 'vegetable',
         botanical_family: 'Solanaceae',
         sun: 'full',
-        days_to_maturity: 80,
+        days_to_maturity: 85,
         sfg_density: 1,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
       },
       {
-        id: 'pepper',
+        id: 'pepper-bell',
         name: 'Bell Pepper',
         type: 'vegetable',
         botanical_family: 'Solanaceae',
@@ -763,7 +763,7 @@ describe('CropLibrary', () => {
         companions: { friends: [], enemies: [] }
       },
       {
-        id: 'basil',
+        id: 'basil-sweet',
         name: 'Basil',
         type: 'herb',
         botanical_family: 'Lamiaceae',
@@ -862,7 +862,7 @@ describe('CropLibrary', () => {
   describe('Enhanced Search (TODO-028)', () => {
     const searchTestCrops: Crop[] = [
       {
-        id: 'lettuce',
+        id: 'lettuce-butterhead',
         name: 'Butterhead Lettuce',
         type: 'vegetable',
         botanical_family: 'Asteraceae',
@@ -873,18 +873,18 @@ describe('CropLibrary', () => {
         companions: { friends: [], enemies: [] }
       },
       {
-        id: 'tomato',
+        id: 'tomato-beefsteak',
         name: 'Beefsteak Tomato',
         type: 'vegetable',
         botanical_family: 'Solanaceae',
         sun: 'full',
-        days_to_maturity: 80,
+        days_to_maturity: 85,
         sfg_density: 1,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
       },
       {
-        id: 'pepper',
+        id: 'pepper-bell',
         name: 'Bell Pepper',
         type: 'vegetable',
         botanical_family: 'Solanaceae',
@@ -1019,7 +1019,7 @@ describe('CropLibrary', () => {
       const lettuceDislikeBtn = screen.getByRole('button', { name: /Mark Butterhead Lettuce as don't like/i })
       await user.click(lettuceDislikeBtn)
 
-      expect(handleToggle).toHaveBeenCalledWith('lettuce')
+      expect(handleToggle).toHaveBeenCalledWith('lettuce-butterhead')
     })
 
     it('does not show dislike buttons when onToggleDislikedCrop is not provided', () => {
