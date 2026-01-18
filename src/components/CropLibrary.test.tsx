@@ -988,7 +988,7 @@ describe('CropLibrary', () => {
           crops={sampleCrops}
           selectedCrop={null}
           onSelectCrop={vi.fn()}
-          dislikedCropIds={['tomato']}
+          dislikedCropIds={['tomato-beefsteak']}
           onToggleDislikedCrop={vi.fn()}
         />
       )
