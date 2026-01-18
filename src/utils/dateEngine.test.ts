@@ -58,6 +58,10 @@ describe('isCropViable', () => {
 
   const lettuce: Crop = {
     id: 'lettuce',
+    type: 'vegetable',
+    botanical_family: 'Asteraceae',
+    sun: 'partial',
+    days_to_maturity: 55,
     sfg_density: 4,
     planting_strategy: {
       start_window_start: -4, // 4 weeks before LFD
@@ -111,6 +115,10 @@ describe('isCropViable', () => {
   it('handles crops with positive-only planting windows (after frost only)', () => {
     const tomatoCrop: Crop = {
       id: 'tomato',
+      type: 'vegetable',
+      botanical_family: 'Solanaceae',
+      sun: 'full',
+      days_to_maturity: 80,
       sfg_density: 1,
       planting_strategy: {
         start_window_start: 0,  // At LFD
@@ -135,6 +143,10 @@ describe('isCropViable', () => {
   it('handles crops with all-negative planting windows (early spring only)', () => {
     const peasCrop: Crop = {
       id: 'peas',
+      type: 'vegetable',
+      botanical_family: 'Fabaceae',
+      sun: 'full',
+      days_to_maturity: 60,
       sfg_density: 8,
       planting_strategy: {
         start_window_start: -8, // 8 weeks before LFD

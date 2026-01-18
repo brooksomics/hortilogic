@@ -13,6 +13,10 @@ describe('getCropViabilityStatus', () => {
 
   const lettuce: Crop = {
     id: 'lettuce',
+    type: 'vegetable',
+    botanical_family: 'Asteraceae',
+    sun: 'partial',
+    days_to_maturity: 55,
     sfg_density: 4,
     planting_strategy: {
       start_window_start: -4,

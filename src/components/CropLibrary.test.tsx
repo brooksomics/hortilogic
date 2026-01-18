@@ -8,6 +8,10 @@ const sampleCrops: Crop[] = [
   {
     id: 'lettuce',
     name: 'Lettuce',
+    type: 'vegetable',
+    botanical_family: 'Asteraceae',
+    sun: 'partial',
+    days_to_maturity: 55,
     sfg_density: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: { friends: [], enemies: [] }
@@ -15,6 +19,10 @@ const sampleCrops: Crop[] = [
   {
     id: 'tomato',
     name: 'Tomato',
+    type: 'vegetable',
+    botanical_family: 'Solanaceae',
+    sun: 'full',
+    days_to_maturity: 80,
     sfg_density: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: { friends: [], enemies: [] }
@@ -22,6 +30,10 @@ const sampleCrops: Crop[] = [
   {
     id: 'carrot',
     name: 'Carrot',
+    type: 'vegetable',
+    botanical_family: 'Apiaceae',
+    sun: 'full',
+    days_to_maturity: 70,
     sfg_density: 16,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: { friends: [], enemies: [] }
@@ -99,6 +111,10 @@ describe('CropLibrary', () => {
   it('uses crop id as fallback when name is not provided', () => {
     const cropWithoutName: Crop = {
       id: 'radish',
+      type: 'vegetable',
+      botanical_family: 'Brassicaceae',
+      sun: 'full',
+      days_to_maturity: 25,
       sfg_density: 16,
       planting_strategy: { start_window_start: -4, start_window_end: 2 },
       companions: { friends: [], enemies: [] }
@@ -126,6 +142,10 @@ describe('CropLibrary', () => {
       {
         id: 'cherry-tomato',
         name: 'Cherry Tomato',
+        type: 'vegetable',
+        botanical_family: 'Solanaceae',
+        sun: 'full',
+        days_to_maturity: 65,
         sfg_density: 1,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
@@ -133,6 +153,10 @@ describe('CropLibrary', () => {
       {
         id: 'spinach',
         name: 'Spinach',
+        type: 'vegetable',
+        botanical_family: 'Amaranthaceae',
+        sun: 'partial',
+        days_to_maturity: 40,
         sfg_density: 9,
         planting_strategy: { start_window_start: -6, start_window_end: 0 },
         companions: { friends: [], enemies: [] }

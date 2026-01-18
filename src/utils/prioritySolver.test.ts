@@ -16,8 +16,12 @@ const mockCrops: Crop[] = [
     {
         id: 'tomato',
         name: 'Tomato',
+        type: 'vegetable',
+        botanical_family: 'Solanaceae',
         emoji: '🍅',
         sfg_density: 1, // Large crop (1 per sq ft)
+        sun: 'full',
+        days_to_maturity: 80,
         companions: {
             friends: ['basil', 'carrot'],
             enemies: ['brassica', 'potato']
@@ -28,8 +32,12 @@ const mockCrops: Crop[] = [
     {
         id: 'basil',
         name: 'Basil',
+        type: 'herb',
+        botanical_family: 'Lamiaceae',
         emoji: '🌿',
         sfg_density: 4, // Small crop
+        sun: 'full',
+        days_to_maturity: 60,
         companions: {
             friends: ['tomato'],
             enemies: []
@@ -39,8 +47,12 @@ const mockCrops: Crop[] = [
     {
         id: 'brassica',
         name: 'Brassica',
+        type: 'vegetable',
+        botanical_family: 'Brassicaceae',
         emoji: '🥦',
         sfg_density: 1,
+        sun: 'full',
+        days_to_maturity: 70,
         companions: {
             friends: [],
             enemies: ['tomato']
@@ -50,8 +62,12 @@ const mockCrops: Crop[] = [
     {
         id: 'lettuce',
         name: 'Lettuce',
+        type: 'vegetable',
+        botanical_family: 'Asteraceae',
         emoji: '🥬',
         sfg_density: 4,
+        sun: 'partial',
+        days_to_maturity: 55,
         companions: {
             friends: [],
             enemies: []

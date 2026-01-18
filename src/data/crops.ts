@@ -1,5 +1,5 @@
 /**
- * Core 50 Crop Database
+ * Core 50 Crop Database (V2 Schema)
  *
  * Companion planting data sourced from:
  * - "Carrots Love Tomatoes" by Louise Riotte
@@ -17,8 +17,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'lettuce',
     name: 'Lettuce',
+    type: 'vegetable',
+    botanical_family: 'Asteraceae',
     emoji: '🥬',
     sfg_density: 4,
+    sun: 'partial',
+    days_to_maturity: 55,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'radish', 'cucumber'],
@@ -28,8 +32,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'spinach',
     name: 'Spinach',
+    type: 'vegetable',
+    botanical_family: 'Amaranthaceae',
     emoji: '🥬',
     sfg_density: 9,
+    sun: 'partial',
+    days_to_maturity: 40,
     planting_strategy: { start_window_start: -6, start_window_end: 0 },
     companions: {
       friends: ['peas', 'radish'],
@@ -39,8 +47,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'kale',
     name: 'Kale',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🥬',
     sfg_density: 4,
+    sun: 'full',
+    days_to_maturity: 55,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion', 'garlic', 'dill'],
@@ -50,8 +62,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'arugula',
     name: 'Arugula',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🥗',
     sfg_density: 4,
+    sun: 'partial',
+    days_to_maturity: 40,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['cucumber', 'lettuce', 'spinach'],
@@ -61,8 +77,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'swiss-chard',
     name: 'Swiss Chard',
+    type: 'vegetable',
+    botanical_family: 'Amaranthaceae',
     emoji: '🥬',
     sfg_density: 4,
+    sun: 'full',
+    days_to_maturity: 50,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['onion', 'garlic', 'radish'],
@@ -72,8 +92,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'bok-choy',
     name: 'Bok Choy',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🥬',
     sfg_density: 4,
+    sun: 'partial',
+    days_to_maturity: 45,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion', 'dill', 'garlic'],
@@ -83,8 +107,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'collard-greens',
     name: 'Collard Greens',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🥬',
     sfg_density: 4,
+    sun: 'full',
+    days_to_maturity: 60,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion', 'garlic', 'dill'],
@@ -94,8 +122,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'mustard-greens',
     name: 'Mustard Greens',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🥬',
     sfg_density: 4,
+    sun: 'partial',
+    days_to_maturity: 40,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['radish', 'peas', 'lettuce'],
@@ -105,8 +137,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'endive',
     name: 'Endive',
+    type: 'vegetable',
+    botanical_family: 'Asteraceae',
     emoji: '🥗',
     sfg_density: 4,
+    sun: 'full',
+    days_to_maturity: 85,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce', 'radish'],
@@ -116,8 +152,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'radicchio',
     name: 'Radicchio',
+    type: 'vegetable',
+    botanical_family: 'Asteraceae',
     emoji: '🥗',
     sfg_density: 4,
+    sun: 'full',
+    days_to_maturity: 80,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce', 'endive'],
@@ -129,8 +169,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'tomato',
     name: 'Tomato',
+    type: 'vegetable',
+    botanical_family: 'Solanaceae',
     emoji: '🍅',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 80,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot', 'basil', 'parsley', 'onion'],
@@ -140,8 +184,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'cherry-tomato',
     name: 'Cherry Tomato',
+    type: 'vegetable',
+    botanical_family: 'Solanaceae',
     emoji: '🍅',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 65,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot', 'basil', 'parsley', 'onion'],
@@ -151,8 +199,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'pepper',
     name: 'Pepper',
+    type: 'vegetable',
+    botanical_family: 'Solanaceae',
     emoji: '🌶️',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 70,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['basil', 'onion', 'carrot'],
@@ -162,8 +214,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'eggplant',
     name: 'Eggplant',
+    type: 'vegetable',
+    botanical_family: 'Solanaceae',
     emoji: '🍆',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 80,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['basil', 'thyme', 'oregano'],
@@ -173,8 +229,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'potato',
     name: 'Potato',
+    type: 'vegetable',
+    botanical_family: 'Solanaceae',
     emoji: '🥔',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 90,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: ['peas', 'cabbage', 'horseradish'],
@@ -184,8 +244,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'tomatillo',
     name: 'Tomatillo',
+    type: 'vegetable',
+    botanical_family: 'Solanaceae',
     emoji: '🍅',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 75,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['basil', 'carrot', 'onion'],
@@ -197,8 +261,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'broccoli',
     name: 'Broccoli',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🥦',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 70,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion', 'dill', 'garlic'],
@@ -208,8 +276,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'cauliflower',
     name: 'Cauliflower',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🥦',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 75,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion', 'dill', 'garlic'],
@@ -219,8 +291,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'cabbage',
     name: 'Cabbage',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🥬',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 70,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion', 'dill', 'potato'],
@@ -230,8 +306,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'brussels-sprouts',
     name: 'Brussels Sprouts',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🥬',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 90,
     planting_strategy: { start_window_start: -6, start_window_end: -2 },
     companions: {
       friends: ['onion', 'dill', 'garlic'],
@@ -241,8 +321,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'kohlrabi',
     name: 'Kohlrabi',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🥬',
     sfg_density: 4,
+    sun: 'full',
+    days_to_maturity: 55,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion', 'garlic'],
@@ -252,8 +336,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'radish',
     name: 'Radish',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🥕',
     sfg_density: 16,
+    sun: 'full',
+    days_to_maturity: 25,
     planting_strategy: { start_window_start: -4, start_window_end: 8 },
     companions: {
       friends: ['lettuce', 'peas', 'carrot', 'spinach'],
@@ -263,8 +351,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'turnip',
     name: 'Turnip',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🥕',
     sfg_density: 9,
+    sun: 'full',
+    days_to_maturity: 50,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['peas', 'radish'],
@@ -274,8 +366,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'rutabaga',
     name: 'Rutabaga',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🥕',
     sfg_density: 9,
+    sun: 'full',
+    days_to_maturity: 90,
     planting_strategy: { start_window_start: -6, start_window_end: 0 },
     companions: {
       friends: ['peas', 'onion'],
@@ -287,8 +383,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'peas',
     name: 'Sugar Snap Peas',
+    type: 'vegetable',
+    botanical_family: 'Fabaceae',
     emoji: '🫛',
     sfg_density: 9,
+    sun: 'full',
+    days_to_maturity: 60,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['carrot', 'radish', 'turnip', 'cucumber'],
@@ -298,8 +398,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'green-beans',
     name: 'Green Beans',
+    type: 'vegetable',
+    botanical_family: 'Fabaceae',
     emoji: '🫘',
     sfg_density: 9,
+    sun: 'full',
+    days_to_maturity: 50,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber', 'radish'],
@@ -309,8 +413,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'bush-beans',
     name: 'Bush Beans',
+    type: 'vegetable',
+    botanical_family: 'Fabaceae',
     emoji: '🫘',
     sfg_density: 9,
+    sun: 'full',
+    days_to_maturity: 50,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber', 'radish'],
@@ -320,8 +428,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'pole-beans',
     name: 'Pole Beans',
+    type: 'vegetable',
+    botanical_family: 'Fabaceae',
     emoji: '🫘',
     sfg_density: 9,
+    sun: 'full',
+    days_to_maturity: 65,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber', 'radish'],
@@ -331,8 +443,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'fava-beans',
     name: 'Fava Beans',
+    type: 'vegetable',
+    botanical_family: 'Fabaceae',
     emoji: '🫘',
     sfg_density: 4,
+    sun: 'full',
+    days_to_maturity: 85,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['potato', 'carrot'],
@@ -342,8 +458,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'edamame',
     name: 'Edamame',
+    type: 'vegetable',
+    botanical_family: 'Fabaceae',
     emoji: '🫛',
     sfg_density: 9,
+    sun: 'full',
+    days_to_maturity: 75,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber'],
@@ -355,8 +475,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'carrot',
     name: 'Carrot',
+    type: 'vegetable',
+    botanical_family: 'Apiaceae',
     emoji: '🥕',
     sfg_density: 16,
+    sun: 'full',
+    days_to_maturity: 70,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['lettuce', 'tomato', 'peas', 'onion'],
@@ -366,8 +490,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'beet',
     name: 'Beet',
+    type: 'vegetable',
+    botanical_family: 'Amaranthaceae',
     emoji: '🥕',
     sfg_density: 9,
+    sun: 'full',
+    days_to_maturity: 55,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['onion', 'lettuce', 'cabbage'],
@@ -377,8 +505,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'onion',
     name: 'Onion',
+    type: 'vegetable',
+    botanical_family: 'Amaryllidaceae',
     emoji: '🧅',
     sfg_density: 16,
+    sun: 'full',
+    days_to_maturity: 110,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'beet', 'tomato', 'lettuce'],
@@ -388,8 +520,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'garlic',
     name: 'Garlic',
+    type: 'vegetable',
+    botanical_family: 'Amaryllidaceae',
     emoji: '🧄',
     sfg_density: 16,
+    sun: 'full',
+    days_to_maturity: 240,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['tomato', 'lettuce', 'cabbage'],
@@ -399,8 +535,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'parsnip',
     name: 'Parsnip',
+    type: 'vegetable',
+    botanical_family: 'Apiaceae',
     emoji: '🥕',
     sfg_density: 16,
+    sun: 'full',
+    days_to_maturity: 120,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['peas', 'radish'],
@@ -410,8 +550,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'shallot',
     name: 'Shallot',
+    type: 'vegetable',
+    botanical_family: 'Amaryllidaceae',
     emoji: '🧅',
     sfg_density: 16,
+    sun: 'full',
+    days_to_maturity: 90,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'beet', 'tomato'],
@@ -421,8 +565,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'leek',
     name: 'Leek',
+    type: 'vegetable',
+    botanical_family: 'Amaryllidaceae',
     emoji: '🧅',
     sfg_density: 9,
+    sun: 'full',
+    days_to_maturity: 120,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot'],
@@ -432,8 +580,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'horseradish',
     name: 'Horseradish',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
     emoji: '🌿',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 150,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['potato'],
@@ -445,8 +597,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'cucumber',
     name: 'Cucumber',
+    type: 'vegetable',
+    botanical_family: 'Cucurbitaceae',
     emoji: '🥒',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 60,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['peas', 'radish', 'lettuce'],
@@ -456,8 +612,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'zucchini',
     name: 'Zucchini',
+    type: 'vegetable',
+    botanical_family: 'Cucurbitaceae',
     emoji: '🥒',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 50,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish'],
@@ -467,8 +627,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'yellow-squash',
     name: 'Yellow Squash',
+    type: 'vegetable',
+    botanical_family: 'Cucurbitaceae',
     emoji: '🥒',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 50,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish'],
@@ -478,8 +642,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'pumpkin',
     name: 'Pumpkin',
+    type: 'vegetable',
+    botanical_family: 'Cucurbitaceae',
     emoji: '🎃',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 100,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: [],
@@ -489,8 +657,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'butternut-squash',
     name: 'Butternut Squash',
+    type: 'vegetable',
+    botanical_family: 'Cucurbitaceae',
     emoji: '🥒',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 85,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish'],
@@ -500,8 +672,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'watermelon',
     name: 'Watermelon',
+    type: 'vegetable',
+    botanical_family: 'Cucurbitaceae',
     emoji: '🍉',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 90,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['radish'],
@@ -513,8 +689,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'basil',
     name: 'Basil',
+    type: 'herb',
+    botanical_family: 'Lamiaceae',
     emoji: '🌿',
     sfg_density: 4,
+    sun: 'full',
+    days_to_maturity: 60,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato', 'cherry-tomato', 'pepper'],
@@ -524,8 +704,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'cilantro',
     name: 'Cilantro',
+    type: 'herb',
+    botanical_family: 'Apiaceae',
     emoji: '🌿',
     sfg_density: 4,
+    sun: 'partial',
+    days_to_maturity: 50,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['spinach', 'lettuce'],
@@ -535,8 +719,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'parsley',
     name: 'Parsley',
+    type: 'herb',
+    botanical_family: 'Apiaceae',
     emoji: '🌿',
     sfg_density: 4,
+    sun: 'partial',
+    days_to_maturity: 70,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['tomato', 'cherry-tomato', 'carrot'],
@@ -546,8 +734,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'dill',
     name: 'Dill',
+    type: 'herb',
+    botanical_family: 'Apiaceae',
     emoji: '🌿',
     sfg_density: 4,
+    sun: 'full',
+    days_to_maturity: 70,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['cabbage', 'lettuce', 'onion'],
@@ -557,8 +749,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'oregano',
     name: 'Oregano',
+    type: 'herb',
+    botanical_family: 'Lamiaceae',
     emoji: '🌿',
     sfg_density: 1,
+    sun: 'full',
+    days_to_maturity: 90,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['eggplant', 'pepper'],
@@ -568,8 +764,12 @@ export const CORE_50_CROPS: Crop[] = [
   {
     id: 'thyme',
     name: 'Thyme',
+    type: 'herb',
+    botanical_family: 'Lamiaceae',
     emoji: '🌿',
     sfg_density: 4,
+    sun: 'full',
+    days_to_maturity: 90,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['eggplant', 'cabbage'],
