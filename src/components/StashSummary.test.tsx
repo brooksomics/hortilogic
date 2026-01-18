@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import { StashSummary } from './StashSummary'
-import { CORE_50_CROPS } from '../data/crops'
+import { CROP_DATABASE } from '../data/crops'
 
 describe('StashSummary', () => {
-    const mockCrops = CORE_50_CROPS
+    const mockCrops = CROP_DATABASE
     const mockStash = {
         'tomato': 4,
         'carrot': 16
