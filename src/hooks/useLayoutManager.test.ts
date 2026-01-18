@@ -17,6 +17,10 @@ const TEST_PROFILE_ID = 'test-profile-id'
 const lettuce: Crop = {
   id: 'lettuce',
   name: 'Lettuce',
+  type: 'vegetable',
+  botanical_family: 'Asteraceae',
+  sun: 'partial',
+  days_to_maturity: 55,
   sfg_density: 4,
   planting_strategy: { start_window_start: -4, start_window_end: 2 },
   companions: { friends: ['carrot'], enemies: [] },
@@ -25,6 +29,10 @@ const lettuce: Crop = {
 const tomato: Crop = {
   id: 'tomato',
   name: 'Tomato',
+  type: 'vegetable',
+  botanical_family: 'Solanaceae',
+  sun: 'full',
+  days_to_maturity: 80,
   sfg_density: 1,
   planting_strategy: { start_window_start: 0, start_window_end: 4 },
   companions: { friends: [], enemies: ['carrot'] },

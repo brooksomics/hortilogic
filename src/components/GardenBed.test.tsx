@@ -15,6 +15,10 @@ describe('GardenBed', () => {
     const lettuce: Crop = {
       id: 'lettuce',
       name: 'Lettuce',
+      type: 'vegetable',
+      botanical_family: 'Asteraceae',
+      sun: 'partial',
+      days_to_maturity: 55,
       sfg_density: 4,
       planting_strategy: { start_window_start: -4, start_window_end: 2 },
       companions: { friends: [], enemies: [] }
@@ -32,6 +36,10 @@ describe('GardenBed', () => {
   it('uses crop id as fallback when name is not provided', () => {
     const tomato: Crop = {
       id: 'tomato',
+      type: 'vegetable',
+      botanical_family: 'Solanaceae',
+      sun: 'full',
+      days_to_maturity: 80,
       sfg_density: 1,
       planting_strategy: { start_window_start: 0, start_window_end: 4 },
       companions: { friends: [], enemies: [] }
@@ -70,6 +78,10 @@ describe('GardenBed', () => {
   it('handles partial squares array (less than 32)', () => {
     const carrot: Crop = {
       id: 'carrot',
+      type: 'vegetable',
+      botanical_family: 'Apiaceae',
+      sun: 'full',
+      days_to_maturity: 70,
       sfg_density: 16,
       planting_strategy: { start_window_start: -2, start_window_end: 4 },
       companions: { friends: [], enemies: [] }
@@ -111,6 +123,10 @@ describe('GardenBed', () => {
     const peas: Crop = {
       id: 'peas',
       name: 'Sugar Snap Peas',
+      type: 'vegetable',
+      botanical_family: 'Fabaceae',
+      sun: 'full',
+      days_to_maturity: 60,
       sfg_density: 8,
       planting_strategy: { start_window_start: -8, start_window_end: -2 },
       companions: { friends: [], enemies: [] }

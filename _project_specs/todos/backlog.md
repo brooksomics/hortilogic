@@ -4,6 +4,102 @@ Future work, prioritized. Move to active.md when starting.
 
 ---
 
+## [TODO-023] Solver Determinism (Remove Math.random())
+
+**Status:** pending
+**Priority:** critical
+**Estimate:** M
+
+### Description
+The Automagic Fill solver currently uses `Math.random()` for tie-breaking and randomization, which makes it non-deterministic. This makes testing difficult and causes the same stash to produce different layouts on repeated fills. Replace with a seeded PRNG or deterministic tie-breaking strategy.
+
+### Acceptance Criteria
+- [ ] Replace `Math.random()` with seeded PRNG (e.g., seedrandom library or custom implementation)
+- [ ] Add optional seed parameter to `autoFillBed()` function
+- [ ] Default seed to layout ID + timestamp for reproducibility
+- [ ] Update tests to use fixed seeds for deterministic validation
+- [ ] Document seed usage in CODE_INDEX.md
+
+### Validation
+- **Manual:** Fill same stash twice with same seed -> identical layouts
+- **Automated:** Unit tests with fixed seeds always produce same output
+
+### Test Cases
+| Input | Expected Output | Notes |
+|-------|-----------------|-------|
+| autoFillBed(stash, seed=123) called twice | Identical layouts | Determinism |
+| Different seeds | Different but valid layouts | Variety preserved |
+
+### Dependencies
+- Blocks: None (but improves test reliability)
+
+---
+
+## [TODO-024] Zod Validation for LocalStorage
+
+**Status:** pending
+**Priority:** critical
+**Estimate:** M
+
+### Description
+Currently, LocalStorage data is loaded without runtime validation. If a user manually edits LocalStorage or if the schema changes, the app can crash with cryptic errors. Add Zod schemas for all persisted data structures (GardenLayout, GardenProfile, GardenStash) and validate on load.
+
+### Acceptance Criteria
+- [ ] Create Zod schemas for GardenLayout, GardenBox, GardenProfile, GardenStash
+- [ ] Update all LocalStorage read operations to validate with Zod
+- [ ] Add graceful fallback on validation failure (reset to defaults, show warning)
+- [ ] Add error logging for invalid data (help debug user issues)
+- [ ] Update tests to cover validation scenarios
+
+### Validation
+- **Manual:** Corrupt LocalStorage data -> App shows warning, resets to defaults (no crash)
+- **Automated:** Unit tests for valid/invalid schema scenarios
+
+### Test Cases
+| Input | Expected Output | Notes |
+|-------|-----------------|-------|
+| Valid LocalStorage data | Loads successfully | Happy path |
+| Invalid layout schema | Fallback to default, warning shown | Error handling |
+| Missing required fields | Fallback to default | Schema enforcement |
+
+### Dependencies
+- Blocks: Production readiness
+
+---
+
+## [TODO-025] Debounce LocalStorage Writes
+
+**Status:** pending
+**Priority:** high
+**Estimate:** S
+
+### Description
+Currently, every state change immediately writes to LocalStorage, which can cause performance issues during rapid interactions (e.g., clicking multiple crops quickly, dragging to plant). Add debouncing to batch writes and reduce I/O overhead.
+
+### Acceptance Criteria
+- [ ] Add debounce utility (lodash.debounce or custom)
+- [ ] Wrap LocalStorage writes in debounced function (300ms delay recommended)
+- [ ] Ensure final state is always persisted (flush on unmount)
+- [ ] Add visual indicator when changes are "pending save" (optional)
+- [ ] Verify no data loss during rapid interactions
+
+### Validation
+- **Manual:** Click 10 crops rapidly -> Only 1-2 LocalStorage writes (not 10)
+- **Manual:** Refresh page immediately after action -> Changes persisted
+- **Automated:** Unit tests for debounce timing and flush behavior
+
+### Test Cases
+| Input | Expected Output | Notes |
+|-------|-----------------|-------|
+| 10 rapid state changes | Max 2-3 LocalStorage writes | Debouncing works |
+| Unmount component | Final state persisted | Flush on cleanup |
+| Wait > 300ms after change | State persisted | Debounce delay |
+
+### Dependencies
+- Blocks: None (but improves performance)
+
+---
+
 <!-- TODO-012 moved to active.md (2026-01-10) -->
 <!-- TODO-011 moved to active.md (2026-01-10) -->
 

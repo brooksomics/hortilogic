@@ -173,6 +173,7 @@ export interface CompanionRules {
 
 /**
  * Crop definition with spacing and planting requirements
+ * V2 Schema with Smart Crop Metadata
  */
 export interface Crop {
   /** Unique identifier for the crop */
@@ -196,6 +197,18 @@ export interface Crop {
 
   /** Emoji icon for visual display */
   emoji?: string
+
+  /** Crop type classification (V2) */
+  type: 'vegetable' | 'herb' | 'flower'
+
+  /** Botanical family for crop rotation planning (V2) */
+  botanical_family: string
+
+  /** Sun requirements (V2) */
+  sun: 'full' | 'partial' | 'shade'
+
+  /** Average days to maturity (V2) */
+  days_to_maturity: number
 }
 
 /**

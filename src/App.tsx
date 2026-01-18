@@ -10,7 +10,7 @@ import { LayoutActionModal } from './components/LayoutActionModal'
 import { BoxActionModal, type BoxData, type BoxActionMode } from './components/BoxActionModal'
 import { SettingsModal } from './components/SettingsModal'
 import { useGardenContext } from './context/GardenContext'
-import { CORE_50_CROPS } from './data/crops'
+import { CROP_DATABASE } from './data/crops'
 
 function App() {
   // Access all state and actions from context - no more prop drilling!
@@ -143,7 +143,7 @@ function App() {
           {/* Sidebar: Crop Library */}
           <div className="order-2 lg:order-1">
             <CropLibrary
-              crops={CORE_50_CROPS}
+              crops={CROP_DATABASE}
               selectedCrop={selectedCrop}
               onSelectCrop={setSelectedCrop}
               currentProfile={gardenProfile}
@@ -151,7 +151,7 @@ function App() {
               onAddToStash={(id, amount) => {
                 // Check limit before adding
                 if (activeLayout) {
-                  const crop = CORE_50_CROPS.find(c => c.id === id)
+                  const crop = CROP_DATABASE.find(c => c.id === id)
                   if (crop && canAddToStash(crop)) {
                     addToStash(id, amount)
                   }
@@ -164,7 +164,7 @@ function App() {
             {activeLayout && (
               <StashSummary
                 stash={stash}
-                crops={CORE_50_CROPS}
+                crops={CROP_DATABASE}
                 totalArea={getStashTotalArea()}
                 maxArea={totalArea}
                 onClear={clearStash}

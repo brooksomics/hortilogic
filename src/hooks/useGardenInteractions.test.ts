@@ -161,6 +161,10 @@ describe('useGardenInteractions', () => {
       const lettuce: Crop = {
         id: 'lettuce',
         name: 'Lettuce',
+        type: 'vegetable',
+        botanical_family: 'Asteraceae',
+        sun: 'partial',
+        days_to_maturity: 55,
         sfg_density: 4,
         planting_strategy: {
           start_window_start: -4,
@@ -253,16 +257,16 @@ describe('useGardenInteractions', () => {
       )
 
       act(() => {
-        result.current.addToStash('tomato', 1)
+        result.current.addToStash('tomato-beefsteak', 1)
       })
 
-      expect(result.current.stash['tomato']).toBe(1)
+      expect(result.current.stash['tomato-beefsteak']).toBe(1)
 
       act(() => {
-        result.current.addToStash('tomato', 3)
+        result.current.addToStash('tomato-beefsteak', 3)
       })
 
-      expect(result.current.stash['tomato']).toBe(4)
+      expect(result.current.stash['tomato-beefsteak']).toBe(4)
     })
 
     it('removeFromStash decrements quantity and removes if zero', () => {
@@ -280,21 +284,21 @@ describe('useGardenInteractions', () => {
 
       // Setup: 4 tomatoes
       act(() => {
-        result.current.addToStash('tomato', 4)
+        result.current.addToStash('tomato-beefsteak', 4)
       })
 
       act(() => {
-        result.current.removeFromStash('tomato', 1)
+        result.current.removeFromStash('tomato-beefsteak', 1)
       })
 
-      expect(result.current.stash['tomato']).toBe(3)
+      expect(result.current.stash['tomato-beefsteak']).toBe(3)
 
       act(() => {
-        result.current.removeFromStash('tomato', 3)
+        result.current.removeFromStash('tomato-beefsteak', 3)
       })
 
       // Should be removed completely
-      expect(result.current.stash['tomato']).toBeUndefined()
+      expect(result.current.stash['tomato-beefsteak']).toBeUndefined()
     })
 
     it('clearStash wipes all items', () => {
@@ -337,14 +341,14 @@ describe('useGardenInteractions', () => {
         })
       )
 
-      // We need to inject these mock crops into the hook? 
-      // The hook imports CORE_50_CROPS. We can't easily mock that import without vi.mock.
-      // But we can just use the real crop IDs if they strictly match CORE_50_CROPS.
-      // 'tomato' and 'carrot' exist in CORE_50_CROPS.
+      // We need to inject these mock crops into the hook?
+      // The hook imports CROP_DATABASE. We can't easily mock that import without vi.mock.
+      // But we can just use the real crop IDs if they strictly match CROP_DATABASE.
+      // 'tomato-beefsteak' and 'carrot' exist in CROP_DATABASE.
 
       act(() => {
-        result.current.addToStash('tomato', 4)  // 4 sqft
-        result.current.addToStash('carrot', 17) // 16 + 1 = 2 sqft
+        result.current.addToStash('tomato-beefsteak', 4)  // 4 tomatoes * (1/1 density) = 4 sqft
+        result.current.addToStash('carrot', 17) // 17 carrots * (1/16 density) = 2 sqft (rounded up)
       })
 
       expect(result.current.getStashTotalArea()).toBe(6)
@@ -363,13 +367,13 @@ describe('useGardenInteractions', () => {
         })
       )
 
-      // Tomato is density 1.
-      const tomato = { id: 'tomato', sfg_density: 1 } as Crop
+      // Tomato-beefsteak is density 1.
+      const tomato = { id: 'tomato-beefsteak', sfg_density: 1 } as Crop
 
       // Total capacity is 21.
       // Add 20 tomatoes.
       act(() => {
-        result.current.addToStash('tomato', 20)
+        result.current.addToStash('tomato-beefsteak', 20)
       })
 
       // 20/21 used. Can add 1? Yes.
@@ -377,7 +381,7 @@ describe('useGardenInteractions', () => {
 
       // Add 1 more -> 21
       act(() => {
-        result.current.addToStash('tomato', 1)
+        result.current.addToStash('tomato-beefsteak', 1)
       })
 
       // 21/21 used. Can add 1? No.
@@ -402,12 +406,12 @@ describe('useGardenInteractions', () => {
       )
 
       act(() => {
-        result.current.addToStash('tomato', 2)
+        result.current.addToStash('tomato-beefsteak', 2)
       })
 
       expect(setItemSpy).toHaveBeenCalledWith(
         `hortilogic_stash_${mockLayout.id}`,
-        JSON.stringify({ tomato: 2 })
+        JSON.stringify({ 'tomato-beefsteak': 2 })
       )
 
       // Cleanup
@@ -421,7 +425,7 @@ describe('useGardenInteractions', () => {
       // Create layout with disliked crops
       const layoutWithDisliked: GardenLayout = {
         ...mockLayout,
-        dislikedCropIds: ['tomato', 'carrot', 'lettuce'],
+        dislikedCropIds: ['tomato-beefsteak', 'carrot', 'lettuce-butterhead'],
       }
 
       const { result } = renderHook(() =>
@@ -448,9 +452,9 @@ describe('useGardenInteractions', () => {
       filledBoxes.forEach((box) => {
         box.cells.forEach((cell) => {
           if (cell !== null) {
-            expect(cell.id).not.toBe('tomato')
+            expect(cell.id).not.toBe('tomato-beefsteak')
             expect(cell.id).not.toBe('carrot')
-            expect(cell.id).not.toBe('lettuce')
+            expect(cell.id).not.toBe('lettuce-butterhead')
           }
         })
       })

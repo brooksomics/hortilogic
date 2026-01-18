@@ -9,6 +9,10 @@ describe('getNeighbors', () => {
   const tomato: Crop = {
     id: 'tomato',
     name: 'Tomato',
+    type: 'vegetable',
+    botanical_family: 'Solanaceae',
+    sun: 'full',
+    days_to_maturity: 80,
     sfg_density: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: { friends: ['carrot'], enemies: ['peas'] }
@@ -17,6 +21,10 @@ describe('getNeighbors', () => {
   const peas: Crop = {
     id: 'peas',
     name: 'Peas',
+    type: 'vegetable',
+    botanical_family: 'Fabaceae',
+    sun: 'full',
+    days_to_maturity: 60,
     sfg_density: 8,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: { friends: ['carrot'], enemies: ['tomato'] }
@@ -25,6 +33,10 @@ describe('getNeighbors', () => {
   const carrot: Crop = {
     id: 'carrot',
     name: 'Carrot',
+    type: 'vegetable',
+    botanical_family: 'Apiaceae',
+    sun: 'full',
+    days_to_maturity: 70,
     sfg_density: 16,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: { friends: ['tomato', 'peas'], enemies: [] }
@@ -210,6 +222,10 @@ describe('checkCompanionConstraints', () => {
   const tomato: Crop = {
     id: 'tomato',
     name: 'Tomato',
+    type: 'vegetable',
+    botanical_family: 'Solanaceae',
+    sun: 'full',
+    days_to_maturity: 80,
     sfg_density: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: { friends: ['carrot'], enemies: ['peas'] }
@@ -218,6 +234,10 @@ describe('checkCompanionConstraints', () => {
   const carrot: Crop = {
     id: 'carrot',
     name: 'Carrot',
+    type: 'vegetable',
+    botanical_family: 'Apiaceae',
+    sun: 'full',
+    days_to_maturity: 70,
     sfg_density: 16,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: { friends: ['tomato', 'peas'], enemies: [] }
@@ -245,6 +265,10 @@ describe('checkCompanionConstraints', () => {
   it('returns FALSE when multiple neighbors are enemies', () => {
     const multiEnemy: Crop = {
       id: 'test',
+      type: 'vegetable',
+      botanical_family: 'Test',
+      sun: 'full',
+      days_to_maturity: 50,
       sfg_density: 1,
       planting_strategy: { start_window_start: 0, start_window_end: 4 },
       companions: { friends: [], enemies: ['peas', 'tomato', 'carrot'] }
@@ -267,6 +291,10 @@ describe('autoFillBed', () => {
   const tomato: Crop = {
     id: 'tomato',
     name: 'Tomato',
+    type: 'vegetable',
+    botanical_family: 'Solanaceae',
+    sun: 'full',
+    days_to_maturity: 80,
     sfg_density: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: { friends: ['carrot'], enemies: ['peas'] }
@@ -275,6 +303,10 @@ describe('autoFillBed', () => {
   const peas: Crop = {
     id: 'peas',
     name: 'Peas',
+    type: 'vegetable',
+    botanical_family: 'Fabaceae',
+    sun: 'full',
+    days_to_maturity: 60,
     sfg_density: 8,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: { friends: ['carrot'], enemies: ['tomato'] }
@@ -283,6 +315,10 @@ describe('autoFillBed', () => {
   const carrot: Crop = {
     id: 'carrot',
     name: 'Carrot',
+    type: 'vegetable',
+    botanical_family: 'Apiaceae',
+    sun: 'full',
+    days_to_maturity: 70,
     sfg_density: 16,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: { friends: ['tomato', 'peas'], enemies: [] }
@@ -448,6 +484,10 @@ describe('autoFillBed', () => {
     const lettuce: Crop = {
       id: 'lettuce',
       name: 'Lettuce',
+      type: 'vegetable',
+      botanical_family: 'Asteraceae',
+      sun: 'partial',
+      days_to_maturity: 55,
       sfg_density: 4,
       planting_strategy: { start_window_start: -4, start_window_end: 4 },
       companions: { friends: ['carrot'], enemies: [] }
@@ -456,6 +496,10 @@ describe('autoFillBed', () => {
     const spinach: Crop = {
       id: 'spinach',
       name: 'Spinach',
+      type: 'vegetable',
+      botanical_family: 'Amaranthaceae',
+      sun: 'partial',
+      days_to_maturity: 40,
       sfg_density: 9,
       planting_strategy: { start_window_start: -4, start_window_end: 4 },
       companions: { friends: ['peas'], enemies: [] }
@@ -464,6 +508,10 @@ describe('autoFillBed', () => {
     const basil: Crop = {
       id: 'basil',
       name: 'Basil',
+      type: 'herb',
+      botanical_family: 'Lamiaceae',
+      sun: 'full',
+      days_to_maturity: 60,
       sfg_density: 4,
       planting_strategy: { start_window_start: 0, start_window_end: 4 },
       companions: { friends: ['tomato'], enemies: [] }

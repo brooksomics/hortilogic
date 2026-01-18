@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { autoFillBed } from '../utils/companionEngine'
-import { CORE_50_CROPS } from '../data/crops'
+import { CROP_DATABASE } from '../data/crops'
 import type { Crop, GardenProfile, GardenLayout, GardenBox, GardenStash } from '../types/garden'
 import { autoFillAllBoxes, autoFillGaps } from '../utils/prioritySolver'
 import type { PlacementSummary } from '../components/StashSummary'
@@ -204,7 +204,7 @@ export function useGardenInteractions({
 
   const getStashTotalArea = (): number => {
     return Object.entries(stash).reduce((total, [cropId, qty]) => {
-      const crop = CORE_50_CROPS.find((c) => c.id === cropId)
+      const crop = CROP_DATABASE.find((c) => c.id === cropId)
       if (!crop) return total
       // sqftPerPlant is 1/density. Total area = qty / density
       // Since density is plants PER sq ft, area = ceil(qty / density)
@@ -235,7 +235,7 @@ export function useGardenInteractions({
 
     // Filter out disliked crops
     const dislikedCropIds = activeLayout.dislikedCropIds ?? []
-    const filteredCrops = CORE_50_CROPS.filter(
+    const filteredCrops = CROP_DATABASE.filter(
       (crop) => !dislikedCropIds.includes(crop.id)
     )
 
@@ -295,7 +295,7 @@ export function useGardenInteractions({
       saveToHistory() // Save state before changes
 
       try {
-        const { boxResults, remainingStash } = autoFillAllBoxes(solverInput, stash, CORE_50_CROPS, activeLayout.id) // Deterministic seed (TODO-023)
+        const { boxResults, remainingStash } = autoFillAllBoxes(solverInput, stash, CROP_DATABASE, activeLayout.id) // Deterministic seed (TODO-023)
 
         // Aggregate results for report
         let placedCount = 0
@@ -314,7 +314,7 @@ export function useGardenInteractions({
 
           // The solver result `placed` has {cellIndex, cropId}.
           result.placed.forEach(p => {
-            const crop = CORE_50_CROPS.find(c => c.id === p.cropId)
+            const crop = CROP_DATABASE.find(c => c.id === p.cropId)
             if (crop) {
               newBed[p.cellIndex] = crop
             }
@@ -322,10 +322,10 @@ export function useGardenInteractions({
 
           if (fillGaps) {
             // Run gap filler on the bed state AFTER stash placement
-            const gapPlacements = autoFillGaps(newBed, CORE_50_CROPS, originalBox.width, Infinity, activeLayout.id) // Deterministic seed (TODO-023)
+            const gapPlacements = autoFillGaps(newBed, CROP_DATABASE, originalBox.width, Infinity, activeLayout.id) // Deterministic seed (TODO-023)
 
             gapPlacements.forEach(p => {
-              const crop = CORE_50_CROPS.find(c => c.id === p.cropId)
+              const crop = CROP_DATABASE.find(c => c.id === p.cropId)
               if (crop) {
                 newBed[p.cellIndex] = crop
               }
