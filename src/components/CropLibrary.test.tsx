@@ -994,11 +994,11 @@ describe('CropLibrary', () => {
       )
 
       // Tomato should have filled dislike button
-      const tomatoDislikeBtn = screen.getByRole('button', { name: /Unmark Tomato as don't like/i })
+      const tomatoDislikeBtn = screen.getByRole('button', { name: /Unmark Beefsteak Tomato as don't like/i })
       expect(tomatoDislikeBtn).toBeInTheDocument()
 
       // Others should have outline button
-      const lettuceDislikeBtn = screen.getByRole('button', { name: /Mark Lettuce as don't like/i })
+      const lettuceDislikeBtn = screen.getByRole('button', { name: /Mark Butterhead Lettuce as don't like/i })
       expect(lettuceDislikeBtn).toBeInTheDocument()
     })
 
@@ -1016,7 +1016,7 @@ describe('CropLibrary', () => {
         />
       )
 
-      const lettuceDislikeBtn = screen.getByRole('button', { name: /Mark Lettuce as don't like/i })
+      const lettuceDislikeBtn = screen.getByRole('button', { name: /Mark Butterhead Lettuce as don't like/i })
       await user.click(lettuceDislikeBtn)
 
       expect(handleToggle).toHaveBeenCalledWith('lettuce')
