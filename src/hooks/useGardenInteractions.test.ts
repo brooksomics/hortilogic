@@ -425,7 +425,7 @@ describe('useGardenInteractions', () => {
       // Create layout with disliked crops
       const layoutWithDisliked: GardenLayout = {
         ...mockLayout,
-        dislikedCropIds: ['tomato', 'carrot', 'lettuce'],
+        dislikedCropIds: ['tomato-beefsteak', 'carrot', 'lettuce-butterhead'],
       }
 
       const { result } = renderHook(() =>
@@ -452,9 +452,9 @@ describe('useGardenInteractions', () => {
       filledBoxes.forEach((box) => {
         box.cells.forEach((cell) => {
           if (cell !== null) {
-            expect(cell.id).not.toBe('tomato')
+            expect(cell.id).not.toBe('tomato-beefsteak')
             expect(cell.id).not.toBe('carrot')
-            expect(cell.id).not.toBe('lettuce')
+            expect(cell.id).not.toBe('lettuce-butterhead')
           }
         })
       })
