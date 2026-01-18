@@ -26,6 +26,7 @@ function App() {
     switchLayout,
     addBox,
     removeBox,
+    toggleDislikedCrop,
     layoutModalMode,
     targetLayoutId,
     handleCreateLayout,
@@ -157,6 +158,8 @@ function App() {
                 }
               }}
               onRemoveFromStash={removeFromStash}
+              dislikedCropIds={activeLayout?.dislikedCropIds}
+              onToggleDislikedCrop={toggleDislikedCrop}
             />
             {activeLayout && (
               <StashSummary

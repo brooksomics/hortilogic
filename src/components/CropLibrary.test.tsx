@@ -964,4 +964,76 @@ describe('CropLibrary', () => {
       expect(screen.getByText('Eggplant')).toBeInTheDocument()
     })
   })
+
+  describe('Don\'t Like Button', () => {
+    it('displays dislike button for each crop', () => {
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+          dislikedCropIds={[]}
+          onToggleDislikedCrop={vi.fn()}
+        />
+      )
+
+      // Should have a dislike button for each crop
+      const dislikeButtons = screen.getAllByRole('button', { name: /Mark .* as don't like/i })
+      expect(dislikeButtons).toHaveLength(3)
+    })
+
+    it('shows filled icon for disliked crops', () => {
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+          dislikedCropIds={['tomato']}
+          onToggleDislikedCrop={vi.fn()}
+        />
+      )
+
+      // Tomato should have filled dislike button
+      const tomatoDislikeBtn = screen.getByRole('button', { name: /Unmark Tomato as don't like/i })
+      expect(tomatoDislikeBtn).toBeInTheDocument()
+
+      // Others should have outline button
+      const lettuceDislikeBtn = screen.getByRole('button', { name: /Mark Lettuce as don't like/i })
+      expect(lettuceDislikeBtn).toBeInTheDocument()
+    })
+
+    it('calls onToggleDislikedCrop when dislike button is clicked', async () => {
+      const user = userEvent.setup()
+      const handleToggle = vi.fn()
+
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+          dislikedCropIds={[]}
+          onToggleDislikedCrop={handleToggle}
+        />
+      )
+
+      const lettuceDislikeBtn = screen.getByRole('button', { name: /Mark Lettuce as don't like/i })
+      await user.click(lettuceDislikeBtn)
+
+      expect(handleToggle).toHaveBeenCalledWith('lettuce')
+    })
+
+    it('does not show dislike buttons when onToggleDislikedCrop is not provided', () => {
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+        />
+      )
+
+      // Should not have any dislike buttons
+      const dislikeButtons = screen.queryAllByRole('button', { name: /don't like/i })
+      expect(dislikeButtons).toHaveLength(0)
+    })
+  })
 })

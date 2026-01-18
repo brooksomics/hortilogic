@@ -419,4 +419,99 @@ describe('useGardenInteractions', () => {
       getItemSpy.mockRestore()
     })
   })
+
+  describe('handleAutoFill - Disliked Crops Filtering', () => {
+    it('filters out disliked crops before auto-filling', () => {
+      // Create layout with disliked crops
+      const layoutWithDisliked: GardenLayout = {
+        ...mockLayout,
+        dislikedCropIds: ['tomato', 'carrot', 'lettuce'],
+      }
+
+      const { result } = renderHook(() =>
+        useGardenInteractions({
+          currentBed: mockCurrentBed,
+          gardenProfile: mockProfile,
+          activeLayout: layoutWithDisliked,
+          setAllBoxes: mockSetAllBoxes,
+          plantCrop: mockPlantCrop,
+          removeCrop: mockRemoveCrop,
+          updateProfile: mockUpdateProfile,
+        })
+      )
+
+      act(() => {
+        result.current.handleAutoFill()
+      })
+
+      // Verify that setAllBoxes was called (meaning autoFill ran)
+      expect(allBoxesUpdated).toHaveLength(3)
+
+      // Verify that filled boxes don't contain any disliked crops
+      const filledBoxes = allBoxesUpdated
+      filledBoxes.forEach((box) => {
+        box.cells.forEach((cell) => {
+          if (cell !== null) {
+            expect(cell.id).not.toBe('tomato')
+            expect(cell.id).not.toBe('carrot')
+            expect(cell.id).not.toBe('lettuce')
+          }
+        })
+      })
+    })
+
+    it('auto-fills normally when dislikedCropIds is empty', () => {
+      // Create layout with empty disliked list
+      const layoutNoDisliked: GardenLayout = {
+        ...mockLayout,
+        dislikedCropIds: [],
+      }
+
+      const { result } = renderHook(() =>
+        useGardenInteractions({
+          currentBed: mockCurrentBed,
+          gardenProfile: mockProfile,
+          activeLayout: layoutNoDisliked,
+          setAllBoxes: mockSetAllBoxes,
+          plantCrop: mockPlantCrop,
+          removeCrop: mockRemoveCrop,
+          updateProfile: mockUpdateProfile,
+        })
+      )
+
+      act(() => {
+        result.current.handleAutoFill()
+      })
+
+      // Verify that setAllBoxes was called (function ran without error)
+      expect(allBoxesUpdated).toHaveLength(3)
+    })
+
+    it('auto-fills normally when dislikedCropIds is undefined (backward compatibility)', () => {
+      // Create layout without dislikedCropIds field
+      const layoutUndefined: GardenLayout = {
+        ...mockLayout,
+        dislikedCropIds: undefined,
+      }
+
+      const { result } = renderHook(() =>
+        useGardenInteractions({
+          currentBed: mockCurrentBed,
+          gardenProfile: mockProfile,
+          activeLayout: layoutUndefined,
+          setAllBoxes: mockSetAllBoxes,
+          plantCrop: mockPlantCrop,
+          removeCrop: mockRemoveCrop,
+          updateProfile: mockUpdateProfile,
+        })
+      )
+
+      act(() => {
+        result.current.handleAutoFill()
+      })
+
+      // Should work normally without errors
+      expect(allBoxesUpdated).toHaveLength(3)
+    })
+  })
 })
