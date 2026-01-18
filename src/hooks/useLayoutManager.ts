@@ -114,6 +114,9 @@ export interface UseLayoutManagerResult {
 
   /** Import layout from JSON and create new layout */
   importLayout: (exportData: ExportedLayout, newName: string) => string
+
+  /** Toggle a crop in the disliked list (add if not present, remove if present) */
+  toggleDislikedCrop: (cropId: string) => void
 }
 
 /**
@@ -397,6 +400,37 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     return importedLayout.id
   }
 
+  const toggleDislikedCrop = (cropId: string): void => {
+    if (!activeLayout) {
+      throw new Error('No active layout')
+    }
+
+    setLayoutStorage((prevStorage) => {
+      const prevLayout = prevStorage.layouts[activeLayout.id]
+      if (!prevLayout) {
+        throw new Error('Layout not found')
+      }
+
+      const currentDisliked = prevLayout.dislikedCropIds ?? []
+      const newDisliked = currentDisliked.includes(cropId)
+        ? currentDisliked.filter((id) => id !== cropId) // Remove if present
+        : [...currentDisliked, cropId] // Add if not present
+
+      const updatedLayout = touchLayout({
+        ...prevLayout,
+        dislikedCropIds: newDisliked,
+      })
+
+      return {
+        ...prevStorage,
+        layouts: {
+          ...prevStorage.layouts,
+          [activeLayout.id]: updatedLayout,
+        },
+      }
+    })
+  }
+
   return {
     layouts,
     activeLayoutId,
@@ -416,5 +450,6 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     removeBox,
     exportLayout,
     importLayout,
+    toggleDislikedCrop,
   }
 }

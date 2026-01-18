@@ -233,11 +233,17 @@ export function useGardenInteractions({
       return
     }
 
+    // Filter out disliked crops
+    const dislikedCropIds = activeLayout.dislikedCropIds ?? []
+    const filteredCrops = CORE_50_CROPS.filter(
+      (crop) => !dislikedCropIds.includes(crop.id)
+    )
+
     // Process ALL boxes in the layout
     const updatedBoxes = activeLayout.boxes.map((box: GardenBox) => {
       const filledCells = autoFillBed(
         box.cells,
-        CORE_50_CROPS,
+        filteredCrops, // Use filtered crops instead of all crops
         gardenProfile,
         new Date(),
         box.width,
