@@ -26,6 +26,9 @@ interface CropLibraryProps {
   onRemoveFromStash?: (cropId: string, amount: number) => void
 }
 
+type CropCategory = 'all' | 'vegetable' | 'herb' | 'flower'
+type SunRequirement = 'full' | 'partial' | 'shade' | null
+
 /**
  * Crop Library sidebar component
  * Displays available crops and allows selection for planting
@@ -41,12 +44,22 @@ export function CropLibrary({
 }: CropLibraryProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [hideOutOfSeason, setHideOutOfSeason] = useState(false)
+  const [activeCategory, setActiveCategory] = useState<CropCategory>('all')
+  const [activeSunFilter, setActiveSunFilter] = useState<SunRequirement>(null)
 
   const filteredCrops = useMemo(() => {
     return crops.filter((crop) => {
+      // Search by name, id, or botanical family
       const matchesSearch = (crop.name || crop.id)
         .toLowerCase()
-        .includes(searchQuery.toLowerCase())
+        .includes(searchQuery.toLowerCase()) ||
+        crop.botanical_family.toLowerCase().includes(searchQuery.toLowerCase())
+
+      // Filter by category
+      const matchesCategory = activeCategory === 'all' || crop.type === activeCategory
+
+      // Filter by sun requirement
+      const matchesSun = activeSunFilter === null || crop.sun === activeSunFilter
 
       // Filter by season if profile and toggle enabled
       if (hideOutOfSeason && currentProfile) {
@@ -55,15 +68,151 @@ export function CropLibrary({
           : new Date()
         const status = getCropViabilityStatus(crop, currentProfile, targetDate)
         const matchesSeason = status === 'viable' || status === 'marginal'
-        return matchesSearch && matchesSeason
+        return matchesSearch && matchesCategory && matchesSun && matchesSeason
       }
 
-      return matchesSearch
+      return matchesSearch && matchesCategory && matchesSun
     })
-  }, [crops, searchQuery, hideOutOfSeason, currentProfile])
+  }, [crops, searchQuery, hideOutOfSeason, currentProfile, activeCategory, activeSunFilter])
+
+  // Group crops by botanical family (only for vegetables)
+  const groupedCrops = useMemo(() => {
+    if (activeCategory !== 'vegetable') {
+      return null
+    }
+
+    const groups: Record<string, Crop[]> = {}
+    filteredCrops.forEach((crop) => {
+      const family = crop.botanical_family
+      if (!groups[family]) {
+        groups[family] = []
+      }
+      groups[family].push(crop)
+    })
+
+    return groups
+  }, [filteredCrops, activeCategory])
 
   const handleClearSearch = (): void => {
     setSearchQuery('')
+  }
+
+  const handleCategoryClick = (category: CropCategory): void => {
+    setActiveCategory(category)
+  }
+
+  const handleSunFilterClick = (sun: SunRequirement): void => {
+    // Toggle off if clicking the same filter
+    setActiveSunFilter(activeSunFilter === sun ? null : sun)
+  }
+
+  const renderCropCard = (crop: Crop) => {
+    const isSelected = selectedCrop?.id === crop.id
+
+    // Current quantity in stash
+    const stashQty = stash ? (stash[crop.id] || 0) : 0
+
+    // Get viability status and styles
+    let viabilityStyles = null
+    let viabilityStatus = null
+    let ViabilityIcon = null
+    if (currentProfile) {
+      const targetDate = currentProfile.targetPlantingDate
+        ? new Date(currentProfile.targetPlantingDate)
+        : new Date()
+      viabilityStatus = getCropViabilityStatus(crop, currentProfile, targetDate)
+      viabilityStyles = getViabilityStyles(viabilityStatus)
+      ViabilityIcon = viabilityStyles.icon
+    }
+
+    // Determine border class
+    const borderClass = isSelected
+      ? 'border-leaf-500 bg-leaf-50'
+      : viabilityStyles
+        ? viabilityStyles.className
+        : 'border-soil-200 bg-white'
+
+    // Create aria-label with viability info
+    const ariaLabel = viabilityStyles
+      ? `Select ${crop.name || crop.id} for planting - ${viabilityStyles.label}`
+      : `Select ${crop.name || crop.id} for planting`
+
+    return (
+      <div
+        key={crop.id}
+        className={`
+          w-full p-3 rounded-lg border-2 transition-all group
+          ${borderClass}
+        `}
+        data-testid={`crop-card-${crop.id}`}
+      >
+        <div className="flex items-center justify-between mb-2">
+          {/* Crop Info Header - Clickable to select for painting */}
+          <button
+            onClick={() => { onSelectCrop(crop); }}
+            className="flex items-center gap-2 flex-1 text-left"
+            type="button"
+            aria-pressed={isSelected}
+            aria-label={ariaLabel}
+          >
+            {crop.emoji && (
+              <span className="text-2xl flex-shrink-0" aria-hidden="true">
+                {crop.emoji}
+              </span>
+            )}
+            <div className="flex-1">
+              <div className="font-semibold text-soil-900">
+                {crop.name || crop.id}
+              </div>
+              <div className="text-xs text-soil-600 mt-1">
+                {crop.sfg_density} per sq ft
+              </div>
+            </div>
+
+            {/* Viability Icon */}
+            {ViabilityIcon && (
+              <ViabilityIcon className="w-4 h-4 viability-icon mr-1" aria-hidden="true" />
+            )}
+          </button>
+        </div>
+
+        {/* Stash Controls */}
+        {onAddToStash && onRemoveFromStash && (
+          <div className="flex items-center justify-between bg-soil-50 rounded p-1">
+            <span className="text-xs text-soil-600 px-2">Stash:</span>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onRemoveFromStash(crop.id, 1)
+                }}
+                className="w-6 h-6 flex items-center justify-center rounded bg-white border border-soil-300 text-soil-700 hover:bg-soil-100 disabled:opacity-50"
+                disabled={stashQty === 0}
+                aria-label={`Remove ${crop.name ?? crop.id} from stash`}
+                type="button"
+              >
+                -
+              </button>
+              <span className="w-6 text-center text-sm font-medium text-soil-900">
+                {stashQty}
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onAddToStash(crop.id, 1)
+                }}
+                className="w-6 h-6 flex items-center justify-center rounded bg-white border border-soil-300 text-soil-700 hover:bg-soil-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label={`Add ${crop.name ?? crop.id} to stash`}
+                type="button"
+                disabled={false} // Todo: connect to canAddToStash
+              >
+                +
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    )
   }
 
   return (
@@ -73,6 +222,91 @@ export function CropLibrary({
         <h2 className="text-xl font-semibold text-soil-900">
           Crop Library
         </h2>
+      </div>
+
+      {/* Category Tabs */}
+      <div className="flex gap-2 mb-4">
+        <button
+          onClick={() => { handleCategoryClick('all') }}
+          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+            activeCategory === 'all'
+              ? 'bg-leaf-600 text-white'
+              : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
+          }`}
+          type="button"
+        >
+          All
+        </button>
+        <button
+          onClick={() => { handleCategoryClick('vegetable') }}
+          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+            activeCategory === 'vegetable'
+              ? 'bg-leaf-600 text-white'
+              : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
+          }`}
+          type="button"
+        >
+          Vegetables
+        </button>
+        <button
+          onClick={() => { handleCategoryClick('herb') }}
+          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+            activeCategory === 'herb'
+              ? 'bg-leaf-600 text-white'
+              : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
+          }`}
+          type="button"
+        >
+          Herbs
+        </button>
+        <button
+          onClick={() => { handleCategoryClick('flower') }}
+          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+            activeCategory === 'flower'
+              ? 'bg-leaf-600 text-white'
+              : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
+          }`}
+          type="button"
+        >
+          Flowers
+        </button>
+      </div>
+
+      {/* Sun Filter Pills */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        <button
+          onClick={() => { handleSunFilterClick('full') }}
+          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+            activeSunFilter === 'full'
+              ? 'bg-amber-500 text-white'
+              : 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+          }`}
+          type="button"
+        >
+          ☀️ Full Sun
+        </button>
+        <button
+          onClick={() => { handleSunFilterClick('partial') }}
+          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+            activeSunFilter === 'partial'
+              ? 'bg-sky-500 text-white'
+              : 'bg-sky-100 text-sky-800 hover:bg-sky-200'
+          }`}
+          type="button"
+        >
+          ⛅ Partial Shade
+        </button>
+        <button
+          onClick={() => { handleSunFilterClick('shade') }}
+          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+            activeSunFilter === 'shade'
+              ? 'bg-slate-600 text-white'
+              : 'bg-slate-200 text-slate-800 hover:bg-slate-300'
+          }`}
+          type="button"
+        >
+          🌙 Shade
+        </button>
       </div>
 
       {/* Search Input */}
@@ -121,115 +355,24 @@ export function CropLibrary({
         {filteredCrops.length} {filteredCrops.length === 1 ? 'crop' : 'crops'}
       </div>
 
+      {/* Crop List */}
       <div className="space-y-2">
-        {filteredCrops.map((crop) => {
-          const isSelected = selectedCrop?.id === crop.id
-
-          // Current quantity in stash
-          const stashQty = stash ? (stash[crop.id] || 0) : 0
-
-          // Get viability status and styles
-          let viabilityStyles = null
-          let viabilityStatus = null
-          let ViabilityIcon = null
-          if (currentProfile) {
-            const targetDate = currentProfile.targetPlantingDate
-              ? new Date(currentProfile.targetPlantingDate)
-              : new Date()
-            viabilityStatus = getCropViabilityStatus(crop, currentProfile, targetDate)
-            viabilityStyles = getViabilityStyles(viabilityStatus)
-            ViabilityIcon = viabilityStyles.icon
-          }
-
-          // Determine border class
-          const borderClass = isSelected
-            ? 'border-leaf-500 bg-leaf-50'
-            : viabilityStyles
-              ? viabilityStyles.className
-              : 'border-soil-200 bg-white'
-
-          // Create aria-label with viability info
-          const ariaLabel = viabilityStyles
-            ? `Select ${crop.name || crop.id} for planting - ${viabilityStyles.label}`
-            : `Select ${crop.name || crop.id} for planting`
-
-          return (
-            <div
-              key={crop.id}
-              className={`
-                w-full p-3 rounded-lg border-2 transition-all group
-                ${borderClass}
-              `}
-              data-testid={`crop-card-${crop.id}`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                {/* Crop Info Header - Clickable to select for painting */}
-                <button
-                  onClick={() => { onSelectCrop(crop); }}
-                  className="flex items-center gap-2 flex-1 text-left"
-                  type="button"
-                  aria-pressed={isSelected}
-                  aria-label={ariaLabel}
-                >
-                  {crop.emoji && (
-                    <span className="text-2xl flex-shrink-0" aria-hidden="true">
-                      {crop.emoji}
-                    </span>
-                  )}
-                  <div className="flex-1">
-                    <div className="font-semibold text-soil-900">
-                      {crop.name || crop.id}
-                    </div>
-                    <div className="text-xs text-soil-600 mt-1">
-                      {crop.sfg_density} per sq ft
-                    </div>
-                  </div>
-
-                  {/* Viability Icon */}
-                  {ViabilityIcon && (
-                    <ViabilityIcon className="w-4 h-4 viability-icon mr-1" aria-hidden="true" />
-                  )}
-                </button>
+        {groupedCrops ? (
+          // Grouped view (for Vegetables tab)
+          Object.entries(groupedCrops).sort(([a], [b]) => a.localeCompare(b)).map(([family, cropsInFamily]) => (
+            <div key={family} data-testid={`family-group-${family}`} className="mb-4">
+              <h3 className="text-sm font-semibold text-soil-800 mb-2 px-2">
+                {family}
+              </h3>
+              <div className="space-y-2">
+                {cropsInFamily.map(renderCropCard)}
               </div>
-
-              {/* Stash Controls */}
-              {onAddToStash && onRemoveFromStash && (
-                <div className="flex items-center justify-between bg-soil-50 rounded p-1">
-                  <span className="text-xs text-soil-600 px-2">Stash:</span>
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onRemoveFromStash(crop.id, 1)
-                      }}
-                      className="w-6 h-6 flex items-center justify-center rounded bg-white border border-soil-300 text-soil-700 hover:bg-soil-100 disabled:opacity-50"
-                      disabled={stashQty === 0}
-                      aria-label={`Remove ${crop.name ?? crop.id} from stash`}
-                      type="button"
-                    >
-                      -
-                    </button>
-                    <span className="w-6 text-center text-sm font-medium text-soil-900">
-                      {stashQty}
-                    </span>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onAddToStash(crop.id, 1)
-                      }}
-                      className="w-6 h-6 flex items-center justify-center rounded bg-white border border-soil-300 text-soil-700 hover:bg-soil-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                      aria-label={`Add ${crop.name ?? crop.id} to stash`}
-                      type="button"
-                      disabled={false} // Todo: connect to canAddToStash
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              )}
             </div>
-          )
-        })}
+          ))
+        ) : (
+          // Flat list (for All, Herbs, Flowers tabs)
+          filteredCrops.map(renderCropCard)
+        )}
       </div>
 
       {selectedCrop && (

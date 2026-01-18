@@ -4,7 +4,7 @@
 
 **Before creating any new function, CHECK HERE FIRST.**
 
-Last updated: 2026-01-11 (TODO-025 complete - Debounced LocalStorage Writes)
+Last updated: 2026-01-18 (TODO-028 complete - CropLibrary Taxonomy & Filtering)
 
 ---
 
@@ -271,7 +271,13 @@ function MyComponent() {
 **Component Responsibilities:**
 - **App**: Multi-box rendering, consumes GardenContext for all state/actions, box modal management, renders layout selector and settings
 - **GardenBed**: Dynamic grid rendering with custom width/height, click handlers, viability colors, accessibility labels, delete button
-- **CropLibrary**: Crop list, search filtering, crop count display, selection UI
+- **CropLibrary**: Crop selection with advanced taxonomy features (TODO-028):
+  - Category tabs: Filter by Vegetables, Herbs, Flowers, or All
+  - Sun filter pills: Filter by Full Sun, Partial Shade, or Shade
+  - Botanical family grouping: When "Vegetables" tab selected, groups crops by family (e.g., Solanaceae, Brassicaceae)
+  - Enhanced search: Searches crop names, IDs, and botanical family names
+  - Viability indicators: Season-aware crop filtering based on planting dates
+  - Stash controls: Add/remove crops to planning cart
 - **LayoutSelector**: Layout dropdown, CRUD action buttons, sorting
 - **LayoutActionModal**: Reusable modal for layout operations (3 modes: create/rename/delete)
 - **BoxActionModal**: Reusable modal for box operations (2 modes: add/delete)
@@ -309,31 +315,42 @@ Migration: LegacyGardenState → LayoutStorage + ProfileStorage
 
 ---
 
-## Crop Database (TODO-006)
+## Crop Database (TODO-027)
 
 | Data | Location | Purpose |
 |------|----------|---------|
-| `CORE_50_CROPS` | data/crops.ts | 50 common garden crops with companion rules |
+| `CROP_DATABASE` | data/crops.ts | 162 crops with complete Smart Crop metadata (V2 schema) |
 | `CROPS_BY_ID` | data/crops.ts | Lookup object for quick crop retrieval by ID |
 
-**Core 50 Crop Database:**
-- 10 Leafy Greens (Lettuce, Spinach, Kale, Arugula, etc.)
-- 6 Nightshades (Tomato, Cherry Tomato, Pepper, Eggplant, etc.)
-- 8 Brassicas (Broccoli, Cauliflower, Cabbage, etc.)
-- 6 Legumes (Peas, Green Beans, Fava Beans, etc.)
-- 8 Root Vegetables (Carrot, Beet, Onion, Garlic, etc.)
-- 6 Cucurbits (Cucumber, Zucchini, Pumpkin, etc.)
-- 6 Herbs (Basil, Cilantro, Parsley, Dill, etc.)
+**Expanded Crop Database (162 crops):**
+- 20 Leafy Greens (Butterhead Lettuce, Romaine, Spinach, Kale, Arugula, etc.)
+- Nightshades (Beefsteak Tomato, Cherry Tomato, Pepper varieties, Eggplant, etc.)
+- Brassicas (Broccoli, Cauliflower, Cabbage, Brussels Sprouts, etc.)
+- Legumes (Peas, Green Beans, Fava Beans, Lentils, etc.)
+- Root Vegetables (Carrot, Beet, Onion, Garlic, Radish, Turnip, etc.)
+- Cucurbits (Cucumber, Zucchini, Pumpkin, Squash varieties, etc.)
+- 15+ Herbs (Sweet Basil, Thai Basil, Cilantro, Parsley, Dill, Oregano, etc.)
+- 10+ Flowers (Marigold, Nasturtium, Borage, Calendula, Alyssum, etc.)
+
+**V2 Schema Fields (TODO-026/027):**
+- `type`: 'vegetable' | 'herb' | 'flower' - Crop category
+- `botanical_family`: string - Family name (e.g., "Solanaceae", "Brassicaceae")
+- `sun`: 'full' | 'partial' | 'shade' - Sun requirements
+- `days_to_maturity`: number - Average days to harvest
 
 **Data Sources:**
 - University Extension Companion Planting Guides
 - "Carrots Love Tomatoes" by Louise Riotte
 - Mother Earth News Companion Planting Chart
 
-**Search & Filter Capabilities:**
-- Text search by crop name (case-insensitive)
-- Crop count display (e.g., "23 of 50 crops")
-- Clear search button
+**Search & Filter Capabilities (TODO-028):**
+- **Category Tabs**: Filter by Vegetables, Herbs, Flowers, or All
+- **Sun Filter Pills**: Filter by Full Sun, Partial Shade, or Shade (toggle on/off)
+- **Enhanced Search**: Searches crop name, ID, and botanical family (e.g., "Solanaceae" shows all nightshades)
+- **Botanical Family Grouping**: When "Vegetables" tab selected, groups crops by family for rotation planning
+- **Season Filtering**: Toggle to hide out-of-season crops based on user's location and target planting date
+- **Crop Count Display**: Shows filtered count (e.g., "23 of 162 crops")
+- **Combined Filters**: All filters work together (category + sun + search + season)
 
 ---
 

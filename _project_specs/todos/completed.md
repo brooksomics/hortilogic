@@ -804,6 +804,77 @@ TODO-018 was the final component of Feature 008 (Multi-Box Garden Beds). With th
 
 ---
 
+## [TODO-026] V2 Data Schema Migration
+
+**Status:** ✅ completed
+**Priority:** high
+**Estimate:** S
+**Completed:** 2026-01-18
+
+### Description
+Update the `Crop` interface in `src/types/garden.ts` to support the new "Smart Crop" metadata. This is a breaking change for the type system, so we must also update the existing `crops.ts` with placeholder values to ensure the build passes before we do the full data population.
+
+### Acceptance Criteria
+- [✅] Update `Crop` interface with new fields:
+  - `type`: 'vegetable' | 'herb' | 'flower'
+  - `botanical_family`: string (botanical family)
+  - `sun`: 'full' | 'partial' | 'shade'
+  - `days_to_maturity`: number (optional for MVP, but good to have)
+- [✅] Update `CROP_DATABASE` in `src/data/crops.ts` to include these fields (using real data)
+- [✅] Verify application builds and runs without TypeScript errors
+
+### Validation
+- **Automated:** `npm run typecheck` must pass ✅
+- **Automated:** Existing unit tests for `crops.ts` must pass ✅
+
+### TDD Execution Log
+| Phase | Command | Result | Timestamp |
+|-------|---------|--------|-----------|
+| GREEN | Update Crop interface and migrate data | Schema updated | 2026-01-18 |
+| VALIDATE | npm run typecheck | 0 errors ✅ | 2026-01-18 |
+| COMPLETE | git commit + push | 10f82e8 ✅ | 2026-01-18 |
+
+---
+
+## [TODO-027] Populate Expanded Crop Database
+
+**Status:** ✅ completed
+**Priority:** high
+**Estimate:** L
+**Completed:** 2026-01-18
+
+### Description
+Replace the current 50-crop database with a comprehensive dataset of 100-200 crops (targeting 200, minimum 100). This involves expanding the list to include more varieties, flowers, and herbs, and ensuring all "friend/enemy" references use valid IDs.
+
+### Acceptance Criteria
+- [✅] `CORE_50_CROPS` renamed to `CROP_DATABASE`
+- [✅] Database contains 162 crops (target met: 100-200 range)
+- [✅] Database contains at least 10 common flowers (Marigold, Nasturtium, Borage, Calendula, Alyssum, etc.)
+- [✅] Database contains at least 15 common herbs
+- [✅] All `botanical_family` fields are populated correctly (e.g., Tomato = Solanaceae)
+- [✅] All `friends` and `enemies` arrays only contain IDs that actually exist in the database (integrity check)
+- [✅] All crops have accurate `type`, `sun`, and `days_to_maturity` values
+
+### Validation
+- **Manual:** Browse crop library, verify data accuracy ✅
+- **Automated:** Unit tests for data integrity (all companion IDs valid) ✅
+
+### TDD Execution Log
+| Phase | Command | Result | Timestamp |
+|-------|---------|--------|-----------|
+| GREEN | Populate comprehensive 162-crop database | Database expanded | 2026-01-18 |
+| VALIDATE | Data integrity checks | All IDs valid ✅ | 2026-01-18 |
+| COMPLETE | git commit + push | 8031466 ✅ | 2026-01-18 |
+
+### Implementation Details
+- **Database Size:** 162 crops (exceeds 100 minimum, within 200 target range)
+- **Flowers:** 10+ varieties added (Marigold, Nasturtium, Borage, etc.)
+- **Herbs:** 15+ varieties added
+- **Metadata:** All crops have complete `type`, `botanical_family`, `sun`, and `days_to_maturity` fields
+- **Data Integrity:** All companion planting references validated
+
+---
+
 ## [TODO-019] Garden Stash State Management (Planning Cart)
 
 **Status:** ✅ completed
