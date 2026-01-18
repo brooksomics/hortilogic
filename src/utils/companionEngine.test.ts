@@ -443,4 +443,70 @@ describe('autoFillBed', () => {
       expect(plantedCount).toBeGreaterThan(0)
     })
   })
+
+  describe('variety and mutualism optimization', () => {
+    const lettuce: Crop = {
+      id: 'lettuce',
+      name: 'Lettuce',
+      sfg_density: 4,
+      planting_strategy: { start_window_start: -4, start_window_end: 4 },
+      companions: { friends: ['carrot'], enemies: [] }
+    }
+
+    const spinach: Crop = {
+      id: 'spinach',
+      name: 'Spinach',
+      sfg_density: 9,
+      planting_strategy: { start_window_start: -4, start_window_end: 4 },
+      companions: { friends: ['peas'], enemies: [] }
+    }
+
+    const basil: Crop = {
+      id: 'basil',
+      name: 'Basil',
+      sfg_density: 4,
+      planting_strategy: { start_window_start: 0, start_window_end: 4 },
+      companions: { friends: ['tomato'], enemies: [] }
+    }
+
+    it('should provide variety when multiple crops are viable', () => {
+      const grid: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]
+      const crops = [lettuce, spinach, basil, carrot, tomato]
+      const targetDate = new Date('2024-05-20') // All viable
+
+      const result = autoFillBed(grid, crops, profile, targetDate, 8, 4, 'variety-test')
+
+      // Count unique crop types planted
+      const plantedCropIds = new Set<string>()
+      result.forEach(cell => {
+        if (cell) plantedCropIds.add(cell.id)
+      })
+
+      // With 5 viable crops and 32 cells, expect at least 2-3 different types
+      // NOT all one type (monoculture)
+      expect(plantedCropIds.size).toBeGreaterThanOrEqual(2)
+    })
+
+    it('should prefer planting friends next to existing crops (mutualism)', () => {
+      const grid: (Crop | null)[] = Array(16).fill(null) as (Crop | null)[]
+      // 4x4 grid for simpler test
+      grid[0] = tomato  // Tomato at top-left
+
+      const crops = [basil, lettuce, carrot]  // basil is friend of tomato, others aren't
+      const targetDate = new Date('2024-05-20')
+
+      const result = autoFillBed(grid, crops, profile, targetDate, 4, 4, 'mutualism-test')
+
+      // Cells 1 (right) and 4 (below) are neighbors of tomato
+      // At least ONE should prefer basil (tomato's friend) over other crops
+      const neighbor1 = result[1]
+      const neighbor4 = result[4]
+
+      const basilNearTomato = neighbor1?.id === 'basil' || neighbor4?.id === 'basil'
+
+      // With mutualism scoring, basil should be preferred near tomato
+      // This test will FAIL with current greedy first-fit algorithm
+      expect(basilNearTomato).toBe(true)
+    })
+  })
 })

@@ -30,12 +30,16 @@ Last updated: 2026-01-11 (TODO-025 complete - Debounced LocalStorage Writes)
 |----------|----------|---------|
 | `getNeighbors()` | utils/companionEngine.ts:13 | Get crops in 4 adjacent cells (Up/Down/Left/Right) with dynamic grid dimensions |
 | `checkCompanionConstraints()` | utils/companionEngine.ts:65 | Check if crop compatible with neighbor crop IDs |
-| `autoFillBed()` | utils/companionEngine.ts:103 | Constraint satisfaction solver for garden bed with custom dimensions |
+| `scoreCropForCell()` | utils/companionEngine.ts:98 | Score a crop for a cell based on mutualism (+1 per friend, -1000 per enemy) |
+| `autoFillBed()` | utils/companionEngine.ts:131 | Smart solver with variety optimization and mutualism scoring |
 
 **Key Concepts:**
 - Companion rules: friends (beneficial) and enemies (incompatible)
 - Neighbor checking: 4-directional adjacency only (not diagonals)
 - **Dynamic dimensions**: Supports variable grid sizes (e.g., 4x8, 2x4, 3x3)
+- **Mutualism optimization**: Prefers planting friends next to existing crops (+1 bonus per friend)
+- **Variety optimization**: Tracks planted counts and penalizes monoculture (-0.5 per duplicate)
+- **Smart scoring**: Evaluates ALL crops for each cell and picks the best fit
 - Constraint satisfaction: respects both viability AND compatibility
 - Preserves existing manual plantings
 - **Deterministic (TODO-023)**: Uses seeded RNG based on layout.id for reproducible results

@@ -9,23 +9,66 @@ After each task, ask: Decision made? >10 tool calls? Feature done?
 
 # Current Session State
 
-*Last updated: 2026-01-11 23:56*
+*Last updated: 2026-01-18*
 
 ## Active Task
-✅ **Bug Fix: Clear All Crops now works across all beds - COMPLETE**
+✅ **Enhancement: Automagic Fill now optimizes for variety and mutualism - COMPLETE**
 
 ## Current Status
-- **Phase**: Bug fix - Multi-box clearBed functionality
+- **Phase**: Feature enhancement - Smart Automagic Fill algorithm
 - **Progress**: Complete (TDD workflow followed)
 - **Blocking Issues**: None
 - **Ready For**: Commit and push
+
+## Enhancement Summary (2026-01-18)
+
+### Issue Reported
+User reported: "Automagic Fill fills all beds with 1 pepper" - lacking variety and mutualism optimization
+
+### Root Cause
+- Old `autoFillBed()` used greedy first-fit algorithm
+- Shuffled crops once, then used same order for all cells
+- Only checked constraints (enemies), didn't prefer friends
+- Result: Monoculture (all one crop type)
+
+### Fix Implemented (TDD Workflow)
+1. **RED**: Wrote failing tests proving the bugs
+   - Variety test: Expected ≥2 crop types, got 1 (monoculture)
+   - Mutualism test: Expected basil near tomato (friends), got random placement
+   - Both tests failed ✅
+
+2. **GREEN**: Implemented smart scoring algorithm
+   - Added `scoreCropForCell()`: +1 per friend, -1000 per enemy
+   - Variety tracking: -0.5 penalty per duplicate planted
+   - Best-fit selection: Evaluates ALL crops per cell, picks highest score
+   - All 322 tests pass ✅
+
+3. **VALIDATE**: Quality checks passed
+   - Lint: ✅ Pass (0 errors, 1 pre-existing warning)
+   - TypeCheck: ✅ Pass
+   - Build: ✅ Success
+   - Tests: ✅ 322 passing (+2 new variety/mutualism tests)
+
+### Files Modified
+1. **src/utils/companionEngine.ts**: Enhanced autoFillBed with scoring and variety
+2. **src/utils/companionEngine.test.ts**: Added 2 tests for variety and mutualism
+3. **CODE_INDEX.md**: Updated to document new algorithm
+4. **_project_specs/session/current-state.md**: Updated session state
+
+### Behavior Change
+- **Before**: Automagic Fill created monoculture (all one crop type)
+- **After**: Automagic Fill optimizes for variety AND mutualism (friends preferred)
+
+### Test Coverage
+- Added 2 tests: variety optimization and mutualism preference
+- Total test count: 322 tests (all passing)
 
 ## Context Summary
 Feature 008 (Multi-Box Garden Beds) is now **100% complete**:
 - ✅ TODO-015: Multi-Box Data Schema Refactor
 - ✅ TODO-016: Dynamic Grid Component
 - ✅ TODO-017: Box Management UI
-- ✅ **TODO-018: Multi-Box Automagic Fill** (just completed)
+- ✅ TODO-018: Multi-Box Automagic Fill
 
 ## TODO-018 Implementation Summary
 
