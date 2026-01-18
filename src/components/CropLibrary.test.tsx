@@ -6,8 +6,8 @@ import type { Crop, GardenProfile } from '@/types'
 
 const sampleCrops: Crop[] = [
   {
-    id: 'lettuce',
-    name: 'Lettuce',
+    id: 'lettuce-butterhead',
+    name: 'Butterhead Lettuce',
     type: 'vegetable',
     botanical_family: 'Asteraceae',
     sun: 'partial',
@@ -17,12 +17,12 @@ const sampleCrops: Crop[] = [
     companions: { friends: [], enemies: [] }
   },
   {
-    id: 'tomato',
-    name: 'Tomato',
+    id: 'tomato-beefsteak',
+    name: 'Beefsteak Tomato',
     type: 'vegetable',
     botanical_family: 'Solanaceae',
     sun: 'full',
-    days_to_maturity: 80,
+    days_to_maturity: 85,
     sfg_density: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: { friends: [], enemies: [] }
@@ -50,8 +50,8 @@ describe('CropLibrary', () => {
   it('displays all provided crops', () => {
     render(<CropLibrary crops={sampleCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
 
-    expect(screen.getByText('Lettuce')).toBeInTheDocument()
-    expect(screen.getByText('Tomato')).toBeInTheDocument()
+    expect(screen.getByText('Butterhead Lettuce')).toBeInTheDocument()
+    expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
     expect(screen.getByText('Carrot')).toBeInTheDocument()
   })
 
@@ -85,7 +85,7 @@ describe('CropLibrary', () => {
     expect(tomatoButton).toHaveAttribute('aria-pressed', 'true')
 
     // Border is now on the card container
-    const card = screen.getByTestId('crop-card-tomato')
+    const card = screen.getByTestId('crop-card-tomato-beefsteak')
     expect(card).toHaveClass('border-leaf-500')
   })
 
@@ -110,7 +110,7 @@ describe('CropLibrary', () => {
 
   it('uses crop id as fallback when name is not provided', () => {
     const cropWithoutName: Crop = {
-      id: 'radish',
+      id: 'radish-red',
       type: 'vegetable',
       botanical_family: 'Brassicaceae',
       sun: 'full',
@@ -122,7 +122,7 @@ describe('CropLibrary', () => {
 
     render(<CropLibrary crops={[cropWithoutName]} selectedCrop={null} onSelectCrop={vi.fn()} />)
 
-    expect(screen.getByText('radish')).toBeInTheDocument()
+    expect(screen.getByText('radish-red')).toBeInTheDocument()
   })
 
   it('handles empty crops array gracefully', () => {
@@ -147,7 +147,7 @@ describe('CropLibrary', () => {
     const largeCropList: Crop[] = [
       ...sampleCrops,
       {
-        id: 'cherry-tomato',
+        id: 'tomato-cherry',
         name: 'Cherry Tomato',
         type: 'vegetable',
         botanical_family: 'Solanaceae',
@@ -185,11 +185,11 @@ describe('CropLibrary', () => {
       await user.type(searchInput, 'tom')
 
       // Should show tomato crops
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
       expect(screen.getByText('Cherry Tomato')).toBeInTheDocument()
 
       // Should not show other crops
-      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Butterhead Lettuce')).not.toBeInTheDocument()
       expect(screen.queryByText('Carrot')).not.toBeInTheDocument()
       expect(screen.queryByText('Spinach')).not.toBeInTheDocument()
     })
@@ -199,10 +199,10 @@ describe('CropLibrary', () => {
       render(<CropLibrary crops={largeCropList} selectedCrop={null} onSelectCrop={vi.fn()} />)
 
       const searchInput = screen.getByPlaceholderText(/search crops/i)
-      await user.type(searchInput, 'LETTUCE')
+      await user.type(searchInput, 'BUTTERHEAD')
 
-      expect(screen.getByText('Lettuce')).toBeInTheDocument()
-      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
+      expect(screen.getByText('Butterhead Lettuce')).toBeInTheDocument()
+      expect(screen.queryByText('Beefsteak Tomato')).not.toBeInTheDocument()
     })
 
     it('shows all crops when search is empty', async () => {
@@ -216,8 +216,8 @@ describe('CropLibrary', () => {
       await user.clear(searchInput)
 
       // All crops should be visible again
-      expect(screen.getByText('Lettuce')).toBeInTheDocument()
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Butterhead Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
       expect(screen.getByText('Carrot')).toBeInTheDocument()
       expect(screen.getByText('Spinach')).toBeInTheDocument()
     })
@@ -260,7 +260,7 @@ describe('CropLibrary', () => {
       await user.click(clearButton)
 
       expect(searchInput).toHaveValue('')
-      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Butterhead Lettuce')).toBeInTheDocument()
     })
   })
 
@@ -286,7 +286,7 @@ describe('CropLibrary', () => {
         />
       )
 
-      const card = screen.getByTestId('crop-card-lettuce')
+      const card = screen.getByTestId('crop-card-lettuce-butterhead')
       expect(card).toHaveClass('border-green-500')
     })
 
@@ -305,7 +305,7 @@ describe('CropLibrary', () => {
         />
       )
 
-      const card = screen.getByTestId('crop-card-lettuce')
+      const card = screen.getByTestId('crop-card-lettuce-butterhead')
       expect(card).toHaveClass('border-gray-300')
       expect(card).toHaveClass('opacity-60')
     })
@@ -372,8 +372,8 @@ describe('CropLibrary', () => {
       )
 
       // Initially all crops visible
-      expect(screen.getByText('Lettuce')).toBeInTheDocument()
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Butterhead Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
       expect(screen.getByText('Carrot')).toBeInTheDocument()
 
       // Enable filter
@@ -381,8 +381,8 @@ describe('CropLibrary', () => {
       await user.click(filterCheckbox)
 
       // All crops should be hidden in summer (all are spring crops)
-      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
-      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
+      expect(screen.queryByText('Butterhead Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Beefsteak Tomato')).not.toBeInTheDocument()
       expect(screen.queryByText('Carrot')).not.toBeInTheDocument()
     })
 
@@ -396,8 +396,8 @@ describe('CropLibrary', () => {
       )
 
       // All crops should be visible without viability styling
-      expect(screen.getByText('Lettuce')).toBeInTheDocument()
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Butterhead Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
       expect(screen.getByText('Carrot')).toBeInTheDocument()
     })
   })
@@ -406,7 +406,7 @@ describe('CropLibrary', () => {
     const mixedCrops: Crop[] = [
       {
         id: 'lettuce',
-        name: 'Lettuce',
+        name: 'Butterhead Lettuce',
         type: 'vegetable',
         botanical_family: 'Asteraceae',
         sun: 'partial',
@@ -417,7 +417,7 @@ describe('CropLibrary', () => {
       },
       {
         id: 'tomato',
-        name: 'Tomato',
+        name: 'Beefsteak Tomato',
         type: 'vegetable',
         botanical_family: 'Solanaceae',
         sun: 'full',
@@ -484,8 +484,8 @@ describe('CropLibrary', () => {
     it('shows all crops when "All" tab is active (default)', () => {
       render(<CropLibrary crops={mixedCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
 
-      expect(screen.getByText('Lettuce')).toBeInTheDocument()
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Butterhead Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
       expect(screen.getByText('Basil')).toBeInTheDocument()
       expect(screen.getByText('Cilantro')).toBeInTheDocument()
       expect(screen.getByText('Marigold')).toBeInTheDocument()
@@ -500,8 +500,8 @@ describe('CropLibrary', () => {
       await user.click(vegTab)
 
       // Should show vegetables
-      expect(screen.getByText('Lettuce')).toBeInTheDocument()
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Butterhead Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
 
       // Should NOT show herbs or flowers
       expect(screen.queryByText('Basil')).not.toBeInTheDocument()
@@ -522,8 +522,8 @@ describe('CropLibrary', () => {
       expect(screen.getByText('Cilantro')).toBeInTheDocument()
 
       // Should NOT show vegetables or flowers
-      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
-      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
+      expect(screen.queryByText('Butterhead Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Beefsteak Tomato')).not.toBeInTheDocument()
       expect(screen.queryByText('Marigold')).not.toBeInTheDocument()
       expect(screen.queryByText('Nasturtium')).not.toBeInTheDocument()
     })
@@ -540,8 +540,8 @@ describe('CropLibrary', () => {
       expect(screen.getByText('Nasturtium')).toBeInTheDocument()
 
       // Should NOT show vegetables or herbs
-      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
-      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
+      expect(screen.queryByText('Butterhead Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Beefsteak Tomato')).not.toBeInTheDocument()
       expect(screen.queryByText('Basil')).not.toBeInTheDocument()
       expect(screen.queryByText('Cilantro')).not.toBeInTheDocument()
     })
@@ -559,10 +559,10 @@ describe('CropLibrary', () => {
       await user.type(searchInput, 'tom')
 
       // Should only show Tomato (vegetable + matches search)
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
 
       // Should NOT show Lettuce (vegetable but doesn't match search)
-      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Butterhead Lettuce')).not.toBeInTheDocument()
 
       // Should NOT show herbs/flowers
       expect(screen.queryByText('Basil')).not.toBeInTheDocument()
@@ -574,7 +574,7 @@ describe('CropLibrary', () => {
     const sunVarietyCrops: Crop[] = [
       {
         id: 'lettuce',
-        name: 'Lettuce',
+        name: 'Butterhead Lettuce',
         type: 'vegetable',
         botanical_family: 'Asteraceae',
         sun: 'partial',
@@ -585,7 +585,7 @@ describe('CropLibrary', () => {
       },
       {
         id: 'tomato',
-        name: 'Tomato',
+        name: 'Beefsteak Tomato',
         type: 'vegetable',
         botanical_family: 'Solanaceae',
         sun: 'full',
@@ -618,8 +618,8 @@ describe('CropLibrary', () => {
     it('shows all crops when no sun filter is selected (default)', () => {
       render(<CropLibrary crops={sunVarietyCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
 
-      expect(screen.getByText('Lettuce')).toBeInTheDocument()
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Butterhead Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
       expect(screen.getByText('Hostas')).toBeInTheDocument()
     })
 
@@ -631,10 +631,10 @@ describe('CropLibrary', () => {
       await user.click(fullSunPill)
 
       // Should show full sun crops
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
 
       // Should NOT show partial/shade crops
-      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Butterhead Lettuce')).not.toBeInTheDocument()
       expect(screen.queryByText('Hostas')).not.toBeInTheDocument()
     })
 
@@ -646,10 +646,10 @@ describe('CropLibrary', () => {
       await user.click(partialPill)
 
       // Should show partial shade crops
-      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Butterhead Lettuce')).toBeInTheDocument()
 
       // Should NOT show full/shade crops
-      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
+      expect(screen.queryByText('Beefsteak Tomato')).not.toBeInTheDocument()
       expect(screen.queryByText('Hostas')).not.toBeInTheDocument()
     })
 
@@ -664,8 +664,8 @@ describe('CropLibrary', () => {
       expect(screen.getByText('Hostas')).toBeInTheDocument()
 
       // Should NOT show full/partial crops
-      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
-      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
+      expect(screen.queryByText('Butterhead Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Beefsteak Tomato')).not.toBeInTheDocument()
     })
 
     it('works with category tabs (combined filters)', async () => {
@@ -696,10 +696,10 @@ describe('CropLibrary', () => {
       await user.click(fullSunPill)
 
       // Should only show Tomato (vegetable + full sun)
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
 
       // Should NOT show Lettuce (vegetable but partial sun)
-      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Butterhead Lettuce')).not.toBeInTheDocument()
 
       // Should NOT show Basil (full sun but herb)
       expect(screen.queryByText('Basil')).not.toBeInTheDocument()
@@ -716,13 +716,13 @@ describe('CropLibrary', () => {
 
       // Click to select
       await user.click(fullSunPill)
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
-      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
+      expect(screen.queryByText('Butterhead Lettuce')).not.toBeInTheDocument()
 
       // Click again to deselect
       await user.click(fullSunPill)
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
-      expect(screen.getByText('Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Butterhead Lettuce')).toBeInTheDocument()
       expect(screen.getByText('Hostas')).toBeInTheDocument()
     })
   })
@@ -731,7 +731,7 @@ describe('CropLibrary', () => {
     const familyTestCrops: Crop[] = [
       {
         id: 'lettuce',
-        name: 'Lettuce',
+        name: 'Butterhead Lettuce',
         type: 'vegetable',
         botanical_family: 'Asteraceae',
         sun: 'partial',
@@ -742,7 +742,7 @@ describe('CropLibrary', () => {
       },
       {
         id: 'tomato',
-        name: 'Tomato',
+        name: 'Beefsteak Tomato',
         type: 'vegetable',
         botanical_family: 'Solanaceae',
         sun: 'full',
@@ -811,8 +811,8 @@ describe('CropLibrary', () => {
       expect(screen.queryByText(/Solanaceae/i)).not.toBeInTheDocument()
 
       // But crops should still be visible
-      expect(screen.getByText('Lettuce')).toBeInTheDocument()
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Butterhead Lettuce')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
     })
 
     it('does not group when "Herbs" tab is selected', async () => {
@@ -863,7 +863,7 @@ describe('CropLibrary', () => {
     const searchTestCrops: Crop[] = [
       {
         id: 'lettuce',
-        name: 'Lettuce',
+        name: 'Butterhead Lettuce',
         type: 'vegetable',
         botanical_family: 'Asteraceae',
         sun: 'partial',
@@ -874,7 +874,7 @@ describe('CropLibrary', () => {
       },
       {
         id: 'tomato',
-        name: 'Tomato',
+        name: 'Beefsteak Tomato',
         type: 'vegetable',
         botanical_family: 'Solanaceae',
         sun: 'full',
@@ -915,12 +915,12 @@ describe('CropLibrary', () => {
       await user.type(searchInput, 'Solanaceae')
 
       // Should show all Solanaceae crops
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
       expect(screen.getByText('Bell Pepper')).toBeInTheDocument()
       expect(screen.getByText('Eggplant')).toBeInTheDocument()
 
       // Should NOT show Asteraceae crops
-      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Butterhead Lettuce')).not.toBeInTheDocument()
     })
 
     it('still matches crop names (existing functionality)', async () => {
@@ -934,8 +934,8 @@ describe('CropLibrary', () => {
       expect(screen.getByText('Bell Pepper')).toBeInTheDocument()
 
       // Should NOT show other crops
-      expect(screen.queryByText('Tomato')).not.toBeInTheDocument()
-      expect(screen.queryByText('Lettuce')).not.toBeInTheDocument()
+      expect(screen.queryByText('Beefsteak Tomato')).not.toBeInTheDocument()
+      expect(screen.queryByText('Butterhead Lettuce')).not.toBeInTheDocument()
     })
 
     it('search is case insensitive for botanical family', async () => {
@@ -946,7 +946,7 @@ describe('CropLibrary', () => {
       await user.type(searchInput, 'solanaceae')
 
       // Should show all Solanaceae crops (case insensitive)
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
       expect(screen.getByText('Bell Pepper')).toBeInTheDocument()
       expect(screen.getByText('Eggplant')).toBeInTheDocument()
     })
@@ -959,7 +959,7 @@ describe('CropLibrary', () => {
       await user.type(searchInput, 'Solan')
 
       // Should show all Solanaceae crops
-      expect(screen.getByText('Tomato')).toBeInTheDocument()
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
       expect(screen.getByText('Bell Pepper')).toBeInTheDocument()
       expect(screen.getByText('Eggplant')).toBeInTheDocument()
     })
