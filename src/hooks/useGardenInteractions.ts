@@ -20,8 +20,8 @@ export interface UseGardenInteractionsResult {
   /** Handle autofill action */
   handleAutoFill: () => void
 
-  /** Handle square click for planting/removing */
-  handleSquareClick: (index: number) => void
+  /** Handle square click for planting/removing (optionally specify boxId) */
+  handleSquareClick: (index: number, boxId?: string) => void
 
   /** Handle settings save */
   handleSettingsSave: (profile: GardenProfile) => void
@@ -70,8 +70,8 @@ interface UseGardenInteractionsProps {
   gardenProfile: GardenProfile | null
   activeLayout: GardenLayout | null
   setAllBoxes: (boxes: GardenBox[]) => void
-  plantCrop: (index: number, crop: Crop) => void
-  removeCrop: (index: number) => void
+  plantCrop: (index: number, crop: Crop, boxId?: string) => void
+  removeCrop: (index: number, boxId?: string) => void
   updateProfile: (id: string, profile: GardenProfile) => void
 }
 
@@ -256,13 +256,13 @@ export function useGardenInteractions({
     setAllBoxes(updatedBoxes)
   }
 
-  const handleSquareClick = (index: number): void => {
+  const handleSquareClick = (index: number, boxId?: string): void => {
     const existingCrop = currentBed[index]
 
     if (existingCrop) {
-      removeCrop(index)
+      removeCrop(index, boxId)
     } else if (selectedCrop) {
-      plantCrop(index, selectedCrop)
+      plantCrop(index, selectedCrop, boxId)
     }
   }
 

@@ -88,11 +88,11 @@ export interface UseLayoutManagerResult {
   /** Duplicate a layout with all its bed data */
   duplicateLayout: (layoutId: string, newName: string) => string
 
-  /** Plant a crop in the active layout */
-  plantCrop: (cellIndex: number, crop: Crop) => void
+  /** Plant a crop in the active layout (optionally specify boxId, defaults to first box) */
+  plantCrop: (cellIndex: number, crop: Crop, boxId?: string) => void
 
-  /** Remove a crop from the active layout */
-  removeCrop: (cellIndex: number) => void
+  /** Remove a crop from the active layout (optionally specify boxId, defaults to first box) */
+  removeCrop: (cellIndex: number, boxId?: string) => void
 
   /** Clear all crops from the active layout */
   clearBed: () => void
@@ -241,15 +241,26 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     return duplicate.id
   }
 
-  const plantCrop = (cellIndex: number, crop: Crop): void => {
-    if (!activeLayout || !activeLayout.boxes[0]) return
+  const plantCrop = (cellIndex: number, crop: Crop, boxId?: string): void => {
+    if (!activeLayout || activeLayout.boxes.length === 0) return
 
-    const firstBox = activeLayout.boxes[0]
-    const newCells = [...firstBox.cells]
+    // Find the target box (default to first box if no boxId provided)
+    const targetBoxId = boxId ?? activeLayout.boxes[0]?.id
+    const boxIndex = activeLayout.boxes.findIndex(box => box.id === targetBoxId)
+
+    if (boxIndex === -1) {
+      console.error(`Box ${targetBoxId ?? 'undefined'} not found`)
+      return
+    }
+
+    const targetBox = activeLayout.boxes[boxIndex]
+    if (!targetBox) return
+
+    const newCells = [...targetBox.cells]
     newCells[cellIndex] = crop
 
     const updatedBoxes = [...activeLayout.boxes]
-    updatedBoxes[0] = { ...firstBox, cells: newCells }
+    updatedBoxes[boxIndex] = { ...targetBox, cells: newCells }
 
     setLayoutStorage({
       ...layoutStorage,
@@ -260,15 +271,26 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     })
   }
 
-  const removeCrop = (cellIndex: number): void => {
-    if (!activeLayout || !activeLayout.boxes[0]) return
+  const removeCrop = (cellIndex: number, boxId?: string): void => {
+    if (!activeLayout || activeLayout.boxes.length === 0) return
 
-    const firstBox = activeLayout.boxes[0]
-    const newCells = [...firstBox.cells]
+    // Find the target box (default to first box if no boxId provided)
+    const targetBoxId = boxId ?? activeLayout.boxes[0]?.id
+    const boxIndex = activeLayout.boxes.findIndex(box => box.id === targetBoxId)
+
+    if (boxIndex === -1) {
+      console.error(`Box ${targetBoxId ?? 'undefined'} not found`)
+      return
+    }
+
+    const targetBox = activeLayout.boxes[boxIndex]
+    if (!targetBox) return
+
+    const newCells = [...targetBox.cells]
     newCells[cellIndex] = null
 
     const updatedBoxes = [...activeLayout.boxes]
-    updatedBoxes[0] = { ...firstBox, cells: newCells }
+    updatedBoxes[boxIndex] = { ...targetBox, cells: newCells }
 
     setLayoutStorage({
       ...layoutStorage,

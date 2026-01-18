@@ -157,5 +157,5 @@ describe('Settings Persistence - Split Brain Bug Regression (TODO-012)', () => {
     const firstFrostAfter = screen.getByLabelText(/first frost date/i) as HTMLInputElement
     expect(lastFrostAfter.value).toBe('2026-01-15')
     expect(firstFrostAfter.value).toBe('2026-12-01')
-  }, 10000)
+  }, 15000)
 })

@@ -114,7 +114,9 @@ describe('App', () => {
   it('renders how to use instructions', () => {
     renderApp()
     expect(screen.getByText(/How to Use/i)).toBeInTheDocument()
-    expect(screen.getByText(/Select a crop from the Crop Library/i)).toBeInTheDocument()
+    expect(screen.getByText(/Step 1: Setup Your Garden/i)).toBeInTheDocument()
+    expect(screen.getByText(/Step 2: Select Your Crops/i)).toBeInTheDocument()
+    expect(screen.getByText(/Step 3: Optimize Placement/i)).toBeInTheDocument()
   })
 
   it('renders Automagic Fill button', () => {

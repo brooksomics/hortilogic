@@ -60,7 +60,7 @@ export interface GardenContextValue {
   setSelectedCrop: (crop: Crop | null) => void
   isSettingsOpen: boolean
   handleAutoFill: () => void
-  handleSquareClick: (index: number) => void
+  handleSquareClick: (index: number, boxId?: string) => void
   handleSettingsSave: (profile: GardenProfile) => void
   handleSettingsClose: () => void
   openSettings: () => void

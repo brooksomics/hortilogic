@@ -206,15 +206,12 @@ function App() {
             </div>
 
             {/* Garden Beds */}
-            {activeLayout?.boxes.map((box, boxIndex) => (
+            {activeLayout?.boxes.map((box) => (
               <GardenBed
                 key={box.id}
                 squares={box.cells}
                 onSquareClick={(cellIndex) => {
-                  // For now, only support clicking on first box (backward compatibility)
-                  if (boxIndex === 0) {
-                    handleSquareClick(cellIndex)
-                  }
+                  handleSquareClick(cellIndex, box.id)
                 }}
                 gardenProfile={gardenProfile}
                 width={box.width}
