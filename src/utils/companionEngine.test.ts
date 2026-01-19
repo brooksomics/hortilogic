@@ -480,6 +480,139 @@ describe('autoFillBed', () => {
     })
   })
 
+  describe('flower density limit', () => {
+    const marigold: Crop = {
+      id: 'marigold',
+      name: 'Marigold',
+      type: 'flower',
+      botanical_family: 'Asteraceae',
+      sun: 'full',
+      days_to_maturity: 60,
+      sfg_density: 1,
+      planting_strategy: { start_window_start: -2, start_window_end: 8 },
+      companions: { friends: ['tomato', 'carrot', 'peas', 'lettuce'], enemies: [] }
+    }
+
+    const sunflower: Crop = {
+      id: 'sunflower',
+      name: 'Sunflower',
+      type: 'flower',
+      botanical_family: 'Asteraceae',
+      sun: 'full',
+      days_to_maturity: 70,
+      sfg_density: 1,
+      planting_strategy: { start_window_start: -2, start_window_end: 8 },
+      companions: { friends: ['tomato', 'carrot', 'peas'], enemies: [] }
+    }
+
+    const zinnia: Crop = {
+      id: 'zinnia',
+      name: 'Zinnia',
+      type: 'flower',
+      botanical_family: 'Asteraceae',
+      sun: 'full',
+      days_to_maturity: 60,
+      sfg_density: 1,
+      planting_strategy: { start_window_start: -2, start_window_end: 8 },
+      companions: { friends: ['tomato', 'carrot'], enemies: [] }
+    }
+
+    const nasturtium: Crop = {
+      id: 'nasturtium',
+      name: 'Nasturtium',
+      type: 'flower',
+      botanical_family: 'Tropaeolaceae',
+      sun: 'full',
+      days_to_maturity: 50,
+      sfg_density: 1,
+      planting_strategy: { start_window_start: -2, start_window_end: 8 },
+      companions: { friends: ['tomato', 'carrot', 'peas'], enemies: [] }
+    }
+
+    const cosmos: Crop = {
+      id: 'cosmos',
+      name: 'Cosmos',
+      type: 'flower',
+      botanical_family: 'Asteraceae',
+      sun: 'full',
+      days_to_maturity: 70,
+      sfg_density: 1,
+      planting_strategy: { start_window_start: -2, start_window_end: 8 },
+      companions: { friends: ['tomato', 'carrot'], enemies: [] }
+    }
+
+    it('limits flowers to approximately 15% of total cells', () => {
+      const grid: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]
+
+      // Create a flower-heavy crop library where flowers have high companion scores
+      // Pre-plant some tomatoes to give flowers high mutualism scores
+      grid[0] = tomato
+      grid[5] = tomato
+      grid[10] = tomato
+      grid[15] = tomato
+
+      // Offer mostly flowers with a couple vegetables
+      const crops = [marigold, sunflower, zinnia, nasturtium, cosmos, carrot, peas]
+      const targetDate = new Date('2024-05-20')
+
+      const result = autoFillBed(grid, crops, profile, targetDate, 8, 4, 'flower-limit-test')
+
+      // Count flowers in result
+      const flowerCount = result.filter(cell => cell?.type === 'flower').length
+      const totalCells = 32
+      const maxFlowers = Math.floor(totalCells * 0.15) // 15% = 4.8, floor to 4
+
+      // Assert: Flowers should be limited to ~15% of grid
+      expect(flowerCount).toBeLessThanOrEqual(maxFlowers)
+    })
+
+    it('allows vegetables to be planted after flower limit is reached', () => {
+      const grid: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]
+
+      // Plant some tomatoes to give flowers high scores
+      grid[0] = tomato
+      grid[5] = tomato
+
+      const crops = [marigold, sunflower, zinnia, carrot, peas]
+      const targetDate = new Date('2024-05-20')
+
+      const result = autoFillBed(grid, crops, profile, targetDate, 8, 4, 'flower-limit-test-2')
+
+      // Count flowers and vegetables
+      const flowerCount = result.filter(cell => cell?.type === 'flower').length
+      const vegetableCount = result.filter(cell => cell?.type === 'vegetable').length
+
+      // Flowers should be limited
+      expect(flowerCount).toBeLessThanOrEqual(Math.floor(32 * 0.15))
+
+      // Vegetables should still be planted (grid should not be mostly empty)
+      expect(vegetableCount).toBeGreaterThan(0)
+    })
+
+    it('counts existing flowers toward the limit', () => {
+      const grid: (Crop | null)[] = Array(32).fill(null) as (Crop | null)[]
+
+      // Pre-plant 4 flowers (already at the 15% limit for 32 cells)
+      grid[0] = marigold
+      grid[5] = sunflower
+      grid[10] = zinnia
+      grid[15] = nasturtium
+
+      // Offer more flowers and some vegetables
+      const crops = [marigold, sunflower, cosmos, carrot, tomato]
+      const targetDate = new Date('2024-05-20')
+
+      const result = autoFillBed(grid, crops, profile, targetDate, 8, 4, 'flower-limit-existing')
+
+      // Count total flowers including existing ones
+      const totalFlowerCount = result.filter(cell => cell?.type === 'flower').length
+      const maxFlowers = Math.floor(32 * 0.15) // 4
+
+      // Should not plant more flowers beyond the limit
+      expect(totalFlowerCount).toBeLessThanOrEqual(maxFlowers)
+    })
+  })
+
   describe('variety and mutualism optimization', () => {
     const lettuce: Crop = {
       id: 'lettuce',

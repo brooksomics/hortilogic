@@ -166,6 +166,12 @@ export function autoFillBed(
   // Calculate total cells based on dimensions
   const totalCells = gridWidth * gridHeight
 
+  // Calculate flower limit (15% of total cells)
+  const maxFlowers = Math.floor(totalCells * 0.15)
+
+  // Track flower count (including existing flowers)
+  let flowerCount = newGrid.filter(cell => cell?.type === 'flower').length
+
   // Iterate through each cell
   for (let cellIndex = 0; cellIndex < totalCells; cellIndex++) {
     // Skip if cell is already occupied (preserve existing crops)
@@ -181,6 +187,11 @@ export function autoFillBed(
     let bestScore = -Infinity
 
     for (const crop of viableCrops) {
+      // Skip flowers if we've reached the flower density limit
+      if (crop.type === 'flower' && flowerCount >= maxFlowers) {
+        continue
+      }
+
       // Base score from companion relationships
       let score = scoreCropForCell(crop, neighborIds)
 
@@ -207,6 +218,11 @@ export function autoFillBed(
     if (bestCrop) {
       newGrid[cellIndex] = bestCrop
       plantedCounts[bestCrop.id] = (plantedCounts[bestCrop.id] || 0) + 1
+
+      // Increment flower count if we just planted a flower
+      if (bestCrop.type === 'flower') {
+        flowerCount++
+      }
     }
   }
 
