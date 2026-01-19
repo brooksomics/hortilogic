@@ -262,7 +262,17 @@ export function useGardenInteractions({
   }
 
   const handleSquareClick = (index: number, boxId?: string): void => {
-    const existingCrop = currentBed[index]
+    // Find the correct box to check for existing crop
+    let existingCrop: Crop | null | undefined = null
+
+    if (boxId && activeLayout) {
+      // Multi-box mode: Find the specific box by ID
+      const targetBox = activeLayout.boxes.find(box => box.id === boxId)
+      existingCrop = targetBox?.cells[index]
+    } else {
+      // Backward compatibility: Use currentBed (first box)
+      existingCrop = currentBed[index]
+    }
 
     if (existingCrop) {
       removeCrop(index, boxId)

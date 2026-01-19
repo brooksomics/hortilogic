@@ -514,4 +514,118 @@ describe('useGardenInteractions', () => {
       expect(allBoxesUpdated).toHaveLength(3)
     })
   })
+
+  describe('handleSquareClick - Multi-Box Support', () => {
+    it('plants crop in second bed when clicking on empty cell in second bed', () => {
+      const lettuce: Crop = {
+        id: 'lettuce',
+        name: 'Lettuce',
+        type: 'vegetable',
+        botanical_family: 'Asteraceae',
+        sun: 'partial',
+        days_to_maturity: 55,
+        sfg_density: 4,
+        planting_strategy: {
+          start_window_start: -4,
+          start_window_end: 2,
+        },
+        companions: {
+          friends: ['carrots', 'radishes'],
+          enemies: [],
+        },
+      }
+
+      const basil: Crop = {
+        id: 'basil-sweet',
+        name: 'Sweet Basil',
+        type: 'herb',
+        botanical_family: 'Lamiaceae',
+        sun: 'full',
+        days_to_maturity: 60,
+        sfg_density: 1,
+        planting_strategy: {
+          start_window_start: 0,
+          start_window_end: 8,
+        },
+        companions: {
+          friends: ['tomato-beefsteak', 'pepper-bell'],
+          enemies: [],
+        },
+      }
+
+      // Create layout with 2 boxes
+      const box1: GardenBox = {
+        id: 'box-1',
+        name: 'Bed 1',
+        width: 2,
+        height: 2,
+        cells: [lettuce, null, null, null], // Lettuce at index 0 in first bed
+      }
+
+      const box2: GardenBox = {
+        id: 'box-2',
+        name: 'Bed 2',
+        width: 2,
+        height: 2,
+        cells: [null, null, null, null], // Empty cells in second bed
+      }
+
+      const testLayout: GardenLayout = {
+        id: 'test-layout',
+        name: 'Test Multi-Bed',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        boxes: [box1, box2],
+        profileId: 'test-profile',
+      }
+
+      let plantCalled = false
+      let plantedIndex = -1
+      let plantedBoxId = ''
+      let removeCalled = false
+
+      const mockPlantCropWithBoxId = (index: number, _crop: Crop, boxId?: string) => {
+        plantCalled = true
+        plantedIndex = index
+        plantedBoxId = boxId || ''
+      }
+
+      const mockRemoveCropWithBoxId = () => {
+        removeCalled = true
+      }
+
+      const { result } = renderHook(() =>
+        useGardenInteractions({
+          currentBed: testLayout.boxes[0]?.cells ?? [],
+          gardenProfile: mockProfile,
+          activeLayout: testLayout,
+          setAllBoxes: mockSetAllBoxes,
+          plantCrop: mockPlantCropWithBoxId,
+          removeCrop: mockRemoveCropWithBoxId,
+          updateProfile: mockUpdateProfile,
+        })
+      )
+
+      // Select basil to plant
+      act(() => {
+        result.current.setSelectedCrop(basil)
+      })
+
+      // Click on index 0 of the SECOND bed (box-2)
+      // BUG: handleSquareClick checks currentBed[0] (first bed) which has lettuce
+      // So it will try to REMOVE instead of PLANT
+      // EXPECTED: Should PLANT basil in second bed because second bed[0] is empty
+      act(() => {
+        result.current.handleSquareClick(0, 'box-2')
+      })
+
+      // BUG PROOF: removeCrop should NOT be called
+      expect(removeCalled).toBe(false)
+
+      // EXPECTED: plantCrop should be called with box-2
+      expect(plantCalled).toBe(true)
+      expect(plantedIndex).toBe(0)
+      expect(plantedBoxId).toBe('box-2')
+    })
+  })
 })
