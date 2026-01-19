@@ -305,6 +305,13 @@ export function autoFillGaps(
         .map((crop, idx) => (crop === null ? idx : null))
         .filter((idx): idx is number => idx !== null)
 
+    // Calculate flower limits (15% of total bed area)
+    const totalCells = bed.length
+    const maxFlowers = Math.floor(totalCells * 0.15)
+
+    // Count flowers already in the bed (from Stash or manual planting)
+    let flowerCount = workingBed.filter(c => c?.type === 'flower').length
+
     let fills = 0
     for (const cellIndex of emptyIndices) {
         if (fills >= maxFills) break
@@ -315,6 +322,11 @@ export function autoFillGaps(
 
         // Only consider viable crops (filtered by seasonality if profile/date provided)
         for (const crop of viableCrops) {
+            // Skip flowers if limit reached
+            if (crop.type === 'flower' && flowerCount >= maxFlowers) {
+                continue
+            }
+
             // Basic strict filter: Dont plant large crops in gaps if we want to be safe?
             // Actually, a gap is 1 cell. If crop density is 1 (sqftPerPlant=1), it fits.
             // If density is 4, it fits.
@@ -343,6 +355,11 @@ export function autoFillGaps(
             workingBed[cellIndex] = bestCrop
             placed.push({ cropId: bestCrop.id, cellIndex })
             fills++
+
+            // Increment counter if we just planted a flower
+            if (bestCrop.type === 'flower') {
+                flowerCount++
+            }
         }
     }
 

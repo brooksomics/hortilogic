@@ -351,4 +351,33 @@ describe('autoFillGaps', () => {
         expect(tomatoAt1).toBe(false) // Position 1 is adjacent (right)
         expect(tomatoAt2).toBe(false) // Position 2 is adjacent (below)
     })
+
+    it('respects flower density limit during gap filling', () => {
+        // Setup: Bed with 2 existing flowers in a 32-cell grid (4x8 bed)
+        const bed = Array(32).fill(null) as (Crop | null)[]
+        const marigold = mockCrops.find(c => c.id === 'marigold')!
+
+        // Pre-plant 2 flowers
+        bed[0] = marigold
+        bed[1] = marigold
+
+        // Max flowers for 32 cells = 15% of 32 = 4.8 -> 4 flowers
+        // We have 2. We can plant 2 more. The rest MUST be vegetables.
+
+        const result = autoFillGaps(bed, mockCrops, 8)
+
+        // Count total flowers (pre-planted + new)
+        const newFlowers = result.filter(p => p.cropId === 'marigold').length
+        const totalFlowers = 2 + newFlowers
+
+        // Should not exceed 4 (15% of 32)
+        expect(totalFlowers).toBeLessThanOrEqual(4)
+
+        // Should have planted vegetables in the remaining spots
+        const newVegetables = result.filter(p => {
+            const crop = mockCrops.find(c => c.id === p.cropId)
+            return crop?.type === 'vegetable'
+        }).length
+        expect(newVegetables).toBeGreaterThan(10)
+    })
 })
