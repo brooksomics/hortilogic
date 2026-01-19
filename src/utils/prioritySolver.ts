@@ -1,6 +1,7 @@
-import type { Crop, GardenStash } from '../types/garden'
+import type { Crop, GardenStash, GardenProfile } from '../types/garden'
 import { getNeighbors } from './companionEngine'
 import { SeededRandom } from './seededRandom'
+import { isCropViable } from './dateEngine'
 
 export interface CropPlacement {
     cropId: string
@@ -156,7 +157,7 @@ export function autoFillFromStash(
     // NOTE: The function returns placement data, but the caller needs to actually update the bed state
     // Or should we return the modified bed?
     // The spec says "Return placement report", but usually we want the modified bed too.
-    // Ideally, the caller applies the `placed` list to their state. 
+    // Ideally, the caller applies the `placed` list to their state.
     // But wait, `placed` only has index/cropId. The caller needs full Crop object to put in bed.
     // Actually, for this standalone solver, returning the plan is good. The caller has the `crops` list.
 
@@ -165,17 +166,17 @@ export function autoFillFromStash(
 
 export interface BoxPlacementResult extends PlacementResult {
     boxId: string
-    // We might want to return the modified bed here too? 
-    // For now, caller can derive it from `placed` if they want, 
+    // We might want to return the modified bed here too?
+    // For now, caller can derive it from `placed` if they want,
     // but simpler if we just return the new cells in the App integration later.
     // Actually, for the algorithm test, we just return the report.
-    // But wait, in `autoFillAllBoxes`, we modify the box state as we go? 
+    // But wait, in `autoFillAllBoxes`, we modify the box state as we go?
     // No, `workingBed` is local.
     // If we want to return the final state of all boxes, we should probably include the `bed` (cells) in the result.
-    // Let's add `checkCompanionConstraints` equivalent? 
+    // Let's add `checkCompanionConstraints` equivalent?
     // The caller (App) probably wants the final `cells` array for each box.
 
-    // Let's modify return type to include `finalBed`. 
+    // Let's modify return type to include `finalBed`.
     // But for now, sticking to the spec interface is safer for modularity.
 }
 
@@ -276,16 +277,26 @@ export function autoFillAllBoxes(
  * @param allCrops Available crops to choose from
  * @param width Bed width
  * @param maxFills Maximum number of gaps to fill (optional)
+ * @param gardenProfile Garden profile with frost dates (required for seasonality filtering)
+ * @param targetDate Date to check viability against
+ * @param seed Seed for deterministic RNG
  */
 export function autoFillGaps(
     bed: (Crop | null)[],
     allCrops: Crop[],
     width: number,
     maxFills: number = Infinity,
+    gardenProfile?: GardenProfile,
+    targetDate?: Date,
     seed?: string | number
 ): CropPlacement[] {
     const placed: CropPlacement[] = []
     const workingBed = [...bed]
+
+    // Filter for only crops that are viable for the target date
+    const viableCrops = gardenProfile && targetDate
+        ? allCrops.filter(crop => isCropViable(crop, gardenProfile, targetDate))
+        : allCrops // Fallback to all crops if no profile/date provided (backward compatibility)
 
     // Create seeded RNG for deterministic gap filling (TODO-023)
     const rng = new SeededRandom(seed ?? 'default')
@@ -302,9 +313,8 @@ export function autoFillGaps(
         let bestCrop: Crop | null = null
         let bestScore = -Infinity
 
-        // Only consider checking crops that are "friends" with neighbors to save time?
-        // Or just check all crops. 50 crops * ~50 cells = 2500 checks. Fast enough.
-        for (const crop of allCrops) {
+        // Only consider viable crops (filtered by seasonality if profile/date provided)
+        for (const crop of viableCrops) {
             // Basic strict filter: Dont plant large crops in gaps if we want to be safe?
             // Actually, a gap is 1 cell. If crop density is 1 (sqftPerPlant=1), it fits.
             // If density is 4, it fits.

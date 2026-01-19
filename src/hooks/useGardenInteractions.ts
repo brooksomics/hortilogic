@@ -20,8 +20,8 @@ export interface UseGardenInteractionsResult {
   /** Handle autofill action */
   handleAutoFill: () => void
 
-  /** Handle square click for planting/removing */
-  handleSquareClick: (index: number) => void
+  /** Handle square click for planting/removing (optionally specify boxId) */
+  handleSquareClick: (index: number, boxId?: string) => void
 
   /** Handle settings save */
   handleSettingsSave: (profile: GardenProfile) => void
@@ -70,8 +70,8 @@ interface UseGardenInteractionsProps {
   gardenProfile: GardenProfile | null
   activeLayout: GardenLayout | null
   setAllBoxes: (boxes: GardenBox[]) => void
-  plantCrop: (index: number, crop: Crop) => void
-  removeCrop: (index: number) => void
+  plantCrop: (index: number, crop: Crop, boxId?: string) => void
+  removeCrop: (index: number, boxId?: string) => void
   updateProfile: (id: string, profile: GardenProfile) => void
 }
 
@@ -239,13 +239,18 @@ export function useGardenInteractions({
       (crop) => !dislikedCropIds.includes(crop.id)
     )
 
+    // Use target planting date if available, otherwise fall back to today's date
+    const targetDate = gardenProfile.targetPlantingDate
+      ? new Date(gardenProfile.targetPlantingDate)
+      : new Date()
+
     // Process ALL boxes in the layout
     const updatedBoxes = activeLayout.boxes.map((box: GardenBox) => {
       const filledCells = autoFillBed(
         box.cells,
         filteredCrops, // Use filtered crops instead of all crops
         gardenProfile,
-        new Date(),
+        targetDate, // Use target planting date for seasonality filtering
         box.width,
         box.height,
         activeLayout.id // Deterministic seed (TODO-023)
@@ -256,13 +261,13 @@ export function useGardenInteractions({
     setAllBoxes(updatedBoxes)
   }
 
-  const handleSquareClick = (index: number): void => {
+  const handleSquareClick = (index: number, boxId?: string): void => {
     const existingCrop = currentBed[index]
 
     if (existingCrop) {
-      removeCrop(index)
+      removeCrop(index, boxId)
     } else if (selectedCrop) {
-      plantCrop(index, selectedCrop)
+      plantCrop(index, selectedCrop, boxId)
     }
   }
 
@@ -321,11 +326,30 @@ export function useGardenInteractions({
           })
 
           if (fillGaps) {
+            // Filter out disliked crops before gap filling
+            const dislikedCropIds = activeLayout.dislikedCropIds ?? []
+            const filteredCrops = CROP_DATABASE.filter(
+              (crop) => !dislikedCropIds.includes(crop.id)
+            )
+
+            // Use target planting date for seasonality filtering
+            const targetDate = gardenProfile?.targetPlantingDate
+              ? new Date(gardenProfile.targetPlantingDate)
+              : new Date()
+
             // Run gap filler on the bed state AFTER stash placement
-            const gapPlacements = autoFillGaps(newBed, CROP_DATABASE, originalBox.width, Infinity, activeLayout.id) // Deterministic seed (TODO-023)
+            const gapPlacements = autoFillGaps(
+              newBed,
+              filteredCrops, // Use filtered crops (excludes disliked)
+              originalBox.width,
+              Infinity,
+              gardenProfile ?? undefined, // Pass garden profile for seasonality filtering
+              targetDate, // Pass target date for seasonality filtering
+              activeLayout.id // Deterministic seed (TODO-023)
+            )
 
             gapPlacements.forEach(p => {
-              const crop = CROP_DATABASE.find(c => c.id === p.cropId)
+              const crop = filteredCrops.find(c => c.id === p.cropId)
               if (crop) {
                 newBed[p.cellIndex] = crop
               }

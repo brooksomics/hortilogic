@@ -703,6 +703,73 @@ describe('useLayoutManager', () => {
     })
   })
 
+  describe('Multi-Box Manual Planting', () => {
+    it('plantCrop can plant in a specific box (not just the first one)', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      // Add a second box
+      let box2Id: string | undefined
+      act(() => {
+        box2Id = result.current.addBox('Second Bed', 4, 4)
+      })
+
+      expect(result.current.activeLayout?.boxes).toHaveLength(2)
+      if (!box2Id) throw new Error('Box 2 ID not returned')
+
+      // Plant lettuce in the second box at index 5
+      act(() => {
+        result.current.plantCrop(5, lettuce, box2Id)
+      })
+
+      // Verify crop was planted in second box, not first
+      const layout = result.current.activeLayout
+      expect(layout?.boxes[0]?.cells[5]).toBeNull() // First box should remain empty
+      expect(layout?.boxes[1]?.cells[5]).toEqual(lettuce) // Second box should have lettuce
+    })
+
+    it('removeCrop can remove from a specific box (not just the first one)', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      // Add a second box
+      let box2Id: string | undefined
+      act(() => {
+        box2Id = result.current.addBox('Second Bed', 4, 4)
+      })
+
+      if (!box2Id) throw new Error('Box 2 ID not returned')
+
+      // Manually set crops in both boxes using setAllBoxes
+      const layout = result.current.activeLayout
+      if (!layout) throw new Error('No active layout')
+
+      const box1Cells = [...layout.boxes[0]!.cells]
+      box1Cells[3] = tomato
+      const box2Cells = [...layout.boxes[1]!.cells]
+      box2Cells[7] = lettuce
+
+      act(() => {
+        result.current.setAllBoxes([
+          { ...layout.boxes[0]!, cells: box1Cells },
+          { ...layout.boxes[1]!, cells: box2Cells },
+        ])
+      })
+
+      // Verify initial state
+      expect(result.current.activeLayout?.boxes[0]?.cells[3]).toEqual(tomato)
+      expect(result.current.activeLayout?.boxes[1]?.cells[7]).toEqual(lettuce)
+
+      // Remove crop from second box
+      act(() => {
+        result.current.removeCrop(7, box2Id)
+      })
+
+      // Verify crop was removed from second box only
+      const updatedLayout = result.current.activeLayout
+      expect(updatedLayout?.boxes[0]?.cells[3]).toEqual(tomato) // First box unchanged
+      expect(updatedLayout?.boxes[1]?.cells[7]).toBeNull() // Second box crop removed
+    })
+  })
+
   describe('Disliked Crops (Don\'t Like)', () => {
     it('initializes with empty dislikedCropIds array', () => {
       const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
