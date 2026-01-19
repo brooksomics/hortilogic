@@ -305,12 +305,23 @@ export function autoFillGaps(
         .map((crop, idx) => (crop === null ? idx : null))
         .filter((idx): idx is number => idx !== null)
 
-    // Calculate flower limits (15% of total bed area)
+    // --- TRACKING STATE FOR DIVERSITY ---
+    // Count what is ALREADY in the bed to apply penalties immediately
+    const plantedCounts: Record<string, number> = {}
+    const familyCounts: Record<string, number> = {}
+    let flowerCount = 0
     const totalCells = bed.length
-    const maxFlowers = Math.floor(totalCells * 0.15)
+    // 15% limit, but allow at least 1 flower even in small beds
+    const maxFlowers = Math.max(1, Math.floor(totalCells * 0.15))
 
-    // Count flowers already in the bed (from Stash or manual planting)
-    let flowerCount = workingBed.filter(c => c?.type === 'flower').length
+    workingBed.forEach(crop => {
+        if (crop) {
+            plantedCounts[crop.id] = (plantedCounts[crop.id] || 0) + 1
+            familyCounts[crop.botanical_family] = (familyCounts[crop.botanical_family] || 0) + 1
+            if (crop.type === 'flower') flowerCount++
+        }
+    })
+    // -------------------------------------
 
     let fills = 0
     for (const cellIndex of emptyIndices) {
@@ -322,18 +333,13 @@ export function autoFillGaps(
 
         // Only consider viable crops (filtered by seasonality if profile/date provided)
         for (const crop of viableCrops) {
-            // Skip flowers if limit reached
+            // 1. Flower Hard Limit
             if (crop.type === 'flower' && flowerCount >= maxFlowers) {
                 continue
             }
 
-            // Basic strict filter: Dont plant large crops in gaps if we want to be safe?
-            // Actually, a gap is 1 cell. If crop density is 1 (sqftPerPlant=1), it fits.
-            // If density is 4, it fits.
-            // We assume 1 cell = 1 square foot.
-            // Any crop fits in 1 sq ft.
-
-            const score = scoreCell(cellIndex, crop.id, workingBed, allCrops, width)
+            // Calculate Base Score (Companions)
+            let score = scoreCell(cellIndex, crop.id, workingBed, allCrops, width)
 
             // Strict requirement for gap filling: Must replace valid space AND prefer friends.
             // Score > 0 implies at least one friend (and NO enemies).
@@ -341,6 +347,23 @@ export function autoFillGaps(
             // Let's require > 0 to ensure we only add BENEFICIAL additions.
             // Or at least >= 0.
             if (score <= -100) continue // Enemy
+
+            // 2. Vegetable Priority Bonus
+            // Ensure veggies win ties against herbs/flowers
+            if (crop.type === 'vegetable') {
+                score += 2
+            }
+
+            // 3. Variety Penalty (The "Anti-Monoculture" Rule)
+            // -0.5 points for every duplicate already in the bed
+            const existingCount = plantedCounts[crop.id] || 0
+            score -= (existingCount * 0.5)
+
+            // 4. Family Diversity Penalty
+            // -0.25 points for every plant of the same family
+            // Prevents filling the bed with only one family (e.g. all Lamiaceae herbs)
+            const familyCount = familyCounts[crop.botanical_family] || 0
+            score -= (familyCount * 0.25)
 
             if (score > bestScore) {
                 bestScore = score
@@ -356,7 +379,9 @@ export function autoFillGaps(
             placed.push({ cropId: bestCrop.id, cellIndex })
             fills++
 
-            // Increment counter if we just planted a flower
+            // Update counts immediately so the NEXT cell "sees" this planting
+            plantedCounts[bestCrop.id] = (plantedCounts[bestCrop.id] || 0) + 1
+            familyCounts[bestCrop.botanical_family] = (familyCounts[bestCrop.botanical_family] || 0) + 1
             if (bestCrop.type === 'flower') {
                 flowerCount++
             }

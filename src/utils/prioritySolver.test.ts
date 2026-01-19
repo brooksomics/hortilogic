@@ -380,4 +380,59 @@ describe('autoFillGaps', () => {
         }).length
         expect(newVegetables).toBeGreaterThan(10)
     })
+
+    it('prioritizes diversity and vegetables during gap filling', () => {
+        // Setup: Empty 16-cell bed (4x4)
+        const bed = Array(16).fill(null) as (Crop | null)[]
+
+        // Use mockCrops which includes vegetables, herbs, and flowers
+        const result = autoFillGaps(bed, mockCrops, 4)
+
+        // Analyze results
+        const counts: Record<string, number> = {}
+        result.forEach(p => {
+            counts[p.cropId] = (counts[p.cropId] || 0) + 1
+        })
+
+        // 1. Check for Monoculture: No single crop should occupy > 50% of the grid
+        Object.values(counts).forEach(count => {
+            expect(count).toBeLessThan(9) // Less than 9 out of 16 cells
+        })
+
+        // 2. Check Vegetable Bias: Veggies should be present
+        const vegCount = result.filter(p => {
+            const crop = mockCrops.find(c => c.id === p.cropId)
+            return crop?.type === 'vegetable'
+        }).length
+
+        expect(vegCount).toBeGreaterThan(0)
+
+        // 3. Check that we have at least 2 different crop types (diversity)
+        expect(Object.keys(counts).length).toBeGreaterThanOrEqual(2)
+    })
+
+    it('prevents monoculture by applying variety penalties', () => {
+        // Setup: Create a scenario where one herb would normally dominate
+        // Start with 2 Basil already planted - without diversity logic,
+        // the greedy solver might fill most/all remaining spots with more Basil
+        const bed = Array(20).fill(null) as (Crop | null)[]
+        const basil = mockCrops.find(c => c.id === 'basil')!
+
+        // Pre-plant 2 Basil
+        bed[0] = basil
+        bed[5] = basil
+
+        const result = autoFillGaps(bed, mockCrops, 5) // Width 5 for 4x5 grid
+
+        // Count how many MORE Basil were planted
+        const newBasil = result.filter(p => p.cropId === 'basil').length
+
+        // With diversity penalty, we should NOT fill most spots with Basil
+        // Allow max 3-4 more Basil out of 18 empty spots
+        expect(newBasil).toBeLessThanOrEqual(4)
+
+        // Should have variety - at least 2 different crops planted
+        const uniqueCrops = new Set(result.map(p => p.cropId))
+        expect(uniqueCrops.size).toBeGreaterThanOrEqual(2)
+    })
 })
