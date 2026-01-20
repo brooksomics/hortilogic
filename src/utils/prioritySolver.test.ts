@@ -351,4 +351,88 @@ describe('autoFillGaps', () => {
         expect(tomatoAt1).toBe(false) // Position 1 is adjacent (right)
         expect(tomatoAt2).toBe(false) // Position 2 is adjacent (below)
     })
+
+    it('respects flower density limit during gap filling', () => {
+        // Setup: Bed with 2 existing flowers in a 32-cell grid (4x8 bed)
+        const bed = Array(32).fill(null) as (Crop | null)[]
+        const marigold = mockCrops.find(c => c.id === 'marigold')!
+
+        // Pre-plant 2 flowers
+        bed[0] = marigold
+        bed[1] = marigold
+
+        // Max flowers for 32 cells = 15% of 32 = 4.8 -> 4 flowers
+        // We have 2. We can plant 2 more. The rest MUST be vegetables.
+
+        const result = autoFillGaps(bed, mockCrops, 8)
+
+        // Count total flowers (pre-planted + new)
+        const newFlowers = result.filter(p => p.cropId === 'marigold').length
+        const totalFlowers = 2 + newFlowers
+
+        // Should not exceed 4 (15% of 32)
+        expect(totalFlowers).toBeLessThanOrEqual(4)
+
+        // Should have planted vegetables in the remaining spots
+        const newVegetables = result.filter(p => {
+            const crop = mockCrops.find(c => c.id === p.cropId)
+            return crop?.type === 'vegetable'
+        }).length
+        expect(newVegetables).toBeGreaterThan(10)
+    })
+
+    it('prioritizes diversity and vegetables during gap filling', () => {
+        // Setup: Empty 16-cell bed (4x4)
+        const bed = Array(16).fill(null) as (Crop | null)[]
+
+        // Use mockCrops which includes vegetables, herbs, and flowers
+        const result = autoFillGaps(bed, mockCrops, 4)
+
+        // Analyze results
+        const counts: Record<string, number> = {}
+        result.forEach(p => {
+            counts[p.cropId] = (counts[p.cropId] || 0) + 1
+        })
+
+        // 1. Check for Monoculture: No single crop should occupy > 50% of the grid
+        Object.values(counts).forEach(count => {
+            expect(count).toBeLessThan(9) // Less than 9 out of 16 cells
+        })
+
+        // 2. Check Vegetable Bias: Veggies should be present
+        const vegCount = result.filter(p => {
+            const crop = mockCrops.find(c => c.id === p.cropId)
+            return crop?.type === 'vegetable'
+        }).length
+
+        expect(vegCount).toBeGreaterThan(0)
+
+        // 3. Check that we have at least 2 different crop types (diversity)
+        expect(Object.keys(counts).length).toBeGreaterThanOrEqual(2)
+    })
+
+    it('prevents monoculture by applying variety penalties', () => {
+        // Setup: Create a scenario where one herb would normally dominate
+        // Start with 2 Basil already planted - without diversity logic,
+        // the greedy solver might fill most/all remaining spots with more Basil
+        const bed = Array(20).fill(null) as (Crop | null)[]
+        const basil = mockCrops.find(c => c.id === 'basil')!
+
+        // Pre-plant 2 Basil
+        bed[0] = basil
+        bed[5] = basil
+
+        const result = autoFillGaps(bed, mockCrops, 5) // Width 5 for 4x5 grid
+
+        // Count how many MORE Basil were planted
+        const newBasil = result.filter(p => p.cropId === 'basil').length
+
+        // With diversity penalty, we should NOT fill most spots with Basil
+        // Allow max 3-4 more Basil out of 18 empty spots
+        expect(newBasil).toBeLessThanOrEqual(4)
+
+        // Should have variety - at least 2 different crops planted
+        const uniqueCrops = new Set(result.map(p => p.cropId))
+        expect(uniqueCrops.size).toBeGreaterThanOrEqual(2)
+    })
 })
