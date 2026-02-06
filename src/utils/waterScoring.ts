@@ -57,3 +57,44 @@ export function waterPenalty(
 
   return -(variance * WATER_VARIANCE_WEIGHT)
 }
+
+/**
+ * Calculate the average water_need for a row (for UI display).
+ * @returns Average water need (1-5), or null if row is empty.
+ */
+export function getRowWaterAverage(
+  cells: (Crop | null)[],
+  width: number,
+  rowIndex: number
+): number | null {
+  const rowStart = rowIndex * width
+  const rowCells = cells.slice(rowStart, rowStart + width)
+  const waterNeeds = rowCells
+    .filter((c): c is Crop => c !== null)
+    .map(c => c.water_need)
+
+  if (waterNeeds.length === 0) return null
+  return waterNeeds.reduce((s, v) => s + v, 0) / waterNeeds.length
+}
+
+/**
+ * Get the Tailwind color class for a drip line based on water need average.
+ */
+export function getDripLineColor(avg: number | null): string {
+  if (avg === null) return 'bg-gray-300'
+  if (avg <= 2) return 'bg-blue-200'
+  if (avg <= 3) return 'bg-blue-400'
+  if (avg <= 4) return 'bg-blue-500'
+  return 'bg-blue-700'
+}
+
+/**
+ * Get a human-readable label for a row's water intensity.
+ */
+export function getWaterLabel(avg: number | null): string {
+  if (avg === null) return 'empty'
+  if (avg <= 2) return 'low water need'
+  if (avg <= 3) return 'moderate water need'
+  if (avg <= 4) return 'high water need'
+  return 'very high water need'
+}

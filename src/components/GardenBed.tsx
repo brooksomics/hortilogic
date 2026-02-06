@@ -1,6 +1,7 @@
-import { AlertTriangle, Trash2 } from 'lucide-react'
+import { AlertTriangle, Droplets, Trash2 } from 'lucide-react'
 import type { Crop, GardenProfile } from '@/types'
 import { isCropViable } from '@/utils/dateEngine'
+import { getRowWaterAverage, getDripLineColor, getWaterLabel } from '@/utils/waterScoring'
 
 interface GardenSquareProps {
   crop?: Crop | null
@@ -130,6 +131,17 @@ export function GardenBed({
   const displayName = bedName || `Garden Bed (${width.toString()}' × ${height.toString()}')`
   const cellCount = totalCells
 
+  // Calculate drip line data for each row
+  const rowCount = height
+  const dripLines = Array.from({ length: rowCount }, (_, rowIndex) => {
+    const avg = getRowWaterAverage(bedSquares, width, rowIndex)
+    return {
+      avg,
+      color: getDripLineColor(avg),
+      label: getWaterLabel(avg),
+    }
+  })
+
   return (
     <div className="w-full max-w-4xl">
       <div className="mb-2 text-center relative">
@@ -148,21 +160,48 @@ export function GardenBed({
         )}
       </div>
 
-      <div
-        className={`grid ${gridColsClass} gap-0.5 p-1 bg-soil-200 rounded-lg shadow-lg`}
-        style={{ gridTemplateColumns: `repeat(${width.toString()}, minmax(0, 1fr))` }}
-        role="grid"
-        aria-label={`${width.toString()} by ${height.toString()} foot garden bed with ${cellCount.toString()} squares`}
-      >
-        {bedSquares.map((crop, index) => (
-          <GardenSquare
-            key={index}
-            crop={crop}
-            onClick={() => onSquareClick?.(index)}
-            isViable={viabilityMap[index]}
-          />
-        ))}
+      <div className="flex gap-1">
+        {/* Drip line indicators (left side) */}
+        <div
+          className="flex flex-col gap-0.5 py-1"
+          aria-label="Drip line water indicators"
+        >
+          {dripLines.map((drip, rowIndex) => (
+            <div
+              key={rowIndex}
+              className={`flex items-center gap-0.5 rounded-l ${drip.color} px-1 flex-1`}
+              title={`Row ${(rowIndex + 1).toString()}: ${drip.avg !== null ? `avg ${drip.avg.toFixed(1)} water need` : 'empty'}`}
+              aria-label={`Row ${(rowIndex + 1).toString()}: ${drip.label}`}
+            >
+              <Droplets className="w-3 h-3 text-blue-900 flex-shrink-0" />
+              <span className="text-[8px] text-blue-900 whitespace-nowrap">
+                Row {(rowIndex + 1).toString()}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Garden grid */}
+        <div
+          className={`grid ${gridColsClass} gap-0.5 p-1 bg-soil-200 rounded-lg shadow-lg flex-1`}
+          style={{ gridTemplateColumns: `repeat(${width.toString()}, minmax(0, 1fr))` }}
+          role="grid"
+          aria-label={`${width.toString()} by ${height.toString()} foot garden bed with ${cellCount.toString()} squares`}
+        >
+          {bedSquares.map((crop, index) => (
+            <GardenSquare
+              key={index}
+              crop={crop}
+              onClick={() => onSquareClick?.(index)}
+              isViable={viabilityMap[index]}
+            />
+          ))}
+        </div>
       </div>
+
+      <p className="text-[10px] text-gray-500 italic mt-1 text-center">
+        *This assumes Earthline Brown PC 1-GPH tubing with 12&quot; emitter spacing
+      </p>
     </div>
   )
 }

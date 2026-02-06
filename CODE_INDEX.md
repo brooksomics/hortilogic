@@ -280,7 +280,7 @@ function MyComponent() {
 | Component | Location | Purpose |
 |-----------|----------|---------|
 | `App` | App.tsx | Main application with layout management and multi-box rendering |
-| `GardenBed` | components/GardenBed.tsx | Dynamic grid display with variable dimensions (e.g., 2x4, 4x8, 3x3) |
+| `GardenBed` | components/GardenBed.tsx | Dynamic grid display with drip line visualization and variable dimensions |
 | `CropLibrary` | components/CropLibrary.tsx | Crop selection sidebar with search and viability filtering |
 | `LayoutSelector` | components/LayoutSelector.tsx | Dropdown for switching/managing layouts |
 | `LayoutActionModal` | components/LayoutActionModal.tsx | Modal for create/rename/delete layout actions |

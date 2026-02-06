@@ -1,6 +1,13 @@
 import { describe, it, expect } from 'vitest'
 import type { Crop } from '../types/garden'
-import { getRowWaterVariance, waterPenalty, WATER_VARIANCE_WEIGHT } from './waterScoring'
+import {
+  getRowWaterVariance,
+  waterPenalty,
+  WATER_VARIANCE_WEIGHT,
+  getRowWaterAverage,
+  getDripLineColor,
+  getWaterLabel,
+} from './waterScoring'
 
 function makeCrop(id: string, waterNeed: 1 | 2 | 3 | 4 | 5): Crop {
   return {
@@ -110,5 +117,66 @@ describe('waterPenalty', () => {
     // Variance of [1,1,5] = mean=7/3≈2.33, var = ((1-2.33)^2+(1-2.33)^2+(5-2.33)^2)/3 ≈ 3.56
     // penalty = -3.56 * WATER_VARIANCE_WEIGHT
     expect(penalty).toBeCloseTo(-WATER_VARIANCE_WEIGHT * 3.556, 0)
+  })
+})
+
+describe('getRowWaterAverage', () => {
+  it('returns average for a row with crops', () => {
+    const cells: (Crop | null)[] = [
+      makeCrop('a', 2), makeCrop('b', 4),
+      makeCrop('c', 2), makeCrop('d', 4),
+    ]
+    expect(getRowWaterAverage(cells, 4, 0)).toBe(3)
+  })
+
+  it('returns null for empty row', () => {
+    const cells: (Crop | null)[] = [null, null, null, null]
+    expect(getRowWaterAverage(cells, 4, 0)).toBeNull()
+  })
+
+  it('ignores null cells in average', () => {
+    const cells: (Crop | null)[] = [
+      makeCrop('a', 4), null, null, makeCrop('b', 2),
+    ]
+    expect(getRowWaterAverage(cells, 4, 0)).toBe(3)
+  })
+})
+
+describe('getDripLineColor', () => {
+  it('returns gray for null (empty row)', () => {
+    expect(getDripLineColor(null)).toBe('bg-gray-300')
+  })
+
+  it('returns light blue for low water (1-2)', () => {
+    expect(getDripLineColor(1)).toBe('bg-blue-200')
+    expect(getDripLineColor(2)).toBe('bg-blue-200')
+  })
+
+  it('returns medium blue for moderate water (2.5-3)', () => {
+    expect(getDripLineColor(2.5)).toBe('bg-blue-400')
+    expect(getDripLineColor(3)).toBe('bg-blue-400')
+  })
+
+  it('returns medium-dark blue for high water (3.5-4)', () => {
+    expect(getDripLineColor(3.5)).toBe('bg-blue-500')
+    expect(getDripLineColor(4)).toBe('bg-blue-500')
+  })
+
+  it('returns dark blue for very high water (4.5-5)', () => {
+    expect(getDripLineColor(4.5)).toBe('bg-blue-700')
+    expect(getDripLineColor(5)).toBe('bg-blue-700')
+  })
+})
+
+describe('getWaterLabel', () => {
+  it('returns "empty" for null', () => {
+    expect(getWaterLabel(null)).toBe('empty')
+  })
+
+  it('returns correct labels for water levels', () => {
+    expect(getWaterLabel(1.5)).toBe('low water need')
+    expect(getWaterLabel(2.5)).toBe('moderate water need')
+    expect(getWaterLabel(3.5)).toBe('high water need')
+    expect(getWaterLabel(4.5)).toBe('very high water need')
   })
 })

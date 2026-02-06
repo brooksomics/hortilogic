@@ -122,6 +122,40 @@ describe('GardenBed', () => {
     expect(screen.getByText(/32 Square Foot Gardening cells/i)).toBeInTheDocument()
   })
 
+  it('renders drip line indicators for each row', () => {
+    const lettuce: Crop = {
+      id: 'lettuce',
+      name: 'Lettuce',
+      type: 'vegetable',
+      botanical_family: 'Asteraceae',
+      sun: 'partial',
+      days_to_maturity: 55,
+      water_need: 4,
+      sfg_density: 4,
+      planting_strategy: { start_window_start: -4, start_window_end: 2 },
+      companions: { friends: [], enemies: [] }
+    }
+
+    // 4x4 grid, fill row 0 with lettuce
+    const squares: (Crop | null)[] = Array(16).fill(null) as (Crop | null)[]
+    squares[0] = lettuce
+    squares[1] = lettuce
+    squares[2] = lettuce
+    squares[3] = lettuce
+
+    render(<GardenBed squares={squares} width={4} height={4} />)
+
+    // Should render drip line labels for each row
+    const dripLines = screen.getAllByText(/Row \d+/)
+    expect(dripLines.length).toBe(4) // 4 rows
+  })
+
+  it('renders drip tubing assumption note', () => {
+    render(<GardenBed />)
+
+    expect(screen.getByText(/Earthline Brown PC 1-GPH/)).toBeInTheDocument()
+  })
+
   it('has proper accessibility labels', () => {
     const peas: Crop = {
       id: 'peas',
