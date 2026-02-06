@@ -47,7 +47,7 @@ export function StashSummary({
     if (entries.length === 0 && !placementResult) return null
 
     return (
-        <div className="bg-white p-4 rounded-lg shadow-sm border border-stone-200">
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-stone-200 lg:flex-shrink-0">
             {/* Header */}
             <div className="flex justify-between items-center mb-4">
                 <h3 className="font-display font-bold text-stone-800 flex items-center gap-2">

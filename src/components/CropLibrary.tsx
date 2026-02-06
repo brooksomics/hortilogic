@@ -254,7 +254,7 @@ export function CropLibrary({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 lg:flex lg:flex-col lg:max-h-[calc(100vh-8rem)]">
+    <div className="bg-white rounded-lg shadow-lg p-6 lg:flex lg:flex-col lg:flex-1 lg:min-h-0 lg:overflow-hidden">
       <div className="flex items-center gap-2 mb-4">
         <Sprout className="w-5 h-5 text-leaf-600" />
         <h2 className="text-xl font-semibold text-soil-900">
@@ -263,7 +263,7 @@ export function CropLibrary({
       </div>
 
       {/* Category Tabs */}
-      <div className="flex gap-2 mb-4">
+      <div className="flex flex-wrap gap-2 mb-4">
         <button
           onClick={() => { handleCategoryClick('all') }}
           className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
