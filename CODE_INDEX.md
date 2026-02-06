@@ -339,6 +339,14 @@ Migration: LegacyGardenState → LayoutStorage + ProfileStorage
 - `sun`: 'full' | 'partial' | 'shade' - Sun requirements
 - `days_to_maturity`: number - Average days to harvest
 
+**V3 Schema Field (TODO-030 / F009):**
+- `water_need`: 1-5 - Water need score for drip irrigation grouping
+  - 1 = drought-tolerant (rosemary, thyme, lavender)
+  - 2 = low (carrots, onions, garlic)
+  - 3 = moderate (tomatoes, peppers, beans)
+  - 4 = high (lettuce, basil, cucumbers)
+  - 5 = very high (watercress)
+
 **Data Sources:**
 - University Extension Companion Planting Guides
 - "Carrots Love Tomatoes" by Louise Riotte
