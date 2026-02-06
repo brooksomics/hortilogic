@@ -209,6 +209,12 @@ export interface Crop {
 
   /** Average days to maturity (V2) */
   days_to_maturity: number
+
+  /**
+   * Water need score for drip irrigation grouping (V3)
+   * 1 = drought-tolerant, 2 = low, 3 = moderate, 4 = high, 5 = very high
+   */
+  water_need: 1 | 2 | 3 | 4 | 5
 }
 
 /**

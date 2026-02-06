@@ -57,6 +57,19 @@ export function GardenInstructions({ selectedCrop }: GardenInstructionsProps) {
             <li>🟢 Green border = crop is in season for your target planting date</li>
             <li>🟠 Orange border = crop is out of season</li>
           </ul>
+          <h4 className="font-semibold text-soil-900 mt-3 mb-2">Drip Line Water Indicators</h4>
+          <p className="text-sm text-soil-700 mb-2">
+            Each row shows a colored drip line indicator representing the average water need
+            of crops in that row. This helps group plants with similar irrigation requirements
+            along the same drip tubing run.
+          </p>
+          <ul className="list-disc list-inside space-y-1 text-sm text-soil-700 ml-2">
+            <li><span className="inline-block w-3 h-3 bg-amber-300 rounded mr-1 align-middle" /> Amber = low water need (drought-tolerant herbs like rosemary, thyme)</li>
+            <li><span className="inline-block w-3 h-3 bg-green-300 rounded mr-1 align-middle" /> Green = moderate water need (tomatoes, peppers, beans)</li>
+            <li><span className="inline-block w-3 h-3 bg-teal-400 rounded mr-1 align-middle" /> Teal = high water need (lettuce, cucumbers, basil)</li>
+            <li><span className="inline-block w-3 h-3 bg-blue-500 rounded mr-1 align-middle" /> Blue = very high water need (watercress)</li>
+            <li><span className="inline-block w-3 h-3 bg-gray-300 rounded mr-1 align-middle" /> Gray = empty row (no crops planted)</li>
+          </ul>
         </div>
       </div>
 

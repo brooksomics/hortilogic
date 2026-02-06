@@ -165,6 +165,7 @@ describe('useGardenInteractions', () => {
         botanical_family: 'Asteraceae',
         sun: 'partial',
         days_to_maturity: 55,
+        water_need: 3,
         sfg_density: 4,
         planting_strategy: {
           start_window_start: -4,
@@ -524,6 +525,7 @@ describe('useGardenInteractions', () => {
         botanical_family: 'Asteraceae',
         sun: 'partial',
         days_to_maturity: 55,
+        water_need: 3,
         sfg_density: 4,
         planting_strategy: {
           start_window_start: -4,
@@ -542,6 +544,7 @@ describe('useGardenInteractions', () => {
         botanical_family: 'Lamiaceae',
         sun: 'full',
         days_to_maturity: 60,
+        water_need: 3,
         sfg_density: 1,
         planting_strategy: {
           start_window_start: 0,

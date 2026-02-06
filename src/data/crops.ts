@@ -25,6 +25,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 55,
+    water_need: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'radish-red', 'cucumber', 'strawberry'],
@@ -40,6 +41,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 70,
+    water_need: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'radish-red', 'cucumber'],
@@ -55,6 +57,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 45,
+    water_need: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'radish-red', 'cucumber'],
@@ -70,6 +73,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 85,
+    water_need: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'radish-red'],
@@ -85,6 +89,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'partial',
     days_to_maturity: 40,
+    water_need: 4,
     planting_strategy: { start_window_start: -6, start_window_end: 0 },
     companions: {
       friends: ['peas-sugar-snap', 'radish-red', 'strawberry', 'cilantro'],
@@ -100,6 +105,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 55,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion-yellow', 'garlic', 'dill', 'nasturtium'],
@@ -115,6 +121,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion-yellow', 'garlic', 'dill'],
@@ -130,6 +137,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 40,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['cucumber', 'lettuce-leaf', 'spinach'],
@@ -145,6 +153,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 50,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['onion-yellow', 'garlic', 'radish-red'],
@@ -160,6 +169,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 55,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['onion-yellow', 'garlic', 'radish-red'],
@@ -175,6 +185,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 45,
+    water_need: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'dill', 'garlic'],
@@ -190,6 +201,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion-yellow', 'garlic', 'dill'],
@@ -205,6 +217,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 40,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['radish-red', 'peas-sugar-snap', 'lettuce-leaf'],
@@ -220,6 +233,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 85,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'radish-red'],
@@ -235,6 +249,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 80,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'endive'],
@@ -250,6 +265,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'partial',
     days_to_maturity: 50,
+    water_need: 5,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'spinach'],
@@ -265,6 +281,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'partial',
     days_to_maturity: 40,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'spinach'],
@@ -280,6 +297,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 45,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'garlic'],
@@ -295,6 +313,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'partial',
     days_to_maturity: 50,
+    water_need: 3,
     planting_strategy: { start_window_start: -6, start_window_end: 0 },
     companions: {
       friends: ['lettuce-leaf', 'spinach'],
@@ -310,6 +329,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 60,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['strawberry'],
@@ -327,6 +347,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 85,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot', 'basil-sweet', 'parsley-flat', 'onion-yellow', 'marigold-french', 'nasturtium'],
@@ -342,6 +363,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 65,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot', 'basil-sweet', 'parsley-flat', 'onion-yellow', 'marigold-french'],
@@ -357,6 +379,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 75,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot', 'basil-sweet', 'parsley-flat', 'onion-yellow'],
@@ -372,6 +395,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 80,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot', 'basil-sweet', 'parsley-flat', 'onion-yellow', 'marigold-french'],
@@ -387,6 +411,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 70,
+    water_need: 3,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['basil-sweet', 'onion-yellow', 'carrot', 'marigold-french'],
@@ -402,6 +427,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 75,
+    water_need: 2,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['basil-sweet', 'onion-yellow', 'carrot'],
@@ -417,6 +443,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 100,
+    water_need: 2,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['basil-sweet', 'oregano'],
@@ -432,6 +459,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 65,
+    water_need: 3,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['basil-sweet', 'onion-yellow'],
@@ -447,6 +475,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 80,
+    water_need: 3,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['basil-sweet', 'thyme', 'oregano', 'marigold-french'],
@@ -462,6 +491,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: ['peas-sugar-snap', 'cabbage', 'horseradish'],
@@ -477,6 +507,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 75,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['basil-sweet', 'carrot', 'onion-yellow'],
@@ -492,6 +523,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 70,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['basil-sweet', 'carrot'],
@@ -509,6 +541,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 70,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'dill', 'garlic', 'nasturtium', 'marigold-french'],
@@ -524,6 +557,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 75,
+    water_need: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'dill', 'garlic', 'nasturtium'],
@@ -539,6 +573,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 70,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'dill', 'potato', 'nasturtium'],
@@ -554,6 +589,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 3,
     planting_strategy: { start_window_start: -6, start_window_end: -2 },
     companions: {
       friends: ['onion-yellow', 'dill', 'garlic'],
@@ -569,6 +605,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 55,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion-yellow', 'garlic'],
@@ -584,6 +621,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 16,
     sun: 'full',
     days_to_maturity: 25,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 8 },
     companions: {
       friends: ['lettuce-leaf', 'peas-sugar-snap', 'carrot', 'spinach', 'cucumber'],
@@ -599,6 +637,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'peas-sugar-snap', 'carrot'],
@@ -614,6 +653,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 50,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['peas-sugar-snap', 'radish-red'],
@@ -629,6 +669,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 2,
     planting_strategy: { start_window_start: -6, start_window_end: 0 },
     companions: {
       friends: ['peas-sugar-snap', 'onion-yellow'],
@@ -644,6 +685,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 45,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'dill'],
@@ -659,6 +701,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 70,
+    water_need: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'dill'],
@@ -674,6 +717,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 150,
+    water_need: 2,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['potato'],
@@ -689,6 +733,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 50,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion-yellow', 'garlic'],
@@ -704,6 +749,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 65,
+    water_need: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'garlic'],
@@ -719,6 +765,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 40,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'dill'],
@@ -736,6 +783,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 3,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['carrot', 'radish-red', 'turnip', 'cucumber'],
@@ -751,6 +799,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 55,
+    water_need: 3,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['carrot', 'radish-red', 'turnip'],
@@ -766,6 +815,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 65,
+    water_need: 3,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['carrot', 'radish-red', 'turnip'],
@@ -781,6 +831,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 50,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber', 'radish-red', 'nasturtium', 'marigold-french'],
@@ -796,6 +847,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 65,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber', 'radish-red', 'corn-sweet'],
@@ -811,6 +863,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 55,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber', 'radish-red'],
@@ -826,6 +879,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 85,
+    water_need: 3,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['potato', 'carrot'],
@@ -841,6 +895,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 75,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber'],
@@ -856,6 +911,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 70,
+    water_need: 3,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber'],
@@ -871,6 +927,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 70,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber', 'corn-sweet'],
@@ -886,6 +943,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 110,
+    water_need: 2,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: ['carrot'],
@@ -901,6 +959,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 100,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot'],
@@ -918,6 +977,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 16,
     sun: 'full',
     days_to_maturity: 70,
+    water_need: 2,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['lettuce-leaf', 'tomato-beefsteak', 'peas-sugar-snap', 'onion-yellow', 'leek'],
@@ -933,6 +993,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 55,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['onion-yellow', 'lettuce-leaf', 'cabbage'],
@@ -948,6 +1009,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 16,
     sun: 'full',
     days_to_maturity: 110,
+    water_need: 2,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'beet', 'tomato-beefsteak', 'lettuce-leaf', 'chamomile'],
@@ -963,6 +1025,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 16,
     sun: 'full',
     days_to_maturity: 105,
+    water_need: 2,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'beet', 'tomato-beefsteak'],
@@ -978,6 +1041,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 16,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'lettuce-leaf', 'tomato-beefsteak'],
@@ -993,6 +1057,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 16,
     sun: 'full',
     days_to_maturity: 240,
+    water_need: 2,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['tomato-beefsteak', 'lettuce-leaf', 'cabbage', 'chamomile'],
@@ -1008,6 +1073,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 16,
     sun: 'full',
     days_to_maturity: 120,
+    water_need: 2,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['peas-sugar-snap', 'radish-red'],
@@ -1023,6 +1089,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 16,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 2,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'beet', 'tomato-beefsteak'],
@@ -1038,6 +1105,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 120,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot'],
@@ -1053,6 +1121,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 100,
+    water_need: 2,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: [],
@@ -1068,6 +1137,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 240,
+    water_need: 4,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: [],
@@ -1083,6 +1153,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 240,
+    water_need: 4,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: [],
@@ -1098,6 +1169,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 110,
+    water_need: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['leek', 'onion-yellow'],
@@ -1113,6 +1185,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 120,
+    water_need: 2,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: [],
@@ -1128,6 +1201,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 150,
+    water_need: 2,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: [],
@@ -1143,6 +1217,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'peas-sugar-snap', 'carrot'],
@@ -1158,6 +1233,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 16,
     sun: 'full',
     days_to_maturity: 28,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 8 },
     companions: {
       friends: ['lettuce-leaf', 'peas-sugar-snap', 'carrot'],
@@ -1173,6 +1249,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 200,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: [],
@@ -1190,6 +1267,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 4,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['peas-sugar-snap', 'radish-red', 'lettuce-leaf', 'nasturtium', 'marigold-french'],
@@ -1205,6 +1283,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 50,
+    water_need: 4,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish-red', 'nasturtium'],
@@ -1220,6 +1299,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 50,
+    water_need: 3,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish-red', 'nasturtium'],
@@ -1235,6 +1315,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 100,
+    water_need: 4,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['corn-sweet', 'nasturtium'],
@@ -1250,6 +1331,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 85,
+    water_need: 3,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish-red', 'corn-sweet', 'nasturtium'],
@@ -1265,6 +1347,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 4,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['radish-red', 'nasturtium'],
@@ -1280,6 +1363,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 80,
+    water_need: 4,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['radish-red', 'nasturtium'],
@@ -1295,6 +1379,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 85,
+    water_need: 4,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['radish-red'],
@@ -1310,6 +1395,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 85,
+    water_need: 3,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['corn-sweet', 'radish-red'],
@@ -1325,6 +1411,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 3,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish-red'],
@@ -1340,6 +1427,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 100,
+    water_need: 3,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish-red'],
@@ -1355,6 +1443,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 150,
+    water_need: 4,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: [],
@@ -1372,6 +1461,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 75,
+    water_need: 3,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['green-beans-pole', 'pumpkin', 'cucumber'],
@@ -1387,6 +1477,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 730,
+    water_need: 2,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['tomato-beefsteak', 'parsley-flat', 'basil-sweet'],
@@ -1402,6 +1493,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 110,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: [],
@@ -1417,6 +1509,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 85,
+    water_need: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['leek', 'onion-yellow', 'tomato-beefsteak'],
@@ -1432,6 +1525,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 65,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: [],
@@ -1447,6 +1541,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 2,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['pepper-bell', 'eggplant'],
@@ -1462,6 +1557,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 365,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: [],
@@ -1477,6 +1573,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 40,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['onion-yellow'],
@@ -1492,6 +1589,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 120,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: [],
@@ -1507,6 +1605,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 85,
+    water_need: 3,
     planting_strategy: { start_window_start: -6, start_window_end: -2 },
     companions: {
       friends: ['onion-yellow', 'dill', 'garlic'],
@@ -1524,6 +1623,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 4,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'tomato-cherry', 'pepper-bell', 'asparagus'],
@@ -1539,6 +1639,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 4,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'pepper-bell'],
@@ -1554,6 +1655,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 50,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['spinach', 'lettuce-leaf'],
@@ -1569,6 +1671,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 70,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['tomato-beefsteak', 'tomato-cherry', 'carrot', 'asparagus'],
@@ -1584,6 +1687,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 75,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['tomato-beefsteak', 'carrot'],
@@ -1599,6 +1703,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 70,
+    water_need: 2,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['cabbage', 'lettuce-leaf', 'onion-yellow', 'cucumber'],
@@ -1614,6 +1719,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['eggplant', 'pepper-bell'],
@@ -1629,6 +1735,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 1,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['eggplant', 'cabbage', 'strawberry'],
@@ -1644,6 +1751,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'partial',
     days_to_maturity: 90,
+    water_need: 4,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['cabbage', 'tomato-beefsteak'],
@@ -1659,6 +1767,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'partial',
     days_to_maturity: 90,
+    water_need: 4,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['cabbage', 'tomato-beefsteak'],
@@ -1674,6 +1783,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 16,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 2,
     planting_strategy: { start_window_start: -4, start_window_end: 4 },
     companions: {
       friends: ['carrot', 'tomato-beefsteak', 'rose'],
@@ -1689,6 +1799,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 1,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['rosemary', 'cabbage', 'carrot'],
@@ -1704,6 +1815,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 120,
+    water_need: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['sage', 'cabbage', 'green-beans-bush'],
@@ -1719,6 +1831,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 120,
+    water_need: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['rose', 'rosemary'],
@@ -1734,6 +1847,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 2,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['onion-yellow', 'cabbage', 'cucumber'],
@@ -1749,6 +1863,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['eggplant'],
@@ -1764,6 +1879,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['oregano', 'thyme'],
@@ -1779,6 +1895,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'partial',
     days_to_maturity: 70,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['tomato-beefsteak', 'yellow-squash'],
@@ -1794,6 +1911,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 100,
+    water_need: 3,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: [],
@@ -1809,6 +1927,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 2,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: [],
@@ -1824,6 +1943,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 3,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: [],
@@ -1839,6 +1959,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 730,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: [],
@@ -1854,6 +1975,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 60,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['strawberry'],
@@ -1869,6 +1991,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'partial',
     days_to_maturity: 90,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: [],
@@ -1884,6 +2007,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 120,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['cilantro'],
@@ -1901,6 +2025,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 50,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'pepper-bell', 'eggplant', 'cucumber', 'green-beans-bush'],
@@ -1916,6 +2041,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'pepper-bell'],
@@ -1931,6 +2057,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 50,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'cucumber', 'radish-red', 'cabbage', 'zucchini'],
@@ -1946,6 +2073,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 55,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'strawberry', 'cucumber', 'green-beans-bush'],
@@ -1961,6 +2089,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 50,
+    water_need: 2,
     planting_strategy: { start_window_start: -2, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'lettuce-leaf', 'cucumber'],
@@ -1976,6 +2105,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 2,
     planting_strategy: { start_window_start: -2, start_window_end: 6 },
     companions: {
       friends: ['lettuce-leaf', 'broccoli', 'cabbage'],
@@ -1991,6 +2121,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 70,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['corn-sweet', 'cucumber'],
@@ -2006,6 +2137,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'cucumber'],
@@ -2021,6 +2153,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 70,
+    water_need: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak'],
@@ -2036,6 +2169,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 70,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['green-beans-bush', 'tomato-beefsteak'],
@@ -2051,6 +2185,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: [],
@@ -2066,6 +2201,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 1,
     planting_strategy: { start_window_start: -2, start_window_end: 6 },
     companions: {
       friends: [],
@@ -2081,6 +2217,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak'],
@@ -2096,6 +2233,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['rose', 'corn-sweet'],
@@ -2111,6 +2249,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 730,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: [],
@@ -2126,6 +2265,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 365,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: ['garlic', 'chives', 'lavender'],
@@ -2141,6 +2281,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 75,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: [],
@@ -2156,6 +2297,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'partial',
     days_to_maturity: 60,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: [],
@@ -2171,6 +2313,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'partial',
     days_to_maturity: 60,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: [],
@@ -2186,6 +2329,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 180,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: [],
@@ -2201,6 +2345,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: [],
@@ -2216,6 +2361,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 75,
+    water_need: 2,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: [],
@@ -2231,6 +2377,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 70,
+    water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: [],
@@ -2246,6 +2393,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 65,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: [],
@@ -2261,6 +2409,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 65,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: [],
@@ -2276,6 +2425,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'partial',
     days_to_maturity: 75,
+    water_need: 4,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: [],
@@ -2291,6 +2441,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 75,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: [],
@@ -2306,6 +2457,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 75,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: [],
@@ -2321,6 +2473,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 9,
     sun: 'full',
     days_to_maturity: 60,
+    water_need: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: [],
@@ -2336,6 +2489,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: [],
@@ -2353,6 +2507,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 90,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-butterhead', 'spinach', 'borage', 'thyme', 'sorrel'],
@@ -2368,6 +2523,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 730,
+    water_need: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: [],
@@ -2383,6 +2539,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 365,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['garlic'],
@@ -2398,6 +2555,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 365,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: [],
@@ -2413,6 +2571,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'partial',
     days_to_maturity: 730,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: [],
@@ -2428,6 +2587,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'partial',
     days_to_maturity: 730,
+    water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: [],
@@ -2443,6 +2603,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 1095,
+    water_need: 2,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['basil-sweet', 'oregano'],
@@ -2458,6 +2619,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 730,
+    water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: [],

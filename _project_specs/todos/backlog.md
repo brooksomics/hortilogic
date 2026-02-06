@@ -523,3 +523,267 @@ Instead of asking users to know their USDA Hardiness Zone, allow them to enter a
 <!-- TODO-016 moved to completed.md (2026-01-10) -->
 <!-- TODO-017 moved to completed.md (2026-01-10) -->
 <!-- TODO-018 moved to completed.md (2026-01-10) -->
+
+---
+
+## [TODO-030] Add `water_need` Field to Crop Interface & Populate Database
+
+**Status:** completed
+**Priority:** medium
+**Estimate:** S-M
+**Feature:** F009 (Drip Irrigation Water Profile)
+
+### Description
+Add a `water_need` score (1-5) to the `Crop` interface and populate the value for all crops in `CROP_DATABASE`. This is the data foundation for drip irrigation optimization. The score represents how much water a crop needs relative to other common garden crops, enabling the solver and UI to group crops by irrigation compatibility.
+
+**Water Need Scale:**
+| Score | Category | Examples |
+|-------|----------|----------|
+| 1 | Drought-tolerant | Rosemary, thyme, lavender, sage |
+| 2 | Low | Carrots, onions, garlic, sweet potato |
+| 3 | Moderate | Tomatoes, peppers, beans, eggplant |
+| 4 | High | Lettuce, basil, celery, cucumbers, squash |
+| 5 | Very high | Watercress, mint (wet soil conditions) |
+
+Most raised bed crops cluster in the 2-4 range, which reflects realistic irrigation groupings.
+
+### Acceptance Criteria
+- [ ] Add `water_need: 1 | 2 | 3 | 4 | 5` field to the `Crop` interface in `src/types/garden.ts`
+- [ ] Populate `water_need` for all crops in `src/data/crops.ts` using horticultural reference data
+- [ ] Add data integrity test: every crop has a valid `water_need` value (1-5)
+- [ ] Add data distribution test: verify reasonable spread across scores (no single score >50% of crops)
+- [ ] Update `CODE_INDEX.md` with new field documentation
+- [ ] No breaking changes to existing functionality (companion scoring, viability, etc.)
+
+### Validation
+- **Manual:** Browse crop library, verify water_need values make horticultural sense
+- **Automated:** Data integrity tests (all crops have valid water_need 1-5)
+
+### Test Cases
+| Input | Expected Output | Notes |
+|-------|-----------------|-------|
+| Every crop in CROP_DATABASE | Has `water_need` field with value 1-5 | Data integrity |
+| Rosemary | water_need: 1 | Drought-tolerant herb |
+| Tomato (any variety) | water_need: 3 | Moderate, deep watering |
+| Lettuce (any variety) | water_need: 4 | High, consistent moisture |
+| Distribution check | No single score has >50% of all crops | Reasonable spread |
+| TypeScript compilation | No errors with new required field | Type safety |
+
+### Dependencies
+- Depends on: None (all prerequisite features complete)
+- Blocks: TODO-031 (solver needs water_need data), TODO-032 (UI needs water_need data)
+
+### TDD Execution Log
+| Phase | Command | Result | Timestamp |
+|-------|---------|--------|-----------|
+| RED | - | - | - |
+| GREEN | - | - | - |
+| VALIDATE | - | - | - |
+| COMPLETE | - | - | - |
+
+### Technical Notes
+**Data Sources for water_need assignments:**
+- University Extension irrigation guides (UC Davis, Cornell, etc.)
+- "The Vegetable Gardener's Bible" by Ed Smith (watering recommendations)
+- General horticultural consensus on relative water needs
+
+**Implementation:**
+- Update `Crop` interface in `src/types/garden.ts`
+- Add `water_need` to every entry in `src/data/crops.ts` (approx 200 crops)
+- Add tests in `src/data/crops.test.ts` for data integrity
+- This is a V3 schema addition (V2 added type, botanical_family, sun, days_to_maturity)
+
+**Key Groupings (reference for data population):**
+- **Score 1** (drought-tolerant): Mediterranean herbs (rosemary, thyme, oregano, lavender), some flowers (yarrow, echinacea)
+- **Score 2** (low): Root crops (carrots, beets, turnips), alliums (onion, garlic, leek), drought-adapted varieties
+- **Score 3** (moderate): Nightshades (tomato, pepper, eggplant), legumes (beans, peas), corn, most herbs (basil is higher)
+- **Score 4** (high): Leafy greens (lettuce, spinach, chard), cucurbits (cucumber, squash, melon), celery, basil
+- **Score 5** (very high): Water-loving crops (watercress, taro), mint in wet conditions -- rare in typical raised beds
+
+---
+
+## [TODO-031] Row-Aware Water Need Scoring in Solver
+
+**Status:** completed
+**Priority:** medium
+**Estimate:** M
+**Feature:** F009 (Drip Irrigation Water Profile)
+
+### Description
+Add a row-level water variance penalty to both the companion engine and priority solver. In drip irrigation, each row of a raised bed typically runs a single line of drip tubing, delivering uniform water to all plants in that row. The solver should penalize placing crops with very different water needs on the same row, encouraging water-compatible groupings along drip lines.
+
+This is architecturally different from existing companion scoring (which is cell-level adjacency in 4 directions). Water scoring is a **row-level constraint** -- it considers all crops across an entire row, not just immediate neighbors.
+
+### Acceptance Criteria
+- [ ] Create `getRowWaterVariance(cells, width, rowIndex, allCrops)` utility function
+- [ ] Add water variance penalty to `scoreCropForCell()` in `companionEngine.ts`
+- [ ] Add water variance penalty to `scoreCell()` in `prioritySolver.ts`
+- [ ] Penalty formula: `-(rowVariance * WATER_VARIANCE_WEIGHT)` with configurable weight
+- [ ] Default weight balances against companion score without overwhelming it
+- [ ] Solver still respects all existing constraints (enemies, friends, diversity, flower limit)
+- [ ] Beds with uniform water_need rows score higher than mixed rows
+- [ ] Add unit tests for row variance calculation and penalty integration
+- [ ] Coverage >= 80%
+
+### Validation
+- **Manual:** Run Automagic Fill on a 4x8 bed, observe that crops with similar water needs cluster on the same rows
+- **Manual:** Place rosemary (water_need: 1) manually, run fill -- celery (water_need: 4) should avoid that row
+- **Automated:** Unit tests for variance calculation, penalty scoring, and full solver integration
+
+### Test Cases
+| Input | Expected Output | Notes |
+|-------|-----------------|-------|
+| Row with all water_need=3 crops | Variance = 0, no penalty | Uniform row (ideal) |
+| Row with water_need 1,1,5,5 | High variance, significant penalty | Mismatched row |
+| Row with water_need 2,3,3,2 | Low variance, minimal penalty | Compatible grouping |
+| Solver with rosemary(1) pre-placed in row 0 | Solver avoids placing lettuce(4) in row 0 | Row constraint works |
+| Solver fills empty 4x8 bed | Rows have lower water variance than random | Optimization measurable |
+| Companion enemies still separated | Enemies never adjacent regardless of water | Hard constraint preserved |
+
+### Dependencies
+- Depends on: TODO-030 (water_need data must exist on crops)
+- Blocks: None (but TODO-032 benefits from solver already grouping by water)
+
+### TDD Execution Log
+| Phase | Command | Result | Timestamp |
+|-------|---------|--------|-----------|
+| RED | - | - | - |
+| GREEN | - | - | - |
+| VALIDATE | - | - | - |
+| COMPLETE | - | - | - |
+
+### Technical Notes
+**Row Variance Calculation:**
+```
+Given a row of cells at rowIndex:
+  rowCells = cells[rowIndex * width ... (rowIndex + 1) * width - 1]
+  waterNeeds = rowCells.filter(notNull).map(c => c.water_need)
+  variance = statisticalVariance(waterNeeds)
+```
+
+**Penalty Integration:**
+- In `scoreCropForCell()`: After computing companion score, compute what the row variance *would be* if this crop were placed, and subtract penalty
+- Weight suggestion: Start with `WATER_VARIANCE_WEIGHT = 2.0` (a variance of 1.0 between water needs costs ~2 points, comparable to 2 friend bonuses)
+- This makes the solver prefer rows where water needs are within 1 point of each other
+
+**Architecture:**
+- New file: `src/utils/waterScoring.ts` for row variance helpers
+- Modified: `src/utils/companionEngine.ts` (add water penalty to scoring)
+- Modified: `src/utils/prioritySolver.ts` (add water penalty to scoring)
+- Tests: `src/utils/waterScoring.test.ts` for isolated variance calculation tests
+
+**Edge Cases:**
+- Row with only 1 planted crop: variance = 0 (no penalty, any crop can start a row)
+- Row with all null cells: skip variance calculation
+- Crops without water_need (migration safety): default to 3 (moderate)
+
+---
+
+## [TODO-032] Drip Line Visualization UI
+
+**Status:** completed
+**Priority:** medium
+**Estimate:** M
+**Feature:** F009 (Drip Irrigation Water Profile)
+
+### Description
+Add a visual drip line overlay to the garden grid. Each row displays a horizontal line representing the drip tubing run, color-coded by average water intensity of the crops in that row. An inline valve icon appears at the start of each row. Below each bed, display an assumption note about the drip tubing specification.
+
+This helps gardeners immediately see which rows have compatible water needs and which are mismatched, and makes the connection between the digital layout and the physical drip irrigation system tangible.
+
+### Acceptance Criteria
+- [ ] Render horizontal drip line indicator for each row in the garden bed grid
+- [ ] Color-code each row's drip line by average water intensity:
+  - Light blue: low water need (avg 1-2)
+  - Medium blue: moderate water need (avg 2.5-3.5)
+  - Dark blue: high water need (avg 4-5)
+  - Gray: empty row (no crops)
+- [ ] Show small inline valve icon (Droplets or similar from Lucide) at the start of each row
+- [ ] Display assumption note below each bed:
+  `*This assumes Earthline Brown PC 1-GPH tubing with 12" emitter spacing`
+- [ ] Optional hover/tap on drip line shows row water summary (e.g., "Row 2: avg 3.2 water need")
+- [ ] Visualization works for all bed dimensions (not just 4x8)
+- [ ] Visualization updates when crops are planted, removed, or auto-filled
+- [ ] Toggle to show/hide drip lines (default: visible)
+- [ ] Accessible: color + icon + text for colorblind users
+
+### Validation
+- **Manual:** Plant crops with different water needs, verify row colors reflect water intensity
+- **Manual:** Plant a full row of lettuce (4) -- row should be dark blue
+- **Manual:** Plant a full row of rosemary (1) -- row should be light blue
+- **Manual:** Verify assumption note appears below each bed
+- **Automated:** Unit tests for color calculation, row average logic
+
+### Test Cases
+| Input | Expected Output | Notes |
+|-------|-----------------|-------|
+| Row with all lettuce (water_need: 4) | Dark blue drip line | High water row |
+| Row with all rosemary (water_need: 1) | Light blue drip line | Low water row |
+| Row with mixed crops (avg ~3) | Medium blue drip line | Moderate row |
+| Empty row (all null cells) | Gray drip line | No data |
+| Any bed rendered | Assumption note displayed below | Always visible |
+| Hover/tap on drip line | Tooltip shows "Row N: avg X.X" | Interactive detail |
+| Toggle drip lines off | Lines hidden, grid displays normally | User preference |
+| 2x4 bed | 4 drip lines (one per row) | Dynamic sizing |
+| 6x3 bed | 3 drip lines (one per row) | Dynamic sizing |
+
+### Dependencies
+- Depends on: TODO-030 (water_need data must exist on crops)
+- Recommended: TODO-031 (solver grouping makes visualization more meaningful)
+- Blocks: None
+
+### TDD Execution Log
+| Phase | Command | Result | Timestamp |
+|-------|---------|--------|-----------|
+| RED | - | - | - |
+| GREEN | - | - | - |
+| VALIDATE | - | - | - |
+| COMPLETE | - | - | - |
+
+### Technical Notes
+**Color Scale (Tailwind classes):**
+```
+water_need avg 1.0-2.0: bg-blue-200 (light blue)
+water_need avg 2.0-3.0: bg-blue-400 (medium blue)
+water_need avg 3.0-4.0: bg-blue-500 (medium-dark blue)
+water_need avg 4.0-5.0: bg-blue-700 (dark blue)
+empty row:               bg-gray-300 (gray)
+```
+
+**Row Average Calculation:**
+```typescript
+function getRowWaterAverage(
+  cells: (Crop | null)[],
+  width: number,
+  rowIndex: number
+): number | null {
+  const rowStart = rowIndex * width
+  const rowCells = cells.slice(rowStart, rowStart + width)
+  const planted = rowCells.filter(c => c !== null)
+  if (planted.length === 0) return null
+  return planted.reduce((sum, c) => sum + c.water_need, 0) / planted.length
+}
+```
+
+**UI Implementation:**
+- Option A: Add drip line as a full-width row between grid rows (CSS grid gap or extra row)
+- Option B: Overlay drip line as absolute-positioned element on each grid row
+- Option C: Add colored left-border or top-border to each row of cells
+- Recommend **Option C** for simplicity: each row of cells gets a left-side color bar + valve icon
+
+**Assumption Note:**
+```tsx
+<p className="text-xs text-gray-500 italic mt-2">
+  *This assumes Earthline Brown PC 1-GPH tubing with 12" emitter spacing
+</p>
+```
+
+**Lucide Icon Options:**
+- `Droplets` for valve icon
+- `Droplet` for single drip indicator
+- `Waves` for water flow
+
+**Accessibility:**
+- Color alone is not sufficient -- add aria-label to drip line (e.g., "Row 1: high water need")
+- Valve icon has descriptive alt text
+- Tooltip works with keyboard focus (not just hover)

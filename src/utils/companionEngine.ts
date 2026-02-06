@@ -1,6 +1,7 @@
 import type { Crop, GardenProfile } from '@/types'
 import { isCropViable } from './dateEngine'
 import { SeededRandom } from './seededRandom'
+import { waterPenalty } from './waterScoring'
 
 /**
  * Default grid dimensions for 4' x 8' bed (backward compatibility)
@@ -197,6 +198,10 @@ export function autoFillBed(
 
       // Skip crops with enemies nearby (hard constraint)
       if (score <= -100) continue
+
+      // Water need penalty: prefer crops with similar water needs on same row
+      const rowIndex = Math.floor(cellIndex / gridWidth)
+      score += waterPenalty(newGrid, gridWidth, rowIndex, crop.water_need)
 
       // Variety penalty: reduce score for crops we've already planted a lot
       const timesPlanted = plantedCounts[crop.id] || 0

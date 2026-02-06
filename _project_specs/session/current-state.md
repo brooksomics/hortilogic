@@ -9,16 +9,44 @@ After each task, ask: Decision made? >10 tool calls? Feature done?
 
 # Current Session State
 
-*Last updated: 2026-01-19*
+*Last updated: 2026-02-06*
 
 ## Active Task
-✅ **Bug Fix: Manual crop placement now works correctly on second bed - COMPLETE**
+✅ **Feature 009: Drip Irrigation Water Profile Optimization - COMPLETE**
 
 ## Current Status
-- **Phase**: Bug fix - Multi-bed crop placement
-- **Progress**: Complete (TDD workflow followed)
+- **Phase**: Feature 009 complete (all 3 TODOs done)
+- **Progress**: Complete (TDD workflow followed for all)
 - **Blocking Issues**: None
-- **Ready For**: Commit and push
+- **Branch**: claude/drip-irrigation-docs-64wRp
+
+## Feature 009 Summary (2026-02-06)
+
+### TODO-030: Add water_need to Crop Interface
+- Added `water_need: 1|2|3|4|5` field to Crop interface (V3 schema)
+- Populated all 162 crops with horticultural water need scores
+- Distribution: 10 score-1, 44 score-2, 81 score-3, 26 score-4, 1 score-5
+- 6 new data integrity/distribution/spot-check tests
+
+### TODO-031: Row-Aware Water Scoring in Solver
+- Created `waterScoring.ts` with `getRowWaterVariance()` and `waterPenalty()`
+- Integrated into `companionEngine.autoFillBed()` and `prioritySolver.scoreCell()`
+- Row-level variance penalty: `-(variance * 2.0)` groups similar water needs per row
+- 11 unit tests + 1 solver integration test
+
+### TODO-032: Drip Line Visualization UI
+- Added drip line indicators to left of each garden bed row
+- Color-coded by avg water intensity (blue gradient: light=low, dark=high)
+- Droplets valve icon per row with row number labels
+- Assumption note: "*This assumes Earthline Brown PC 1-GPH tubing with 12" emitter spacing"
+- New UI helpers: `getRowWaterAverage()`, `getDripLineColor()`, `getWaterLabel()`
+- 12 new tests (10 unit + 2 UI integration)
+
+### Test Results
+- **Total Tests**: 401 passing (26 test files)
+- **Lint**: 0 errors (1 pre-existing warning)
+- **TypeCheck**: Clean
+- **Build**: Success
 
 ## Bug Fix Summary (2026-01-19)
 

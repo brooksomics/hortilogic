@@ -59,6 +59,59 @@ describe('CROP_DATABASE', () => {
   })
 })
 
+describe('CROP_DATABASE water_need (F009)', () => {
+  it('all crops have a valid water_need value (1-5)', () => {
+    CROP_DATABASE.forEach((crop) => {
+      expect(crop.water_need).toBeGreaterThanOrEqual(1)
+      expect(crop.water_need).toBeLessThanOrEqual(5)
+    })
+  })
+
+  it('no single water_need score exceeds 50% of all crops', () => {
+    const counts: Record<number, number> = {}
+    CROP_DATABASE.forEach((crop) => {
+      counts[crop.water_need] = (counts[crop.water_need] || 0) + 1
+    })
+    const maxAllowed = Math.floor(CROP_DATABASE.length * 0.5)
+    Object.values(counts).forEach((count) => {
+      expect(count).toBeLessThanOrEqual(maxAllowed)
+    })
+  })
+
+  it('drought-tolerant herbs have water_need 1', () => {
+    const droughtTolerant = ['rosemary', 'thyme', 'oregano', 'lavender', 'sage']
+    droughtTolerant.forEach((id) => {
+      const crop = CROPS_BY_ID[id]
+      expect(crop).toBeDefined()
+      expect(crop?.water_need).toBe(1)
+    })
+  })
+
+  it('tomato varieties have water_need 3 (moderate)', () => {
+    const tomatoes = CROP_DATABASE.filter((c) => {
+      return c.id.startsWith('tomato-')
+    })
+    tomatoes.forEach((crop) => {
+      expect(crop.water_need).toBe(3)
+    })
+  })
+
+  it('lettuce varieties have water_need 4 (high)', () => {
+    const lettuces = CROP_DATABASE.filter((c) => {
+      return c.id.startsWith('lettuce-')
+    })
+    lettuces.forEach((crop) => {
+      expect(crop.water_need).toBe(4)
+    })
+  })
+
+  it('watercress has water_need 5 (very high)', () => {
+    const watercress = CROPS_BY_ID['watercress']
+    expect(watercress).toBeDefined()
+    expect(watercress?.water_need).toBe(5)
+  })
+})
+
 describe('CROPS_BY_ID', () => {
   it('provides lookup object with all 162 crops', () => {
     expect(Object.keys(CROPS_BY_ID)).toHaveLength(162)
