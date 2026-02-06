@@ -141,7 +141,7 @@ function App() {
         {/* Main Layout: Sidebar + Garden Bed */}
         <div className="grid lg:grid-cols-[300px_1fr] gap-8 max-w-7xl mx-auto">
           {/* Sidebar: Crop Library */}
-          <div className="order-2 lg:order-1">
+          <div className="order-2 lg:order-1 lg:sticky lg:top-4 lg:self-start space-y-4">
             <CropLibrary
               crops={CROP_DATABASE}
               selectedCrop={selectedCrop}
