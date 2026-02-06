@@ -2,6 +2,7 @@ import type { Crop, GardenStash, GardenProfile } from '../types/garden'
 import { getNeighbors } from './companionEngine'
 import { SeededRandom } from './seededRandom'
 import { isCropViable } from './dateEngine'
+import { waterPenalty } from './waterScoring'
 
 export interface CropPlacement {
     cropId: string
@@ -80,6 +81,10 @@ export function scoreCell(
             }
         }
     }
+
+    // Water need penalty: prefer crops with similar water needs on same row
+    const rowIndex = Math.floor(cellIndex / width)
+    score += waterPenalty(bed, width, rowIndex, candidateCrop.water_need)
 
     return score
 }

@@ -39,11 +39,29 @@ Last updated: 2026-01-18 (TODO-029 complete - Flower-Vegetable Companion Bonus)
 - **Dynamic dimensions**: Supports variable grid sizes (e.g., 4x8, 2x4, 3x3)
 - **Mutualism optimization**: Prefers planting friends next to existing crops (+1 bonus per friend)
 - **Flower-Vegetable Bonus (TODO-029)**: Extra +1 bonus when flowers and vegetables are friends (+2 total)
+- **Water Need Grouping (TODO-031 / F009)**: Row-level water variance penalty groups crops with similar water needs on the same drip line
 - **Variety optimization**: Tracks planted counts and penalizes monoculture (-0.5 per duplicate)
 - **Smart scoring**: Evaluates ALL crops for each cell and picks the best fit
 - Constraint satisfaction: respects both viability AND compatibility
 - Preserves existing manual plantings
 - **Deterministic (TODO-023)**: Uses seeded RNG based on layout.id for reproducible results
+
+---
+
+## Water Need Scoring (TODO-031 / F009)
+
+| Function | Location | Purpose |
+|----------|----------|---------|
+| `getRowWaterVariance()` | utils/waterScoring.ts:14 | Calculate variance of water_need values in a row |
+| `waterPenalty()` | utils/waterScoring.ts:38 | Calculate penalty for placing a crop in a row (simulates future variance) |
+| `WATER_VARIANCE_WEIGHT` | utils/waterScoring.ts:7 | Weight constant for water penalty (default: 2.0) |
+
+**Key Concepts:**
+- **Row-level constraint**: Unlike companion scoring (cell adjacency), water scoring considers all crops across an entire row
+- **Drip line model**: Each row represents a single drip tubing run with uniform water delivery
+- **Variance penalty**: `-(variance * WATER_VARIANCE_WEIGHT)` where higher variance = bigger penalty
+- **Weight balance**: WATER_VARIANCE_WEIGHT=2.0 makes variance of 1.0 cost ~2 points (comparable to 2 friend bonuses)
+- **Integration**: Applied in both `companionEngine.autoFillBed()` and `prioritySolver.scoreCell()`/`autoFillGaps()`
 
 ---
 

@@ -685,6 +685,62 @@ describe('autoFillBed', () => {
       expect(plantedCropIds.size).toBeGreaterThanOrEqual(2)
     })
 
+    it('should prefer crops with similar water needs on the same row', () => {
+      // 4-wide grid, row 0 has rosemary (water_need=1) at position 0
+      const grid: (Crop | null)[] = Array(16).fill(null) as (Crop | null)[]
+      const rosemary: Crop = {
+        id: 'rosemary',
+        name: 'Rosemary',
+        type: 'herb',
+        botanical_family: 'Lamiaceae',
+        sun: 'full',
+        days_to_maturity: 120,
+        water_need: 1,
+        sfg_density: 1,
+        planting_strategy: { start_window_start: -4, start_window_end: 4 },
+        companions: { friends: [], enemies: [] },
+      }
+      const celeryHigh: Crop = {
+        id: 'celery',
+        name: 'Celery',
+        type: 'vegetable',
+        botanical_family: 'Apiaceae',
+        sun: 'full',
+        days_to_maturity: 100,
+        water_need: 4,
+        sfg_density: 4,
+        planting_strategy: { start_window_start: -4, start_window_end: 4 },
+        companions: { friends: [], enemies: [] },
+      }
+      const thymeLow: Crop = {
+        id: 'thyme',
+        name: 'Thyme',
+        type: 'herb',
+        botanical_family: 'Lamiaceae',
+        sun: 'full',
+        days_to_maturity: 90,
+        water_need: 1,
+        sfg_density: 4,
+        planting_strategy: { start_window_start: -4, start_window_end: 4 },
+        companions: { friends: [], enemies: [] },
+      }
+
+      grid[0] = rosemary // Row 0, position 0: water_need=1
+      const crops = [celeryHigh, thymeLow]
+      const targetDate = new Date('2024-05-20')
+
+      const result = autoFillBed(grid, crops, profile, targetDate, 4, 4, 'water-test')
+
+      // Row 0 (indices 0-3): rosemary(1) is pre-placed
+      // Thyme(1) should be preferred over celery(4) in row 0
+      const row0Crops = [result[1], result[2], result[3]].filter(c => c !== null)
+      const thymeInRow0 = row0Crops.filter(c => c?.id === 'thyme').length
+      const celeryInRow0 = row0Crops.filter(c => c?.id === 'celery').length
+
+      // With water scoring, thyme should appear more in row 0 than celery
+      expect(thymeInRow0).toBeGreaterThanOrEqual(celeryInRow0)
+    })
+
     it('should prefer planting friends next to existing crops (mutualism)', () => {
       const grid: (Crop | null)[] = Array(16).fill(null) as (Crop | null)[]
       // 4x4 grid for simpler test

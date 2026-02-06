@@ -38,7 +38,7 @@ const mockCrops: Crop[] = [
         sfg_density: 4, // Small crop
         sun: 'full',
         days_to_maturity: 60,
-        water_need: 4,
+        water_need: 3,
         companions: {
             friends: ['tomato'],
             enemies: []
@@ -86,7 +86,7 @@ const mockCrops: Crop[] = [
         sfg_density: 4,
         sun: 'full',
         days_to_maturity: 50,
-        water_need: 2,
+        water_need: 3,
         companions: {
             friends: ['tomato', 'basil'],
             enemies: []
@@ -197,7 +197,7 @@ describe('Priority Solver Logic', () => {
                 sfg_density: 16,
                 sun: 'full',
                 days_to_maturity: 70,
-                water_need: 2,
+                water_need: 3,
                 companions: {
                     friends: ['tomato'],
                     enemies: []
