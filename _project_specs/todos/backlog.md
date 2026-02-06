@@ -528,7 +528,7 @@ Instead of asking users to know their USDA Hardiness Zone, allow them to enter a
 
 ## [TODO-030] Add `water_need` Field to Crop Interface & Populate Database
 
-**Status:** pending
+**Status:** completed
 **Priority:** medium
 **Estimate:** S-M
 **Feature:** F009 (Drip Irrigation Water Profile)
@@ -604,7 +604,7 @@ Most raised bed crops cluster in the 2-4 range, which reflects realistic irrigat
 
 ## [TODO-031] Row-Aware Water Need Scoring in Solver
 
-**Status:** pending
+**Status:** completed
 **Priority:** medium
 **Estimate:** M
 **Feature:** F009 (Drip Irrigation Water Profile)
@@ -681,7 +681,7 @@ Given a row of cells at rowIndex:
 
 ## [TODO-032] Drip Line Visualization UI
 
-**Status:** pending
+**Status:** completed
 **Priority:** medium
 **Estimate:** M
 **Feature:** F009 (Drip Irrigation Water Profile)
