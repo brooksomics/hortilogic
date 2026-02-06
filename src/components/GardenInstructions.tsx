@@ -64,10 +64,10 @@ export function GardenInstructions({ selectedCrop }: GardenInstructionsProps) {
             along the same drip tubing run.
           </p>
           <ul className="list-disc list-inside space-y-1 text-sm text-soil-700 ml-2">
-            <li><span className="inline-block w-3 h-3 bg-blue-200 rounded mr-1 align-middle" /> Light blue = low water need (drought-tolerant herbs like rosemary, thyme)</li>
-            <li><span className="inline-block w-3 h-3 bg-blue-400 rounded mr-1 align-middle" /> Medium blue = moderate water need (tomatoes, peppers, beans)</li>
-            <li><span className="inline-block w-3 h-3 bg-blue-500 rounded mr-1 align-middle" /> Dark blue = high water need (lettuce, cucumbers, basil)</li>
-            <li><span className="inline-block w-3 h-3 bg-blue-700 rounded mr-1 align-middle" /> Deep blue = very high water need (watercress)</li>
+            <li><span className="inline-block w-3 h-3 bg-amber-300 rounded mr-1 align-middle" /> Amber = low water need (drought-tolerant herbs like rosemary, thyme)</li>
+            <li><span className="inline-block w-3 h-3 bg-green-300 rounded mr-1 align-middle" /> Green = moderate water need (tomatoes, peppers, beans)</li>
+            <li><span className="inline-block w-3 h-3 bg-teal-400 rounded mr-1 align-middle" /> Teal = high water need (lettuce, cucumbers, basil)</li>
+            <li><span className="inline-block w-3 h-3 bg-blue-500 rounded mr-1 align-middle" /> Blue = very high water need (watercress)</li>
             <li><span className="inline-block w-3 h-3 bg-gray-300 rounded mr-1 align-middle" /> Gray = empty row (no crops planted)</li>
           </ul>
         </div>

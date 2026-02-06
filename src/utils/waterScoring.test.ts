@@ -147,24 +147,24 @@ describe('getDripLineColor', () => {
     expect(getDripLineColor(null)).toBe('bg-gray-300')
   })
 
-  it('returns light blue for low water (1-2)', () => {
-    expect(getDripLineColor(1)).toBe('bg-blue-200')
-    expect(getDripLineColor(2)).toBe('bg-blue-200')
+  it('returns amber for low water (1-2)', () => {
+    expect(getDripLineColor(1)).toBe('bg-amber-300')
+    expect(getDripLineColor(2)).toBe('bg-amber-300')
   })
 
-  it('returns medium blue for moderate water (2.5-3)', () => {
-    expect(getDripLineColor(2.5)).toBe('bg-blue-400')
-    expect(getDripLineColor(3)).toBe('bg-blue-400')
+  it('returns green for moderate water (2.5-3)', () => {
+    expect(getDripLineColor(2.5)).toBe('bg-green-300')
+    expect(getDripLineColor(3)).toBe('bg-green-300')
   })
 
-  it('returns medium-dark blue for high water (3.5-4)', () => {
-    expect(getDripLineColor(3.5)).toBe('bg-blue-500')
-    expect(getDripLineColor(4)).toBe('bg-blue-500')
+  it('returns teal for high water (3.5-4)', () => {
+    expect(getDripLineColor(3.5)).toBe('bg-teal-400')
+    expect(getDripLineColor(4)).toBe('bg-teal-400')
   })
 
-  it('returns dark blue for very high water (4.5-5)', () => {
-    expect(getDripLineColor(4.5)).toBe('bg-blue-700')
-    expect(getDripLineColor(5)).toBe('bg-blue-700')
+  it('returns blue for very high water (4.5-5)', () => {
+    expect(getDripLineColor(4.5)).toBe('bg-blue-500')
+    expect(getDripLineColor(5)).toBe('bg-blue-500')
   })
 })
 

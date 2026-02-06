@@ -173,8 +173,8 @@ export function GardenBed({
               title={`Row ${(rowIndex + 1).toString()}: ${drip.avg !== null ? `avg ${drip.avg.toFixed(1)} water need` : 'empty'}`}
               aria-label={`Row ${(rowIndex + 1).toString()}: ${drip.label}`}
             >
-              <Droplets className="w-3 h-3 text-blue-900 flex-shrink-0" />
-              <span className="text-[8px] text-blue-900 whitespace-nowrap">
+              <Droplets className="w-3 h-3 text-gray-800 flex-shrink-0" />
+              <span className="text-[8px] text-gray-800 whitespace-nowrap">
                 Row {(rowIndex + 1).toString()}
               </span>
             </div>

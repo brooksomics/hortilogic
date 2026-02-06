@@ -79,13 +79,14 @@ export function getRowWaterAverage(
 
 /**
  * Get the Tailwind color class for a drip line based on water need average.
+ * Uses a warm-to-cool hue scale: amber (dry) -> yellow -> green -> teal -> blue (wet).
  */
 export function getDripLineColor(avg: number | null): string {
   if (avg === null) return 'bg-gray-300'
-  if (avg <= 2) return 'bg-blue-200'
-  if (avg <= 3) return 'bg-blue-400'
-  if (avg <= 4) return 'bg-blue-500'
-  return 'bg-blue-700'
+  if (avg <= 2) return 'bg-amber-300'
+  if (avg <= 3) return 'bg-green-300'
+  if (avg <= 4) return 'bg-teal-400'
+  return 'bg-blue-500'
 }
 
 /**
