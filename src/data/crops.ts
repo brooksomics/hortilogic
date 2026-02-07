@@ -1172,8 +1172,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 2,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['corn-sweet', 'green-beans-bush', 'radish-red', 'cilantro', 'sunflower', 'marigold-french', 'nasturtium'],
+      enemies: ['tomato-beefsteak', 'potato'],
     },
   },
   {
@@ -1220,8 +1220,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['green-beans-pole', 'spinach', 'radish-red', 'marigold-french', 'basil-sweet', 'sunflower'],
+      enemies: ['potato'],
     },
   },
 
@@ -1414,8 +1414,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 4,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['corn-sweet', 'green-beans-pole', 'peas-sugar-snap', 'onion-yellow', 'radish-red', 'oregano', 'marigold-french', 'nasturtium', 'sunflower', 'borage'],
+      enemies: ['potato', 'cucumber', 'zucchini'],
     },
   },
 
@@ -1560,8 +1560,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['corn-sweet', 'green-beans-bush', 'peas-sugar-snap', 'spinach', 'cabbage', 'lettuce-leaf', 'radish-red', 'garlic', 'basil-sweet', 'marigold-french'],
+      enemies: ['tomato-beefsteak', 'beet'],
     },
   },
   {
@@ -1898,8 +1898,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 2,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['beet', 'cabbage', 'broccoli', 'cauliflower', 'kale-curly', 'eggplant', 'potato', 'carrot', 'green-beans-bush', 'pumpkin', 'zucchini', 'strawberry'],
+      enemies: ['parsley-flat'],
     },
   },
   {
@@ -1914,8 +1914,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['tomato-beefsteak', 'pepper-bell', 'lettuce-leaf', 'radish-red', 'carrot', 'basil-sweet', 'thyme', 'marigold-french', 'nasturtium', 'lavender'],
+      enemies: ['cabbage', 'broccoli', 'cauliflower', 'corn-sweet'],
     },
   },
   {
@@ -1930,7 +1930,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
-      friends: [],
+      friends: ['rosemary', 'thyme', 'oregano', 'sage', 'basil-sweet', 'chives', 'lavender', 'nasturtium', 'carrot', 'green-beans-bush'],
       enemies: [],
     },
   },
@@ -1962,8 +1962,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['tomato-beefsteak', 'celery', 'carrot', 'pepper-bell', 'peas-sugar-snap', 'green-beans-bush', 'thyme', 'parsley-flat', 'chives', 'basil-sweet', 'marigold-french', 'nasturtium', 'borage'],
+      enemies: ['potato'],
     },
   },
   {
@@ -2172,7 +2172,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 1,
     planting_strategy: { start_window_start: -2, start_window_end: 6 },
     companions: {
-      friends: [],
+      friends: ['tomato-beefsteak', 'cucumber', 'zucchini', 'pumpkin', 'rosemary', 'thyme', 'marigold-french', 'cosmos', 'zinnia', 'calendula'],
       enemies: [],
     },
   },
@@ -2220,8 +2220,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['pepper-bell', 'lavender', 'thyme', 'sage', 'raspberry', 'grape'],
+      enemies: ['basil-sweet', 'mint-spearmint', 'mint-peppermint'],
     },
   },
   {
@@ -2252,8 +2252,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['tomato-beefsteak', 'pepper-bell', 'eggplant', 'basil-sweet', 'lavender', 'marigold-french', 'nasturtium', 'calendula', 'zinnia', 'cosmos'],
+      enemies: ['sunflower', 'mint-spearmint'],
     },
   },
   {
@@ -2268,7 +2268,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: [],
+      friends: ['lettuce-leaf', 'lettuce-butterhead', 'spinach', 'parsley-flat', 'thyme', 'chives', 'marigold-french', 'nasturtium'],
       enemies: [],
     },
   },
@@ -2284,7 +2284,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: [],
+      friends: ['lettuce-leaf', 'lettuce-butterhead', 'spinach', 'strawberry', 'basil-sweet', 'chives', 'thyme', 'marigold-french', 'nasturtium'],
       enemies: [],
     },
   },
@@ -2300,7 +2300,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
-      friends: [],
+      friends: ['tomato-beefsteak', 'pepper-bell', 'corn-sweet', 'lettuce-leaf', 'cucumber', 'basil-sweet', 'thyme', 'chives', 'sage', 'lavender', 'dill', 'marigold-french'],
       enemies: [],
     },
   },
@@ -2332,8 +2332,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 2,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['thyme', 'sage', 'lavender', 'rosemary', 'chamomile', 'marigold-french'],
+      enemies: ['mint-spearmint'],
     },
   },
   {
@@ -2348,8 +2348,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['onion-yellow', 'garlic', 'chives', 'dill', 'chamomile', 'borage', 'nasturtium', 'marigold-french', 'celery', 'spinach', 'lettuce-leaf', 'beet', 'thyme'],
+      enemies: ['cabbage', 'broccoli', 'cauliflower', 'kale-curly', 'turnip', 'radish-red'],
     },
   },
   {
@@ -2364,8 +2364,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['tomato-beefsteak', 'pepper-bell', 'corn-sweet', 'cucumber', 'lettuce-leaf', 'spinach', 'radish-red', 'carrot', 'basil-sweet', 'marigold-french', 'nasturtium'],
+      enemies: ['onion-yellow', 'garlic', 'chives'],
     },
   },
   {
@@ -2380,7 +2380,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
-      friends: [],
+      friends: ['tomato-beefsteak', 'pepper-bell', 'corn-sweet', 'green-beans-bush', 'zucchini', 'cucumber', 'pumpkin', 'basil-sweet', 'marigold-french', 'zinnia'],
       enemies: [],
     },
   },
@@ -2428,7 +2428,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
-      friends: [],
+      friends: ['tomato-beefsteak', 'basil-sweet', 'dill', 'cilantro', 'garlic', 'marigold-french', 'nasturtium', 'zinnia'],
       enemies: [],
     },
   },
@@ -2444,7 +2444,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
-      friends: [],
+      friends: ['marigold-french', 'nasturtium', 'zinnia', 'lavender', 'thyme', 'rosemary'],
       enemies: [],
     },
   },
@@ -2460,7 +2460,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
-      friends: [],
+      friends: ['basil-sweet', 'sage', 'lavender', 'marigold-french', 'zinnia'],
       enemies: [],
     },
   },
@@ -2542,8 +2542,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['chives', 'garlic', 'marigold-french', 'calendula', 'nasturtium', 'strawberry', 'blueberry'],
+      enemies: ['potato'],
     },
   },
   {
@@ -2558,8 +2558,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['green-beans-bush', 'chives', 'garlic', 'nasturtium', 'marigold-french', 'strawberry', 'blueberry'],
+      enemies: ['potato', 'eggplant'],
     },
   },
   {
