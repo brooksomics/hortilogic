@@ -9,7 +9,7 @@ interface GardenControlsProps {
 
 export function GardenControls({ onAutoFill, onClearBed, gardenProfile }: GardenControlsProps) {
   return (
-    <div className="mt-4 bg-white rounded-lg shadow-lg p-6">
+    <div className="bg-white rounded-lg shadow-lg p-6 lg:flex-shrink-0">
       <h3 className="text-lg font-semibold text-soil-900 mb-3">
         Controls
       </h3>

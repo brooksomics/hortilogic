@@ -141,7 +141,27 @@ function App() {
         {/* Main Layout: Sidebar + Garden Bed */}
         <div className="grid lg:grid-cols-[300px_1fr] gap-8 max-w-7xl mx-auto">
           {/* Sidebar: Crop Library */}
-          <div className="order-2 lg:order-1">
+          <div className="order-2 lg:order-1 lg:sticky lg:top-4 lg:self-start lg:max-h-[calc(100vh-2rem)] lg:flex lg:flex-col space-y-4">
+            <GardenControls
+              onAutoFill={handleAutoFill}
+              onClearBed={clearBed}
+              gardenProfile={gardenProfile}
+            />
+            {activeLayout && (
+              <StashSummary
+                stash={stash}
+                crops={CROP_DATABASE}
+                totalArea={getStashTotalArea()}
+                maxArea={totalArea}
+                onClear={clearStash}
+                onRemoveItem={(id) => { removeFromStash(id, 1) }}
+                onDistribute={handleDistributeStash}
+                placementResult={placementResult}
+                isDistributing={isDistributing}
+                onUndo={undo}
+                canUndo={canUndo}
+              />
+            )}
             <CropLibrary
               crops={CROP_DATABASE}
               selectedCrop={selectedCrop}
@@ -160,26 +180,6 @@ function App() {
               onRemoveFromStash={removeFromStash}
               dislikedCropIds={activeLayout?.dislikedCropIds}
               onToggleDislikedCrop={toggleDislikedCrop}
-            />
-            {activeLayout && (
-              <StashSummary
-                stash={stash}
-                crops={CROP_DATABASE}
-                totalArea={getStashTotalArea()}
-                maxArea={totalArea}
-                onClear={clearStash}
-                onRemoveItem={(id) => { removeFromStash(id, 1) }}
-                onDistribute={handleDistributeStash}
-                placementResult={placementResult}
-                isDistributing={isDistributing}
-                onUndo={undo}
-                canUndo={canUndo}
-              />
-            )}
-            <GardenControls
-              onAutoFill={handleAutoFill}
-              onClearBed={clearBed}
-              gardenProfile={gardenProfile}
             />
           </div>
 

@@ -254,7 +254,7 @@ export function CropLibrary({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6">
+    <div className="bg-white rounded-lg shadow-lg p-6 lg:flex lg:flex-col lg:flex-1 lg:min-h-0 lg:overflow-hidden">
       <div className="flex items-center gap-2 mb-4">
         <Sprout className="w-5 h-5 text-leaf-600" />
         <h2 className="text-xl font-semibold text-soil-900">
@@ -263,7 +263,7 @@ export function CropLibrary({
       </div>
 
       {/* Category Tabs */}
-      <div className="flex gap-2 mb-4">
+      <div className="flex flex-wrap gap-2 mb-4">
         <button
           onClick={() => { handleCategoryClick('all') }}
           className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
@@ -394,7 +394,7 @@ export function CropLibrary({
       </div>
 
       {/* Crop List */}
-      <div className="space-y-2">
+      <div className="space-y-2 lg:overflow-y-auto lg:min-h-0 lg:flex-1 lg:pr-1">
         {groupedCrops ? (
           // Grouped view (for Vegetables tab)
           Object.entries(groupedCrops).sort(([a], [b]) => a.localeCompare(b)).map(([family, cropsInFamily]) => (
@@ -414,7 +414,7 @@ export function CropLibrary({
       </div>
 
       {selectedCrop && (
-        <div className="mt-4 p-3 bg-leaf-50 rounded border border-leaf-200">
+        <div className="mt-4 p-3 bg-leaf-50 rounded border border-leaf-200 lg:flex-shrink-0">
           <p className="text-sm text-leaf-900 font-medium">
             Selected for Painting: {selectedCrop.name || selectedCrop.id}
           </p>
