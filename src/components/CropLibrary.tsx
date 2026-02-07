@@ -32,7 +32,7 @@ interface CropLibraryProps {
   onToggleDislikedCrop?: (cropId: string) => void
 }
 
-type CropCategory = 'all' | 'vegetable' | 'herb' | 'flower'
+type CropCategory = 'all' | 'vegetable' | 'herb' | 'flower' | 'fruit'
 type SunRequirement = 'full' | 'partial' | 'shade' | null
 
 /**
@@ -307,6 +307,17 @@ export function CropLibrary({
           type="button"
         >
           Flowers
+        </button>
+        <button
+          onClick={() => { handleCategoryClick('fruit') }}
+          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+            activeCategory === 'fruit'
+              ? 'bg-leaf-600 text-white'
+              : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
+          }`}
+          type="button"
+        >
+          Fruits
         </button>
       </div>
 

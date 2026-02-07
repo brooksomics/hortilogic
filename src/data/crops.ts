@@ -1,5 +1,5 @@
 /**
- * Comprehensive Crop Database (161 crops)
+ * Comprehensive Crop Database (160 crops)
  * V2 Schema with Smart Crop Metadata
  *
  * Companion planting data sourced from:
@@ -351,7 +351,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot', 'basil-sweet', 'parsley-flat', 'onion-yellow', 'marigold-french', 'nasturtium'],
-      enemies: ['potato', 'kale-curly', 'bok-choy', 'collard-greens', 'peas-sugar-snap'],
+      enemies: ['potato', 'kale-curly', 'kale-lacinato', 'kale-red-russian', 'bok-choy', 'collard-greens', 'peas-sugar-snap', 'fennel', 'dill', 'corn-sweet'],
     },
   },
   {
@@ -475,7 +475,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 1,
     sun: 'full',
     days_to_maturity: 80,
-    water_need: 3,
+    water_need: 4,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['basil-sweet', 'thyme', 'oregano', 'marigold-french'],
@@ -495,7 +495,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: ['peas-sugar-snap', 'cabbage', 'horseradish'],
-      enemies: ['tomato-beefsteak', 'tomato-cherry', 'cucumber', 'pumpkin'],
+      enemies: ['tomato-beefsteak', 'tomato-cherry', 'tomato-roma', 'tomato-heirloom', 'tomatillo', 'cucumber', 'pumpkin', 'zucchini', 'yellow-squash', 'butternut-squash', 'acorn-squash', 'spaghetti-squash', 'delicata-squash', 'turnip', 'sunflower', 'fennel'],
     },
   },
   {
@@ -531,7 +531,7 @@ export const CROP_DATABASE: Crop[] = [
     },
   },
 
-  // ===== BRASSICAS (14 varieties) =====
+  // ===== BRASSICAS (13 varieties) =====
   {
     id: 'broccoli',
     name: 'Broccoli',
@@ -740,22 +740,6 @@ export const CROP_DATABASE: Crop[] = [
       enemies: ['tomato-beefsteak'],
     },
   },
-  {
-    id: 'chinese-cabbage',
-    name: 'Chinese Cabbage',
-    type: 'vegetable',
-    botanical_family: 'Brassicaceae',
-    emoji: '🥬',
-    sfg_density: 1,
-    sun: 'full',
-    days_to_maturity: 65,
-    water_need: 4,
-    planting_strategy: { start_window_start: -4, start_window_end: 0 },
-    companions: {
-      friends: ['onion-yellow', 'garlic'],
-      enemies: [],
-    },
-  },
 
   // ===== LEGUMES (12 varieties) =====
   {
@@ -771,7 +755,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['carrot', 'radish-red', 'turnip', 'cucumber'],
-      enemies: ['tomato-beefsteak', 'tomato-cherry', 'onion-yellow', 'garlic'],
+      enemies: ['tomato-beefsteak', 'tomato-cherry', 'onion-yellow', 'onion-red', 'onion-green', 'garlic', 'shallot', 'leek', 'chives', 'fennel'],
     },
   },
   {
@@ -819,7 +803,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber', 'radish-red', 'nasturtium', 'marigold-french'],
-      enemies: ['onion-yellow', 'garlic'],
+      enemies: ['onion-yellow', 'onion-red', 'garlic', 'shallot', 'leek', 'chives', 'fennel'],
     },
   },
   {
@@ -997,7 +981,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'beet', 'tomato-beefsteak', 'lettuce-leaf', 'chamomile'],
-      enemies: ['peas-sugar-snap', 'green-beans-bush', 'sage'],
+      enemies: ['peas-sugar-snap', 'peas-snow', 'peas-english', 'green-beans-bush', 'green-beans-pole', 'yellow-beans', 'fava-beans', 'edamame', 'lima-beans', 'runner-beans', 'lentils', 'chickpeas', 'asparagus', 'sage'],
     },
   },
   {
@@ -1045,7 +1029,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['tomato-beefsteak', 'lettuce-leaf', 'cabbage', 'chamomile'],
-      enemies: ['peas-sugar-snap', 'green-beans-bush', 'sage'],
+      enemies: ['peas-sugar-snap', 'peas-snow', 'peas-english', 'green-beans-bush', 'green-beans-pole', 'yellow-beans', 'fava-beans', 'edamame', 'lima-beans', 'runner-beans', 'lentils', 'chickpeas', 'asparagus', 'sage'],
     },
   },
   {
@@ -1108,8 +1092,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 2,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['green-beans-bush', 'peas-sugar-snap', 'thyme', 'basil-sweet', 'marigold-french', 'nasturtium', 'radish-red', 'dill'],
+      enemies: ['tomato-beefsteak', 'potato'],
     },
   },
   {
@@ -1124,8 +1108,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 4,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['turmeric', 'lemongrass', 'peas-sugar-snap', 'green-beans-bush', 'cilantro', 'spinach', 'marigold-french', 'nasturtium'],
+      enemies: ['fennel'],
     },
   },
   {
@@ -1140,8 +1124,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 4,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['ginger', 'lemongrass', 'green-beans-bush', 'peas-sugar-snap', 'cilantro', 'basil-sweet', 'marigold-french', 'garlic'],
+      enemies: ['fennel'],
     },
   },
   {
@@ -1172,8 +1156,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 2,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['green-beans-bush', 'corn-sweet', 'cucumber', 'sunflower', 'marigold-french', 'garlic', 'onion-yellow'],
+      enemies: ['potato', 'tomato-beefsteak'],
     },
   },
   {
@@ -1255,7 +1239,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['peas-sugar-snap', 'radish-red', 'lettuce-leaf', 'nasturtium', 'marigold-french'],
-      enemies: ['potato'],
+      enemies: ['potato', 'sage', 'fennel'],
     },
   },
   {
@@ -1445,7 +1429,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 75,
-    water_need: 3,
+    water_need: 4,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['green-beans-pole', 'pumpkin', 'cucumber'],
@@ -1480,8 +1464,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['peas-sugar-snap', 'green-beans-bush', 'sunflower', 'tarragon', 'marigold-french', 'nasturtium'],
+      enemies: ['fennel'],
     },
   },
   {
@@ -1513,7 +1497,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: [],
-      enemies: ['tomato-beefsteak', 'green-beans-bush', 'dill'],
+      enemies: ['tomato-beefsteak', 'green-beans-bush', 'dill', 'pepper-bell', 'eggplant', 'potato', 'peas-sugar-snap', 'carrot', 'cabbage', 'broccoli', 'cauliflower', 'cucumber'],
     },
   },
   {
@@ -1544,8 +1528,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['cabbage', 'broccoli', 'cauliflower', 'garlic', 'onion-yellow', 'strawberry', 'marigold-french', 'nasturtium'],
+      enemies: ['sunflower'],
     },
   },
   {
@@ -1607,7 +1591,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 60,
-    water_need: 4,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'tomato-cherry', 'pepper-bell', 'asparagus'],
@@ -1623,7 +1607,7 @@ export const CROP_DATABASE: Crop[] = [
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 60,
-    water_need: 4,
+    water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'pepper-bell'],
@@ -1659,7 +1643,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['tomato-beefsteak', 'tomato-cherry', 'carrot', 'asparagus'],
-      enemies: [],
+      enemies: ['mint-spearmint', 'mint-peppermint'],
     },
   },
   {
@@ -1686,7 +1670,7 @@ export const CROP_DATABASE: Crop[] = [
     emoji: '🌿',
     sfg_density: 4,
     sun: 'full',
-    days_to_maturity: 70,
+    days_to_maturity: 45,
     water_need: 2,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
@@ -1787,7 +1771,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['rosemary', 'cabbage', 'carrot'],
-      enemies: ['onion-yellow', 'cucumber'],
+      enemies: ['onion-yellow', 'garlic', 'cucumber', 'fennel'],
     },
   },
   {
@@ -1898,8 +1882,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['basil-sweet', 'tomato-beefsteak', 'pepper-bell', 'eggplant', 'ginger', 'turmeric', 'marigold-french', 'nasturtium'],
+      enemies: ['fennel'],
     },
   },
   {
@@ -2172,7 +2156,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
-      friends: [],
+      friends: ['tomato-beefsteak', 'chives', 'marigold-french'],
       enemies: [],
     },
   },
@@ -2332,8 +2316,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['marigold-french', 'nasturtium', 'basil-sweet', 'lavender', 'dill', 'salvia'],
+      enemies: ['potato'],
     },
   },
   {
@@ -2412,8 +2396,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 4,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['nasturtium', 'basil-sweet'],
+      enemies: ['fennel'],
     },
   },
   {
@@ -2428,8 +2412,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['broccoli', 'cabbage', 'cauliflower', 'carrot', 'strawberry', 'rosemary', 'lavender', 'tomato-beefsteak'],
+      enemies: ['fennel'],
     },
   },
   {
@@ -2485,23 +2469,23 @@ export const CROP_DATABASE: Crop[] = [
   {
     id: 'strawberry',
     name: 'Strawberry',
-    type: 'vegetable',
+    type: 'fruit',
     botanical_family: 'Rosaceae',
     emoji: '🍓',
     sfg_density: 4,
     sun: 'full',
     days_to_maturity: 90,
-    water_need: 3,
+    water_need: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-butterhead', 'spinach', 'borage', 'thyme', 'sorrel'],
-      enemies: ['cabbage', 'broccoli', 'kale-curly'],
+      enemies: ['cabbage', 'broccoli', 'cauliflower', 'kale-curly', 'fennel'],
     },
   },
   {
     id: 'blueberry',
     name: 'Blueberry',
-    type: 'vegetable',
+    type: 'fruit',
     botanical_family: 'Ericaceae',
     emoji: '🫐',
     sfg_density: 1,
@@ -2510,14 +2494,14 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['strawberry', 'thyme', 'borage', 'calendula', 'nasturtium'],
+      enemies: ['tomato-beefsteak', 'pepper-bell', 'eggplant', 'potato', 'fennel'],
     },
   },
   {
     id: 'raspberry',
     name: 'Raspberry',
-    type: 'vegetable',
+    type: 'fruit',
     botanical_family: 'Rosaceae',
     emoji: '🍇',
     sfg_density: 1,
@@ -2526,14 +2510,14 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: ['garlic'],
-      enemies: [],
+      friends: ['garlic', 'chives', 'marigold-french', 'nasturtium'],
+      enemies: ['blackberry', 'potato'],
     },
   },
   {
     id: 'blackberry',
     name: 'Blackberry',
-    type: 'vegetable',
+    type: 'fruit',
     botanical_family: 'Rosaceae',
     emoji: '🫐',
     sfg_density: 1,
@@ -2542,14 +2526,14 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['garlic', 'chives', 'borage', 'blueberry', 'mint-spearmint', 'thyme', 'peas-sugar-snap', 'green-beans-bush', 'sunflower'],
+      enemies: ['tomato-beefsteak', 'potato', 'raspberry'],
     },
   },
   {
     id: 'currant',
     name: 'Currant',
-    type: 'vegetable',
+    type: 'fruit',
     botanical_family: 'Grossulariaceae',
     emoji: '🫐',
     sfg_density: 1,
@@ -2565,7 +2549,7 @@ export const CROP_DATABASE: Crop[] = [
   {
     id: 'gooseberry',
     name: 'Gooseberry',
-    type: 'vegetable',
+    type: 'fruit',
     botanical_family: 'Grossulariaceae',
     emoji: '🫐',
     sfg_density: 1,
@@ -2581,7 +2565,7 @@ export const CROP_DATABASE: Crop[] = [
   {
     id: 'grape',
     name: 'Grape',
-    type: 'vegetable',
+    type: 'fruit',
     botanical_family: 'Vitaceae',
     emoji: '🍇',
     sfg_density: 1,
@@ -2597,7 +2581,7 @@ export const CROP_DATABASE: Crop[] = [
   {
     id: 'fig',
     name: 'Fig',
-    type: 'vegetable',
+    type: 'fruit',
     botanical_family: 'Moraceae',
     emoji: '🌰',
     sfg_density: 1,
@@ -2606,8 +2590,8 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 2,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
-      friends: [],
-      enemies: [],
+      friends: ['basil-sweet', 'oregano', 'chives', 'thyme', 'rosemary', 'lavender', 'sage', 'marigold-french', 'nasturtium', 'strawberry'],
+      enemies: ['fennel', 'tomato-beefsteak', 'potato'],
     },
   },
 ]
@@ -2626,7 +2610,7 @@ export const CROPS_BY_ID: Record<string, Crop> = CROP_DATABASE.reduce<Record<str
 /**
  * Get crops by type
  */
-export function getCropsByType(type: 'vegetable' | 'herb' | 'flower'): Crop[] {
+export function getCropsByType(type: 'vegetable' | 'herb' | 'flower' | 'fruit'): Crop[] {
   return CROP_DATABASE.filter(crop => crop.type === type)
 }
 
@@ -2653,5 +2637,6 @@ export const DATABASE_STATS = {
   vegetables: getCropsByType('vegetable').length,
   herbs: getCropsByType('herb').length,
   flowers: getCropsByType('flower').length,
+  fruits: getCropsByType('fruit').length,
   families: getAllFamilies().length,
 }
