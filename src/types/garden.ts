@@ -199,7 +199,7 @@ export interface Crop {
   emoji?: string
 
   /** Crop type classification (V2) */
-  type: 'vegetable' | 'herb' | 'flower'
+  type: 'vegetable' | 'herb' | 'flower' | 'fruit'
 
   /** Botanical family for crop rotation planning (V2) */
   botanical_family: string

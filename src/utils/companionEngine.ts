@@ -1,4 +1,5 @@
 import type { Crop, GardenProfile } from '@/types'
+import { CROPS_BY_ID } from '@/data/crops'
 import { isCropViable } from './dateEngine'
 import { SeededRandom } from './seededRandom'
 import { waterPenalty } from './waterScoring'
@@ -72,6 +73,7 @@ export function getNeighbors(
 
 /**
  * Check if a crop can be planted at a location without violating companion planting rules
+ * Checks both directions: candidate's enemies AND neighbors' enemies (bidirectional)
  *
  * @param candidateCrop - The crop being considered for planting
  * @param neighborCropIds - Array of crop IDs for adjacent neighbors
@@ -81,16 +83,21 @@ export function checkCompanionConstraints(
   candidateCrop: Crop,
   neighborCropIds: string[]
 ): boolean {
-  // Check if any neighbor is in the candidate's enemy list
-  const hasEnemy = neighborCropIds.some(neighborId =>
-    candidateCrop.companions.enemies.includes(neighborId)
-  )
+  const hasEnemy = neighborCropIds.some(neighborId => {
+    // Check if neighbor is in candidate's enemy list
+    if (candidateCrop.companions.enemies.includes(neighborId)) return true
+    // Check if candidate is in neighbor's enemy list (bidirectional)
+    const neighbor = CROPS_BY_ID[neighborId]
+    if (neighbor?.companions.enemies.includes(candidateCrop.id)) return true
+    return false
+  })
 
   return !hasEnemy
 }
 
 /**
  * Score a crop for a specific cell based on companion relationships
+ * Checks both directions: crop's enemies/friends AND neighbors' enemies/friends
  *
  * @param crop - Crop being considered
  * @param neighborIds - IDs of adjacent crops
@@ -100,10 +107,16 @@ function scoreCropForCell(crop: Crop, neighborIds: string[]): number {
   let score = 0
 
   for (const neighborId of neighborIds) {
-    if (crop.companions.enemies.includes(neighborId)) {
-      score -= 1000 // Heavy penalty for enemies
-    } else if (crop.companions.friends.includes(neighborId)) {
-      score += 1 // Bonus for friends (mutualism)
+    const neighbor = CROPS_BY_ID[neighborId]
+    const isEnemy = crop.companions.enemies.includes(neighborId) ||
+      (neighbor?.companions.enemies.includes(crop.id) ?? false)
+    const isFriend = crop.companions.friends.includes(neighborId) ||
+      (neighbor?.companions.friends.includes(crop.id) ?? false)
+
+    if (isEnemy) {
+      score -= 1000
+    } else if (isFriend) {
+      score += 1
     }
   }
 
