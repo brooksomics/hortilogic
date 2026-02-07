@@ -30,11 +30,16 @@ export function getHeightCategory(heightInches: number): HeightCategory {
 /**
  * Calculate distance from the south edge of the grid for a given cell.
  * Returns 0 at the south edge, increasing toward the north edge.
+ * Supports all 8 compass directions (N, NE, E, SE, S, SW, W, NW).
+ *
+ * For cardinal directions, distance is along one axis (row or column).
+ * For intercardinal (diagonal) directions, distance is the sum of
+ * row and column distances from the south corner.
  *
  * @param cellIndex - Index of the cell in the flat grid array
  * @param width - Grid width in columns
  * @param height - Grid height in rows
- * @param orientation - Degrees (0=N at top, 90=E at top, 180=S at top, 270=W at top)
+ * @param orientation - Degrees (0=N, 45=NE, 90=E, 135=SE, 180=S, 225=SW, 270=W, 315=NW)
  * @returns Distance from south edge (0 = at south edge)
  */
 export function getSouthDistance(
@@ -45,20 +50,62 @@ export function getSouthDistance(
 ): number {
   const row = Math.floor(cellIndex / width)
   const col = cellIndex % width
-  const normalizedOrientation = ((orientation % 360) + 360) % 360
+  const norm = ((orientation % 360) + 360) % 360
+  const maxRow = height - 1
+  const maxCol = width - 1
 
-  if (normalizedOrientation < 45 || normalizedOrientation >= 315) {
-    // ~0°: North at top → south is bottom → distance = max row - row
-    return (height - 1) - row
-  } else if (normalizedOrientation >= 45 && normalizedOrientation < 135) {
-    // ~90°: East at top → south is left → distance = col
+  // Use 22.5° bands to snap to nearest of 8 compass points
+  if (norm < 22.5 || norm >= 337.5) {
+    // N (0°): south at bottom
+    return maxRow - row
+  } else if (norm < 67.5) {
+    // NE (45°): south at bottom-left corner
+    return (maxRow - row) + col
+  } else if (norm < 112.5) {
+    // E (90°): south at left
     return col
-  } else if (normalizedOrientation >= 135 && normalizedOrientation < 225) {
-    // ~180°: South at top → south is top → distance = row
+  } else if (norm < 157.5) {
+    // SE (135°): south at top-left corner
+    return row + col
+  } else if (norm < 202.5) {
+    // S (180°): south at top
     return row
+  } else if (norm < 247.5) {
+    // SW (225°): south at top-right corner
+    return row + (maxCol - col)
+  } else if (norm < 292.5) {
+    // W (270°): south at right
+    return maxCol - col
   } else {
-    // ~270°: West at top → south is right → distance = max col - col
-    return (width - 1) - col
+    // NW (315°): south at bottom-right corner
+    return (maxRow - row) + (maxCol - col)
+  }
+}
+
+/**
+ * Get the maximum possible south distance for a grid and orientation.
+ * Used to normalize the south distance into a 0-1 range.
+ *
+ * @param width - Grid width in columns
+ * @param height - Grid height in rows
+ * @param orientation - Compass orientation in degrees
+ * @returns Maximum south distance
+ */
+export function getMaxSouthDistance(
+  width: number,
+  height: number,
+  orientation: number
+): number {
+  const norm = ((orientation % 360) + 360) % 360
+
+  // Cardinal directions use a single axis
+  if (norm < 22.5 || norm >= 337.5 || (norm >= 157.5 && norm < 202.5)) {
+    return height - 1 // N or S
+  } else if ((norm >= 67.5 && norm < 112.5) || (norm >= 247.5 && norm < 292.5)) {
+    return width - 1 // E or W
+  } else {
+    // Diagonal: both axes contribute
+    return (height - 1) + (width - 1)
   }
 }
 

@@ -3,7 +3,7 @@ import { CROPS_BY_ID } from '@/data/crops'
 import { isCropViable } from './dateEngine'
 import { SeededRandom } from './seededRandom'
 import { waterPenalty } from './waterScoring'
-import { getSouthDistance, heightPlacementPenalty } from './heightScoring'
+import { getSouthDistance, getMaxSouthDistance, heightPlacementPenalty } from './heightScoring'
 
 /**
  * Default grid dimensions for 4' x 8' bed (backward compatibility)
@@ -221,7 +221,7 @@ export function autoFillBed(
 
       // Height placement penalty: prefer tall crops on the north side
       const southDist = getSouthDistance(cellIndex, gridWidth, gridHeight, orientation)
-      const maxDist = orientation % 180 === 0 ? gridHeight - 1 : gridWidth - 1
+      const maxDist = getMaxSouthDistance(gridWidth, gridHeight, orientation)
       score += heightPlacementPenalty(crop.height_inches, southDist, maxDist)
 
       // Variety penalty: reduce score for crops we've already planted a lot
