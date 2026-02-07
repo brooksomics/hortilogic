@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { CROP_DATABASE, CROPS_BY_ID } from './crops'
 
 describe('CROP_DATABASE', () => {
-  it('has exactly 162 crops', () => {
-    expect(CROP_DATABASE).toHaveLength(162)
+  it('has exactly 161 crops', () => {
+    expect(CROP_DATABASE).toHaveLength(161)
   })
 
   it('all crops have unique IDs', () => {
@@ -11,7 +11,7 @@ describe('CROP_DATABASE', () => {
       return c.id
     })
     const uniqueIds = new Set(ids)
-    expect(uniqueIds.size).toBe(162)
+    expect(uniqueIds.size).toBe(161)
   })
 
   it('all crops have valid planting windows (start <= end)', () => {
@@ -55,6 +55,15 @@ describe('CROP_DATABASE', () => {
     CROP_DATABASE.forEach((crop) => {
       expect(crop.id).toBeTruthy()
       expect(crop.id.length).toBeGreaterThan(0)
+    })
+  })
+
+  it('no crop has the same ID in both friends and enemies', () => {
+    CROP_DATABASE.forEach((crop) => {
+      const overlap = crop.companions.friends.filter((f) => {
+        return crop.companions.enemies.includes(f)
+      })
+      expect(overlap).toEqual([])
     })
   })
 })
@@ -113,8 +122,8 @@ describe('CROP_DATABASE water_need (F009)', () => {
 })
 
 describe('CROPS_BY_ID', () => {
-  it('provides lookup object with all 162 crops', () => {
-    expect(Object.keys(CROPS_BY_ID)).toHaveLength(162)
+  it('provides lookup object with all 161 crops', () => {
+    expect(Object.keys(CROPS_BY_ID)).toHaveLength(161)
   })
 
   it('all crops in CROPS_BY_ID match their ID keys', () => {

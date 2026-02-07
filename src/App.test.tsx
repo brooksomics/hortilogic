@@ -40,9 +40,9 @@ describe('App', () => {
     expect(screen.getByText('Crop Library')).toBeInTheDocument()
   })
 
-  it('displays crops from expanded database (162 crops) in library', () => {
+  it('displays crops from expanded database (161 crops) in library', () => {
     renderApp()
-    // Should display crops from the expanded database (TODO-027: 162 crops)
+    // Should display crops from the expanded database
     // Check for specific varieties that exist in the new database
     expect(screen.getByText(/Butterhead Lettuce/i)).toBeInTheDocument()
     expect(screen.getByText(/Beefsteak Tomato/i)).toBeInTheDocument()
@@ -192,10 +192,10 @@ describe('App', () => {
     global.Date = RealDate
   })
 
-  it('loads expanded crop database (162 crops)', () => {
+  it('loads expanded crop database (161 crops)', () => {
     renderApp()
 
-    // Should display crop count showing 162 crops from TODO-027
-    expect(screen.getByText(/162 crops/i)).toBeInTheDocument()
+    // Should display crop count showing 161 crops
+    expect(screen.getByText(/161 crops/i)).toBeInTheDocument()
   })
 })

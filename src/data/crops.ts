@@ -1,5 +1,5 @@
 /**
- * Comprehensive Crop Database (200 crops)
+ * Comprehensive Crop Database (161 crops)
  * V2 Schema with Smart Crop Metadata
  *
  * Companion planting data sourced from:
@@ -102,7 +102,7 @@ export const CROP_DATABASE: Crop[] = [
     type: 'vegetable',
     botanical_family: 'Brassicaceae',
     emoji: '🥬',
-    sfg_density: 4,
+    sfg_density: 1,
     sun: 'full',
     days_to_maturity: 55,
     water_need: 3,
@@ -118,7 +118,7 @@ export const CROP_DATABASE: Crop[] = [
     type: 'vegetable',
     botanical_family: 'Brassicaceae',
     emoji: '🥬',
-    sfg_density: 4,
+    sfg_density: 1,
     sun: 'full',
     days_to_maturity: 60,
     water_need: 3,
@@ -198,7 +198,7 @@ export const CROP_DATABASE: Crop[] = [
     type: 'vegetable',
     botanical_family: 'Brassicaceae',
     emoji: '🥬',
-    sfg_density: 4,
+    sfg_density: 1,
     sun: 'full',
     days_to_maturity: 60,
     water_need: 3,
@@ -531,7 +531,7 @@ export const CROP_DATABASE: Crop[] = [
     },
   },
 
-  // ===== BRASSICAS (15 varieties) =====
+  // ===== BRASSICAS (14 varieties) =====
   {
     id: 'broccoli',
     name: 'Broccoli',
@@ -730,7 +730,7 @@ export const CROP_DATABASE: Crop[] = [
     type: 'vegetable',
     botanical_family: 'Brassicaceae',
     emoji: '🥬',
-    sfg_density: 4,
+    sfg_density: 1,
     sun: 'full',
     days_to_maturity: 50,
     water_need: 3,
@@ -753,22 +753,6 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'garlic'],
-      enemies: [],
-    },
-  },
-  {
-    id: 'rapini',
-    name: 'Rapini',
-    type: 'vegetable',
-    botanical_family: 'Brassicaceae',
-    emoji: '🥦',
-    sfg_density: 4,
-    sun: 'full',
-    days_to_maturity: 40,
-    water_need: 3,
-    planting_strategy: { start_window_start: -4, start_window_end: 0 },
-    companions: {
-      friends: ['onion-yellow', 'dill'],
       enemies: [],
     },
   },
@@ -1054,7 +1038,7 @@ export const CROP_DATABASE: Crop[] = [
     type: 'vegetable',
     botanical_family: 'Amaryllidaceae',
     emoji: '🧄',
-    sfg_density: 16,
+    sfg_density: 9,
     sun: 'full',
     days_to_maturity: 240,
     water_need: 2,
@@ -1070,7 +1054,7 @@ export const CROP_DATABASE: Crop[] = [
     type: 'vegetable',
     botanical_family: 'Apiaceae',
     emoji: '🥕',
-    sfg_density: 16,
+    sfg_density: 9,
     sun: 'full',
     days_to_maturity: 120,
     water_need: 2,
@@ -1602,7 +1586,7 @@ export const CROP_DATABASE: Crop[] = [
     type: 'vegetable',
     botanical_family: 'Brassicaceae',
     emoji: '🥬',
-    sfg_density: 4,
+    sfg_density: 1,
     sun: 'full',
     days_to_maturity: 85,
     water_need: 3,
@@ -2029,7 +2013,7 @@ export const CROP_DATABASE: Crop[] = [
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'pepper-bell', 'eggplant', 'cucumber', 'green-beans-bush'],
-      enemies: ['green-beans-bush'],
+      enemies: [],
     },
   },
   {

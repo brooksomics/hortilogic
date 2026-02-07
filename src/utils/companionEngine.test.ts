@@ -283,6 +283,25 @@ describe('checkCompanionConstraints', () => {
     const neighborIds = ['peas', 'tomato']
     expect(checkCompanionConstraints(multiEnemy, neighborIds)).toBe(false)
   })
+
+  it('returns FALSE when neighbor lists candidate as enemy (bidirectional)', () => {
+    // fennel lists tomato-beefsteak as enemy, but tomato does NOT list fennel
+    // The bidirectional check should still block this placement
+    const tomatoReal: Crop = {
+      id: 'tomato-beefsteak',
+      name: 'Beefsteak Tomato',
+      type: 'vegetable',
+      botanical_family: 'Solanaceae',
+      sun: 'full',
+      days_to_maturity: 85,
+      water_need: 3,
+      sfg_density: 1,
+      planting_strategy: { start_window_start: 0, start_window_end: 4 },
+      companions: { friends: ['carrot', 'basil-sweet'], enemies: ['potato'] }
+    }
+    // fennel is in CROPS_BY_ID and its enemies include 'tomato-beefsteak'
+    expect(checkCompanionConstraints(tomatoReal, ['fennel'])).toBe(false)
+  })
 })
 
 describe('autoFillBed', () => {
