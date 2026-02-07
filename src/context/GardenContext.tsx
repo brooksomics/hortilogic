@@ -38,6 +38,7 @@ export interface GardenContextValue {
   setAllBoxes: (boxes: GardenBox[]) => void
   addBox: (name: string, width: number, height: number) => void
   removeBox: (boxId: string) => void
+  setBoxOrientation: (boxId: string, orientation: number) => void
   toggleDislikedCrop: (cropId: string) => void
   totalArea: number
 
@@ -115,6 +116,7 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
     setAllBoxes,
     addBox,
     removeBox,
+    setBoxOrientation,
     toggleDislikedCrop,
     exportLayout,
     importLayout,
@@ -193,6 +195,7 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
     setAllBoxes,
     addBox,
     removeBox,
+    setBoxOrientation,
     toggleDislikedCrop,
     totalArea,
 

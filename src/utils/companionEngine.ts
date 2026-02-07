@@ -3,6 +3,7 @@ import { CROPS_BY_ID } from '@/data/crops'
 import { isCropViable } from './dateEngine'
 import { SeededRandom } from './seededRandom'
 import { waterPenalty } from './waterScoring'
+import { getSouthDistance, heightPlacementPenalty } from './heightScoring'
 
 /**
  * Default grid dimensions for 4' x 8' bed (backward compatibility)
@@ -140,6 +141,7 @@ function scoreCropForCell(crop: Crop, neighborIds: string[]): number {
  * @param targetDate - Date to check viability against (defaults to today)
  * @param gridWidth - Width of the grid in cells (default: 8 for 4x8 bed)
  * @param gridHeight - Height of the grid in cells (default: 4 for 4x8 bed)
+ * @param orientation - Compass orientation in degrees (0=N at top, default: 0)
  * @returns New grid with auto-filled crops (preserves existing crops)
  */
 export function autoFillBed(
@@ -149,7 +151,8 @@ export function autoFillBed(
   targetDate: Date = new Date(),
   gridWidth: number = DEFAULT_GRID_WIDTH,
   gridHeight: number = 4,
-  seed?: string | number
+  seed?: string | number,
+  orientation: number = 0
 ): (Crop | null)[] {
   // Create a copy of the grid to avoid mutation
   const newGrid = [...currentGrid]
@@ -215,6 +218,11 @@ export function autoFillBed(
       // Water need penalty: prefer crops with similar water needs on same row
       const rowIndex = Math.floor(cellIndex / gridWidth)
       score += waterPenalty(newGrid, gridWidth, rowIndex, crop.water_need)
+
+      // Height placement penalty: prefer tall crops on the north side
+      const southDist = getSouthDistance(cellIndex, gridWidth, gridHeight, orientation)
+      const maxDist = orientation % 180 === 0 ? gridHeight - 1 : gridWidth - 1
+      score += heightPlacementPenalty(crop.height_inches, southDist, maxDist)
 
       // Variety penalty: reduce score for crops we've already planted a lot
       const timesPlanted = plantedCounts[crop.id] || 0

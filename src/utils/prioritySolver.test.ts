@@ -23,6 +23,8 @@ const mockCrops: Crop[] = [
         sun: 'full',
         days_to_maturity: 80,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         companions: {
             friends: ['basil', 'carrot', 'marigold'],
             enemies: ['brassica', 'potato']
@@ -39,6 +41,8 @@ const mockCrops: Crop[] = [
         sun: 'full',
         days_to_maturity: 60,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         companions: {
             friends: ['tomato'],
             enemies: []
@@ -55,6 +59,8 @@ const mockCrops: Crop[] = [
         sun: 'full',
         days_to_maturity: 70,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         companions: {
             friends: [],
             enemies: ['tomato']
@@ -71,6 +77,8 @@ const mockCrops: Crop[] = [
         sun: 'partial',
         days_to_maturity: 55,
         water_need: 4,
+        height_inches: 24,
+        trellisable: false,
         companions: {
             friends: [],
             enemies: []
@@ -87,6 +95,8 @@ const mockCrops: Crop[] = [
         sun: 'full',
         days_to_maturity: 50,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         companions: {
             friends: ['tomato', 'basil'],
             enemies: []
@@ -198,6 +208,8 @@ describe('Priority Solver Logic', () => {
                 sun: 'full',
                 days_to_maturity: 70,
                 water_need: 3,
+                height_inches: 24,
+                trellisable: false,
                 companions: {
                     friends: ['tomato'],
                     enemies: []

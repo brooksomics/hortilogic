@@ -43,6 +43,14 @@ export interface GardenBox {
 
   /** Array of cells with planted crops (length = width * height) */
   cells: (Crop | null)[]
+
+  /**
+   * Compass orientation in degrees (0-359) indicating which direction the top of the grid faces (V4)
+   * 0 = North at top, 90 = East at top, 180 = South at top, 270 = West at top
+   * Used for sun-blocking optimization (tall crops placed on north side)
+   * Defaults to 0 (north at top) when not set
+   */
+  orientation?: number
 }
 
 /**
@@ -215,6 +223,18 @@ export interface Crop {
    * 1 = drought-tolerant, 2 = low, 3 = moderate, 4 = high, 5 = very high
    */
   water_need: 1 | 2 | 3 | 4 | 5
+
+  /**
+   * Typical mature plant height in inches (V4)
+   * Used for sun-blocking optimization in bed layout
+   */
+  height_inches: number
+
+  /**
+   * Whether the crop can be trained on a trellis/support structure (V4)
+   * Trellised crops grow vertically and cast directional shade
+   */
+  trellisable: boolean
 }
 
 /**

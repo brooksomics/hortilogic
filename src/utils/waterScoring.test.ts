@@ -17,6 +17,8 @@ function makeCrop(id: string, waterNeed: 1 | 2 | 3 | 4 | 5): Crop {
     sun: 'full',
     days_to_maturity: 60,
     water_need: waterNeed,
+    height_inches: 24,
+    trellisable: false,
     sfg_density: 4,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: { friends: [], enemies: [] },

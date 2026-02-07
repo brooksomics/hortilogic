@@ -253,7 +253,8 @@ export function useGardenInteractions({
         targetDate, // Use target planting date for seasonality filtering
         box.width,
         box.height,
-        activeLayout.id // Deterministic seed (TODO-023)
+        activeLayout.id, // Deterministic seed (TODO-023)
+        box.orientation ?? 0 // Compass orientation for sun-blocking (F010)
       )
       return { ...box, cells: filledCells }
     })

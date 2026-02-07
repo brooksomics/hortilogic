@@ -109,6 +109,9 @@ export interface UseLayoutManagerResult {
   /** Remove a box from the active layout */
   removeBox: (boxId: string) => void
 
+  /** Set compass orientation for a box (degrees, 0=N at top) */
+  setBoxOrientation: (boxId: string, orientation: number) => void
+
   /** Export active layout to JSON format */
   exportLayout: (profile?: GardenProfile) => ExportedLayout
 
@@ -391,6 +394,22 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     })
   }
 
+  const setBoxOrientation = (boxId: string, orientation: number): void => {
+    if (!activeLayout) return
+
+    const updatedBoxes = activeLayout.boxes.map(box =>
+      box.id === boxId ? { ...box, orientation } : box
+    )
+
+    setLayoutStorage({
+      ...layoutStorage,
+      layouts: {
+        ...layouts,
+        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
+      },
+    })
+  }
+
   const exportLayout = (profile?: GardenProfile): ExportedLayout => {
     if (!activeLayout) {
       throw new Error('No active layout to export')
@@ -470,6 +489,7 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     setAllBoxes,
     addBox,
     removeBox,
+    setBoxOrientation,
     exportLayout,
     importLayout,
     toggleDislikedCrop,

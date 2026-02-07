@@ -12,6 +12,8 @@ const lettuce: Crop = {
   sun: 'partial',
   days_to_maturity: 55,
   water_need: 3,
+  height_inches: 24,
+  trellisable: false,
   sfg_density: 4,
   planting_strategy: { start_window_start: -4, start_window_end: 2 },
   companions: { friends: [], enemies: [] }
@@ -25,6 +27,8 @@ const tomato: Crop = {
   sun: 'full',
   days_to_maturity: 80,
   water_need: 3,
+  height_inches: 24,
+  trellisable: false,
   sfg_density: 1,
   planting_strategy: { start_window_start: 0, start_window_end: 4 },
   companions: { friends: [], enemies: [] }

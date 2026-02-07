@@ -175,7 +175,8 @@ export function CropLibrary({
                 {crop.name || crop.id}
               </div>
               <div className="text-xs text-soil-600 mt-1">
-                {crop.sfg_density} per sq ft
+                {crop.sfg_density} per sq ft &middot; {crop.height_inches}&quot;
+                {crop.trellisable && ' (trellisable)'}
               </div>
             </div>
 
