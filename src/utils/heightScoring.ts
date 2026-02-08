@@ -59,26 +59,26 @@ export function getSouthDistance(
     // N (0°): south at bottom
     return maxRow - row
   } else if (norm < 67.5) {
-    // NE (45°): south at bottom-left corner
-    return (maxRow - row) + col
+    // NE (45°): south at bottom-right corner
+    return (maxRow - row) + (maxCol - col)
   } else if (norm < 112.5) {
-    // E (90°): south at left
-    return col
+    // E (90°): south at right
+    return maxCol - col
   } else if (norm < 157.5) {
-    // SE (135°): south at top-left corner
-    return row + col
+    // SE (135°): south at top-right corner
+    return row + (maxCol - col)
   } else if (norm < 202.5) {
     // S (180°): south at top
     return row
   } else if (norm < 247.5) {
-    // SW (225°): south at top-right corner
-    return row + (maxCol - col)
+    // SW (225°): south at top-left corner
+    return row + col
   } else if (norm < 292.5) {
-    // W (270°): south at right
-    return maxCol - col
+    // W (270°): south at left
+    return col
   } else {
-    // NW (315°): south at bottom-right corner
-    return (maxRow - row) + (maxCol - col)
+    // NW (315°): south at bottom-left corner
+    return (maxRow - row) + col
   }
 }
 

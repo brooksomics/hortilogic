@@ -515,13 +515,13 @@ describe('scoreCell with height scoring', () => {
         expect(scoreNorth).toBe(scoreSouth)
     })
 
-    it('respects orientation=90 (E at top, south on left)', () => {
-        // Width=4, Height=3, orientation=90 → south at left (col 0)
+    it('respects orientation=90 (E at top, south on right)', () => {
+        // Width=4, Height=3, orientation=90 → south at right (col 3)
         const bed = Array(12).fill(null) as (Crop | null)[]
 
-        // Cell 0 = col 0 (south edge), cell 3 = col 3 (north edge)
-        const scoreSouth = scoreCell(0, 'corn', bed, heightCrops, 4, 3, 90)
-        const scoreNorth = scoreCell(3, 'corn', bed, heightCrops, 4, 3, 90)
+        // Cell 0 = col 0 (north edge), cell 3 = col 3 (south edge)
+        const scoreNorth = scoreCell(0, 'corn', bed, heightCrops, 4, 3, 90)
+        const scoreSouth = scoreCell(3, 'corn', bed, heightCrops, 4, 3, 90)
 
         expect(scoreNorth).toBeGreaterThan(scoreSouth)
     })

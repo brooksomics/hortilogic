@@ -55,67 +55,67 @@ describe('getSouthDistance', () => {
     expect(dist2).toBe(2)
   })
 
-  it('handles orientation=90 (east at top, south on left)', () => {
-    // Column 0 is the south edge → distance from south = 0
-    const dist = getSouthDistance(0, 4, 3, 90) // col 0
+  it('handles orientation=90 (east at top, south on right)', () => {
+    // Column 3 (rightmost) is the south edge → distance from south = 0
+    const dist = getSouthDistance(3, 4, 3, 90) // col 3
     expect(dist).toBe(0)
-    // Column 3 (rightmost) → distance from south = 3
-    const dist2 = getSouthDistance(3, 4, 3, 90) // col 3
+    // Column 0 (leftmost) → distance from south = 3
+    const dist2 = getSouthDistance(0, 4, 3, 90) // col 0
     expect(dist2).toBe(3)
   })
 
-  it('handles orientation=270 (west at top, south on right)', () => {
-    // Column 3 is the south edge → distance from south = 0
-    const dist = getSouthDistance(3, 4, 3, 270)
+  it('handles orientation=270 (west at top, south on left)', () => {
+    // Column 0 is the south edge → distance from south = 0
+    const dist = getSouthDistance(0, 4, 3, 270)
     expect(dist).toBe(0)
-    // Column 0 → distance from south = 3
-    const dist2 = getSouthDistance(0, 4, 3, 270)
+    // Column 3 → distance from south = 3
+    const dist2 = getSouthDistance(3, 4, 3, 270)
     expect(dist2).toBe(3)
   })
 
   // --- Intercardinal (diagonal) orientations ---
   // 4-wide x 3-tall grid, 12 cells
 
-  it('handles orientation=45 (NE at top, south is at bottom-left)', () => {
-    // Bottom-left corner (row=2, col=0) → south edge → distance = 0
-    const dist = getSouthDistance(8, 4, 3, 45) // cell 8 = row 2, col 0
+  it('handles orientation=45 (NE at top, south is at bottom-right)', () => {
+    // Bottom-right corner (row=2, col=3) → south edge → distance = 0
+    const dist = getSouthDistance(11, 4, 3, 45) // cell 11 = row 2, col 3
     expect(dist).toBe(0)
-    // Top-right corner (row=0, col=3) → north edge → distance = max
-    const dist2 = getSouthDistance(3, 4, 3, 45) // cell 3 = row 0, col 3
-    expect(dist2).toBe(5) // (3-1-0) + 3 = 2 + 3 = 5
+    // Top-left corner (row=0, col=0) → north edge → distance = max
+    const dist2 = getSouthDistance(0, 4, 3, 45) // cell 0 = row 0, col 0
+    expect(dist2).toBe(5) // (3-1-0) + (4-1-0) = 2 + 3 = 5
   })
 
-  it('handles orientation=135 (SE at top, south is at top-left)', () => {
-    // Top-left corner (row=0, col=0) → south edge → distance = 0
-    const dist = getSouthDistance(0, 4, 3, 135)
+  it('handles orientation=135 (SE at top, south is at top-right)', () => {
+    // Top-right corner (row=0, col=3) → south edge → distance = 0
+    const dist = getSouthDistance(3, 4, 3, 135) // cell 3 = row 0, col 3
     expect(dist).toBe(0)
-    // Bottom-right corner (row=2, col=3) → north edge → distance = max
-    const dist2 = getSouthDistance(11, 4, 3, 135) // cell 11 = row 2, col 3
+    // Bottom-left corner (row=2, col=0) → north edge → distance = max
+    const dist2 = getSouthDistance(8, 4, 3, 135) // cell 8 = row 2, col 0
     expect(dist2).toBe(5) // 2 + 3 = 5
   })
 
-  it('handles orientation=225 (SW at top, south is at top-right)', () => {
-    // Top-right corner (row=0, col=3) → south edge → distance = 0
-    const dist = getSouthDistance(3, 4, 3, 225)
+  it('handles orientation=225 (SW at top, south is at top-left)', () => {
+    // Top-left corner (row=0, col=0) → south edge → distance = 0
+    const dist = getSouthDistance(0, 4, 3, 225)
     expect(dist).toBe(0)
-    // Bottom-left corner (row=2, col=0) → north edge → distance = max
-    const dist2 = getSouthDistance(8, 4, 3, 225) // cell 8 = row 2, col 0
-    expect(dist2).toBe(5) // 2 + (4-1-0) = 2 + 3 = 5
+    // Bottom-right corner (row=2, col=3) → north edge → distance = max
+    const dist2 = getSouthDistance(11, 4, 3, 225) // cell 11 = row 2, col 3
+    expect(dist2).toBe(5) // 2 + 3 = 5
   })
 
-  it('handles orientation=315 (NW at top, south is at bottom-right)', () => {
-    // Bottom-right corner (row=2, col=3) → south edge → distance = 0
-    const dist = getSouthDistance(11, 4, 3, 315)
+  it('handles orientation=315 (NW at top, south is at bottom-left)', () => {
+    // Bottom-left corner (row=2, col=0) → south edge → distance = 0
+    const dist = getSouthDistance(8, 4, 3, 315) // cell 8 = row 2, col 0
     expect(dist).toBe(0)
-    // Top-left corner (row=0, col=0) → north edge → distance = max
-    const dist2 = getSouthDistance(0, 4, 3, 315)
+    // Top-right corner (row=0, col=3) → north edge → distance = max
+    const dist2 = getSouthDistance(3, 4, 3, 315) // cell 3 = row 0, col 3
     expect(dist2).toBe(5) // (3-1-0) + (4-1-0) = 2 + 3 = 5
   })
 
   it('diagonal center cell has intermediate distance', () => {
-    // Center cell (row=1, col=2), orientation=45 (NE at top)
+    // Center cell (row=1, col=2), orientation=45 (NE at top, south at bottom-right)
     const dist = getSouthDistance(6, 4, 3, 45) // cell 6 = row 1, col 2
-    expect(dist).toBe(3) // (3-1-1) + 2 = 1 + 2 = 3
+    expect(dist).toBe(2) // (3-1-1) + (4-1-2) = 1 + 1 = 2
   })
 })
 
