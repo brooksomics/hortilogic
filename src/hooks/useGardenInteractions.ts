@@ -3,6 +3,7 @@ import { autoFillBed } from '../utils/companionEngine'
 import { CROP_DATABASE } from '../data/crops'
 import type { Crop, GardenProfile, GardenLayout, GardenBox, GardenStash } from '../types/garden'
 import { autoFillAllBoxes, autoFillGaps } from '../utils/prioritySolver'
+import { optimizeHeightPlacement } from '../utils/heightOptimizer'
 import type { PlacementSummary } from '../components/StashSummary'
 
 import { StashStorageSchema } from '../schemas/garden'
@@ -372,6 +373,9 @@ export function useGardenInteractions({
 
             placedCount += gapPlacements.length
           }
+
+          // Post-placement: swap crops to optimize height/sun positioning
+          optimizeHeightPlacement(newBed, originalBox.width, originalBox.height, originalBox.orientation ?? 0)
 
           return {
             ...originalBox,

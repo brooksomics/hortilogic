@@ -3,7 +3,7 @@ import { getNeighbors } from './companionEngine'
 import { SeededRandom } from './seededRandom'
 import { isCropViable } from './dateEngine'
 import { waterPenalty } from './waterScoring'
-import { getSouthDistance, getMaxSouthDistance, heightPlacementPenalty } from './heightScoring'
+import { combinedHeightPenalty } from './heightScoring'
 
 export interface CropPlacement {
     cropId: string
@@ -31,6 +31,7 @@ export function calculateDifficulty(crop: Crop): number {
     score += crop.companions.enemies.length * 10
     score += crop.sfg_density === 1 ? 5 : 0 // Large crops (1 per sq ft) are generally harder to pack
     score += crop.companions.friends.length === 0 ? 3 : 0
+    score += Math.floor(crop.height_inches / 12) // Taller crops placed first for best north spots
     return score
 }
 
@@ -89,11 +90,9 @@ export function scoreCell(
     const rowIndex = Math.floor(cellIndex / width)
     score += waterPenalty(bed, width, rowIndex, candidateCrop.water_need)
 
-    // Height placement penalty: prefer tall crops on the north side
+    // Height placement penalty: prefer tall crops toward NE (away from south + west sun)
     if (gridHeight > 0) {
-        const southDist = getSouthDistance(cellIndex, width, gridHeight, orientation)
-        const maxDist = getMaxSouthDistance(width, gridHeight, orientation)
-        score += heightPlacementPenalty(candidateCrop.height_inches, southDist, maxDist)
+        score += combinedHeightPenalty(candidateCrop.height_inches, cellIndex, width, gridHeight, orientation)
     }
 
     return score

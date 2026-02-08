@@ -5,6 +5,7 @@ import {
   getMaxSouthDistance,
   heightPlacementPenalty,
   HEIGHT_PLACEMENT_WEIGHT,
+  combinedHeightPenalty,
 } from './heightScoring'
 
 describe('getHeightCategory', () => {
@@ -170,9 +171,42 @@ describe('heightPlacementPenalty', () => {
     expect(typeof HEIGHT_PLACEMENT_WEIGHT).toBe('number')
   })
 
-  it('returns 0 for medium crops at middle distance', () => {
-    // Medium crop at middle row → neutral
+  it('applies moderate penalty for medium crops at middle distance', () => {
+    // Medium crop (24") at middle row, weight=5.0
+    // heightFactor=0.25, positionPenalty=0.5, penalty=-0.625
     const penalty = heightPlacementPenalty(24, 1, 2)
-    expect(penalty).toBeCloseTo(0, 0)
+    expect(penalty).toBeCloseTo(-0.625, 2)
+  })
+})
+
+describe('combinedHeightPenalty', () => {
+  it('returns 0 for short crops', () => {
+    const penalty = combinedHeightPenalty(6, 0, 4, 4, 0)
+    expect(penalty).toBe(0)
+  })
+
+  it('penalizes tall crops at south edge', () => {
+    // 4x4 grid, orientation=0. Cell 12 = row 3 (south edge)
+    const penalty = combinedHeightPenalty(60, 12, 4, 4, 0)
+    expect(penalty).toBeLessThan(-5) // Strong penalty with weight 5.0
+  })
+
+  it('adds secondary west penalty for tall crops', () => {
+    // 4x4 grid, orientation=0. Cell 0 = row 0, col 0 (north edge, west edge)
+    // Cell 3 = row 0, col 3 (north edge, east edge)
+    const penaltyWest = combinedHeightPenalty(60, 0, 4, 4, 0) // north + west
+    const penaltyEast = combinedHeightPenalty(60, 3, 4, 4, 0) // north + east
+
+    // Both at north edge (south penalty = 0), but west position gets west penalty
+    expect(penaltyWest).toBeLessThan(penaltyEast)
+  })
+
+  it('NE corner has least penalty for tall crops (orientation=0)', () => {
+    // 4x4 grid. NE = row 0, col 3 (cell 3). SW = row 3, col 0 (cell 12)
+    const penaltyNE = combinedHeightPenalty(60, 3, 4, 4, 0)
+    const penaltySW = combinedHeightPenalty(60, 12, 4, 4, 0)
+
+    expect(penaltyNE).toBe(0) // No penalty at NE
+    expect(penaltySW).toBeLessThan(penaltyNE) // Max penalty at SW
   })
 })

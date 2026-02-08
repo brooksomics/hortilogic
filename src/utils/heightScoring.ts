@@ -1,8 +1,8 @@
-/**
- * Weight applied to height placement penalty.
- * Comparable to water variance penalty (~2 friend bonuses).
- */
-export const HEIGHT_PLACEMENT_WEIGHT = 1.5
+/** Primary weight: penalize tall crops near the south edge (blocks main sun). */
+export const HEIGHT_PLACEMENT_WEIGHT = 5.0
+
+/** Secondary weight: penalize tall crops near the west edge (blocks afternoon sun). */
+export const HEIGHT_WEST_WEIGHT = 1.5
 
 /**
  * Height threshold for "low" crops (inches).
@@ -149,4 +149,45 @@ export function heightPlacementPenalty(
   if (positionPenalty === 0) return 0
 
   return -(heightFactor * positionPenalty * HEIGHT_PLACEMENT_WEIGHT)
+}
+
+/**
+ * Compute a directional height penalty with a custom weight.
+ */
+function directionalPenalty(
+  heightInches: number,
+  distance: number,
+  maxDistance: number,
+  weight: number
+): number {
+  const category = getHeightCategory(heightInches)
+  if (category === 'low' || maxDistance === 0) return 0
+  const normalizedPos = distance / maxDistance
+  const heightFactor = category === 'tall'
+    ? heightInches / 36
+    : (heightInches - LOW_HEIGHT_THRESHOLD) / (MEDIUM_HEIGHT_THRESHOLD - LOW_HEIGHT_THRESHOLD) * 0.5
+  const posPenalty = 1 - normalizedPos
+  if (posPenalty === 0) return 0
+  return -(heightFactor * posPenalty * weight)
+}
+
+/**
+ * Combined height penalty: south (primary) + west (secondary afternoon sun).
+ * Pushes tall crops toward the northeast corner of the bed.
+ */
+export function combinedHeightPenalty(
+  heightInches: number,
+  cellIndex: number,
+  width: number,
+  height: number,
+  orientation: number
+): number {
+  if (getHeightCategory(heightInches) === 'low' || height === 0) return 0
+  const sDist = getSouthDistance(cellIndex, width, height, orientation)
+  const sMax = getMaxSouthDistance(width, height, orientation)
+  const wOrient = (orientation + 270) % 360
+  const wDist = getSouthDistance(cellIndex, width, height, wOrient)
+  const wMax = getMaxSouthDistance(width, height, wOrient)
+  return directionalPenalty(heightInches, sDist, sMax, HEIGHT_PLACEMENT_WEIGHT)
+       + directionalPenalty(heightInches, wDist, wMax, HEIGHT_WEST_WEIGHT)
 }
