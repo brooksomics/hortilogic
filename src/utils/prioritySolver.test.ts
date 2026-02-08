@@ -453,3 +453,141 @@ describe('autoFillGaps', () => {
         expect(uniqueCrops.size).toBeGreaterThanOrEqual(2)
     })
 })
+
+// --- Height / Orientation scoring tests ---
+
+// Tall and short mock crops for height scoring tests
+const tallCrop: Crop = {
+    id: 'corn',
+    name: 'Corn',
+    type: 'vegetable',
+    botanical_family: 'Poaceae',
+    emoji: '🌽',
+    sfg_density: 4,
+    sun: 'full',
+    days_to_maturity: 80,
+    water_need: 3,
+    height_inches: 72,
+    trellisable: false,
+    companions: { friends: [], enemies: [] },
+    planting_strategy: { start_window_start: 0, start_window_end: 6 }
+}
+
+const shortCrop: Crop = {
+    id: 'radish',
+    name: 'Radish',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
+    emoji: '🫛',
+    sfg_density: 16,
+    sun: 'full',
+    days_to_maturity: 30,
+    water_need: 2,
+    height_inches: 6,
+    trellisable: false,
+    companions: { friends: [], enemies: [] },
+    planting_strategy: { start_window_start: 0, start_window_end: 6 }
+}
+
+const heightCrops = [tallCrop, shortCrop]
+
+describe('scoreCell with height scoring', () => {
+    it('penalizes tall crop at south edge more than at north edge', () => {
+        // 4-wide x 3-tall grid, orientation=0 (N at top)
+        // South edge = row 2 (bottom), north edge = row 0 (top)
+        const bed = Array(12).fill(null) as (Crop | null)[]
+
+        // Cell 0 = row 0 (north edge), cell 8 = row 2 (south edge)
+        const scoreNorth = scoreCell(0, 'corn', bed, heightCrops, 4, 3, 0)
+        const scoreSouth = scoreCell(8, 'corn', bed, heightCrops, 4, 3, 0)
+
+        // Tall crop should score better at north edge
+        expect(scoreNorth).toBeGreaterThan(scoreSouth)
+    })
+
+    it('does not penalize short crops regardless of position', () => {
+        const bed = Array(12).fill(null) as (Crop | null)[]
+
+        const scoreNorth = scoreCell(0, 'radish', bed, heightCrops, 4, 3, 0)
+        const scoreSouth = scoreCell(8, 'radish', bed, heightCrops, 4, 3, 0)
+
+        // Short crops should not be penalized - same score at any position
+        expect(scoreNorth).toBe(scoreSouth)
+    })
+
+    it('respects orientation=90 (E at top, south on left)', () => {
+        // Width=4, Height=3, orientation=90 → south at left (col 0)
+        const bed = Array(12).fill(null) as (Crop | null)[]
+
+        // Cell 0 = col 0 (south edge), cell 3 = col 3 (north edge)
+        const scoreSouth = scoreCell(0, 'corn', bed, heightCrops, 4, 3, 90)
+        const scoreNorth = scoreCell(3, 'corn', bed, heightCrops, 4, 3, 90)
+
+        expect(scoreNorth).toBeGreaterThan(scoreSouth)
+    })
+})
+
+describe('autoFillGaps with height scoring', () => {
+    it('places tall crops toward north edge when orientation=0', () => {
+        // 4-wide x 4-tall grid, empty
+        const bed = Array(16).fill(null) as (Crop | null)[]
+
+        const result = autoFillGaps(
+            bed, heightCrops, 4, Infinity,
+            undefined, undefined, 'test-seed',
+            4, 0 // gridHeight=4, orientation=0
+        )
+
+        // Find where corn (tall) was placed
+        const cornPlacements = result.filter(p => p.cropId === 'corn')
+        const radishPlacements = result.filter(p => p.cropId === 'radish')
+
+        // Corn placements should have lower average row (north = row 0)
+        const avgCornRow = cornPlacements.reduce((s, p) => s + Math.floor(p.cellIndex / 4), 0) / cornPlacements.length
+        const avgRadishRow = radishPlacements.reduce((s, p) => s + Math.floor(p.cellIndex / 4), 0) / radishPlacements.length
+
+        // Corn (tall) should average toward row 0 (north), radish (short) toward south
+        expect(avgCornRow).toBeLessThan(avgRadishRow)
+    })
+})
+
+describe('autoFillFromStash with height scoring', () => {
+    it('places tall stash crops toward north edge', () => {
+        // 4-wide x 4-tall grid, empty
+        const bed = Array(16).fill(null) as (Crop | null)[]
+        const stash = { 'corn': 4, 'radish': 4 }
+
+        const result = autoFillFromStash(
+            bed, stash, heightCrops, 4,
+            'test-seed', 4, 0 // gridHeight=4, orientation=0
+        )
+
+        // Find corn placements — should be in northern rows
+        const cornPlacements = result.placed.filter(p => p.cropId === 'corn')
+        const avgCornRow = cornPlacements.reduce((s, p) => s + Math.floor(p.cellIndex / 4), 0) / cornPlacements.length
+
+        // Corn should be in the northern half (rows 0-1, avg < 2)
+        expect(avgCornRow).toBeLessThan(2)
+    })
+})
+
+describe('autoFillAllBoxes with height scoring', () => {
+    it('passes height and orientation to solver', () => {
+        const box1 = {
+            id: 'b1',
+            cells: Array(16).fill(null) as (Crop | null)[],
+            width: 4,
+            height: 4,
+            orientation: 0
+        }
+        const stash = { 'corn': 4, 'radish': 4 }
+
+        const result = autoFillAllBoxes([box1], stash, heightCrops, 'test-seed')
+
+        const cornPlacements = result.boxResults[0]!.placed.filter(p => p.cropId === 'corn')
+        const avgCornRow = cornPlacements.reduce((s, p) => s + Math.floor(p.cellIndex / 4), 0) / cornPlacements.length
+
+        // Corn (tall) should average toward north (low row numbers)
+        expect(avgCornRow).toBeLessThan(2)
+    })
+})

@@ -301,7 +301,9 @@ export function useGardenInteractions({
     const solverInput = activeLayout.boxes.map((box: GardenBox) => ({
       id: box.id,
       cells: [...box.cells], // Clone cells
-      width: box.width
+      width: box.width,
+      height: box.height,
+      orientation: box.orientation ?? 0
     }))
 
     setIsDistributing(true)
@@ -356,7 +358,9 @@ export function useGardenInteractions({
               Infinity,
               gardenProfile ?? undefined, // Pass garden profile for seasonality filtering
               targetDate, // Pass target date for seasonality filtering
-              activeLayout.id // Deterministic seed (TODO-023)
+              activeLayout.id, // Deterministic seed (TODO-023)
+              originalBox.height, // Grid height for sun-blocking scoring
+              originalBox.orientation ?? 0 // Compass orientation for sun-blocking
             )
 
             gapPlacements.forEach(p => {

@@ -3,6 +3,7 @@ import { getNeighbors } from './companionEngine'
 import { SeededRandom } from './seededRandom'
 import { isCropViable } from './dateEngine'
 import { waterPenalty } from './waterScoring'
+import { getSouthDistance, getMaxSouthDistance, heightPlacementPenalty } from './heightScoring'
 
 export interface CropPlacement {
     cropId: string
@@ -54,7 +55,9 @@ export function scoreCell(
     cropId: string,
     bed: (Crop | null)[],
     allCrops: Crop[],
-    width: number
+    width: number,
+    gridHeight: number = 0,
+    orientation: number = 0
 ): number {
     const candidateCrop = allCrops.find(c => c.id === cropId)
     if (!candidateCrop) return 0
@@ -86,6 +89,13 @@ export function scoreCell(
     const rowIndex = Math.floor(cellIndex / width)
     score += waterPenalty(bed, width, rowIndex, candidateCrop.water_need)
 
+    // Height placement penalty: prefer tall crops on the north side
+    if (gridHeight > 0) {
+        const southDist = getSouthDistance(cellIndex, width, gridHeight, orientation)
+        const maxDist = getMaxSouthDistance(width, gridHeight, orientation)
+        score += heightPlacementPenalty(candidateCrop.height_inches, southDist, maxDist)
+    }
+
     return score
 }
 
@@ -94,7 +104,9 @@ function findBestCell(
     cropId: string,
     allCrops: Crop[],
     width: number,
-    rng: SeededRandom
+    rng: SeededRandom,
+    gridHeight: number = 0,
+    orientation: number = 0
 ): number | null {
     // Find all empty cells
     const emptyIndices = bed
@@ -107,7 +119,7 @@ function findBestCell(
     let maxScore = -Infinity
 
     for (const idx of emptyIndices) {
-        const score = scoreCell(idx, cropId, bed, allCrops, width)
+        const score = scoreCell(idx, cropId, bed, allCrops, width, gridHeight, orientation)
 
         // Hard rejection threshold
         if (score <= -100) continue
@@ -131,7 +143,9 @@ export function autoFillFromStash(
     stash: GardenStash,
     allCrops: Crop[],
     width: number,
-    seed?: string | number
+    seed?: string | number,
+    gridHeight: number = 0,
+    orientation: number = 0
 ): PlacementResult {
     // Clone bed to simulate placement
     // NOTE: In the real app, currentBed actually stores `Crop` objects, not strings.
@@ -148,7 +162,7 @@ export function autoFillFromStash(
 
     for (const { cropId, quantity, crop } of priorityList) {
         for (let i = 0; i < quantity; i++) {
-            const bestCell = findBestCell(workingBed, cropId, allCrops, width, rng)
+            const bestCell = findBestCell(workingBed, cropId, allCrops, width, rng, gridHeight, orientation)
 
             if (bestCell !== null) {
                 workingBed[bestCell] = crop
@@ -190,7 +204,7 @@ export interface BoxPlacementResult extends PlacementResult {
  * Consumes stash items as they are placed.
  */
 export function autoFillAllBoxes(
-    layoutBoxes: { id: string; cells: (Crop | null)[]; width: number }[],
+    layoutBoxes: { id: string; cells: (Crop | null)[]; width: number; height?: number; orientation?: number }[],
     initialStash: GardenStash,
     allCrops: Crop[],
     seed?: string | number
@@ -258,7 +272,10 @@ export function autoFillAllBoxes(
             stashForThisBox[cropId] = (stashForThisBox[cropId] || 0) + qty
         }
 
-        const { placed, failed } = autoFillFromStash(box.cells, stashForThisBox, allCrops, box.width, seed)
+        const { placed, failed } = autoFillFromStash(
+            box.cells, stashForThisBox, allCrops, box.width, seed,
+            box.height ?? 0, box.orientation ?? 0
+        )
 
         boxResults.push({
             boxId: box.id,
@@ -293,7 +310,9 @@ export function autoFillGaps(
     maxFills: number = Infinity,
     gardenProfile?: GardenProfile,
     targetDate?: Date,
-    seed?: string | number
+    seed?: string | number,
+    gridHeight: number = 0,
+    orientation: number = 0
 ): CropPlacement[] {
     const placed: CropPlacement[] = []
     const workingBed = [...bed]
@@ -344,7 +363,7 @@ export function autoFillGaps(
             }
 
             // Calculate Base Score (Companions)
-            let score = scoreCell(cellIndex, crop.id, workingBed, allCrops, width)
+            let score = scoreCell(cellIndex, crop.id, workingBed, allCrops, width, gridHeight, orientation)
 
             // Strict requirement for gap filling: Must replace valid space AND prefer friends.
             // Score > 0 implies at least one friend (and NO enemies).

@@ -9,16 +9,26 @@ After each task, ask: Decision made? >10 tool calls? Feature done?
 
 # Current Session State
 
-*Last updated: 2026-02-06*
+*Last updated: 2026-02-08*
 
 ## Active Task
-✅ **Feature 009: Drip Irrigation Water Profile Optimization - COMPLETE**
+✅ **Feature 010: Crop Height, Orientation & Sun-Blocking - COMPLETE**
 
 ## Current Status
-- **Phase**: Feature 009 complete (all 3 TODOs done)
-- **Progress**: Complete (TDD workflow followed for all)
+- **Phase**: F010 complete - height scoring integrated into BOTH solver paths
+- **Progress**: Complete (TDD workflow followed)
 - **Blocking Issues**: None
-- **Branch**: claude/drip-irrigation-docs-64wRp
+- **Branch**: claude/add-crop-height-orientation-kgXEK
+
+## Feature 010 Summary (2026-02-08)
+
+### Bug Fix: Priority Solver Height Scoring
+- **Problem**: "Distribute Stash" with "Fill remaining gaps" placed tall crops (60" Amaranth) near south edge, ignoring orientation
+- **Root Cause**: `prioritySolver.ts` functions (`scoreCell`, `findBestCell`, `autoFillFromStash`, `autoFillGaps`, `autoFillAllBoxes`) had zero height/orientation awareness
+- **Fix**: Added `gridHeight` and `orientation` params to all priority solver functions, integrated `heightPlacementPenalty` into `scoreCell`
+- **Callers updated**: `useGardenInteractions.ts` now passes `box.height` and `box.orientation` to both `autoFillAllBoxes` and `autoFillGaps`
+- **Tests**: 5 new height scoring tests in prioritySolver.test.ts (28 total, all passing)
+- **Total tests**: 443 passing (1 pre-existing flaky timeout excluded)
 
 ## Feature 009 Summary (2026-02-06)
 

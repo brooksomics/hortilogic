@@ -71,8 +71,9 @@ Last updated: 2026-02-07 (F010 - Crop Height, Orientation & Sun-Blocking)
 | Function | Location | Purpose |
 |----------|----------|---------|
 | `getHeightCategory()` | utils/heightScoring.ts:24 | Classify crop as low/medium/tall |
-| `getSouthDistance()` | utils/heightScoring.ts:40 | Calculate cell distance from south edge given orientation |
-| `heightPlacementPenalty()` | utils/heightScoring.ts:75 | Score penalty for tall crops near south edge |
+| `getSouthDistance()` | utils/heightScoring.ts:45 | Calculate cell distance from south edge given orientation (8 directions) |
+| `getMaxSouthDistance()` | utils/heightScoring.ts:94 | Get max possible south distance for normalization |
+| `heightPlacementPenalty()` | utils/heightScoring.ts:122 | Score penalty for tall crops near south edge |
 | `HEIGHT_PLACEMENT_WEIGHT` | utils/heightScoring.ts:5 | Weight constant for height penalty (default: 1.5) |
 
 **Key Concepts:**
@@ -80,7 +81,7 @@ Last updated: 2026-02-07 (F010 - Crop Height, Orientation & Sun-Blocking)
 - **Compass orientation**: Each bed has an orientation (0-359°) indicating which direction the top of the grid faces
 - **Height categories**: Low (<12"), Medium (12-36"), Tall (>36") with different penalty scales
 - **Crop fields**: `height_inches` (typical mature height) and `trellisable` (can be trained on support)
-- **Integration**: Applied in `companionEngine.autoFillBed()` during scoring
+- **Integration**: Applied in `companionEngine.autoFillBed()` and `prioritySolver.scoreCell()`/`autoFillGaps()`/`autoFillFromStash()`/`autoFillAllBoxes()`
 
 ---
 
@@ -93,7 +94,7 @@ Last updated: 2026-02-07 (F010 - Crop Height, Orientation & Sun-Blocking)
 
 **Key Concepts:**
 - **Per-box orientation**: Each garden bed can face a different direction (stored as `GardenBox.orientation`)
-- **Cardinal directions**: N(0°), E(90°), S(180°), W(270°) with click-to-select UI
+- **8 compass directions**: N(0°), NE(45°), E(90°), SE(135°), S(180°), SW(225°), W(270°), NW(315°) with click-to-select UI
 - **Default**: 0° (North at top) for backward compatibility
 
 ---
