@@ -636,3 +636,51 @@ describe('stash co-location bonus', () => {
         expect(placedRow).toBe(0) // Same row as existing tomato
     })
 })
+
+// 20 vegetables to simulate realistic crop pool at scale
+const largeCropPool: Crop[] = Array.from({ length: 20 }, (_, i) => ({
+    id: `v${String(i)}`,
+    name: `Veg${String(i)}`,
+    type: 'vegetable' as const,
+    botanical_family: `Fam${String(i % 5)}`,  // 5 families, 4 crops each
+    emoji: '🌱',
+    sfg_density: 1,
+    sun: 'full' as const,
+    days_to_maturity: 60,
+    water_need: 3,
+    height_inches: 24,
+    trellisable: false,
+    // First 4 crops are mutual friends (simulating companion advantage)
+    companions: {
+        friends: i < 4 ? [`v${String((i + 1) % 4)}`] : [],
+        enemies: [] as string[]
+    },
+    planting_strategy: { start_window_start: 0, start_window_end: 6 }
+}))
+
+describe('gap filler diversity', () => {
+    it('uses at least 15 of 20 crop species in a 32-cell bed', () => {
+        const bed = Array(32).fill(null) as (Crop | null)[]
+
+        const result = autoFillGaps(bed, largeCropPool, 8, Infinity,
+            undefined, undefined, 'diversity-seed')
+
+        // With 20 crops and 32 cells, expect broad representation
+        const uniqueCrops = new Set(result.map(p => p.cropId))
+        expect(uniqueCrops.size).toBeGreaterThanOrEqual(15)
+    })
+
+    it('caps any single crop to at most 2 placements in a 32-cell bed with 20 options', () => {
+        const bed = Array(32).fill(null) as (Crop | null)[]
+
+        const result = autoFillGaps(bed, largeCropPool, 8, Infinity,
+            undefined, undefined, 'diversity-seed')
+
+        const counts: Record<string, number> = {}
+        result.forEach(p => { counts[p.cropId] = (counts[p.cropId] || 0) + 1 })
+
+        // With 20 options for 32 cells, each crop should get ~1.6 on average
+        const maxCount = Math.max(...Object.values(counts))
+        expect(maxCount).toBeLessThanOrEqual(2)
+    })
+})

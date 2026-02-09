@@ -881,4 +881,52 @@ describe('autoFillBed', () => {
       expect(cornNorthHalf).toBeGreaterThanOrEqual(cornSouthHalf)
     })
   })
+
+  describe('diversity enforcement', () => {
+    const divProfile: GardenProfile = {
+      name: 'Test', hardiness_zone: '5b',
+      last_frost_date: '2024-05-15', first_frost_date: '2024-10-01',
+      season_extension_weeks: 0
+    }
+    const divDate = new Date('2024-05-20')
+
+    // 20 vegetables, 5 families, first 4 are mutual friends (companion advantage)
+    const largeCropPool: Crop[] = Array.from({ length: 20 }, (_, i) => ({
+      id: `v${String(i)}`,
+      name: `Veg${String(i)}`,
+      type: 'vegetable' as const,
+      botanical_family: `Fam${String(i % 5)}`,
+      emoji: '🌱',
+      sfg_density: 1,
+      sun: 'full' as const,
+      days_to_maturity: 60,
+      water_need: 3,
+      height_inches: 24,
+      trellisable: false,
+      companions: {
+        friends: i < 4 ? [`v${String((i + 1) % 4)}`] : [] as string[],
+        enemies: [] as string[]
+      },
+      planting_strategy: { start_window_start: 0, start_window_end: 6 }
+    }))
+
+    it('uses at least 15 of 20 crop species in a 32-cell bed', () => {
+      const grid = Array(32).fill(null) as (Crop | null)[]
+      const result = autoFillBed(grid, largeCropPool, divProfile, divDate, 8, 4, 'diversity-test')
+
+      const unique = new Set(result.filter((c): c is Crop => c !== null).map(c => c.id))
+      expect(unique.size).toBeGreaterThanOrEqual(15)
+    })
+
+    it('caps any single crop to at most 2 in a 32-cell bed with 20 options', () => {
+      const grid = Array(32).fill(null) as (Crop | null)[]
+      const result = autoFillBed(grid, largeCropPool, divProfile, divDate, 8, 4, 'diversity-test')
+
+      const counts: Record<string, number> = {}
+      result.forEach(c => { if (c) counts[c.id] = (counts[c.id] || 0) + 1 })
+
+      const maxCount = Math.max(...Object.values(counts))
+      expect(maxCount).toBeLessThanOrEqual(2)
+    })
+  })
 })

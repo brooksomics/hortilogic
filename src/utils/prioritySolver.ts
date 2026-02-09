@@ -389,15 +389,19 @@ export function autoFillGaps(
             }
 
             // 3. Variety Penalty (The "Anti-Monoculture" Rule)
-            // -0.5 points for every duplicate already in the bed
+            // -1.0 per duplicate already in bed (was -0.5; stronger to ensure diversity)
             const existingCount = plantedCounts[crop.id] || 0
-            score -= (existingCount * 0.5)
+            score -= (existingCount * 1.0)
+
+            // Novelty bonus: prefer crops not yet in the bed
+            if (existingCount === 0) {
+                score += 0.5
+            }
 
             // 4. Family Diversity Penalty
-            // -0.25 points for every plant of the same family
-            // Prevents filling the bed with only one family (e.g. all Lamiaceae herbs)
+            // -0.5 per plant of the same botanical family (was -0.25)
             const familyCount = familyCounts[crop.botanical_family] || 0
-            score -= (familyCount * 0.25)
+            score -= (familyCount * 0.5)
 
             if (score > bestScore) {
                 bestScore = score

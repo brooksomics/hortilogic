@@ -172,11 +172,13 @@ export function autoFillBed(
 
   // Track planted crop counts for variety optimization
   const plantedCounts: Record<string, number> = {}
+  const familyCounts: Record<string, number> = {}
 
   // Count existing crops
   newGrid.forEach(cell => {
     if (cell) {
       plantedCounts[cell.id] = (plantedCounts[cell.id] || 0) + 1
+      familyCounts[cell.botanical_family] = (familyCounts[cell.botanical_family] || 0) + 1
     }
   })
 
@@ -224,7 +226,16 @@ export function autoFillBed(
 
       // Variety penalty: reduce score for crops we've already planted a lot
       const timesPlanted = plantedCounts[crop.id] || 0
-      score -= timesPlanted * 0.5
+      score -= timesPlanted * 1.0
+
+      // Novelty bonus: prefer crops not yet in the bed
+      if (timesPlanted === 0) {
+        score += 0.5
+      }
+
+      // Family diversity penalty: reduce score for same botanical family
+      const familyCount = familyCounts[crop.botanical_family] || 0
+      score -= familyCount * 0.5
 
       // Track best crop
       if (score > bestScore) {
@@ -242,6 +253,7 @@ export function autoFillBed(
     if (bestCrop) {
       newGrid[cellIndex] = bestCrop
       plantedCounts[bestCrop.id] = (plantedCounts[bestCrop.id] || 0) + 1
+      familyCounts[bestCrop.botanical_family] = (familyCounts[bestCrop.botanical_family] || 0) + 1
 
       // Increment flower count if we just planted a flower
       if (bestCrop.type === 'flower') {
