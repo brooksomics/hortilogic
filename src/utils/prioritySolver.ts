@@ -388,10 +388,10 @@ export function autoFillGaps(
                 score += 2
             }
 
-            // 3. Variety Penalty (The "Anti-Monoculture" Rule)
-            // -1.0 per duplicate already in bed (was -0.5; stronger to ensure diversity)
+            // 3. Variety Penalty (exponential anti-monoculture)
+            // Quadratic scaling: 1st dup = -0.75, 2nd = -3.0, 3rd = -6.75
             const existingCount = plantedCounts[crop.id] || 0
-            score -= (existingCount * 1.0)
+            score -= (existingCount ** 2 * 0.75)
 
             // Novelty bonus: prefer crops not yet in the bed
             if (existingCount === 0) {
@@ -399,7 +399,7 @@ export function autoFillGaps(
             }
 
             // 4. Family Diversity Penalty
-            // -0.5 per plant of the same botanical family (was -0.25)
+            // -0.5 per plant of the same botanical family
             const familyCount = familyCounts[crop.botanical_family] || 0
             score -= (familyCount * 0.5)
 

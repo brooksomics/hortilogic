@@ -9,6 +9,7 @@ import {
     autoFillAllBoxes,
     autoFillGaps
 } from './prioritySolver'
+import { optimizeHeightPlacement } from './heightOptimizer'
 import type { Crop, GardenStash } from '../types/garden'
 
 // Mock crops for testing
@@ -489,7 +490,18 @@ const shortCrop: Crop = {
     planting_strategy: { start_window_start: 0, start_window_end: 6 }
 }
 
-const heightCrops = [tallCrop, shortCrop]
+// Additional crops to avoid strict alternation under exponential penalty
+const tallCrop2: Crop = {
+    id: 'sunflower', name: 'Sunflower', type: 'flower', botanical_family: 'Asteraceae', emoji: '🌻',
+    sfg_density: 1, sun: 'full', days_to_maturity: 70, water_need: 2, height_inches: 60, trellisable: false,
+    companions: { friends: [], enemies: [] }, planting_strategy: { start_window_start: 0, start_window_end: 6 }
+}
+const shortCrop2: Crop = {
+    id: 'lettuce', name: 'Lettuce', type: 'vegetable', botanical_family: 'Asteraceae', emoji: '🥬',
+    sfg_density: 4, sun: 'partial', days_to_maturity: 55, water_need: 3, height_inches: 8, trellisable: false,
+    companions: { friends: [], enemies: [] }, planting_strategy: { start_window_start: 0, start_window_end: 6 }
+}
+const heightCrops = [tallCrop, shortCrop, tallCrop2, shortCrop2]
 
 describe('scoreCell with height scoring', () => {
     it('penalizes tall crop at south edge more than at north edge', () => {
@@ -527,27 +539,35 @@ describe('scoreCell with height scoring', () => {
     })
 })
 
-describe('autoFillGaps with height scoring', () => {
+describe('autoFillGaps with height scoring + optimizer', () => {
     it('places tall crops toward north edge when orientation=0', () => {
         // 4-wide x 4-tall grid, empty
         const bed = Array(16).fill(null) as (Crop | null)[]
 
-        const result = autoFillGaps(
+        const placements = autoFillGaps(
             bed, heightCrops, 4, Infinity,
             undefined, undefined, 'test-seed',
             4, 0 // gridHeight=4, orientation=0
         )
 
-        // Find where corn (tall) was placed
-        const cornPlacements = result.filter(p => p.cropId === 'corn')
-        const radishPlacements = result.filter(p => p.cropId === 'radish')
+        // Apply placements to bed, then run swap optimizer (matches real code path)
+        placements.forEach(p => {
+            const crop = heightCrops.find(c => c.id === p.cropId)
+            if (crop) bed[p.cellIndex] = crop
+        })
+        optimizeHeightPlacement(bed, 4, 4, 0)
 
-        // Corn placements should have lower average row (north = row 0)
-        const avgCornRow = cornPlacements.reduce((s, p) => s + Math.floor(p.cellIndex / 4), 0) / cornPlacements.length
-        const avgRadishRow = radishPlacements.reduce((s, p) => s + Math.floor(p.cellIndex / 4), 0) / radishPlacements.length
+        // Find where tall crops (corn, sunflower) vs short crops (radish, lettuce) ended up
+        let tallRowSum = 0, tallCount = 0, shortRowSum = 0, shortCount = 0
+        bed.forEach((crop, i) => {
+            if (!crop) return
+            const row = Math.floor(i / 4)
+            if (crop.height_inches >= 60) { tallRowSum += row; tallCount++ }
+            else { shortRowSum += row; shortCount++ }
+        })
 
-        // Corn (tall) should average toward row 0 (north), radish (short) toward south
-        expect(avgCornRow).toBeLessThan(avgRadishRow)
+        // Tall crops should cluster toward north (lower rows)
+        expect(tallRowSum / tallCount).toBeLessThan(shortRowSum / shortCount)
     })
 })
 

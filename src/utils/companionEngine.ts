@@ -224,9 +224,9 @@ export function autoFillBed(
       // Height placement penalty: prefer tall crops toward NE (away from south + west sun)
       score += combinedHeightPenalty(crop.height_inches, cellIndex, gridWidth, gridHeight, orientation)
 
-      // Variety penalty: reduce score for crops we've already planted a lot
+      // Variety penalty (exponential): 1st dup = -0.75, 2nd = -3.0, 3rd = -6.75
       const timesPlanted = plantedCounts[crop.id] || 0
-      score -= timesPlanted * 1.0
+      score -= timesPlanted ** 2 * 0.75
 
       // Novelty bonus: prefer crops not yet in the bed
       if (timesPlanted === 0) {
