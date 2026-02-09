@@ -359,7 +359,7 @@ export function useGardenInteractions({
               Infinity,
               gardenProfile ?? undefined, // Pass garden profile for seasonality filtering
               targetDate, // Pass target date for seasonality filtering
-              activeLayout.id, // Deterministic seed (TODO-023)
+              `${activeLayout.id}_${originalBox.id}`, // Per-box seed for diversity
               originalBox.height, // Grid height for sun-blocking scoring
               originalBox.orientation ?? 0 // Compass orientation for sun-blocking
             )

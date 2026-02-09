@@ -118,7 +118,17 @@ function findBestCell(
     let maxScore = -Infinity
 
     for (const idx of emptyIndices) {
-        const score = scoreCell(idx, cropId, bed, allCrops, width, gridHeight, orientation)
+        let score = scoreCell(idx, cropId, bed, allCrops, width, gridHeight, orientation)
+
+        // Co-location bonus: prefer placing same crop on the same row
+        const rowIdx = Math.floor(idx / width)
+        const rowStart = rowIdx * width
+        const rowEnd = Math.min(rowStart + width, bed.length)
+        let sameOnRow = 0
+        for (let c = rowStart; c < rowEnd; c++) {
+            if (bed[c]?.id === cropId) sameOnRow++
+        }
+        score += Math.min(sameOnRow * 0.75, 2.0)
 
         // Hard rejection threshold
         if (score <= -100) continue
@@ -271,8 +281,9 @@ export function autoFillAllBoxes(
             stashForThisBox[cropId] = (stashForThisBox[cropId] || 0) + qty
         }
 
+        const boxSeed = seed != null ? `${String(seed)}_${box.id}` : undefined
         const { placed, failed } = autoFillFromStash(
-            box.cells, stashForThisBox, allCrops, box.width, seed,
+            box.cells, stashForThisBox, allCrops, box.width, boxSeed,
             box.height ?? 0, box.orientation ?? 0
         )
 

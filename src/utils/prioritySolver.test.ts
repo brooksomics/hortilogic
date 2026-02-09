@@ -591,3 +591,48 @@ describe('autoFillAllBoxes with height scoring', () => {
         expect(avgCornRow).toBeLessThan(2)
     })
 })
+
+describe('per-box seed diversity', () => {
+    it('produces different placement patterns for different boxes', () => {
+        // Two identical empty boxes — no height scoring so cells tie and RNG matters
+        const box1 = {
+            id: 'box-1',
+            cells: Array(16).fill(null) as (Crop | null)[],
+            width: 4
+        }
+        const box2 = {
+            id: 'box-2',
+            cells: Array(16).fill(null) as (Crop | null)[],
+            width: 4
+        }
+        const stash = { 'tomato': 4 }
+
+        const result = autoFillAllBoxes([box1, box2], stash, mockCrops, 'layout-seed')
+
+        const r1 = result.boxResults.find(r => r.boxId === 'box-1')!
+        const r2 = result.boxResults.find(r => r.boxId === 'box-2')!
+
+        // With per-box seeds, the two boxes should get different placement patterns
+        const r1Key = r1.placed.map(p => `${p.cropId}@${String(p.cellIndex)}`).join(',')
+        const r2Key = r2.placed.map(p => `${p.cropId}@${String(p.cellIndex)}`).join(',')
+        expect(r1Key).not.toBe(r2Key)
+    })
+})
+
+describe('stash co-location bonus', () => {
+    it('groups same crop on same row during stash placement', () => {
+        // 4-wide x 2-tall grid with 1 tomato already at cell 0
+        const bed = Array(8).fill(null) as (Crop | null)[]
+        bed[0] = mockCrops.find(c => c.id === 'tomato')!
+
+        // Place 1 more tomato via stash
+        const stash = { 'tomato': 1 }
+        const result = autoFillFromStash(bed, stash, mockCrops, 4, 'test')
+
+        // Tomato should be co-located on the same row (cells 1, 2, or 3)
+        expect(result.placed).toHaveLength(1)
+        const placedCell = result.placed[0]!.cellIndex
+        const placedRow = Math.floor(placedCell / 4)
+        expect(placedRow).toBe(0) // Same row as existing tomato
+    })
+})
