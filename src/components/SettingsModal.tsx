@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, Search } from 'lucide-react'
 import type { GardenProfile } from '../types/garden'
+import { lookupByZip } from '../utils/zipLookup'
 
 interface SettingsModalProps {
   isOpen: boolean
@@ -15,20 +16,24 @@ export function SettingsModal({ isOpen, profile, onSave, onClose }: SettingsModa
 
   const [formData, setFormData] = useState<GardenProfile>({
     ...profile,
+    zip_code: profile.zip_code || '',
     location: profile.location || '',
     targetPlantingDate: profile.targetPlantingDate || todayISO
   })
   const [errors, setErrors] = useState<string[]>([])
+  const [zipError, setZipError] = useState<string | null>(null)
   const [showResetConfirm, setShowResetConfirm] = useState(false)
 
   // Update form when profile prop changes
   useEffect(() => {
     setFormData({
       ...profile,
+      zip_code: profile.zip_code || '',
       location: profile.location || '',
       targetPlantingDate: profile.targetPlantingDate || todayISO
     })
     setErrors([])
+    setZipError(null)
   }, [profile, isOpen, todayISO])
 
   // Handle Escape key to close modal
@@ -76,6 +81,31 @@ export function SettingsModal({ isOpen, profile, onSave, onClose }: SettingsModa
     }
   }
 
+  const handleZipLookup = () => {
+    setZipError(null)
+    const zip = formData.zip_code || ''
+    const digits = zip.replace(/\D/g, '')
+
+    if (digits.length < 5) {
+      setZipError('Enter a 5-digit ZIP code')
+      return
+    }
+
+    const result = lookupByZip(zip)
+    if (!result) {
+      setZipError('ZIP code not found in database')
+      return
+    }
+
+    const year = String(new Date().getFullYear())
+    setFormData({
+      ...formData,
+      hardiness_zone: result.zone,
+      last_frost_date: `${year}-${result.lastFrostMMDD}`,
+      first_frost_date: `${year}-${result.firstFrostMMDD}`,
+    })
+  }
+
   const handleResetData = () => {
     // Clear all localStorage
     localStorage.clear()
@@ -111,6 +141,41 @@ export function SettingsModal({ isOpen, profile, onSave, onClose }: SettingsModa
               className="w-full px-3 py-2 border border-soil-300 rounded-md focus:outline-none focus:ring-2 focus:ring-leaf-600"
               required
             />
+          </div>
+
+          {/* ZIP Code Lookup */}
+          <div>
+            <label htmlFor="zip-code" className="block text-sm font-medium text-soil-700 mb-1">
+              ZIP Code
+            </label>
+            <div className="flex gap-2">
+              <input
+                id="zip-code"
+                type="text"
+                value={formData.zip_code || ''}
+                onChange={(e) => {
+                  setZipError(null)
+                  setFormData({ ...formData, zip_code: e.target.value })
+                }}
+                className="flex-1 px-3 py-2 border border-soil-300 rounded-md focus:outline-none focus:ring-2 focus:ring-leaf-600"
+                placeholder="e.g., 80202"
+                maxLength={10}
+              />
+              <button
+                type="button"
+                onClick={handleZipLookup}
+                className="px-3 py-2 bg-frost-100 text-frost-700 border border-frost-300 rounded-md hover:bg-frost-200 focus:outline-none focus:ring-2 focus:ring-frost-500 flex items-center gap-1"
+              >
+                <Search className="w-4 h-4" />
+                Look Up
+              </button>
+            </div>
+            {zipError && (
+              <p className="text-xs text-red-600 mt-1">{zipError}</p>
+            )}
+            <p className="text-xs text-soil-600 mt-1">
+              Auto-fill zone and frost dates from your US ZIP code.
+            </p>
           </div>
 
           {/* Hardiness Zone */}

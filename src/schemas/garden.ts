@@ -8,6 +8,7 @@ import { z } from 'zod';
 export const ProfileSchema = z.object({
   name: z.string(),
   hardiness_zone: z.string(),
+  zip_code: z.string().optional(),
   location: z.string().optional(),
   last_frost_date: z.string(), // YYYY-MM-DD
   first_frost_date: z.string(), // YYYY-MM-DD

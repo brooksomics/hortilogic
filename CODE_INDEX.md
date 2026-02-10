@@ -4,7 +4,7 @@
 
 **Before creating any new function, CHECK HERE FIRST.**
 
-Last updated: 2026-02-07 (F010 - Crop Height, Orientation & Sun-Blocking)
+Last updated: 2026-02-10 (ZIP Code Lookup - Address Autofill)
 
 ---
 
@@ -412,6 +412,24 @@ Migration: LegacyGardenState → LayoutStorage + ProfileStorage
 - **Season Filtering**: Toggle to hide out-of-season crops based on user's location and target planting date
 - **Crop Count Display**: Shows filtered count (e.g., "23 of 162 crops")
 - **Combined Filters**: All filters work together (category + sun + search + season)
+
+---
+
+## ZIP Code Lookup (Address Autofill)
+
+| Function | Location | Purpose |
+|----------|----------|---------|
+| `lookupByZip()` | utils/zipLookup.ts:24 | Look up USDA zone and frost dates by 5-digit US ZIP code |
+| `ZIP3_ZONE_RANGES` | data/zipZoneData.ts:60 | ZIP3 prefix-to-zone range mapping (~230 ranges covering US) |
+| `ZONE_FROST_DATES` | data/zipZoneData.ts:28 | Average frost dates by USDA zone (zones 1a-13b) |
+
+**Key Concepts:**
+- **ZIP3 granularity**: Uses first 3 digits of ZIP code for geographic matching (good enough for zone-level accuracy)
+- **Range-based storage**: ~230 range entries cover the US, much smaller than mapping all 900+ ZIP3 prefixes individually
+- **Two-layer lookup**: ZIP3 → zone, then zone → frost dates (separation of concerns)
+- **Frost date format**: Stored as MM-DD strings, combined with current year at lookup time
+- **Graceful fallback**: Returns null for unrecognized ZIP codes; user can always enter values manually
+- **SettingsModal integration**: ZIP code field with "Look Up" button auto-fills hardiness zone, last frost, and first frost dates
 
 ---
 
