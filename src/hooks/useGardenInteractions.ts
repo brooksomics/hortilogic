@@ -3,6 +3,7 @@ import { autoFillBed } from '../utils/companionEngine'
 import { CROP_DATABASE } from '../data/crops'
 import type { Crop, GardenProfile, GardenLayout, GardenBox, GardenStash } from '../types/garden'
 import { autoFillAllBoxes, autoFillGaps } from '../utils/prioritySolver'
+import { optimizeHeightPlacement } from '../utils/heightOptimizer'
 import type { PlacementSummary } from '../components/StashSummary'
 
 import { StashStorageSchema } from '../schemas/garden'
@@ -253,7 +254,8 @@ export function useGardenInteractions({
         targetDate, // Use target planting date for seasonality filtering
         box.width,
         box.height,
-        activeLayout.id // Deterministic seed (TODO-023)
+        activeLayout.id, // Deterministic seed (TODO-023)
+        box.orientation ?? 0 // Compass orientation for sun-blocking (F010)
       )
       return { ...box, cells: filledCells }
     })
@@ -300,7 +302,9 @@ export function useGardenInteractions({
     const solverInput = activeLayout.boxes.map((box: GardenBox) => ({
       id: box.id,
       cells: [...box.cells], // Clone cells
-      width: box.width
+      width: box.width,
+      height: box.height,
+      orientation: box.orientation ?? 0
     }))
 
     setIsDistributing(true)
@@ -355,7 +359,9 @@ export function useGardenInteractions({
               Infinity,
               gardenProfile ?? undefined, // Pass garden profile for seasonality filtering
               targetDate, // Pass target date for seasonality filtering
-              activeLayout.id // Deterministic seed (TODO-023)
+              `${activeLayout.id}_${originalBox.id}`, // Per-box seed for diversity
+              originalBox.height, // Grid height for sun-blocking scoring
+              originalBox.orientation ?? 0 // Compass orientation for sun-blocking
             )
 
             gapPlacements.forEach(p => {
@@ -367,6 +373,9 @@ export function useGardenInteractions({
 
             placedCount += gapPlacements.length
           }
+
+          // Post-placement: swap crops to optimize height/sun positioning
+          optimizeHeightPlacement(newBed, originalBox.width, originalBox.height, originalBox.orientation ?? 0)
 
           return {
             ...originalBox,

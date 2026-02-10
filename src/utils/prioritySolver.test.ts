@@ -9,6 +9,7 @@ import {
     autoFillAllBoxes,
     autoFillGaps
 } from './prioritySolver'
+import { optimizeHeightPlacement } from './heightOptimizer'
 import type { Crop, GardenStash } from '../types/garden'
 
 // Mock crops for testing
@@ -23,6 +24,8 @@ const mockCrops: Crop[] = [
         sun: 'full',
         days_to_maturity: 80,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         companions: {
             friends: ['basil', 'carrot', 'marigold'],
             enemies: ['brassica', 'potato']
@@ -39,6 +42,8 @@ const mockCrops: Crop[] = [
         sun: 'full',
         days_to_maturity: 60,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         companions: {
             friends: ['tomato'],
             enemies: []
@@ -55,6 +60,8 @@ const mockCrops: Crop[] = [
         sun: 'full',
         days_to_maturity: 70,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         companions: {
             friends: [],
             enemies: ['tomato']
@@ -71,6 +78,8 @@ const mockCrops: Crop[] = [
         sun: 'partial',
         days_to_maturity: 55,
         water_need: 4,
+        height_inches: 24,
+        trellisable: false,
         companions: {
             friends: [],
             enemies: []
@@ -87,6 +96,8 @@ const mockCrops: Crop[] = [
         sun: 'full',
         days_to_maturity: 50,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         companions: {
             friends: ['tomato', 'basil'],
             enemies: []
@@ -198,6 +209,8 @@ describe('Priority Solver Logic', () => {
                 sun: 'full',
                 days_to_maturity: 70,
                 water_need: 3,
+                height_inches: 24,
+                trellisable: false,
                 companions: {
                     friends: ['tomato'],
                     enemies: []
@@ -439,5 +452,255 @@ describe('autoFillGaps', () => {
         // Should have variety - at least 2 different crops planted
         const uniqueCrops = new Set(result.map(p => p.cropId))
         expect(uniqueCrops.size).toBeGreaterThanOrEqual(2)
+    })
+})
+
+// --- Height / Orientation scoring tests ---
+
+// Tall and short mock crops for height scoring tests
+const tallCrop: Crop = {
+    id: 'corn',
+    name: 'Corn',
+    type: 'vegetable',
+    botanical_family: 'Poaceae',
+    emoji: '🌽',
+    sfg_density: 4,
+    sun: 'full',
+    days_to_maturity: 80,
+    water_need: 3,
+    height_inches: 72,
+    trellisable: false,
+    companions: { friends: [], enemies: [] },
+    planting_strategy: { start_window_start: 0, start_window_end: 6 }
+}
+
+const shortCrop: Crop = {
+    id: 'radish',
+    name: 'Radish',
+    type: 'vegetable',
+    botanical_family: 'Brassicaceae',
+    emoji: '🫛',
+    sfg_density: 16,
+    sun: 'full',
+    days_to_maturity: 30,
+    water_need: 2,
+    height_inches: 6,
+    trellisable: false,
+    companions: { friends: [], enemies: [] },
+    planting_strategy: { start_window_start: 0, start_window_end: 6 }
+}
+
+// Additional crops to avoid strict alternation under exponential penalty
+const tallCrop2: Crop = {
+    id: 'sunflower', name: 'Sunflower', type: 'flower', botanical_family: 'Asteraceae', emoji: '🌻',
+    sfg_density: 1, sun: 'full', days_to_maturity: 70, water_need: 2, height_inches: 60, trellisable: false,
+    companions: { friends: [], enemies: [] }, planting_strategy: { start_window_start: 0, start_window_end: 6 }
+}
+const shortCrop2: Crop = {
+    id: 'lettuce', name: 'Lettuce', type: 'vegetable', botanical_family: 'Asteraceae', emoji: '🥬',
+    sfg_density: 4, sun: 'partial', days_to_maturity: 55, water_need: 3, height_inches: 8, trellisable: false,
+    companions: { friends: [], enemies: [] }, planting_strategy: { start_window_start: 0, start_window_end: 6 }
+}
+const heightCrops = [tallCrop, shortCrop, tallCrop2, shortCrop2]
+
+describe('scoreCell with height scoring', () => {
+    it('penalizes tall crop at south edge more than at north edge', () => {
+        // 4-wide x 3-tall grid, orientation=0 (N at top)
+        // South edge = row 2 (bottom), north edge = row 0 (top)
+        const bed = Array(12).fill(null) as (Crop | null)[]
+
+        // Cell 0 = row 0 (north edge), cell 8 = row 2 (south edge)
+        const scoreNorth = scoreCell(0, 'corn', bed, heightCrops, 4, 3, 0)
+        const scoreSouth = scoreCell(8, 'corn', bed, heightCrops, 4, 3, 0)
+
+        // Tall crop should score better at north edge
+        expect(scoreNorth).toBeGreaterThan(scoreSouth)
+    })
+
+    it('does not penalize short crops regardless of position', () => {
+        const bed = Array(12).fill(null) as (Crop | null)[]
+
+        const scoreNorth = scoreCell(0, 'radish', bed, heightCrops, 4, 3, 0)
+        const scoreSouth = scoreCell(8, 'radish', bed, heightCrops, 4, 3, 0)
+
+        // Short crops should not be penalized - same score at any position
+        expect(scoreNorth).toBe(scoreSouth)
+    })
+
+    it('respects orientation=90 (E at top, south on right)', () => {
+        // Width=4, Height=3, orientation=90 → south at right (col 3)
+        const bed = Array(12).fill(null) as (Crop | null)[]
+
+        // Cell 0 = col 0 (north edge), cell 3 = col 3 (south edge)
+        const scoreNorth = scoreCell(0, 'corn', bed, heightCrops, 4, 3, 90)
+        const scoreSouth = scoreCell(3, 'corn', bed, heightCrops, 4, 3, 90)
+
+        expect(scoreNorth).toBeGreaterThan(scoreSouth)
+    })
+})
+
+describe('autoFillGaps with height scoring + optimizer', () => {
+    it('places tall crops toward north edge when orientation=0', () => {
+        // 4-wide x 4-tall grid, empty
+        const bed = Array(16).fill(null) as (Crop | null)[]
+
+        const placements = autoFillGaps(
+            bed, heightCrops, 4, Infinity,
+            undefined, undefined, 'test-seed',
+            4, 0 // gridHeight=4, orientation=0
+        )
+
+        // Apply placements to bed, then run swap optimizer (matches real code path)
+        placements.forEach(p => {
+            const crop = heightCrops.find(c => c.id === p.cropId)
+            if (crop) bed[p.cellIndex] = crop
+        })
+        optimizeHeightPlacement(bed, 4, 4, 0)
+
+        // Find where tall crops (corn, sunflower) vs short crops (radish, lettuce) ended up
+        let tallRowSum = 0, tallCount = 0, shortRowSum = 0, shortCount = 0
+        bed.forEach((crop, i) => {
+            if (!crop) return
+            const row = Math.floor(i / 4)
+            if (crop.height_inches >= 60) { tallRowSum += row; tallCount++ }
+            else { shortRowSum += row; shortCount++ }
+        })
+
+        // Tall crops should cluster toward north (lower rows)
+        expect(tallRowSum / tallCount).toBeLessThan(shortRowSum / shortCount)
+    })
+})
+
+describe('autoFillFromStash with height scoring', () => {
+    it('places tall stash crops toward north edge', () => {
+        // 4-wide x 4-tall grid, empty
+        const bed = Array(16).fill(null) as (Crop | null)[]
+        const stash = { 'corn': 4, 'radish': 4 }
+
+        const result = autoFillFromStash(
+            bed, stash, heightCrops, 4,
+            'test-seed', 4, 0 // gridHeight=4, orientation=0
+        )
+
+        // Find corn placements — should be in northern rows
+        const cornPlacements = result.placed.filter(p => p.cropId === 'corn')
+        const avgCornRow = cornPlacements.reduce((s, p) => s + Math.floor(p.cellIndex / 4), 0) / cornPlacements.length
+
+        // Corn should be in the northern half (rows 0-1, avg < 2)
+        expect(avgCornRow).toBeLessThan(2)
+    })
+})
+
+describe('autoFillAllBoxes with height scoring', () => {
+    it('passes height and orientation to solver', () => {
+        const box1 = {
+            id: 'b1',
+            cells: Array(16).fill(null) as (Crop | null)[],
+            width: 4,
+            height: 4,
+            orientation: 0
+        }
+        const stash = { 'corn': 4, 'radish': 4 }
+
+        const result = autoFillAllBoxes([box1], stash, heightCrops, 'test-seed')
+
+        const cornPlacements = result.boxResults[0]!.placed.filter(p => p.cropId === 'corn')
+        const avgCornRow = cornPlacements.reduce((s, p) => s + Math.floor(p.cellIndex / 4), 0) / cornPlacements.length
+
+        // Corn (tall) should average toward north (low row numbers)
+        expect(avgCornRow).toBeLessThan(2)
+    })
+})
+
+describe('per-box seed diversity', () => {
+    it('produces different placement patterns for different boxes', () => {
+        // Two identical empty boxes — no height scoring so cells tie and RNG matters
+        const box1 = {
+            id: 'box-1',
+            cells: Array(16).fill(null) as (Crop | null)[],
+            width: 4
+        }
+        const box2 = {
+            id: 'box-2',
+            cells: Array(16).fill(null) as (Crop | null)[],
+            width: 4
+        }
+        const stash = { 'tomato': 4 }
+
+        const result = autoFillAllBoxes([box1, box2], stash, mockCrops, 'layout-seed')
+
+        const r1 = result.boxResults.find(r => r.boxId === 'box-1')!
+        const r2 = result.boxResults.find(r => r.boxId === 'box-2')!
+
+        // With per-box seeds, the two boxes should get different placement patterns
+        const r1Key = r1.placed.map(p => `${p.cropId}@${String(p.cellIndex)}`).join(',')
+        const r2Key = r2.placed.map(p => `${p.cropId}@${String(p.cellIndex)}`).join(',')
+        expect(r1Key).not.toBe(r2Key)
+    })
+})
+
+describe('stash co-location bonus', () => {
+    it('groups same crop on same row during stash placement', () => {
+        // 4-wide x 2-tall grid with 1 tomato already at cell 0
+        const bed = Array(8).fill(null) as (Crop | null)[]
+        bed[0] = mockCrops.find(c => c.id === 'tomato')!
+
+        // Place 1 more tomato via stash
+        const stash = { 'tomato': 1 }
+        const result = autoFillFromStash(bed, stash, mockCrops, 4, 'test')
+
+        // Tomato should be co-located on the same row (cells 1, 2, or 3)
+        expect(result.placed).toHaveLength(1)
+        const placedCell = result.placed[0]!.cellIndex
+        const placedRow = Math.floor(placedCell / 4)
+        expect(placedRow).toBe(0) // Same row as existing tomato
+    })
+})
+
+// 20 vegetables to simulate realistic crop pool at scale
+const largeCropPool: Crop[] = Array.from({ length: 20 }, (_, i) => ({
+    id: `v${String(i)}`,
+    name: `Veg${String(i)}`,
+    type: 'vegetable' as const,
+    botanical_family: `Fam${String(i % 5)}`,  // 5 families, 4 crops each
+    emoji: '🌱',
+    sfg_density: 1,
+    sun: 'full' as const,
+    days_to_maturity: 60,
+    water_need: 3,
+    height_inches: 24,
+    trellisable: false,
+    // First 4 crops are mutual friends (simulating companion advantage)
+    companions: {
+        friends: i < 4 ? [`v${String((i + 1) % 4)}`] : [],
+        enemies: [] as string[]
+    },
+    planting_strategy: { start_window_start: 0, start_window_end: 6 }
+}))
+
+describe('gap filler diversity', () => {
+    it('uses at least 15 of 20 crop species in a 32-cell bed', () => {
+        const bed = Array(32).fill(null) as (Crop | null)[]
+
+        const result = autoFillGaps(bed, largeCropPool, 8, Infinity,
+            undefined, undefined, 'diversity-seed')
+
+        // With 20 crops and 32 cells, expect broad representation
+        const uniqueCrops = new Set(result.map(p => p.cropId))
+        expect(uniqueCrops.size).toBeGreaterThanOrEqual(15)
+    })
+
+    it('caps any single crop to at most 2 placements in a 32-cell bed with 20 options', () => {
+        const bed = Array(32).fill(null) as (Crop | null)[]
+
+        const result = autoFillGaps(bed, largeCropPool, 8, Infinity,
+            undefined, undefined, 'diversity-seed')
+
+        const counts: Record<string, number> = {}
+        result.forEach(p => { counts[p.cropId] = (counts[p.cropId] || 0) + 1 })
+
+        // With 20 options for 32 cells, each crop should get ~1.6 on average
+        const maxCount = Math.max(...Object.values(counts))
+        expect(maxCount).toBeLessThanOrEqual(2)
     })
 })

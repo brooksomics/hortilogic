@@ -20,6 +20,8 @@ describe('GardenBed', () => {
       sun: 'partial',
       days_to_maturity: 55,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 4,
       planting_strategy: { start_window_start: -4, start_window_end: 2 },
       companions: { friends: [], enemies: [] }
@@ -31,7 +33,7 @@ describe('GardenBed', () => {
     render(<GardenBed squares={squares} />)
 
     expect(screen.getByText('Lettuce')).toBeInTheDocument()
-    expect(screen.getByText('4/sq ft')).toBeInTheDocument()
+    expect(screen.getByText(/4\/sq ft/)).toBeInTheDocument()
   })
 
   it('uses crop id as fallback when name is not provided', () => {
@@ -42,6 +44,8 @@ describe('GardenBed', () => {
       sun: 'full',
       days_to_maturity: 80,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 1,
       planting_strategy: { start_window_start: 0, start_window_end: 4 },
       companions: { friends: [], enemies: [] }
@@ -53,7 +57,7 @@ describe('GardenBed', () => {
     render(<GardenBed squares={squares} />)
 
     expect(screen.getByText('tomato')).toBeInTheDocument()
-    expect(screen.getByText('1/sq ft')).toBeInTheDocument()
+    expect(screen.getByText(/1\/sq ft/)).toBeInTheDocument()
   })
 
   it('calls onSquareClick with correct index when square is clicked', async () => {
@@ -85,6 +89,8 @@ describe('GardenBed', () => {
       sun: 'full',
       days_to_maturity: 70,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 16,
       planting_strategy: { start_window_start: -2, start_window_end: 4 },
       companions: { friends: [], enemies: [] }
@@ -131,6 +137,8 @@ describe('GardenBed', () => {
       sun: 'partial',
       days_to_maturity: 55,
       water_need: 4,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 4,
       planting_strategy: { start_window_start: -4, start_window_end: 2 },
       companions: { friends: [], enemies: [] }
@@ -165,6 +173,8 @@ describe('GardenBed', () => {
       sun: 'full',
       days_to_maturity: 60,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 8,
       planting_strategy: { start_window_start: -8, start_window_end: -2 },
       companions: { friends: [], enemies: [] }

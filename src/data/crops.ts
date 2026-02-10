@@ -26,6 +26,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 55,
     water_need: 4,
+    height_inches: 8,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'radish-red', 'cucumber', 'strawberry'],
@@ -42,6 +44,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 70,
     water_need: 4,
+    height_inches: 10,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'radish-red', 'cucumber'],
@@ -58,6 +62,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 45,
     water_need: 4,
+    height_inches: 8,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'radish-red', 'cucumber'],
@@ -74,6 +80,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 85,
     water_need: 4,
+    height_inches: 10,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'radish-red'],
@@ -90,6 +98,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 40,
     water_need: 4,
+    height_inches: 8,
+    trellisable: false,
     planting_strategy: { start_window_start: -6, start_window_end: 0 },
     companions: {
       friends: ['peas-sugar-snap', 'radish-red', 'strawberry', 'cilantro'],
@@ -106,6 +116,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 55,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion-yellow', 'garlic', 'dill', 'nasturtium'],
@@ -122,6 +134,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion-yellow', 'garlic', 'dill'],
@@ -138,6 +152,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 40,
     water_need: 3,
+    height_inches: 8,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['cucumber', 'lettuce-leaf', 'spinach'],
@@ -154,6 +170,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 50,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['onion-yellow', 'garlic', 'radish-red'],
@@ -170,6 +188,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 55,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['onion-yellow', 'garlic', 'radish-red'],
@@ -186,6 +206,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 45,
     water_need: 4,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'dill', 'garlic'],
@@ -202,6 +224,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion-yellow', 'garlic', 'dill'],
@@ -218,6 +242,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 40,
     water_need: 3,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['radish-red', 'peas-sugar-snap', 'lettuce-leaf'],
@@ -234,6 +260,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 85,
     water_need: 3,
+    height_inches: 12,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'radish-red'],
@@ -250,6 +278,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 80,
     water_need: 3,
+    height_inches: 10,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'endive'],
@@ -266,6 +296,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 50,
     water_need: 5,
+    height_inches: 8,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'spinach'],
@@ -282,6 +314,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 40,
     water_need: 3,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'spinach'],
@@ -298,6 +332,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 45,
     water_need: 3,
+    height_inches: 10,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'garlic'],
@@ -314,6 +350,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 50,
     water_need: 3,
+    height_inches: 6,
+    trellisable: false,
     planting_strategy: { start_window_start: -6, start_window_end: 0 },
     companions: {
       friends: ['lettuce-leaf', 'spinach'],
@@ -330,6 +368,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['strawberry'],
@@ -348,6 +388,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 85,
     water_need: 3,
+    height_inches: 72,
+    trellisable: true,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot', 'basil-sweet', 'parsley-flat', 'onion-yellow', 'marigold-french', 'nasturtium'],
@@ -364,6 +406,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 65,
     water_need: 3,
+    height_inches: 60,
+    trellisable: true,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot', 'basil-sweet', 'parsley-flat', 'onion-yellow', 'marigold-french'],
@@ -380,6 +424,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 75,
     water_need: 3,
+    height_inches: 48,
+    trellisable: true,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot', 'basil-sweet', 'parsley-flat', 'onion-yellow'],
@@ -396,6 +442,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 80,
     water_need: 3,
+    height_inches: 72,
+    trellisable: true,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot', 'basil-sweet', 'parsley-flat', 'onion-yellow', 'marigold-french'],
@@ -412,6 +460,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 70,
     water_need: 3,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['basil-sweet', 'onion-yellow', 'carrot', 'marigold-french'],
@@ -428,6 +478,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 75,
     water_need: 2,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['basil-sweet', 'onion-yellow', 'carrot'],
@@ -444,6 +496,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 100,
     water_need: 2,
+    height_inches: 36,
+    trellisable: false,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['basil-sweet', 'oregano'],
@@ -460,6 +514,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 65,
     water_need: 3,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['basil-sweet', 'onion-yellow'],
@@ -476,6 +532,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 80,
     water_need: 4,
+    height_inches: 36,
+    trellisable: false,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['basil-sweet', 'thyme', 'oregano', 'marigold-french'],
@@ -492,6 +550,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: ['peas-sugar-snap', 'cabbage', 'horseradish'],
@@ -508,6 +568,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 75,
     water_need: 2,
+    height_inches: 48,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['basil-sweet', 'carrot', 'onion-yellow'],
@@ -524,6 +586,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 70,
     water_need: 2,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['basil-sweet', 'carrot'],
@@ -542,6 +606,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 70,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'dill', 'garlic', 'nasturtium', 'marigold-french'],
@@ -558,6 +624,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 75,
     water_need: 4,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'dill', 'garlic', 'nasturtium'],
@@ -574,6 +642,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 70,
     water_need: 3,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'dill', 'potato', 'nasturtium'],
@@ -590,6 +660,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 3,
+    height_inches: 36,
+    trellisable: false,
     planting_strategy: { start_window_start: -6, start_window_end: -2 },
     companions: {
       friends: ['onion-yellow', 'dill', 'garlic'],
@@ -606,6 +678,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 55,
     water_need: 3,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion-yellow', 'garlic'],
@@ -622,6 +696,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 25,
     water_need: 3,
+    height_inches: 6,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 8 },
     companions: {
       friends: ['lettuce-leaf', 'peas-sugar-snap', 'carrot', 'spinach', 'cucumber'],
@@ -638,6 +714,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 10,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'peas-sugar-snap', 'carrot'],
@@ -654,6 +732,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 50,
     water_need: 3,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['peas-sugar-snap', 'radish-red'],
@@ -670,6 +750,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 2,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -6, start_window_end: 0 },
     companions: {
       friends: ['peas-sugar-snap', 'onion-yellow'],
@@ -686,6 +768,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 45,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'dill'],
@@ -702,6 +786,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 70,
     water_need: 4,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['onion-yellow', 'dill'],
@@ -718,6 +804,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 150,
     water_need: 2,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['potato'],
@@ -734,6 +822,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 50,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion-yellow', 'garlic'],
@@ -752,6 +842,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 60,
+    trellisable: true,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['carrot', 'radish-red', 'turnip', 'cucumber'],
@@ -768,6 +860,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 55,
     water_need: 3,
+    height_inches: 60,
+    trellisable: true,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['carrot', 'radish-red', 'turnip'],
@@ -784,6 +878,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 65,
     water_need: 3,
+    height_inches: 60,
+    trellisable: true,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['carrot', 'radish-red', 'turnip'],
@@ -800,6 +896,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 50,
     water_need: 3,
+    height_inches: 20,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber', 'radish-red', 'nasturtium', 'marigold-french'],
@@ -816,6 +914,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 65,
     water_need: 3,
+    height_inches: 72,
+    trellisable: true,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber', 'radish-red', 'corn-sweet'],
@@ -832,6 +932,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 55,
     water_need: 3,
+    height_inches: 20,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber', 'radish-red'],
@@ -848,6 +950,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 85,
     water_need: 3,
+    height_inches: 48,
+    trellisable: false,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['potato', 'carrot'],
@@ -864,6 +968,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 75,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber'],
@@ -880,6 +986,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 70,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber'],
@@ -896,6 +1004,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 70,
     water_need: 3,
+    height_inches: 84,
+    trellisable: true,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'cucumber', 'corn-sweet'],
@@ -912,6 +1022,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 110,
     water_need: 2,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: ['carrot'],
@@ -928,6 +1040,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 100,
     water_need: 2,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['carrot'],
@@ -946,6 +1060,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 70,
     water_need: 2,
+    height_inches: 12,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['lettuce-leaf', 'tomato-beefsteak', 'peas-sugar-snap', 'onion-yellow', 'leek'],
@@ -962,6 +1078,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 55,
     water_need: 3,
+    height_inches: 15,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['onion-yellow', 'lettuce-leaf', 'cabbage'],
@@ -978,6 +1096,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 110,
     water_need: 2,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'beet', 'tomato-beefsteak', 'lettuce-leaf', 'chamomile'],
@@ -994,6 +1114,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 105,
     water_need: 2,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'beet', 'tomato-beefsteak'],
@@ -1010,6 +1132,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 12,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'lettuce-leaf', 'tomato-beefsteak'],
@@ -1026,6 +1150,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 240,
     water_need: 2,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: {
       friends: ['tomato-beefsteak', 'lettuce-leaf', 'cabbage', 'chamomile'],
@@ -1042,6 +1168,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 120,
     water_need: 2,
+    height_inches: 12,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['peas-sugar-snap', 'radish-red'],
@@ -1058,6 +1186,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 2,
+    height_inches: 15,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot', 'beet', 'tomato-beefsteak'],
@@ -1074,6 +1204,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 120,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['carrot'],
@@ -1090,6 +1222,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 100,
     water_need: 2,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['green-beans-bush', 'peas-sugar-snap', 'thyme', 'basil-sweet', 'marigold-french', 'nasturtium', 'radish-red', 'dill'],
@@ -1106,6 +1240,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 240,
     water_need: 4,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['turmeric', 'lemongrass', 'peas-sugar-snap', 'green-beans-bush', 'cilantro', 'spinach', 'marigold-french', 'nasturtium'],
@@ -1122,6 +1258,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 240,
     water_need: 4,
+    height_inches: 36,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['ginger', 'lemongrass', 'green-beans-bush', 'peas-sugar-snap', 'cilantro', 'basil-sweet', 'marigold-french', 'garlic'],
@@ -1138,6 +1276,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 110,
     water_need: 4,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['leek', 'onion-yellow'],
@@ -1154,6 +1294,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 120,
     water_need: 2,
+    height_inches: 96,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: ['green-beans-bush', 'corn-sweet', 'cucumber', 'sunflower', 'marigold-french', 'garlic', 'onion-yellow'],
@@ -1170,6 +1312,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 150,
     water_need: 2,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['corn-sweet', 'green-beans-bush', 'radish-red', 'cilantro', 'sunflower', 'marigold-french', 'nasturtium'],
@@ -1186,6 +1330,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 8,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'peas-sugar-snap', 'carrot'],
@@ -1202,6 +1348,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 28,
     water_need: 3,
+    height_inches: 6,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 8 },
     companions: {
       friends: ['lettuce-leaf', 'peas-sugar-snap', 'carrot'],
@@ -1218,6 +1366,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 200,
     water_need: 3,
+    height_inches: 72,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['green-beans-pole', 'spinach', 'radish-red', 'marigold-french', 'basil-sweet', 'sunflower'],
@@ -1236,6 +1386,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 4,
+    height_inches: 72,
+    trellisable: true,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['peas-sugar-snap', 'radish-red', 'lettuce-leaf', 'nasturtium', 'marigold-french'],
@@ -1252,6 +1404,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 50,
     water_need: 4,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish-red', 'nasturtium'],
@@ -1268,6 +1422,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 50,
     water_need: 3,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish-red', 'nasturtium'],
@@ -1284,6 +1440,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 100,
     water_need: 4,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['corn-sweet', 'nasturtium'],
@@ -1300,6 +1458,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 85,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish-red', 'corn-sweet', 'nasturtium'],
@@ -1316,6 +1476,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 4,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['radish-red', 'nasturtium'],
@@ -1332,6 +1494,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 80,
     water_need: 4,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['radish-red', 'nasturtium'],
@@ -1348,6 +1512,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 85,
     water_need: 4,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['radish-red'],
@@ -1364,6 +1530,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 85,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['corn-sweet', 'radish-red'],
@@ -1380,6 +1548,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish-red'],
@@ -1396,6 +1566,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 100,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish-red'],
@@ -1412,6 +1584,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 150,
     water_need: 4,
+    height_inches: 120,
+    trellisable: true,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['corn-sweet', 'green-beans-pole', 'peas-sugar-snap', 'onion-yellow', 'radish-red', 'oregano', 'marigold-french', 'nasturtium', 'sunflower', 'borage'],
@@ -1430,6 +1604,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 75,
     water_need: 4,
+    height_inches: 84,
+    trellisable: false,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['green-beans-pole', 'pumpkin', 'cucumber'],
@@ -1446,6 +1622,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 730,
     water_need: 2,
+    height_inches: 60,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['tomato-beefsteak', 'parsley-flat', 'basil-sweet'],
@@ -1462,6 +1640,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 110,
     water_need: 3,
+    height_inches: 48,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: ['peas-sugar-snap', 'green-beans-bush', 'sunflower', 'tarragon', 'marigold-french', 'nasturtium'],
@@ -1478,6 +1658,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 85,
     water_need: 4,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['leek', 'onion-yellow', 'tomato-beefsteak'],
@@ -1494,6 +1676,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 65,
     water_need: 3,
+    height_inches: 48,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: [],
@@ -1510,6 +1694,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 2,
+    height_inches: 60,
+    trellisable: false,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['pepper-bell', 'eggplant'],
@@ -1526,6 +1712,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 365,
     water_need: 3,
+    height_inches: 36,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['cabbage', 'broccoli', 'cauliflower', 'garlic', 'onion-yellow', 'strawberry', 'marigold-french', 'nasturtium'],
@@ -1542,6 +1730,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 40,
     water_need: 2,
+    height_inches: 60,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['onion-yellow'],
@@ -1558,6 +1748,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 120,
     water_need: 2,
+    height_inches: 60,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['corn-sweet', 'green-beans-bush', 'peas-sugar-snap', 'spinach', 'cabbage', 'lettuce-leaf', 'radish-red', 'garlic', 'basil-sweet', 'marigold-french'],
@@ -1574,6 +1766,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 85,
     water_need: 3,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: -6, start_window_end: -2 },
     companions: {
       friends: ['onion-yellow', 'dill', 'garlic'],
@@ -1592,6 +1786,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'tomato-cherry', 'pepper-bell', 'asparagus'],
@@ -1608,6 +1804,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'pepper-bell'],
@@ -1624,6 +1822,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 50,
     water_need: 3,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['spinach', 'lettuce-leaf'],
@@ -1640,6 +1840,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 70,
     water_need: 3,
+    height_inches: 12,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['tomato-beefsteak', 'tomato-cherry', 'carrot', 'asparagus'],
@@ -1656,6 +1858,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 75,
     water_need: 3,
+    height_inches: 12,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['tomato-beefsteak', 'carrot'],
@@ -1672,6 +1876,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 45,
     water_need: 2,
+    height_inches: 36,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['cabbage', 'lettuce-leaf', 'onion-yellow', 'cucumber'],
@@ -1688,6 +1894,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 1,
+    height_inches: 12,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['eggplant', 'pepper-bell'],
@@ -1704,6 +1912,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 1,
+    height_inches: 8,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['eggplant', 'cabbage', 'strawberry'],
@@ -1720,6 +1930,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 90,
     water_need: 4,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['cabbage', 'tomato-beefsteak'],
@@ -1736,6 +1948,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 90,
     water_need: 4,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['cabbage', 'tomato-beefsteak'],
@@ -1752,6 +1966,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 2,
+    height_inches: 12,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 4 },
     companions: {
       friends: ['carrot', 'tomato-beefsteak', 'rose'],
@@ -1768,6 +1984,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 1,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['rosemary', 'cabbage', 'carrot'],
@@ -1784,6 +2002,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 120,
     water_need: 1,
+    height_inches: 36,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['sage', 'cabbage', 'green-beans-bush'],
@@ -1800,6 +2020,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 120,
     water_need: 1,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['rose', 'rosemary'],
@@ -1816,6 +2038,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 2,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['onion-yellow', 'cabbage', 'cucumber'],
@@ -1832,6 +2056,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 2,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['eggplant'],
@@ -1848,6 +2074,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 1,
+    height_inches: 12,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['oregano', 'thyme'],
@@ -1864,6 +2092,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 70,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['tomato-beefsteak', 'yellow-squash'],
@@ -1880,6 +2110,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 100,
     water_need: 3,
+    height_inches: 48,
+    trellisable: false,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['basil-sweet', 'tomato-beefsteak', 'pepper-bell', 'eggplant', 'ginger', 'turmeric', 'marigold-french', 'nasturtium'],
@@ -1896,6 +2128,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 2,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['beet', 'cabbage', 'broccoli', 'cauliflower', 'kale-curly', 'eggplant', 'potato', 'carrot', 'green-beans-bush', 'pumpkin', 'zucchini', 'strawberry'],
@@ -1912,6 +2146,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'pepper-bell', 'lettuce-leaf', 'radish-red', 'carrot', 'basil-sweet', 'thyme', 'marigold-french', 'nasturtium', 'lavender'],
@@ -1928,6 +2164,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 730,
     water_need: 2,
+    height_inches: 48,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['rosemary', 'thyme', 'oregano', 'sage', 'basil-sweet', 'chives', 'lavender', 'nasturtium', 'carrot', 'green-beans-bush'],
@@ -1944,6 +2182,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['strawberry'],
@@ -1960,6 +2200,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 90,
     water_need: 3,
+    height_inches: 72,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: ['tomato-beefsteak', 'celery', 'carrot', 'pepper-bell', 'peas-sugar-snap', 'green-beans-bush', 'thyme', 'parsley-flat', 'chives', 'basil-sweet', 'marigold-french', 'nasturtium', 'borage'],
@@ -1976,6 +2218,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 120,
     water_need: 2,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['cilantro'],
@@ -1994,6 +2238,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 50,
     water_need: 2,
+    height_inches: 12,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'pepper-bell', 'eggplant', 'cucumber', 'green-beans-bush'],
@@ -2010,6 +2256,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 2,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'pepper-bell'],
@@ -2026,6 +2274,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 50,
     water_need: 2,
+    height_inches: 12,
+    trellisable: true,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'cucumber', 'radish-red', 'cabbage', 'zucchini'],
@@ -2042,6 +2292,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 55,
     water_need: 2,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'strawberry', 'cucumber', 'green-beans-bush'],
@@ -2058,6 +2310,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 50,
     water_need: 2,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'lettuce-leaf', 'cucumber'],
@@ -2074,6 +2328,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 2,
+    height_inches: 6,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 6 },
     companions: {
       friends: ['lettuce-leaf', 'broccoli', 'cabbage'],
@@ -2090,6 +2346,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 70,
     water_need: 2,
+    height_inches: 96,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['corn-sweet', 'cucumber'],
@@ -2106,6 +2364,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 2,
+    height_inches: 36,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'cucumber'],
@@ -2122,6 +2382,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 70,
     water_need: 1,
+    height_inches: 48,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak'],
@@ -2138,6 +2400,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 70,
     water_need: 3,
+    height_inches: 10,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['green-beans-bush', 'tomato-beefsteak'],
@@ -2154,6 +2418,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 3,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'chives', 'marigold-french'],
@@ -2170,6 +2436,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 1,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'cucumber', 'zucchini', 'pumpkin', 'rosemary', 'thyme', 'marigold-french', 'cosmos', 'zinnia', 'calendula'],
@@ -2186,6 +2454,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 2,
+    height_inches: 36,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak'],
@@ -2202,6 +2472,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 2,
+    height_inches: 18,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['rose', 'corn-sweet'],
@@ -2218,6 +2490,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 730,
     water_need: 3,
+    height_inches: 36,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['pepper-bell', 'lavender', 'thyme', 'sage', 'raspberry', 'grape'],
@@ -2234,6 +2508,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 365,
     water_need: 3,
+    height_inches: 48,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 2 },
     companions: {
       friends: ['garlic', 'chives', 'lavender'],
@@ -2250,6 +2526,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 75,
     water_need: 3,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['tomato-beefsteak', 'pepper-bell', 'eggplant', 'basil-sweet', 'lavender', 'marigold-french', 'nasturtium', 'calendula', 'zinnia', 'cosmos'],
@@ -2266,6 +2544,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 8,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'lettuce-butterhead', 'spinach', 'parsley-flat', 'thyme', 'chives', 'marigold-french', 'nasturtium'],
@@ -2282,6 +2562,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 6,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'lettuce-butterhead', 'spinach', 'strawberry', 'basil-sweet', 'chives', 'thyme', 'marigold-french', 'nasturtium'],
@@ -2298,6 +2580,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 180,
     water_need: 2,
+    height_inches: 72,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['tomato-beefsteak', 'pepper-bell', 'corn-sweet', 'lettuce-leaf', 'cucumber', 'basil-sweet', 'thyme', 'chives', 'sage', 'lavender', 'dill', 'marigold-french'],
@@ -2314,6 +2598,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 3,
+    height_inches: 48,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['marigold-french', 'nasturtium', 'basil-sweet', 'lavender', 'dill', 'salvia'],
@@ -2330,6 +2616,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 75,
     water_need: 2,
+    height_inches: 12,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['thyme', 'sage', 'lavender', 'rosemary', 'chamomile', 'marigold-french'],
@@ -2346,6 +2634,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 70,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: {
       friends: ['onion-yellow', 'garlic', 'chives', 'dill', 'chamomile', 'borage', 'nasturtium', 'marigold-french', 'celery', 'spinach', 'lettuce-leaf', 'beet', 'thyme'],
@@ -2362,6 +2652,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 65,
     water_need: 3,
+    height_inches: 72,
+    trellisable: true,
     planting_strategy: { start_window_start: -4, start_window_end: 0 },
     companions: {
       friends: ['tomato-beefsteak', 'pepper-bell', 'corn-sweet', 'cucumber', 'lettuce-leaf', 'spinach', 'radish-red', 'carrot', 'basil-sweet', 'marigold-french', 'nasturtium'],
@@ -2378,6 +2670,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 65,
     water_need: 3,
+    height_inches: 12,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'pepper-bell', 'corn-sweet', 'green-beans-bush', 'zucchini', 'cucumber', 'pumpkin', 'basil-sweet', 'marigold-french', 'zinnia'],
@@ -2394,6 +2688,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 75,
     water_need: 4,
+    height_inches: 6,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['nasturtium', 'basil-sweet'],
@@ -2410,6 +2706,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 75,
     water_need: 2,
+    height_inches: 30,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['broccoli', 'cabbage', 'cauliflower', 'carrot', 'strawberry', 'rosemary', 'lavender', 'tomato-beefsteak'],
@@ -2426,6 +2724,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 75,
     water_need: 2,
+    height_inches: 12,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['tomato-beefsteak', 'basil-sweet', 'dill', 'cilantro', 'garlic', 'marigold-french', 'nasturtium', 'zinnia'],
@@ -2442,6 +2742,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 60,
     water_need: 1,
+    height_inches: 6,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['marigold-french', 'nasturtium', 'zinnia', 'lavender', 'thyme', 'rosemary'],
@@ -2458,6 +2760,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 1,
+    height_inches: 24,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 6 },
     companions: {
       friends: ['basil-sweet', 'sage', 'lavender', 'marigold-french', 'zinnia'],
@@ -2476,6 +2780,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 90,
     water_need: 4,
+    height_inches: 8,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['lettuce-butterhead', 'spinach', 'borage', 'thyme', 'sorrel'],
@@ -2492,6 +2798,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 730,
     water_need: 4,
+    height_inches: 48,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['strawberry', 'thyme', 'borage', 'calendula', 'nasturtium'],
@@ -2508,6 +2816,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 365,
     water_need: 3,
+    height_inches: 60,
+    trellisable: true,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['garlic', 'chives', 'marigold-french', 'nasturtium'],
@@ -2524,6 +2834,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 365,
     water_need: 3,
+    height_inches: 60,
+    trellisable: true,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['garlic', 'chives', 'borage', 'blueberry', 'mint-spearmint', 'thyme', 'peas-sugar-snap', 'green-beans-bush', 'sunflower'],
@@ -2540,6 +2852,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 730,
     water_need: 3,
+    height_inches: 48,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['chives', 'garlic', 'marigold-french', 'calendula', 'nasturtium', 'strawberry', 'blueberry'],
@@ -2556,6 +2870,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'partial',
     days_to_maturity: 730,
     water_need: 3,
+    height_inches: 48,
+    trellisable: false,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['green-beans-bush', 'chives', 'garlic', 'nasturtium', 'marigold-french', 'strawberry', 'blueberry'],
@@ -2572,6 +2888,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 1095,
     water_need: 2,
+    height_inches: 72,
+    trellisable: true,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['basil-sweet', 'oregano'],
@@ -2588,6 +2906,8 @@ export const CROP_DATABASE: Crop[] = [
     sun: 'full',
     days_to_maturity: 730,
     water_need: 2,
+    height_inches: 96,
+    trellisable: false,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: {
       friends: ['basil-sweet', 'oregano', 'chives', 'thyme', 'rosemary', 'lavender', 'sage', 'marigold-french', 'nasturtium', 'strawberry'],

@@ -4,7 +4,7 @@
 
 **Before creating any new function, CHECK HERE FIRST.**
 
-Last updated: 2026-01-18 (TODO-029 complete - Flower-Vegetable Companion Bonus)
+Last updated: 2026-02-07 (F010 - Crop Height, Orientation & Sun-Blocking)
 
 ---
 
@@ -40,6 +40,7 @@ Last updated: 2026-01-18 (TODO-029 complete - Flower-Vegetable Companion Bonus)
 - **Mutualism optimization**: Prefers planting friends next to existing crops (+1 bonus per friend)
 - **Flower-Vegetable Bonus (TODO-029)**: Extra +1 bonus when flowers and vegetables are friends (+2 total)
 - **Water Need Grouping (TODO-031 / F009)**: Row-level water variance penalty groups crops with similar water needs on the same drip line
+- **Height Sun-Blocking (F010)**: Penalizes tall crops near the south edge to prevent sun blocking; uses compass orientation per bed
 - **Variety optimization**: Tracks planted counts and penalizes monoculture (-0.5 per duplicate)
 - **Smart scoring**: Evaluates ALL crops for each cell and picks the best fit
 - Constraint satisfaction: respects both viability AND compatibility
@@ -62,6 +63,39 @@ Last updated: 2026-01-18 (TODO-029 complete - Flower-Vegetable Companion Bonus)
 - **Variance penalty**: `-(variance * WATER_VARIANCE_WEIGHT)` where higher variance = bigger penalty
 - **Weight balance**: WATER_VARIANCE_WEIGHT=2.0 makes variance of 1.0 cost ~2 points (comparable to 2 friend bonuses)
 - **Integration**: Applied in both `companionEngine.autoFillBed()` and `prioritySolver.scoreCell()`/`autoFillGaps()`
+
+---
+
+## Height Scoring & Sun-Blocking (F010)
+
+| Function | Location | Purpose |
+|----------|----------|---------|
+| `getHeightCategory()` | utils/heightScoring.ts:24 | Classify crop as low/medium/tall |
+| `getSouthDistance()` | utils/heightScoring.ts:45 | Calculate cell distance from south edge given orientation (8 directions) |
+| `getMaxSouthDistance()` | utils/heightScoring.ts:94 | Get max possible south distance for normalization |
+| `heightPlacementPenalty()` | utils/heightScoring.ts:122 | Score penalty for tall crops near south edge |
+| `HEIGHT_PLACEMENT_WEIGHT` | utils/heightScoring.ts:5 | Weight constant for height penalty (default: 1.5) |
+
+**Key Concepts:**
+- **Sun-blocking optimization**: Tall crops on the south side block sunlight from shorter crops behind them
+- **Compass orientation**: Each bed has an orientation (0-359°) indicating which direction the top of the grid faces
+- **Height categories**: Low (<12"), Medium (12-36"), Tall (>36") with different penalty scales
+- **Crop fields**: `height_inches` (typical mature height) and `trellisable` (can be trained on support)
+- **Integration**: Applied in `companionEngine.autoFillBed()` and `prioritySolver.scoreCell()`/`autoFillGaps()`/`autoFillFromStash()`/`autoFillAllBoxes()`
+
+---
+
+## Bed Orientation & Compass UI (F010)
+
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| `CompassRose` | components/CompassRose.tsx | Interactive compass for setting bed orientation |
+| `setBoxOrientation()` | hooks/useLayoutManager.ts | Update a box's compass orientation |
+
+**Key Concepts:**
+- **Per-box orientation**: Each garden bed can face a different direction (stored as `GardenBox.orientation`)
+- **8 compass directions**: N(0°), NE(45°), E(90°), SE(135°), S(180°), SW(225°), W(270°), NW(315°) with click-to-select UI
+- **Default**: 0° (North at top) for backward compatibility
 
 ---
 

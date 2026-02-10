@@ -13,6 +13,8 @@ const sampleCrops: Crop[] = [
     sun: 'partial',
     days_to_maturity: 55,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     sfg_density: 4,
     planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: { friends: [], enemies: [] }
@@ -25,6 +27,8 @@ const sampleCrops: Crop[] = [
     sun: 'full',
     days_to_maturity: 85,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     sfg_density: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: { friends: [], enemies: [] }
@@ -37,6 +41,8 @@ const sampleCrops: Crop[] = [
     sun: 'full',
     days_to_maturity: 70,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     sfg_density: 16,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: { friends: [], enemies: [] }
@@ -61,9 +67,9 @@ describe('CropLibrary', () => {
   it('displays crop density for each crop', () => {
     render(<CropLibrary crops={sampleCrops} selectedCrop={null} onSelectCrop={vi.fn()} />)
 
-    expect(screen.getByText('4 per sq ft')).toBeInTheDocument()
-    expect(screen.getByText('1 per sq ft')).toBeInTheDocument()
-    expect(screen.getByText('16 per sq ft')).toBeInTheDocument()
+    expect(screen.getByText(/4 per sq ft/)).toBeInTheDocument()
+    expect(screen.getByText(/1 per sq ft/)).toBeInTheDocument()
+    expect(screen.getByText(/16 per sq ft/)).toBeInTheDocument()
   })
 
   it('calls onSelectCrop when a crop is clicked', async () => {
@@ -119,6 +125,8 @@ describe('CropLibrary', () => {
       sun: 'full',
       days_to_maturity: 25,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 16,
       planting_strategy: { start_window_start: -4, start_window_end: 2 },
       companions: { friends: [], enemies: [] }
@@ -158,6 +166,8 @@ describe('CropLibrary', () => {
         sun: 'full',
         days_to_maturity: 65,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 1,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
@@ -170,6 +180,8 @@ describe('CropLibrary', () => {
         sun: 'partial',
         days_to_maturity: 40,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 9,
         planting_strategy: { start_window_start: -6, start_window_end: 0 },
         companions: { friends: [], enemies: [] }
@@ -418,6 +430,8 @@ describe('CropLibrary', () => {
         sun: 'partial',
         days_to_maturity: 55,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 4,
         planting_strategy: { start_window_start: -4, start_window_end: 2 },
         companions: { friends: [], enemies: [] }
@@ -430,6 +444,8 @@ describe('CropLibrary', () => {
         sun: 'full',
         days_to_maturity: 85,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 1,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
@@ -442,6 +458,8 @@ describe('CropLibrary', () => {
         sun: 'full',
         days_to_maturity: 60,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 4,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
@@ -454,6 +472,8 @@ describe('CropLibrary', () => {
         sun: 'partial',
         days_to_maturity: 45,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 9,
         planting_strategy: { start_window_start: -4, start_window_end: 2 },
         companions: { friends: [], enemies: [] }
@@ -466,6 +486,8 @@ describe('CropLibrary', () => {
         sun: 'full',
         days_to_maturity: 50,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 4,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
@@ -478,6 +500,8 @@ describe('CropLibrary', () => {
         sun: 'full',
         days_to_maturity: 45,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 2,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
@@ -592,6 +616,8 @@ describe('CropLibrary', () => {
         sun: 'partial',
         days_to_maturity: 55,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 4,
         planting_strategy: { start_window_start: -4, start_window_end: 2 },
         companions: { friends: [], enemies: [] }
@@ -604,6 +630,8 @@ describe('CropLibrary', () => {
         sun: 'full',
         days_to_maturity: 85,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 1,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
@@ -616,6 +644,8 @@ describe('CropLibrary', () => {
         sun: 'shade',
         days_to_maturity: 90,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 1,
         planting_strategy: { start_window_start: -2, start_window_end: 2 },
         companions: { friends: [], enemies: [] }
@@ -695,6 +725,8 @@ describe('CropLibrary', () => {
           sun: 'full',
           days_to_maturity: 60,
           water_need: 3,
+          height_inches: 24,
+          trellisable: false,
           sfg_density: 4,
           planting_strategy: { start_window_start: 0, start_window_end: 4 },
           companions: { friends: [], enemies: [] }
@@ -753,6 +785,8 @@ describe('CropLibrary', () => {
         sun: 'partial',
         days_to_maturity: 55,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 4,
         planting_strategy: { start_window_start: -4, start_window_end: 2 },
         companions: { friends: [], enemies: [] }
@@ -765,6 +799,8 @@ describe('CropLibrary', () => {
         sun: 'full',
         days_to_maturity: 85,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 1,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
@@ -777,6 +813,8 @@ describe('CropLibrary', () => {
         sun: 'full',
         days_to_maturity: 75,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 1,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
@@ -789,6 +827,8 @@ describe('CropLibrary', () => {
         sun: 'full',
         days_to_maturity: 60,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 4,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
@@ -861,6 +901,8 @@ describe('CropLibrary', () => {
           sun: 'full',
           days_to_maturity: 50,
           water_need: 3,
+          height_inches: 24,
+          trellisable: false,
           sfg_density: 4,
           planting_strategy: { start_window_start: 0, start_window_end: 4 },
           companions: { friends: [], enemies: [] }
@@ -890,6 +932,8 @@ describe('CropLibrary', () => {
         sun: 'partial',
         days_to_maturity: 55,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 4,
         planting_strategy: { start_window_start: -4, start_window_end: 2 },
         companions: { friends: [], enemies: [] }
@@ -902,6 +946,8 @@ describe('CropLibrary', () => {
         sun: 'full',
         days_to_maturity: 85,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 1,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
@@ -914,6 +960,8 @@ describe('CropLibrary', () => {
         sun: 'full',
         days_to_maturity: 75,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 1,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }
@@ -926,6 +974,8 @@ describe('CropLibrary', () => {
         sun: 'full',
         days_to_maturity: 85,
         water_need: 3,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 1,
         planting_strategy: { start_window_start: 0, start_window_end: 4 },
         companions: { friends: [], enemies: [] }

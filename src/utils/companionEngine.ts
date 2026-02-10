@@ -3,6 +3,7 @@ import { CROPS_BY_ID } from '@/data/crops'
 import { isCropViable } from './dateEngine'
 import { SeededRandom } from './seededRandom'
 import { waterPenalty } from './waterScoring'
+import { combinedHeightPenalty } from './heightScoring'
 
 /**
  * Default grid dimensions for 4' x 8' bed (backward compatibility)
@@ -140,6 +141,7 @@ function scoreCropForCell(crop: Crop, neighborIds: string[]): number {
  * @param targetDate - Date to check viability against (defaults to today)
  * @param gridWidth - Width of the grid in cells (default: 8 for 4x8 bed)
  * @param gridHeight - Height of the grid in cells (default: 4 for 4x8 bed)
+ * @param orientation - Compass orientation in degrees (0=N at top, default: 0)
  * @returns New grid with auto-filled crops (preserves existing crops)
  */
 export function autoFillBed(
@@ -149,7 +151,8 @@ export function autoFillBed(
   targetDate: Date = new Date(),
   gridWidth: number = DEFAULT_GRID_WIDTH,
   gridHeight: number = 4,
-  seed?: string | number
+  seed?: string | number,
+  orientation: number = 0
 ): (Crop | null)[] {
   // Create a copy of the grid to avoid mutation
   const newGrid = [...currentGrid]
@@ -169,11 +172,13 @@ export function autoFillBed(
 
   // Track planted crop counts for variety optimization
   const plantedCounts: Record<string, number> = {}
+  const familyCounts: Record<string, number> = {}
 
   // Count existing crops
   newGrid.forEach(cell => {
     if (cell) {
       plantedCounts[cell.id] = (plantedCounts[cell.id] || 0) + 1
+      familyCounts[cell.botanical_family] = (familyCounts[cell.botanical_family] || 0) + 1
     }
   })
 
@@ -216,9 +221,21 @@ export function autoFillBed(
       const rowIndex = Math.floor(cellIndex / gridWidth)
       score += waterPenalty(newGrid, gridWidth, rowIndex, crop.water_need)
 
-      // Variety penalty: reduce score for crops we've already planted a lot
+      // Height placement penalty: prefer tall crops toward NE (away from south + west sun)
+      score += combinedHeightPenalty(crop.height_inches, cellIndex, gridWidth, gridHeight, orientation)
+
+      // Variety penalty (exponential): 1st dup = -0.75, 2nd = -3.0, 3rd = -6.75
       const timesPlanted = plantedCounts[crop.id] || 0
-      score -= timesPlanted * 0.5
+      score -= timesPlanted ** 2 * 0.75
+
+      // Novelty bonus: prefer crops not yet in the bed
+      if (timesPlanted === 0) {
+        score += 0.5
+      }
+
+      // Family diversity penalty: reduce score for same botanical family
+      const familyCount = familyCounts[crop.botanical_family] || 0
+      score -= familyCount * 0.5
 
       // Track best crop
       if (score > bestScore) {
@@ -236,6 +253,7 @@ export function autoFillBed(
     if (bestCrop) {
       newGrid[cellIndex] = bestCrop
       plantedCounts[bestCrop.id] = (plantedCounts[bestCrop.id] || 0) + 1
+      familyCounts[bestCrop.botanical_family] = (familyCounts[bestCrop.botanical_family] || 0) + 1
 
       // Increment flower count if we just planted a flower
       if (bestCrop.type === 'flower') {

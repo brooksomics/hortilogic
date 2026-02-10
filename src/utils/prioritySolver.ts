@@ -3,6 +3,7 @@ import { getNeighbors } from './companionEngine'
 import { SeededRandom } from './seededRandom'
 import { isCropViable } from './dateEngine'
 import { waterPenalty } from './waterScoring'
+import { combinedHeightPenalty } from './heightScoring'
 
 export interface CropPlacement {
     cropId: string
@@ -30,6 +31,7 @@ export function calculateDifficulty(crop: Crop): number {
     score += crop.companions.enemies.length * 10
     score += crop.sfg_density === 1 ? 5 : 0 // Large crops (1 per sq ft) are generally harder to pack
     score += crop.companions.friends.length === 0 ? 3 : 0
+    score += Math.floor(crop.height_inches / 12) // Taller crops placed first for best north spots
     return score
 }
 
@@ -54,7 +56,9 @@ export function scoreCell(
     cropId: string,
     bed: (Crop | null)[],
     allCrops: Crop[],
-    width: number
+    width: number,
+    gridHeight: number = 0,
+    orientation: number = 0
 ): number {
     const candidateCrop = allCrops.find(c => c.id === cropId)
     if (!candidateCrop) return 0
@@ -86,6 +90,11 @@ export function scoreCell(
     const rowIndex = Math.floor(cellIndex / width)
     score += waterPenalty(bed, width, rowIndex, candidateCrop.water_need)
 
+    // Height placement penalty: prefer tall crops toward NE (away from south + west sun)
+    if (gridHeight > 0) {
+        score += combinedHeightPenalty(candidateCrop.height_inches, cellIndex, width, gridHeight, orientation)
+    }
+
     return score
 }
 
@@ -94,7 +103,9 @@ function findBestCell(
     cropId: string,
     allCrops: Crop[],
     width: number,
-    rng: SeededRandom
+    rng: SeededRandom,
+    gridHeight: number = 0,
+    orientation: number = 0
 ): number | null {
     // Find all empty cells
     const emptyIndices = bed
@@ -107,7 +118,17 @@ function findBestCell(
     let maxScore = -Infinity
 
     for (const idx of emptyIndices) {
-        const score = scoreCell(idx, cropId, bed, allCrops, width)
+        let score = scoreCell(idx, cropId, bed, allCrops, width, gridHeight, orientation)
+
+        // Co-location bonus: prefer placing same crop on the same row
+        const rowIdx = Math.floor(idx / width)
+        const rowStart = rowIdx * width
+        const rowEnd = Math.min(rowStart + width, bed.length)
+        let sameOnRow = 0
+        for (let c = rowStart; c < rowEnd; c++) {
+            if (bed[c]?.id === cropId) sameOnRow++
+        }
+        score += Math.min(sameOnRow * 0.75, 2.0)
 
         // Hard rejection threshold
         if (score <= -100) continue
@@ -131,7 +152,9 @@ export function autoFillFromStash(
     stash: GardenStash,
     allCrops: Crop[],
     width: number,
-    seed?: string | number
+    seed?: string | number,
+    gridHeight: number = 0,
+    orientation: number = 0
 ): PlacementResult {
     // Clone bed to simulate placement
     // NOTE: In the real app, currentBed actually stores `Crop` objects, not strings.
@@ -148,7 +171,7 @@ export function autoFillFromStash(
 
     for (const { cropId, quantity, crop } of priorityList) {
         for (let i = 0; i < quantity; i++) {
-            const bestCell = findBestCell(workingBed, cropId, allCrops, width, rng)
+            const bestCell = findBestCell(workingBed, cropId, allCrops, width, rng, gridHeight, orientation)
 
             if (bestCell !== null) {
                 workingBed[bestCell] = crop
@@ -190,7 +213,7 @@ export interface BoxPlacementResult extends PlacementResult {
  * Consumes stash items as they are placed.
  */
 export function autoFillAllBoxes(
-    layoutBoxes: { id: string; cells: (Crop | null)[]; width: number }[],
+    layoutBoxes: { id: string; cells: (Crop | null)[]; width: number; height?: number; orientation?: number }[],
     initialStash: GardenStash,
     allCrops: Crop[],
     seed?: string | number
@@ -258,7 +281,11 @@ export function autoFillAllBoxes(
             stashForThisBox[cropId] = (stashForThisBox[cropId] || 0) + qty
         }
 
-        const { placed, failed } = autoFillFromStash(box.cells, stashForThisBox, allCrops, box.width, seed)
+        const boxSeed = seed != null ? `${String(seed)}_${box.id}` : undefined
+        const { placed, failed } = autoFillFromStash(
+            box.cells, stashForThisBox, allCrops, box.width, boxSeed,
+            box.height ?? 0, box.orientation ?? 0
+        )
 
         boxResults.push({
             boxId: box.id,
@@ -293,7 +320,9 @@ export function autoFillGaps(
     maxFills: number = Infinity,
     gardenProfile?: GardenProfile,
     targetDate?: Date,
-    seed?: string | number
+    seed?: string | number,
+    gridHeight: number = 0,
+    orientation: number = 0
 ): CropPlacement[] {
     const placed: CropPlacement[] = []
     const workingBed = [...bed]
@@ -344,7 +373,7 @@ export function autoFillGaps(
             }
 
             // Calculate Base Score (Companions)
-            let score = scoreCell(cellIndex, crop.id, workingBed, allCrops, width)
+            let score = scoreCell(cellIndex, crop.id, workingBed, allCrops, width, gridHeight, orientation)
 
             // Strict requirement for gap filling: Must replace valid space AND prefer friends.
             // Score > 0 implies at least one friend (and NO enemies).
@@ -359,16 +388,20 @@ export function autoFillGaps(
                 score += 2
             }
 
-            // 3. Variety Penalty (The "Anti-Monoculture" Rule)
-            // -0.5 points for every duplicate already in the bed
+            // 3. Variety Penalty (exponential anti-monoculture)
+            // Quadratic scaling: 1st dup = -0.75, 2nd = -3.0, 3rd = -6.75
             const existingCount = plantedCounts[crop.id] || 0
-            score -= (existingCount * 0.5)
+            score -= (existingCount ** 2 * 0.75)
+
+            // Novelty bonus: prefer crops not yet in the bed
+            if (existingCount === 0) {
+                score += 0.5
+            }
 
             // 4. Family Diversity Penalty
-            // -0.25 points for every plant of the same family
-            // Prevents filling the bed with only one family (e.g. all Lamiaceae herbs)
+            // -0.5 per plant of the same botanical family
             const familyCount = familyCounts[crop.botanical_family] || 0
-            score -= (familyCount * 0.25)
+            score -= (familyCount * 0.5)
 
             if (score > bestScore) {
                 bestScore = score

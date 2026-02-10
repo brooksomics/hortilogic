@@ -42,6 +42,7 @@ export const BoxSchema = z.object({
   width: z.number().int().positive(),
   height: z.number().int().positive(),
   cells: z.array(CellSchema),
+  orientation: z.number().min(0).max(359).optional(),
 });
 
 export type Box = z.infer<typeof BoxSchema>;

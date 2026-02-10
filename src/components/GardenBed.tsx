@@ -2,6 +2,7 @@ import { AlertTriangle, Droplets, Trash2 } from 'lucide-react'
 import type { Crop, GardenProfile } from '@/types'
 import { isCropViable } from '@/utils/dateEngine'
 import { getRowWaterAverage, getDripLineColor, getWaterLabel } from '@/utils/waterScoring'
+import { CompassRose } from './CompassRose'
 
 interface GardenSquareProps {
   crop?: Crop | null
@@ -55,7 +56,8 @@ function GardenSquare({ crop, onClick, isViable = true }: GardenSquareProps) {
             {crop.name || crop.id}
           </span>
           <span className="text-[8px] text-soil-600">
-            {crop.sfg_density}/sq ft
+            {crop.sfg_density}/sq ft &middot; {crop.height_inches}&quot;
+            {crop.trellisable && ' T'}
           </span>
         </>
       )}
@@ -90,6 +92,12 @@ interface GardenBedProps {
 
   /** Whether to show delete button (default: false) */
   showDelete?: boolean
+
+  /** Compass orientation in degrees (0=N at top) */
+  orientation?: number
+
+  /** Callback when orientation changes */
+  onOrientationChange?: (degrees: number) => void
 }
 
 /**
@@ -105,7 +113,9 @@ export function GardenBed({
   height = 4,
   bedName,
   onDelete,
-  showDelete = false
+  showDelete = false,
+  orientation = 0,
+  onOrientationChange
 }: GardenBedProps) {
   const totalCells = width * height
   const defaultSquares = Array(totalCells).fill(null) as (Crop | null)[]
@@ -147,6 +157,14 @@ export function GardenBed({
       <div className="mb-2 text-center relative">
         <h2 className="text-lg font-bold text-soil-800">{displayName}</h2>
         <p className="text-xs text-soil-600">{cellCount.toString()} Square Foot Gardening cells</p>
+        {onOrientationChange && (
+          <div className="flex justify-center mt-1">
+            <CompassRose
+              orientation={orientation}
+              onOrientationChange={onOrientationChange}
+            />
+          </div>
+        )}
         {showDelete && onDelete && (
           <button
             onClick={onDelete}

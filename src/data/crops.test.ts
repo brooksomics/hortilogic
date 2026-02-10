@@ -121,6 +121,75 @@ describe('CROP_DATABASE water_need (F009)', () => {
   })
 })
 
+describe('CROP_DATABASE height_inches and trellisable (F010)', () => {
+  it('all crops have a valid height_inches value (positive integer)', () => {
+    CROP_DATABASE.forEach((crop) => {
+      expect(crop.height_inches).toBeGreaterThan(0)
+      expect(Number.isInteger(crop.height_inches)).toBe(true)
+    })
+  })
+
+  it('all crops have a boolean trellisable field', () => {
+    CROP_DATABASE.forEach((crop) => {
+      expect(typeof crop.trellisable).toBe('boolean')
+    })
+  })
+
+  it('corn is tall (72+ inches)', () => {
+    const corn = CROPS_BY_ID['corn-sweet']
+    expect(corn).toBeDefined()
+    expect(corn?.height_inches).toBeGreaterThanOrEqual(72)
+  })
+
+  it('lettuce varieties are short (under 12 inches)', () => {
+    const lettuces = CROP_DATABASE.filter((c) => c.id.startsWith('lettuce-'))
+    lettuces.forEach((crop) => {
+      expect(crop.height_inches).toBeLessThanOrEqual(12)
+    })
+  })
+
+  it('tomato varieties are tall (48+ inches)', () => {
+    const tomatoes = CROP_DATABASE.filter((c) => c.id.startsWith('tomato-'))
+    tomatoes.forEach((crop) => {
+      expect(crop.height_inches).toBeGreaterThanOrEqual(48)
+    })
+  })
+
+  it('pole beans and runner beans are trellisable', () => {
+    const trellisable = ['green-beans-pole', 'runner-beans']
+    trellisable.forEach((id) => {
+      const crop = CROPS_BY_ID[id]
+      expect(crop).toBeDefined()
+      expect(crop?.trellisable).toBe(true)
+    })
+  })
+
+  it('bush beans are NOT trellisable', () => {
+    const crop = CROPS_BY_ID['green-beans-bush']
+    expect(crop).toBeDefined()
+    expect(crop?.trellisable).toBe(false)
+  })
+
+  it('pea varieties are trellisable', () => {
+    const peas = CROP_DATABASE.filter((c) => c.id.startsWith('peas-'))
+    peas.forEach((crop) => {
+      expect(crop.trellisable).toBe(true)
+    })
+  })
+
+  it('cucumbers are trellisable', () => {
+    const crop = CROPS_BY_ID['cucumber']
+    expect(crop).toBeDefined()
+    expect(crop?.trellisable).toBe(true)
+  })
+
+  it('no crop has height_inches over 144 (12 feet)', () => {
+    CROP_DATABASE.forEach((crop) => {
+      expect(crop.height_inches).toBeLessThanOrEqual(144)
+    })
+  })
+})
+
 describe('CROPS_BY_ID', () => {
   it('provides lookup object with all 160 crops', () => {
     expect(Object.keys(CROPS_BY_ID)).toHaveLength(160)

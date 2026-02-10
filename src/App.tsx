@@ -26,6 +26,7 @@ function App() {
     switchLayout,
     addBox,
     removeBox,
+    setBoxOrientation,
     toggleDislikedCrop,
     layoutModalMode,
     targetLayoutId,
@@ -219,6 +220,8 @@ function App() {
                 bedName={box.name}
                 onDelete={() => { handleDeleteBoxClick(box.id, box.name) }}
                 showDelete={activeLayout.boxes.length > 1}
+                orientation={box.orientation ?? 0}
+                onOrientationChange={(degrees) => { setBoxOrientation(box.id, degrees) }}
               />
             ))}
             <GardenInstructions selectedCrop={selectedCrop} />

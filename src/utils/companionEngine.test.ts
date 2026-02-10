@@ -14,6 +14,8 @@ describe('getNeighbors', () => {
     sun: 'full',
     days_to_maturity: 80,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     sfg_density: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: { friends: ['carrot'], enemies: ['peas'] }
@@ -27,6 +29,8 @@ describe('getNeighbors', () => {
     sun: 'full',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     sfg_density: 8,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: { friends: ['carrot'], enemies: ['tomato'] }
@@ -40,6 +44,8 @@ describe('getNeighbors', () => {
     sun: 'full',
     days_to_maturity: 70,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     sfg_density: 16,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: { friends: ['tomato', 'peas'], enemies: [] }
@@ -230,6 +236,8 @@ describe('checkCompanionConstraints', () => {
     sun: 'full',
     days_to_maturity: 80,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     sfg_density: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: { friends: ['carrot'], enemies: ['peas'] }
@@ -243,6 +251,8 @@ describe('checkCompanionConstraints', () => {
     sun: 'full',
     days_to_maturity: 70,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     sfg_density: 16,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: { friends: ['tomato', 'peas'], enemies: [] }
@@ -275,6 +285,8 @@ describe('checkCompanionConstraints', () => {
       sun: 'full',
       days_to_maturity: 50,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 1,
       planting_strategy: { start_window_start: 0, start_window_end: 4 },
       companions: { friends: [], enemies: ['peas', 'tomato', 'carrot'] }
@@ -295,6 +307,8 @@ describe('checkCompanionConstraints', () => {
       sun: 'full',
       days_to_maturity: 85,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 1,
       planting_strategy: { start_window_start: 0, start_window_end: 4 },
       companions: { friends: ['carrot', 'basil-sweet'], enemies: ['potato'] }
@@ -321,6 +335,8 @@ describe('autoFillBed', () => {
     sun: 'full',
     days_to_maturity: 80,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     sfg_density: 1,
     planting_strategy: { start_window_start: 0, start_window_end: 4 },
     companions: { friends: ['carrot'], enemies: ['peas'] }
@@ -334,6 +350,8 @@ describe('autoFillBed', () => {
     sun: 'full',
     days_to_maturity: 60,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     sfg_density: 8,
     planting_strategy: { start_window_start: -8, start_window_end: -2 },
     companions: { friends: ['carrot'], enemies: ['tomato'] }
@@ -347,6 +365,8 @@ describe('autoFillBed', () => {
     sun: 'full',
     days_to_maturity: 70,
     water_need: 3,
+    height_inches: 24,
+    trellisable: false,
     sfg_density: 16,
     planting_strategy: { start_window_start: -2, start_window_end: 4 },
     companions: { friends: ['tomato', 'peas'], enemies: [] }
@@ -517,6 +537,8 @@ describe('autoFillBed', () => {
       sun: 'full',
       days_to_maturity: 60,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 1,
       planting_strategy: { start_window_start: -2, start_window_end: 8 },
       companions: { friends: ['tomato', 'carrot', 'peas', 'lettuce'], enemies: [] }
@@ -530,6 +552,8 @@ describe('autoFillBed', () => {
       sun: 'full',
       days_to_maturity: 70,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 1,
       planting_strategy: { start_window_start: -2, start_window_end: 8 },
       companions: { friends: ['tomato', 'carrot', 'peas'], enemies: [] }
@@ -543,6 +567,8 @@ describe('autoFillBed', () => {
       sun: 'full',
       days_to_maturity: 60,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 1,
       planting_strategy: { start_window_start: -2, start_window_end: 8 },
       companions: { friends: ['tomato', 'carrot'], enemies: [] }
@@ -556,6 +582,8 @@ describe('autoFillBed', () => {
       sun: 'full',
       days_to_maturity: 50,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 1,
       planting_strategy: { start_window_start: -2, start_window_end: 8 },
       companions: { friends: ['tomato', 'carrot', 'peas'], enemies: [] }
@@ -569,6 +597,8 @@ describe('autoFillBed', () => {
       sun: 'full',
       days_to_maturity: 70,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 1,
       planting_strategy: { start_window_start: -2, start_window_end: 8 },
       companions: { friends: ['tomato', 'carrot'], enemies: [] }
@@ -655,6 +685,8 @@ describe('autoFillBed', () => {
       sun: 'partial',
       days_to_maturity: 55,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 4,
       planting_strategy: { start_window_start: -4, start_window_end: 4 },
       companions: { friends: ['carrot'], enemies: [] }
@@ -668,6 +700,8 @@ describe('autoFillBed', () => {
       sun: 'partial',
       days_to_maturity: 40,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 9,
       planting_strategy: { start_window_start: -4, start_window_end: 4 },
       companions: { friends: ['peas'], enemies: [] }
@@ -681,6 +715,8 @@ describe('autoFillBed', () => {
       sun: 'full',
       days_to_maturity: 60,
       water_need: 3,
+      height_inches: 24,
+      trellisable: false,
       sfg_density: 4,
       planting_strategy: { start_window_start: 0, start_window_end: 4 },
       companions: { friends: ['tomato'], enemies: [] }
@@ -715,6 +751,8 @@ describe('autoFillBed', () => {
         sun: 'full',
         days_to_maturity: 120,
         water_need: 1,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 1,
         planting_strategy: { start_window_start: -4, start_window_end: 4 },
         companions: { friends: [], enemies: [] },
@@ -727,6 +765,8 @@ describe('autoFillBed', () => {
         sun: 'full',
         days_to_maturity: 100,
         water_need: 4,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 4,
         planting_strategy: { start_window_start: -4, start_window_end: 4 },
         companions: { friends: [], enemies: [] },
@@ -739,6 +779,8 @@ describe('autoFillBed', () => {
         sun: 'full',
         days_to_maturity: 90,
         water_need: 1,
+        height_inches: 24,
+        trellisable: false,
         sfg_density: 4,
         planting_strategy: { start_window_start: -4, start_window_end: 4 },
         companions: { friends: [], enemies: [] },
@@ -780,6 +822,111 @@ describe('autoFillBed', () => {
       // With mutualism scoring, basil should be preferred near tomato
       // This test will FAIL with current greedy first-fit algorithm
       expect(basilNearTomato).toBe(true)
+    })
+  })
+
+  describe('height-based sun blocking optimization', () => {
+    const tallCorn: Crop = {
+      id: 'corn',
+      name: 'Corn',
+      type: 'vegetable',
+      botanical_family: 'Poaceae',
+      sun: 'full',
+      days_to_maturity: 80,
+      water_need: 3,
+      height_inches: 84,
+      trellisable: false,
+      sfg_density: 1,
+      planting_strategy: { start_window_start: 0, start_window_end: 4 },
+      companions: { friends: [], enemies: [] }
+    }
+
+    const shortLettuce: Crop = {
+      id: 'lettuce',
+      name: 'Lettuce',
+      type: 'vegetable',
+      botanical_family: 'Asteraceae',
+      sun: 'partial',
+      days_to_maturity: 55,
+      water_need: 3,
+      height_inches: 8,
+      trellisable: false,
+      sfg_density: 4,
+      planting_strategy: { start_window_start: 0, start_window_end: 4 },
+      companions: { friends: [], enemies: [] }
+    }
+
+    it('prefers tall crops in north rows and short crops in south rows', () => {
+      // 4x4 grid, orientation=0 (north at top)
+      const grid: (Crop | null)[] = Array(16).fill(null) as (Crop | null)[]
+      const crops = [tallCorn, shortLettuce]
+      const targetDate = new Date('2024-05-20')
+
+      const result = autoFillBed(
+        grid, crops, profile, targetDate, 4, 4, 'height-test', 0
+      )
+
+      // Count tall corn in north half (rows 0-1) vs south half (rows 2-3)
+      let cornNorthHalf = 0
+      let cornSouthHalf = 0
+      for (let i = 0; i < 16; i++) {
+        if (result[i]?.id === 'corn') {
+          const row = Math.floor(i / 4)
+          if (row < 2) cornNorthHalf++
+          else cornSouthHalf++
+        }
+      }
+
+      // Corn should be concentrated in the north half (away from sun)
+      expect(cornNorthHalf).toBeGreaterThanOrEqual(cornSouthHalf)
+    })
+  })
+
+  describe('diversity enforcement', () => {
+    const divProfile: GardenProfile = {
+      name: 'Test', hardiness_zone: '5b',
+      last_frost_date: '2024-05-15', first_frost_date: '2024-10-01',
+      season_extension_weeks: 0
+    }
+    const divDate = new Date('2024-05-20')
+
+    // 20 vegetables, 5 families, first 4 are mutual friends (companion advantage)
+    const largeCropPool: Crop[] = Array.from({ length: 20 }, (_, i) => ({
+      id: `v${String(i)}`,
+      name: `Veg${String(i)}`,
+      type: 'vegetable' as const,
+      botanical_family: `Fam${String(i % 5)}`,
+      emoji: '🌱',
+      sfg_density: 1,
+      sun: 'full' as const,
+      days_to_maturity: 60,
+      water_need: 3,
+      height_inches: 24,
+      trellisable: false,
+      companions: {
+        friends: i < 4 ? [`v${String((i + 1) % 4)}`] : [] as string[],
+        enemies: [] as string[]
+      },
+      planting_strategy: { start_window_start: 0, start_window_end: 6 }
+    }))
+
+    it('uses at least 15 of 20 crop species in a 32-cell bed', () => {
+      const grid = Array(32).fill(null) as (Crop | null)[]
+      const result = autoFillBed(grid, largeCropPool, divProfile, divDate, 8, 4, 'diversity-test')
+
+      const unique = new Set(result.filter((c): c is Crop => c !== null).map(c => c.id))
+      expect(unique.size).toBeGreaterThanOrEqual(15)
+    })
+
+    it('caps any single crop to at most 2 in a 32-cell bed with 20 options', () => {
+      const grid = Array(32).fill(null) as (Crop | null)[]
+      const result = autoFillBed(grid, largeCropPool, divProfile, divDate, 8, 4, 'diversity-test')
+
+      const counts: Record<string, number> = {}
+      result.forEach(c => { if (c) counts[c.id] = (counts[c.id] || 0) + 1 })
+
+      const maxCount = Math.max(...Object.values(counts))
+      expect(maxCount).toBeLessThanOrEqual(2)
     })
   })
 })
