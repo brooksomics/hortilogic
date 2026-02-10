@@ -276,15 +276,17 @@ describe('SettingsModal', () => {
     const saveButton = screen.getByRole('button', { name: /save/i })
     await user.click(saveButton)
 
-    expect(mockOnSave).toHaveBeenCalledWith({
-      name: 'My Garden',
-      hardiness_zone: '5b',
-      last_frost_date: '2024-05-15',
-      first_frost_date: '2024-10-15',
-      season_extension_weeks: 0,
-      location: 'Denver, CO',
-      targetPlantingDate: '2024-03-15'
-    })
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: 'My Garden',
+        hardiness_zone: '5b',
+        last_frost_date: '2024-05-15',
+        first_frost_date: '2024-10-15',
+        season_extension_weeks: 0,
+        location: 'Denver, CO',
+        targetPlantingDate: '2024-03-15'
+      })
+    )
   })
 
   it('preserves existing location and targetPlantingDate when profile has them', () => {

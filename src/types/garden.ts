@@ -8,6 +8,9 @@ export interface GardenProfile {
   /** USDA hardiness zone (e.g., "5b", "10a") */
   hardiness_zone: string
 
+  /** Optional US ZIP code for auto-populating zone and frost dates */
+  zip_code?: string
+
   /** Optional location/city for better user context (e.g., "Denver, CO") */
   location?: string
 
