@@ -1,11 +1,12 @@
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect, useCallback } from 'react'
 import { GardenContext, type GardenContextValue } from './GardenContext'
-import type { GardenBox } from '../types/garden'
+import type { GardenBox, GardenStash } from '../types/garden'
 import { useLayoutManager } from '../hooks/useLayoutManager'
 import { useLayoutActions } from '../hooks/useLayoutActions'
 import { useGardenInteractions } from '../hooks/useGardenInteractions'
 import { useProfiles } from '../hooks/useProfiles'
 import { migrateToLayoutsSchema, migrateToMultiBoxSchema } from '../utils/storageMigration'
+import { useUndoToast } from '../hooks/useUndoToast'
 
 export interface GardenProviderProps {
   children: ReactNode
@@ -62,12 +63,32 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
     ? (getProfile(activeLayout.profileId) || getProfile(defaultProfileId) || null)
     : null
 
+  // Undo toast system
+  const restoreBoxes = useCallback((boxes: GardenBox[]) => {
+    setAllBoxes(boxes)
+  }, [setAllBoxes])
+
+  const restoreStash = useCallback((stash: GardenStash) => {
+    if (activeLayout?.id) {
+      const key = `hortilogic_stash_${activeLayout.id}`
+      localStorage.setItem(key, JSON.stringify(stash))
+      // Force re-render by triggering the garden interactions stash update
+      window.dispatchEvent(new CustomEvent('stash-restore', { detail: stash }))
+    }
+  }, [activeLayout?.id])
+
+  const undoToast = useUndoToast(
+    restoreBoxes,
+    restoreStash,
+    () => {} // restoreLayout not used in this implementation
+  )
+
   // Garden interactions
   const {
     selectedCrop,
     setSelectedCrop,
     isSettingsOpen,
-    handleAutoFill,
+    handleAutoFill: handleAutoFillBase,
     handleSquareClick,
     handleSettingsSave,
     handleSettingsClose,
@@ -75,13 +96,11 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
     stash,
     addToStash,
     removeFromStash,
-    clearStash,
+    clearStash: clearStashBase,
     getStashTotalArea,
     canAddToStash,
-    handleDistributeStash,
+    handleDistributeStash: handleDistributeStashBase,
     placementResult,
-    undo,
-    canUndo,
     isDistributing,
   } = useGardenInteractions({
     currentBed,
@@ -91,6 +110,7 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
     plantCrop,
     removeCrop,
     updateProfile,
+    captureUndo: undoToast.capture,
   })
 
   // Calculate total area for all boxes
@@ -98,6 +118,61 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
     (sum: number, box: GardenBox) => sum + box.width * box.height,
     0
   ) ?? 0
+
+  // Wrapper functions that capture snapshots before destructive actions
+  const clearBedWithUndo = useCallback(() => {
+    if (activeLayout?.boxes) {
+      // Deep clone boxes
+      const boxesSnapshot = activeLayout.boxes.map(box => ({
+        ...box,
+        cells: [...box.cells],
+      }))
+      undoToast.capture({
+        type: 'boxes',
+        label: 'Cleared all crops',
+        boxes: boxesSnapshot,
+      })
+    }
+    clearBed()
+  }, [activeLayout?.boxes, clearBed, undoToast.capture])
+
+  const handleAutoFillWithUndo = useCallback(() => {
+    if (activeLayout?.boxes) {
+      // Deep clone boxes before autofill
+      const boxesSnapshot = activeLayout.boxes.map(box => ({
+        ...box,
+        cells: [...box.cells],
+      }))
+      undoToast.capture({
+        type: 'boxes',
+        label: 'Automagic Fill',
+        boxes: boxesSnapshot,
+      })
+    }
+    handleAutoFillBase()
+  }, [activeLayout?.boxes, handleAutoFillBase, undoToast.capture])
+
+  const removeBoxWithUndo = useCallback((boxId: string) => {
+    if (activeLayout?.boxes) {
+      // Deep clone all boxes
+      const boxesSnapshot = activeLayout.boxes.map(box => ({
+        ...box,
+        cells: [...box.cells],
+      }))
+      undoToast.capture({
+        type: 'boxes',
+        label: 'Deleted box',
+        boxes: boxesSnapshot,
+      })
+    }
+    removeBox(boxId)
+  }, [activeLayout?.boxes, removeBox, undoToast.capture])
+
+  // Dismiss toast when switching layouts
+  useEffect(() => {
+    undoToast.dismiss()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeLayoutId])
 
   const value: GardenContextValue = {
     // Profile Management
@@ -114,10 +189,10 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
     switchLayout,
     plantCrop,
     removeCrop,
-    clearBed,
+    clearBed: clearBedWithUndo,
     setAllBoxes,
     addBox,
-    removeBox,
+    removeBox: removeBoxWithUndo,
     setBoxOrientation,
     toggleDislikedCrop,
     totalArea,
@@ -140,7 +215,7 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
     selectedCrop,
     setSelectedCrop,
     isSettingsOpen,
-    handleAutoFill,
+    handleAutoFill: handleAutoFillWithUndo,
     handleSquareClick,
     handleSettingsSave,
     handleSettingsClose,
@@ -150,16 +225,22 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
     stash,
     addToStash,
     removeFromStash,
-    clearStash,
+    clearStash: clearStashBase,
     getStashTotalArea,
     canAddToStash,
-    handleDistributeStash,
+    handleDistributeStash: handleDistributeStashBase,
     placementResult,
     isDistributing,
 
-    // History
-    undo,
-    canUndo,
+    // Undo Toast
+    undoToast: {
+      snapshot: undoToast.snapshot,
+      isVisible: undoToast.isVisible,
+      executeUndo: undoToast.executeUndo,
+      dismiss: undoToast.dismiss,
+      pause: undoToast.pause,
+      resume: undoToast.resume,
+    },
   }
 
   return <GardenContext.Provider value={value}>{children}</GardenContext.Provider>

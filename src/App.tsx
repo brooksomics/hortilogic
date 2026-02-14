@@ -9,6 +9,7 @@ import { LayoutSelector } from './components/LayoutSelector'
 import { LayoutActionModal } from './components/LayoutActionModal'
 import { BoxActionModal, type BoxData, type BoxActionMode } from './components/BoxActionModal'
 import { SettingsModal } from './components/SettingsModal'
+import { UndoToast } from './components/UndoToast'
 import { useGardenContext } from './hooks/useGardenContext'
 import { CROP_DATABASE } from './data/crops'
 
@@ -60,8 +61,9 @@ function App() {
     handleDistributeStash,
     placementResult,
     isDistributing,
-    undo,
-    canUndo,
+
+    // Undo Toast
+    undoToast,
   } = useGardenContext()
 
   // Box modal state (local to App component)
@@ -159,8 +161,6 @@ function App() {
                 onDistribute={handleDistributeStash}
                 placementResult={placementResult}
                 isDistributing={isDistributing}
-                onUndo={undo}
-                canUndo={canUndo}
               />
             )}
             <CropLibrary
@@ -256,6 +256,16 @@ function App() {
           boxName={targetBoxName}
           onConfirm={handleBoxModalConfirm}
           onClose={handleBoxModalClose}
+        />
+
+        {/* Undo Toast */}
+        <UndoToast
+          isVisible={undoToast.isVisible}
+          label={undoToast.snapshot?.label || ''}
+          onUndo={undoToast.executeUndo}
+          onDismiss={undoToast.dismiss}
+          onMouseEnter={undoToast.pause}
+          onMouseLeave={undoToast.resume}
         />
       </div>
     </div>

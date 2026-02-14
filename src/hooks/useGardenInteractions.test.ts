@@ -10,6 +10,7 @@ describe('useGardenInteractions', () => {
   let mockPlantCrop: (index: number, crop: Crop) => void
   let mockRemoveCrop: (index: number) => void
   let mockUpdateProfile: (id: string, profile: GardenProfile) => void
+  let mockCaptureUndo: ReturnType<typeof vi.fn>
   let mockCurrentBed: (Crop | null)[]
   let allBoxesUpdated: GardenBox[]
 
@@ -67,6 +68,7 @@ describe('useGardenInteractions', () => {
     mockPlantCrop = () => { }
     mockRemoveCrop = () => { }
     mockUpdateProfile = () => { }
+    mockCaptureUndo = vi.fn()
 
     // Clear local storage to prevent test pollution
     localStorage.clear()
@@ -87,6 +89,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
@@ -144,6 +147,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
@@ -195,6 +199,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
@@ -223,6 +228,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
@@ -256,6 +262,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
@@ -282,6 +289,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
@@ -314,6 +322,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
@@ -341,6 +350,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
@@ -367,6 +377,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
@@ -405,6 +416,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
@@ -440,6 +452,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
@@ -479,6 +492,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
@@ -506,6 +520,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCrop,
           removeCrop: mockRemoveCrop,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
@@ -612,6 +627,7 @@ describe('useGardenInteractions', () => {
           plantCrop: mockPlantCropWithBoxId,
           removeCrop: mockRemoveCropWithBoxId,
           updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
         })
       )
 
