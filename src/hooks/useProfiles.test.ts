@@ -221,4 +221,36 @@ describe('useProfiles', () => {
     const parsed = JSON.parse(stored) as ProfileStorage
     expect(parsed.profiles[profileId]).toEqual(updatedProfile)
   })
+
+  it('creates profile if updating a non-existent ID (split-brain self-healing)', () => {
+    const { result } = renderHook(() => useProfiles())
+    const newId = '999e4567-e89b-12d3-a456-426614174999'
+
+    // Verify profile doesn't exist
+    expect(result.current.getProfile(newId)).toBeUndefined()
+
+    const newProfile: GardenProfile = {
+      name: 'Resurrected Garden',
+      hardiness_zone: '8a',
+      last_frost_date: '2024-03-01',
+      first_frost_date: '2024-11-01',
+      season_extension_weeks: 0,
+    }
+
+    // Update (create) profile
+    act(() => {
+      result.current.updateProfile(newId, newProfile)
+    })
+
+    // Verify profile now exists
+    expect(result.current.getProfile(newId)).toEqual(newProfile)
+
+    // Verify persistence
+    const stored = localStorage.getItem('hortilogic:profiles')
+    expect(stored).not.toBeNull()
+    if (stored) {
+      const parsed = JSON.parse(stored) as ProfileStorage
+      expect(parsed.profiles[newId]).toEqual(newProfile)
+    }
+  })
 })

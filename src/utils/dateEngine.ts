@@ -12,6 +12,20 @@ function normalizeDateToMidnight(date: Date): Date {
 }
 
 /**
+ * Parse a YYYY-MM-DD string as a local date (midnight)
+ * Avoids the UTC offset issue with new Date('YYYY-MM-DD')
+ */
+export function parseLocalDate(dateString: string): Date {
+  // Append time component to force local time parsing in most environments,
+  // or manually construct via parts to be safe.
+  const parts = dateString.split('-').map(Number)
+  const year = parts[0] ?? 0
+  const month = parts[1] ?? 1
+  const day = parts[2] ?? 1
+  return new Date(year, month - 1, day)
+}
+
+/**
  * Calculate a planting date by adding/subtracting weeks from a reference date (typically Last Frost Date)
  *
  * @param lfd - Last Frost Date (or any reference date)

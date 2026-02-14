@@ -196,4 +196,66 @@ describe('GardenBed', () => {
     const emptySquares = screen.getAllByLabelText('Empty square')
     expect(emptySquares).toHaveLength(31)
   })
+
+  it('displays harvest date badge and tooltip when profile is active', () => {
+    const radish: Crop = {
+      id: 'radish',
+      name: 'Radish',
+      type: 'vegetable',
+      botanical_family: 'Brassicaceae',
+      sun: 'full',
+      days_to_maturity: 25,
+      water_need: 2,
+      height_inches: 6,
+      trellisable: false,
+      sfg_density: 16,
+      planting_strategy: { start_window_start: -4, start_window_end: 4 },
+      companions: { friends: [], enemies: [] }
+    }
+
+    const squares = Array(32).fill(null)
+    squares[0] = radish
+
+    const mockProfile = {
+      name: 'Test Garden',
+      hardiness_zone: '6b',
+      last_frost_date: '2024-04-15',
+      first_frost_date: '2024-10-15',
+      season_extension_weeks: 0,
+      targetPlantingDate: '2024-05-01' // Planting on May 1st
+    }
+
+    // May 1 + 25 days = May 26
+    // If checking today (e.g. May 1), days remaining should be 25?
+    // Let's rely on the badge content.
+    // We need to control "today" if we want exact days, but GardenBed uses
+    // calculateHarvestDate(targetDate, maturity) -> harvestDate
+    // getDaysUntilHarvest(harvestDate) -> assumes "today" is now.
+    // 
+    // To make this test deterministic without mocking system time for getDaysUntilHarvest,
+    // we can check if the badge contains "d" (days).
+    // Or we can just check the tooltip which contains the date string!
+    // formatHarvestDate uses locale date string.
+
+    // 2024-05-01 + 25 days = 2024-05-26.
+    // formatHarvestDate should output "May 26"
+
+    render(
+      <GardenBed
+        squares={squares}
+        gardenProfile={mockProfile}
+      />
+    )
+
+    // Check for badge (days remaining) - just check for existence of badge style or content
+    // The badge has class 'text-[9px] bg-white/80...'
+    // And contains number + "d"
+    // Since we can't easily predict 'today', let's look for the harvest date in the tooltip/aria-label
+
+    const plantedSquare = screen.getByLabelText((content) => {
+      return content.includes('May 26') && content.includes('Radish')
+    })
+    expect(plantedSquare).toBeInTheDocument()
+    expect(plantedSquare).toHaveAttribute('title', expect.stringContaining('Harvest: May 26'))
+  })
 })

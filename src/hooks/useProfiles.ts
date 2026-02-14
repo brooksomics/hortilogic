@@ -84,9 +84,9 @@ export function useProfiles(): UseProfilesResult {
   }
 
   const updateProfile = (id: string, profile: GardenProfile): void => {
+    // If profile doesn't exist, this will create it (self-healing for split-brain layouts)
     if (!profiles[id]) {
-      console.error(`Profile ${id} not found`)
-      return
+      console.warn(`[useProfiles] Profile ${id} not found, recreating it.`)
     }
 
     setProfileStorage({
