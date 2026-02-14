@@ -31,7 +31,7 @@ function GardenSquare({ crop, onClick, isViable = true, daysUntil = null, harves
   // Construct label with harvest info if available
   let label = crop ? `Planted: ${crop.name || crop.id}` : 'Empty square'
   if (crop && !isViable) label += ' (out of season)'
-  if (crop && daysUntil !== null) label += ` - ${daysUntil}d to harvest`
+  if (crop && daysUntil !== null) label += ` - ${daysUntil.toString()}d to harvest`
 
   return (
     <button
