@@ -247,15 +247,18 @@ describe('GardenBed', () => {
       />
     )
 
-    // Check for badge (days remaining) - just check for existence of badge style or content
-    // The badge has class 'text-[9px] bg-white/80...'
-    // And contains number + "d"
-    // Since we can't easily predict 'today', let's look for the harvest date in the tooltip/aria-label
+    // Check for badge (harvest date) and tooltip (days remaining)
+    // The badge now displays the formatted harvest date (e.g., "May 26")
+    // The tooltip now shows "Xd to harvest"
+    // Since we can't easily predict 'today', we look for the pattern "d to harvest" in the tooltip
 
     const plantedSquare = screen.getByLabelText((content) => {
-      return content.includes('May 26') && content.includes('Radish')
+      return content.includes('d to harvest') && content.includes('Radish')
     })
     expect(plantedSquare).toBeInTheDocument()
-    expect(plantedSquare).toHaveAttribute('title', expect.stringContaining('Harvest: May 26'))
+    expect(plantedSquare).toHaveAttribute('title', expect.stringContaining('d to harvest'))
+
+    // Also verify the badge contains the harvest date
+    expect(plantedSquare).toHaveTextContent('May 26')
   })
 })
