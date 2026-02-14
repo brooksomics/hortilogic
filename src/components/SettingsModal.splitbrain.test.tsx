@@ -14,7 +14,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import App from '../App'
-import { GardenProvider } from '../context/GardenContext'
+import { GardenProvider } from '../context/GardenProvider'
 
 // Helper to render App with GardenProvider
 function renderApp() {
