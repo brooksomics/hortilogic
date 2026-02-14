@@ -1,32 +1,31 @@
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import type { GardenBox, GardenStash, GardenLayout } from '../types/garden'
 
-export type UndoSnapshot =
+export type UndoSnapshotInput =
   | {
       type: 'boxes'
       label: string
       boxes: GardenBox[]
       stash?: GardenStash
-      timestamp: number
     }
   | {
       type: 'stash'
       label: string
       stash: GardenStash
-      timestamp: number
     }
   | {
       type: 'layout'
       label: string
       layout: GardenLayout
       layoutId: string
-      timestamp: number
     }
+
+export type UndoSnapshot = UndoSnapshotInput & { timestamp: number }
 
 export interface UndoToastHook {
   snapshot: UndoSnapshot | null
   isVisible: boolean
-  capture: (snapshot: Omit<UndoSnapshot, 'timestamp'>) => void
+  capture: (snapshot: UndoSnapshotInput) => void
   executeUndo: () => void
   dismiss: () => void
   pause: () => void
@@ -63,12 +62,12 @@ export function useUndoToast(
   }, [clearTimer])
 
   const capture = useCallback(
-    (snapshotData: Omit<UndoSnapshot, 'timestamp'>) => {
+    (snapshotData: UndoSnapshotInput) => {
       clearTimer()
-      const newSnapshot = {
+      const newSnapshot: UndoSnapshot = {
         ...snapshotData,
         timestamp: Date.now(),
-      } as UndoSnapshot
+      }
       setSnapshot(newSnapshot)
       setIsVisible(true)
       remainingTimeRef.current = AUTO_DISMISS_MS
@@ -89,7 +88,8 @@ export function useUndoToast(
       }
     } else if (snapshot.type === 'stash') {
       restoreStash(snapshot.stash)
-    } else if (snapshot.type === 'layout') {
+    } else {
+      // type === 'layout'
       restoreLayout(snapshot.layout, snapshot.layoutId)
     }
 

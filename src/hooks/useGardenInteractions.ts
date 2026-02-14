@@ -5,7 +5,7 @@ import type { Crop, GardenProfile, GardenLayout, GardenBox, GardenStash } from '
 import { autoFillAllBoxes, autoFillGaps } from '../utils/prioritySolver'
 import { optimizeHeightPlacement } from '../utils/heightOptimizer'
 import type { PlacementSummary } from '../components/StashSummary'
-import type { UndoSnapshot } from './useUndoToast'
+import type { UndoSnapshotInput } from './useUndoToast'
 
 import { StashStorageSchema } from '../schemas/garden'
 
@@ -69,7 +69,7 @@ interface UseGardenInteractionsProps {
   plantCrop: (index: number, crop: Crop, boxId?: string) => void
   removeCrop: (index: number, boxId?: string) => void
   updateProfile: (id: string, profile: GardenProfile) => void
-  captureUndo: (snapshot: Omit<UndoSnapshot, 'timestamp'>) => void
+  captureUndo: (snapshot: UndoSnapshotInput) => void
 }
 
 /**
@@ -299,19 +299,17 @@ export function useGardenInteractions({
 
     // Allow UI to update (spinner)
     setTimeout(() => {
-      // Capture state before changes
-      if (activeLayout?.boxes) {
-        const boxesSnapshot = activeLayout.boxes.map(box => ({
-          ...box,
-          cells: [...box.cells],
-        }))
-        captureUndo({
-          type: 'boxes',
-          label: 'Distributed stash',
-          boxes: boxesSnapshot,
-          stash: { ...stash },
-        })
-      }
+      // Capture state before changes (activeLayout is guaranteed to exist from guard above)
+      const boxesSnapshot = activeLayout.boxes.map(box => ({
+        ...box,
+        cells: [...box.cells],
+      }))
+      captureUndo({
+        type: 'boxes',
+        label: 'Distributed stash',
+        boxes: boxesSnapshot,
+        stash: { ...stash },
+      })
 
       try {
         const { boxResults, remainingStash } = autoFillAllBoxes(solverInput, stash, CROP_DATABASE, activeLayout.id) // Deterministic seed (TODO-023)

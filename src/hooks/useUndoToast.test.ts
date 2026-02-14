@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { useUndoToast } from './useUndoToast'
-import type { GardenBox, GardenStash, GardenLayout } from '../types/garden'
+import type { Crop, GardenBox, GardenStash, GardenLayout } from '../types/garden'
 
 describe('useUndoToast', () => {
   let restoreBoxes: ReturnType<typeof vi.fn>
@@ -40,7 +40,7 @@ describe('useUndoToast', () => {
         name: 'Test Box',
         width: 4,
         height: 4,
-        cells: Array(16).fill(null),
+        cells: Array(16).fill(null) as (Crop | null)[],
       },
     ]
 
@@ -72,7 +72,7 @@ describe('useUndoToast', () => {
         name: 'Test Box',
         width: 4,
         height: 4,
-        cells: Array(16).fill(null),
+        cells: Array(16).fill(null) as (Crop | null)[],
       },
     ]
 
@@ -125,6 +125,8 @@ describe('useUndoToast', () => {
       name: 'Test Layout',
       boxes: [],
       profileId: 'profile1',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     }
 
     act(() => {
@@ -155,7 +157,7 @@ describe('useUndoToast', () => {
         name: 'Test Box',
         width: 4,
         height: 4,
-        cells: Array(16).fill(null),
+        cells: Array(16).fill(null) as (Crop | null)[],
       },
     ]
     const mockStash: GardenStash = { tomato: 4 }

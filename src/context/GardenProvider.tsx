@@ -134,6 +134,7 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
       })
     }
     clearBed()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeLayout?.boxes, clearBed, undoToast.capture])
 
   const handleAutoFillWithUndo = useCallback(() => {
@@ -150,6 +151,7 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
       })
     }
     handleAutoFillBase()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeLayout?.boxes, handleAutoFillBase, undoToast.capture])
 
   const removeBoxWithUndo = useCallback((boxId: string) => {
@@ -166,6 +168,7 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
       })
     }
     removeBox(boxId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeLayout?.boxes, removeBox, undoToast.capture])
 
   // Dismiss toast when switching layouts
