@@ -2,6 +2,8 @@ import { useState, useMemo } from 'react'
 import { Sprout, X, ThumbsDown } from 'lucide-react'
 import type { Crop, GardenProfile, GardenStash } from '../types/garden'
 import { getCropViabilityStatus, getViabilityStyles } from '@/utils/cropViabilityHelper'
+import { parseLocalDate } from '@/utils/dateEngine'
+import { calculateHarvestDate, formatHarvestDate, getDaysUntilHarvest } from '@/utils/harvestDate'
 
 interface CropLibraryProps {
   /** Available crops to display */
@@ -178,6 +180,18 @@ export function CropLibrary({
                 {crop.sfg_density} per sq ft &middot; {crop.height_inches}&quot;
                 {crop.trellisable && ' (trellisable)'}
               </div>
+              {currentProfile && (
+                <div className="text-xs font-medium text-emerald-700 mt-1">
+                  Est. harvest: {(() => {
+                    const targetDate = currentProfile.targetPlantingDate
+                      ? parseLocalDate(currentProfile.targetPlantingDate)
+                      : new Date()
+                    const harvestDate = calculateHarvestDate(targetDate, crop.days_to_maturity)
+                    const daysUntil = getDaysUntilHarvest(harvestDate)
+                    return `${formatHarvestDate(harvestDate)} (${Math.max(0, daysUntil)} days)`
+                  })()}
+                </div>
+              )}
             </div>
 
             {/* Viability Icon */}
@@ -267,55 +281,50 @@ export function CropLibrary({
       <div className="flex flex-wrap gap-2 mb-4">
         <button
           onClick={() => { handleCategoryClick('all') }}
-          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-            activeCategory === 'all'
-              ? 'bg-leaf-600 text-white'
-              : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
-          }`}
+          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeCategory === 'all'
+            ? 'bg-leaf-600 text-white'
+            : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
+            }`}
           type="button"
         >
           All
         </button>
         <button
           onClick={() => { handleCategoryClick('vegetable') }}
-          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-            activeCategory === 'vegetable'
-              ? 'bg-leaf-600 text-white'
-              : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
-          }`}
+          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeCategory === 'vegetable'
+            ? 'bg-leaf-600 text-white'
+            : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
+            }`}
           type="button"
         >
           Vegetables
         </button>
         <button
           onClick={() => { handleCategoryClick('herb') }}
-          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-            activeCategory === 'herb'
-              ? 'bg-leaf-600 text-white'
-              : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
-          }`}
+          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeCategory === 'herb'
+            ? 'bg-leaf-600 text-white'
+            : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
+            }`}
           type="button"
         >
           Herbs
         </button>
         <button
           onClick={() => { handleCategoryClick('flower') }}
-          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-            activeCategory === 'flower'
-              ? 'bg-leaf-600 text-white'
-              : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
-          }`}
+          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeCategory === 'flower'
+            ? 'bg-leaf-600 text-white'
+            : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
+            }`}
           type="button"
         >
           Flowers
         </button>
         <button
           onClick={() => { handleCategoryClick('fruit') }}
-          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-            activeCategory === 'fruit'
-              ? 'bg-leaf-600 text-white'
-              : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
-          }`}
+          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeCategory === 'fruit'
+            ? 'bg-leaf-600 text-white'
+            : 'bg-soil-100 text-soil-700 hover:bg-soil-200'
+            }`}
           type="button"
         >
           Fruits
@@ -326,33 +335,30 @@ export function CropLibrary({
       <div className="flex flex-wrap gap-2 mb-4">
         <button
           onClick={() => { handleSunFilterClick('full') }}
-          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-            activeSunFilter === 'full'
-              ? 'bg-amber-500 text-white'
-              : 'bg-amber-100 text-amber-800 hover:bg-amber-200'
-          }`}
+          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${activeSunFilter === 'full'
+            ? 'bg-amber-500 text-white'
+            : 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+            }`}
           type="button"
         >
           ☀️ Full Sun
         </button>
         <button
           onClick={() => { handleSunFilterClick('partial') }}
-          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-            activeSunFilter === 'partial'
-              ? 'bg-sky-500 text-white'
-              : 'bg-sky-100 text-sky-800 hover:bg-sky-200'
-          }`}
+          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${activeSunFilter === 'partial'
+            ? 'bg-sky-500 text-white'
+            : 'bg-sky-100 text-sky-800 hover:bg-sky-200'
+            }`}
           type="button"
         >
           ⛅ Partial Shade
         </button>
         <button
           onClick={() => { handleSunFilterClick('shade') }}
-          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-            activeSunFilter === 'shade'
-              ? 'bg-slate-600 text-white'
-              : 'bg-slate-200 text-slate-800 hover:bg-slate-300'
-          }`}
+          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${activeSunFilter === 'shade'
+            ? 'bg-slate-600 text-white'
+            : 'bg-slate-200 text-slate-800 hover:bg-slate-300'
+            }`}
           type="button"
         >
           🌙 Shade

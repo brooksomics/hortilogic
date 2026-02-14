@@ -1,6 +1,7 @@
 import { AlertTriangle, Droplets, Trash2 } from 'lucide-react'
 import type { Crop, GardenProfile } from '@/types'
-import { isCropViable } from '@/utils/dateEngine'
+import { isCropViable, parseLocalDate } from '@/utils/dateEngine'
+import { calculateHarvestDate, formatHarvestDate, getDaysUntilHarvest } from '@/utils/harvestDate'
 import { getRowWaterAverage, getDripLineColor, getWaterLabel } from '@/utils/waterScoring'
 import { CompassRose } from './CompassRose'
 
@@ -9,19 +10,28 @@ interface GardenSquareProps {
   onClick?: () => void
   /** Whether the crop is viable for current season (if planted) */
   isViable?: boolean
+  /** Days until estimated harvest (optional) */
+  daysUntil?: number | null
+  /** Full formatted harvest date string (optional) */
+  harvestDateString?: string | null
 }
 
 /**
  * Single square in the garden bed
  * Displays crop info if planted, or shows as empty
  */
-function GardenSquare({ crop, onClick, isViable = true }: GardenSquareProps) {
+function GardenSquare({ crop, onClick, isViable = true, daysUntil = null, harvestDateString = null }: GardenSquareProps) {
   // Determine background color based on crop and viability
   const bgColor = crop
     ? isViable
       ? 'bg-leaf-100 hover:bg-leaf-200 border-leaf-400'
       : 'bg-orange-100 hover:bg-orange-200 border-orange-400'
     : 'bg-soil-50 hover:bg-soil-100 border-soil-400'
+
+  // Construct label with harvest info if available
+  let label = crop ? `Planted: ${crop.name || crop.id}` : 'Empty square'
+  if (crop && !isViable) label += ' (out of season)'
+  if (crop && harvestDateString) label += ` - Harvest: ${harvestDateString}`
 
   return (
     <button
@@ -33,11 +43,8 @@ function GardenSquare({ crop, onClick, isViable = true }: GardenSquareProps) {
         ${bgColor}
       `}
       type="button"
-      aria-label={
-        crop
-          ? `Planted: ${crop.name || crop.id}${!isViable ? ' (out of season)' : ''}`
-          : 'Empty square'
-      }
+      title={label}
+      aria-label={label}
     >
       {crop && (
         <>
@@ -59,6 +66,11 @@ function GardenSquare({ crop, onClick, isViable = true }: GardenSquareProps) {
             {crop.sfg_density}/sq ft &middot; {crop.height_inches}&quot;
             {crop.trellisable && ' T'}
           </span>
+          {daysUntil !== null && (
+            <span className="text-[9px] bg-white/80 px-0.5 rounded text-emerald-800 font-medium mt-0.5 border border-emerald-200">
+              {daysUntil}d
+            </span>
+          )}
         </>
       )}
     </button>
@@ -123,9 +135,9 @@ export function GardenBed({
   // Ensure we have the right number of squares
   const bedSquares: (Crop | null)[] = squares
     ? [
-        ...squares.slice(0, totalCells),
-        ...Array(Math.max(0, totalCells - squares.length)).fill(null) as (Crop | null)[]
-      ]
+      ...squares.slice(0, totalCells),
+      ...Array(Math.max(0, totalCells - squares.length)).fill(null) as (Crop | null)[]
+    ]
     : defaultSquares
 
   // Calculate viability for each planted crop
@@ -206,14 +218,31 @@ export function GardenBed({
           role="grid"
           aria-label={`${width.toString()} by ${height.toString()} foot garden bed with ${cellCount.toString()} squares`}
         >
-          {bedSquares.map((crop, index) => (
-            <GardenSquare
-              key={index}
-              crop={crop}
-              onClick={() => onSquareClick?.(index)}
-              isViable={viabilityMap[index]}
-            />
-          ))}
+          {bedSquares.map((crop, index) => {
+            // Calculate harvest data if crop exists
+            let daysUntil: number | null = null
+            let harvestDateString: string | null = null
+
+            if (crop && gardenProfile?.targetPlantingDate) {
+              const targetDate = parseLocalDate(gardenProfile.targetPlantingDate)
+              const harvestDate = calculateHarvestDate(targetDate, crop.days_to_maturity)
+              const rawDays = getDaysUntilHarvest(harvestDate)
+              // Only show positive days remaining
+              daysUntil = Math.max(0, rawDays)
+              harvestDateString = formatHarvestDate(harvestDate)
+            }
+
+            return (
+              <GardenSquare
+                key={index}
+                crop={crop}
+                onClick={() => onSquareClick?.(index)}
+                isViable={viabilityMap[index]}
+                daysUntil={daysUntil}
+                harvestDateString={harvestDateString}
+              />
+            )
+          })}
         </div>
       </div>
 
