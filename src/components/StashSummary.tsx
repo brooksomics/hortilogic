@@ -17,8 +17,6 @@ export interface StashSummaryProps {
     onDistribute: (fillGaps: boolean) => void
     placementResult: PlacementSummary | null
     isDistributing?: boolean
-    onUndo?: () => void
-    canUndo?: boolean
 }
 
 /**
@@ -34,9 +32,7 @@ export function StashSummary({
     onRemoveItem,
     onDistribute,
     placementResult,
-    isDistributing = false,
-    onUndo,
-    canUndo = false
+    isDistributing = false
 }: StashSummaryProps) {
     const isOverLimit = totalArea > maxArea
 
@@ -55,24 +51,14 @@ export function StashSummary({
                     Garden Stash
                 </h3>
 
-                <div className="flex gap-2">
-                    {canUndo && onUndo && (
-                        <button
-                            onClick={onUndo}
-                            className="text-stone-500 hover:text-stone-700 text-sm px-2 py-1 rounded bg-stone-100 hover:bg-stone-200 transition-colors"
-                        >
-                            Undo
-                        </button>
-                    )}
-                    <button
-                        onClick={onClear}
-                        disabled={Object.keys(stash).length === 0 || isDistributing}
-                        className="text-red-500 hover:text-red-600 text-sm px-2 py-1 rounded hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
-                    >
-                        <Trash2 className="w-3 h-3" />
-                        Clear
-                    </button>
-                </div>
+                <button
+                    onClick={onClear}
+                    disabled={Object.keys(stash).length === 0 || isDistributing}
+                    className="text-red-500 hover:text-red-600 text-sm px-2 py-1 rounded hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                >
+                    <Trash2 className="w-3 h-3" />
+                    Clear
+                </button>
             </div>
 
             {/* Loading Overlay */}

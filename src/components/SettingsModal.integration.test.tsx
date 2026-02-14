@@ -4,7 +4,7 @@
  * Tests the full flow: open Settings → change values → save → reopen → verify persistence
  */
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { SettingsModal } from './SettingsModal'
@@ -51,6 +51,7 @@ function SettingsTestHarness() {
     plantCrop: () => {},
     removeCrop: () => {},
     updateProfile,
+    captureUndo: vi.fn(),
   })
 
   return (

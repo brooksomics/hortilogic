@@ -5,6 +5,7 @@ import type { Crop, GardenProfile, GardenLayout, GardenBox, GardenStash } from '
 import { autoFillAllBoxes, autoFillGaps } from '../utils/prioritySolver'
 import { optimizeHeightPlacement } from '../utils/heightOptimizer'
 import type { PlacementSummary } from '../components/StashSummary'
+import type { UndoSnapshotInput } from './useUndoToast'
 
 import { StashStorageSchema } from '../schemas/garden'
 
@@ -56,12 +57,6 @@ export interface UseGardenInteractionsResult {
   /** Result of last placement operation */
   placementResult: PlacementSummary | null
 
-  /** Undo last bulk action */
-  undo: () => void
-
-  /** Can undo state */
-  canUndo: boolean
-
   /** Distributing state */
   isDistributing: boolean
 }
@@ -74,6 +69,7 @@ interface UseGardenInteractionsProps {
   plantCrop: (index: number, crop: Crop, boxId?: string) => void
   removeCrop: (index: number, boxId?: string) => void
   updateProfile: (id: string, profile: GardenProfile) => void
+  captureUndo: (snapshot: UndoSnapshotInput) => void
 }
 
 /**
@@ -90,11 +86,10 @@ export function useGardenInteractions({
   plantCrop,
   removeCrop,
   updateProfile,
+  captureUndo,
 }: UseGardenInteractionsProps): UseGardenInteractionsResult {
   const [selectedCrop, setSelectedCrop] = useState<Crop | null>(null)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-
-  // ...
 
   /* Stash Logic */
   const [stash, setStash] = useState<GardenStash>(() => {
@@ -113,32 +108,6 @@ export function useGardenInteractions({
     }
     return {}
   })
-
-  /* Undo Logic */
-  const [history, setHistory] = useState<GardenBox[][]>([])
-
-  const saveToHistory = () => {
-    if (activeLayout?.boxes) {
-      setHistory(prev => {
-        const newHistory = [...prev, activeLayout.boxes]
-        return newHistory.slice(-10) // Keep last 10
-      })
-    }
-  }
-
-  const undo = () => {
-    setHistory(prev => {
-      if (prev.length === 0) return prev
-      const previousBoxes = prev[prev.length - 1]
-      // Determine if previousBoxes is defined before using it
-      if (previousBoxes) {
-        setAllBoxes(previousBoxes)
-      }
-      return prev.slice(0, -1)
-    })
-  }
-
-  const canUndo = history.length > 0
 
   /* Placement Result State */
   const [placementResult, setPlacementResult] = useState<PlacementSummary | null>(null)
@@ -170,6 +139,19 @@ export function useGardenInteractions({
     }
   }, [activeLayout?.id])
 
+  // Listen for stash restore events from undo
+  useEffect(() => {
+    const handleStashRestore = (event: Event) => {
+      const customEvent = event as CustomEvent<GardenStash>
+      setStash(customEvent.detail)
+    }
+
+    window.addEventListener('stash-restore', handleStashRestore)
+    return () => {
+      window.removeEventListener('stash-restore', handleStashRestore)
+    }
+  }, [])
+
   // Save stash to local storage on change
   useEffect(() => {
     if (activeLayout) {
@@ -200,6 +182,12 @@ export function useGardenInteractions({
   }
 
   const clearStash = () => {
+    // Capture current stash before clearing
+    captureUndo({
+      type: 'stash',
+      label: 'Cleared stash',
+      stash: { ...stash },
+    })
     setStash({})
   }
 
@@ -311,7 +299,17 @@ export function useGardenInteractions({
 
     // Allow UI to update (spinner)
     setTimeout(() => {
-      saveToHistory() // Save state before changes
+      // Capture state before changes (activeLayout is guaranteed to exist from guard above)
+      const boxesSnapshot = activeLayout.boxes.map(box => ({
+        ...box,
+        cells: [...box.cells],
+      }))
+      captureUndo({
+        type: 'boxes',
+        label: 'Distributed stash',
+        boxes: boxesSnapshot,
+        stash: { ...stash },
+      })
 
       try {
         const { boxResults, remainingStash } = autoFillAllBoxes(solverInput, stash, CROP_DATABASE, activeLayout.id) // Deterministic seed (TODO-023)
@@ -414,8 +412,6 @@ export function useGardenInteractions({
     canAddToStash,
     handleDistributeStash,
     placementResult,
-    undo,
-    canUndo,
     isDistributing
   }
 }

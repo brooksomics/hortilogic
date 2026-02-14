@@ -9,6 +9,7 @@ import type {
 import type { LayoutActionMode } from '../components/LayoutActionModal'
 import type { PlacementSummary } from '../components/StashSummary'
 import type { ExportedLayout } from '../utils/layoutExportImport'
+import type { UndoSnapshot } from '../hooks/useUndoToast'
 
 /**
  * Garden Context Value Interface
@@ -72,9 +73,15 @@ export interface GardenContextValue {
     placementResult: PlacementSummary | null
     isDistributing: boolean
 
-    // History (Undo/Redo)
-    undo: () => void
-    canUndo: boolean
+    // Undo Toast
+    undoToast: {
+        snapshot: UndoSnapshot | null
+        isVisible: boolean
+        executeUndo: () => void
+        dismiss: () => void
+        pause: () => void
+        resume: () => void
+    }
 }
 
 export const GardenContext = createContext<GardenContextValue | null>(null)
