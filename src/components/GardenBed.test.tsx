@@ -252,7 +252,7 @@ describe('GardenBed', () => {
     // And contains number + "d"
     // Since we can't easily predict 'today', let's look for the harvest date in the tooltip/aria-label
 
-    const plantedSquare = screen.getByLabelText((content, element) => {
+    const plantedSquare = screen.getByLabelText((content) => {
       return content.includes('May 26') && content.includes('Radish')
     })
     expect(plantedSquare).toBeInTheDocument()

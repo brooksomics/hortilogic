@@ -9,7 +9,7 @@ import { LayoutSelector } from './components/LayoutSelector'
 import { LayoutActionModal } from './components/LayoutActionModal'
 import { BoxActionModal, type BoxData, type BoxActionMode } from './components/BoxActionModal'
 import { SettingsModal } from './components/SettingsModal'
-import { useGardenContext } from './context/GardenContext'
+import { useGardenContext } from './hooks/useGardenContext'
 import { CROP_DATABASE } from './data/crops'
 
 function App() {

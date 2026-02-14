@@ -1,88 +1,11 @@
-import { createContext, useContext, ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect } from 'react'
+import { GardenContext, type GardenContextValue } from './GardenContext'
+import type { GardenBox } from '../types/garden'
 import { useLayoutManager } from '../hooks/useLayoutManager'
 import { useLayoutActions } from '../hooks/useLayoutActions'
 import { useGardenInteractions } from '../hooks/useGardenInteractions'
 import { useProfiles } from '../hooks/useProfiles'
 import { migrateToLayoutsSchema, migrateToMultiBoxSchema } from '../utils/storageMigration'
-import type {
-  Crop,
-  GardenProfile,
-  GardenLayout,
-  GardenBox,
-  GardenStash,
-} from '../types/garden'
-import type { LayoutActionMode } from '../components/LayoutActionModal'
-import type { PlacementSummary } from '../components/StashSummary'
-import type { ExportedLayout } from '../utils/layoutExportImport'
-
-/**
- * Garden Context Value Interface
- * Consolidates all garden state and actions into a single context
- */
-export interface GardenContextValue {
-  // Profile Management
-  getProfile: (id: string) => GardenProfile | undefined
-  updateProfile: (id: string, profile: GardenProfile) => void
-  defaultProfileId: string
-
-  // Layout Management
-  layouts: Record<string, GardenLayout>
-  activeLayoutId: string
-  activeLayout: GardenLayout | null
-  currentBed: (Crop | null)[]
-  gardenProfile: GardenProfile | null
-  switchLayout: (id: string) => void
-  plantCrop: (index: number, crop: Crop) => void
-  removeCrop: (index: number) => void
-  clearBed: () => void
-  setAllBoxes: (boxes: GardenBox[]) => void
-  addBox: (name: string, width: number, height: number) => void
-  removeBox: (boxId: string) => void
-  setBoxOrientation: (boxId: string, orientation: number) => void
-  toggleDislikedCrop: (cropId: string) => void
-  totalArea: number
-
-  // Layout Actions
-  layoutModalMode: LayoutActionMode | null
-  targetLayoutId: string | null
-  handleCreateLayout: () => void
-  handleRenameLayout: (id: string) => void
-  handleDuplicateLayout: (id: string) => void
-  handleDeleteLayout: (id: string) => void
-  handleLayoutModalConfirm: (name: string) => void
-  handleLayoutModalClose: () => void
-
-  // Export/Import
-  exportLayout: (profile?: GardenProfile) => ExportedLayout
-  importLayout: (exportData: ExportedLayout, newName: string) => string
-
-  // Garden Interactions
-  selectedCrop: Crop | null
-  setSelectedCrop: (crop: Crop | null) => void
-  isSettingsOpen: boolean
-  handleAutoFill: () => void
-  handleSquareClick: (index: number, boxId?: string) => void
-  handleSettingsSave: (profile: GardenProfile) => void
-  handleSettingsClose: () => void
-  openSettings: () => void
-
-  // Stash Management
-  stash: GardenStash
-  addToStash: (cropId: string, amount: number) => void
-  removeFromStash: (cropId: string, amount: number) => void
-  clearStash: () => void
-  getStashTotalArea: () => number
-  canAddToStash: (crop: Crop) => boolean
-  handleDistributeStash: (fillGaps: boolean) => void
-  placementResult: PlacementSummary | null
-  isDistributing: boolean
-
-  // History (Undo/Redo)
-  undo: () => void
-  canUndo: boolean
-}
-
-const GardenContext = createContext<GardenContextValue | null>(null)
 
 export interface GardenProviderProps {
   children: ReactNode
@@ -172,7 +95,7 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
 
   // Calculate total area for all boxes
   const totalArea = activeLayout?.boxes.reduce(
-    (sum, box) => sum + box.width * box.height,
+    (sum: number, box: GardenBox) => sum + box.width * box.height,
     0
   ) ?? 0
 
@@ -242,14 +165,4 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
   return <GardenContext.Provider value={value}>{children}</GardenContext.Provider>
 }
 
-/**
- * Custom hook to access Garden Context
- * Throws error if used outside GardenProvider
- */
-export function useGardenContext(): GardenContextValue {
-  const context = useContext(GardenContext)
-  if (!context) {
-    throw new Error('useGardenContext must be used within GardenProvider')
-  }
-  return context
-}
+

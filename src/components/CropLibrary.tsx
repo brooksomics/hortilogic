@@ -188,7 +188,7 @@ export function CropLibrary({
                       : new Date()
                     const harvestDate = calculateHarvestDate(targetDate, crop.days_to_maturity)
                     const daysUntil = getDaysUntilHarvest(harvestDate)
-                    return `${formatHarvestDate(harvestDate)} (${Math.max(0, daysUntil)} days)`
+                    return `${formatHarvestDate(harvestDate)} (${Math.max(0, daysUntil).toString()} days)`
                   })()}
                 </div>
               )}
