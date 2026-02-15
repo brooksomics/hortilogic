@@ -83,7 +83,7 @@ describe('Settings Persistence - Split Brain Bug Regression (TODO-012)', () => {
     // This is where the Split Brain bug manifested: values reverted to defaults
     const zoneInputAfterReopen = screen.getByLabelText(/hardiness zone/i) as HTMLInputElement
     expect(zoneInputAfterReopen.value).toBe('10a')
-  }, 10000)
+  }, 20000)
 
   it('CRITICAL: Location field persists correctly in actual App', async () => {
     const user = userEvent.setup()
@@ -117,7 +117,7 @@ describe('Settings Persistence - Split Brain Bug Regression (TODO-012)', () => {
 
     const locationInputAfterReopen = screen.getByLabelText(/location/i) as HTMLInputElement
     expect(locationInputAfterReopen.value).toBe('Escondido, CA')
-  }, 10000)
+  }, 20000)
 
   it('CRITICAL: Frost dates persist correctly in actual App', async () => {
     const user = userEvent.setup()

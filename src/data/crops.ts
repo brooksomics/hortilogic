@@ -28,7 +28,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 4,
     height_inches: 8,
     trellisable: false,
-    planting_strategy: { start_window_start: -4, start_window_end: 2 },
+    planting_strategy: { start_window_start: -4, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'radish-red', 'cucumber', 'strawberry'],
       enemies: [],
@@ -46,7 +46,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 4,
     height_inches: 10,
     trellisable: false,
-    planting_strategy: { start_window_start: -4, start_window_end: 2 },
+    planting_strategy: { start_window_start: -4, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'radish-red', 'cucumber'],
       enemies: [],
@@ -64,7 +64,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 4,
     height_inches: 8,
     trellisable: false,
-    planting_strategy: { start_window_start: -4, start_window_end: 2 },
+    planting_strategy: { start_window_start: -4, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'radish-red', 'cucumber'],
       enemies: [],
@@ -82,7 +82,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 4,
     height_inches: 10,
     trellisable: false,
-    planting_strategy: { start_window_start: -4, start_window_end: 2 },
+    planting_strategy: { start_window_start: -4, start_window_end: 6 },
     companions: {
       friends: ['carrot', 'radish-red'],
       enemies: [],
@@ -100,7 +100,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 4,
     height_inches: 8,
     trellisable: false,
-    planting_strategy: { start_window_start: -6, start_window_end: 0 },
+    planting_strategy: { start_window_start: -6, start_window_end: 4 },
     companions: {
       friends: ['peas-sugar-snap', 'radish-red', 'strawberry', 'cilantro'],
       enemies: [],
@@ -154,7 +154,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     height_inches: 8,
     trellisable: false,
-    planting_strategy: { start_window_start: -4, start_window_end: 2 },
+    planting_strategy: { start_window_start: -4, start_window_end: 8 },
     companions: {
       friends: ['cucumber', 'lettuce-leaf', 'spinach'],
       enemies: [],
@@ -208,7 +208,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 4,
     height_inches: 18,
     trellisable: false,
-    planting_strategy: { start_window_start: -4, start_window_end: 0 },
+    planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion-yellow', 'dill', 'garlic'],
       enemies: ['tomato-beefsteak'],
@@ -334,7 +334,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     height_inches: 10,
     trellisable: false,
-    planting_strategy: { start_window_start: -4, start_window_end: 0 },
+    planting_strategy: { start_window_start: -4, start_window_end: 2 },
     companions: {
       friends: ['onion-yellow', 'garlic'],
       enemies: [],
@@ -352,7 +352,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     height_inches: 6,
     trellisable: false,
-    planting_strategy: { start_window_start: -6, start_window_end: 0 },
+    planting_strategy: { start_window_start: -6, start_window_end: 2 },
     companions: {
       friends: ['lettuce-leaf', 'spinach'],
       enemies: [],
