@@ -98,6 +98,13 @@ export function scoreCell(
     return score
 }
 
+function isEdgeCell(cellIndex: number, width: number, totalCells: number): boolean {
+    const col = cellIndex % width
+    const row = Math.floor(cellIndex / width)
+    const height = Math.ceil(totalCells / width)
+    return row === 0 || row === height - 1 || col === 0 || col === width - 1
+}
+
 function findBestCell(
     bed: (Crop | null)[],
     cropId: string,
@@ -107,12 +114,20 @@ function findBestCell(
     gridHeight: number = 0,
     orientation: number = 0
 ): number | null {
+    const candidateCrop = allCrops.find(c => c.id === cropId)
+
     // Find all empty cells
-    const emptyIndices = bed
+    let emptyIndices = bed
         .map((crop, idx) => (crop === null ? idx : null))
         .filter((idx): idx is number => idx !== null)
 
     if (emptyIndices.length === 0) return null
+
+    // Restrict to edge cells for sprawling/vining crops
+    if (candidateCrop?.edge_planting) {
+        const edgeCells = emptyIndices.filter(idx => isEdgeCell(idx, width, bed.length))
+        if (edgeCells.length > 0) emptyIndices = edgeCells
+    }
 
     let bestIndex: number | null = null
     let maxScore = -Infinity
