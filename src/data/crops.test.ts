@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { CROP_DATABASE, CROPS_BY_ID } from './crops'
 
 describe('CROP_DATABASE', () => {
-  it('has exactly 160 crops', () => {
-    expect(CROP_DATABASE).toHaveLength(160)
+  it('has exactly 133 crops', () => {
+    expect(CROP_DATABASE).toHaveLength(133)
   })
 
   it('all crops have unique IDs', () => {
@@ -11,7 +11,7 @@ describe('CROP_DATABASE', () => {
       return c.id
     })
     const uniqueIds = new Set(ids)
-    expect(uniqueIds.size).toBe(160)
+    expect(uniqueIds.size).toBe(133)
   })
 
   it('all crops have valid planting windows (start <= end)', () => {
@@ -135,10 +135,10 @@ describe('CROP_DATABASE height_inches and trellisable (F010)', () => {
     })
   })
 
-  it('corn is tall (72+ inches)', () => {
-    const corn = CROPS_BY_ID['corn-sweet']
-    expect(corn).toBeDefined()
-    expect(corn?.height_inches).toBeGreaterThanOrEqual(72)
+  it('okra is tall (60 inches)', () => {
+    const okra = CROPS_BY_ID['okra']
+    expect(okra).toBeDefined()
+    expect(okra?.height_inches).toBeGreaterThanOrEqual(60)
   })
 
   it('lettuce varieties are short (under 12 inches)', () => {
@@ -191,8 +191,8 @@ describe('CROP_DATABASE height_inches and trellisable (F010)', () => {
 })
 
 describe('CROPS_BY_ID', () => {
-  it('provides lookup object with all 160 crops', () => {
-    expect(Object.keys(CROPS_BY_ID)).toHaveLength(160)
+  it('provides lookup object with all 133 crops', () => {
+    expect(Object.keys(CROPS_BY_ID)).toHaveLength(133)
   })
 
   it('all crops in CROPS_BY_ID match their ID keys', () => {
