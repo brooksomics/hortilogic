@@ -1206,6 +1206,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 2,
     height_inches: 18,
     trellisable: false,
+    edge_planting: true,
     planting_strategy: { start_window_start: 2, start_window_end: 6 },
     companions: {
       friends: ['green-beans-bush', 'peas-sugar-snap', 'thyme', 'basil-sweet', 'marigold-french', 'nasturtium', 'radish-red', 'dill'],
@@ -1334,6 +1335,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 4,
     height_inches: 30,
     trellisable: false,
+    edge_planting: true,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish-red', 'nasturtium'],
@@ -1352,6 +1354,7 @@ export const CROP_DATABASE: Crop[] = [
     water_need: 3,
     height_inches: 30,
     trellisable: false,
+    edge_planting: true,
     planting_strategy: { start_window_start: 1, start_window_end: 6 },
     companions: {
       friends: ['radish-red', 'nasturtium'],

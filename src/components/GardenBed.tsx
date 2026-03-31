@@ -24,7 +24,9 @@ function GardenSquare({ crop, onClick, isViable = true, daysUntil = null, harves
   // Determine background color based on crop and viability
   const bgColor = crop
     ? isViable
-      ? 'bg-leaf-100 hover:bg-leaf-200 border-leaf-400'
+      ? crop.edge_planting
+        ? 'bg-amber-50 hover:bg-amber-100 border-amber-400'
+        : 'bg-leaf-100 hover:bg-leaf-200 border-leaf-400'
       : 'bg-orange-100 hover:bg-orange-200 border-orange-400'
     : 'bg-soil-50 hover:bg-soil-100 border-soil-400'
 
@@ -53,6 +55,15 @@ function GardenSquare({ crop, onClick, isViable = true, daysUntil = null, harves
               className="absolute top-0 right-0 w-2 h-2 text-orange-600"
               aria-label="Warning: Out of season"
             />
+          )}
+          {crop.edge_planting && (
+            <span
+              className="absolute top-0 left-0 text-[7px] bg-amber-300 text-amber-900 px-0.5 rounded-br font-bold leading-none py-0.5"
+              title="Plant on bed edge — train vines/growth outward"
+              aria-label="Edge planting: train growth outward"
+            >
+              ↔
+            </span>
           )}
           {crop.emoji && (
             <span className="text-5xl leading-none" aria-hidden="true">

@@ -238,6 +238,13 @@ export interface Crop {
    * Trellised crops grow vertically and cast directional shade
    */
   trellisable: boolean
+
+  /**
+   * Whether the crop must be planted on the edge of the bed (V5)
+   * True for vining/sprawling crops (sweet potato, zucchini) whose
+   * growth should be trained outward beyond the bed boundary
+   */
+  edge_planting?: boolean
 }
 
 /**

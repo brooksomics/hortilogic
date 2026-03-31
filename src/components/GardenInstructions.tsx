@@ -56,6 +56,12 @@ export function GardenInstructions({ selectedCrop }: GardenInstructionsProps) {
           <ul className="list-disc list-inside space-y-1 text-sm text-soil-700 ml-2">
             <li>🟢 Green border = crop is in season for your target planting date</li>
             <li>🟠 Orange border = crop is out of season</li>
+            <li>
+              <span className="inline-flex items-center gap-1 align-middle">
+                <span className="inline-block bg-amber-50 border border-amber-400 rounded px-1 text-[10px] font-bold text-amber-900">↔</span>
+                Amber border with ↔ = edge planting required — place this crop in a square on the bed&apos;s outer edge and train its vines or leaves to grow outward beyond the bed
+              </span>
+            </li>
           </ul>
           <h4 className="font-semibold text-soil-900 mt-3 mb-2">Drip Line Water Indicators</h4>
           <p className="text-sm text-soil-700 mb-2">
