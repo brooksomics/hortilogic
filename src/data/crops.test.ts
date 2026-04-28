@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { CROP_DATABASE, CROPS_BY_ID } from './crops'
 
 describe('CROP_DATABASE', () => {
-  it('has exactly 133 crops', () => {
-    expect(CROP_DATABASE).toHaveLength(133)
+  it('has exactly 246 crops', () => {
+    expect(CROP_DATABASE).toHaveLength(246)
   })
 
   it('all crops have unique IDs', () => {
@@ -11,7 +11,7 @@ describe('CROP_DATABASE', () => {
       return c.id
     })
     const uniqueIds = new Set(ids)
-    expect(uniqueIds.size).toBe(133)
+    expect(uniqueIds.size).toBe(246)
   })
 
   it('all crops have valid planting windows (start <= end)', () => {
@@ -191,8 +191,8 @@ describe('CROP_DATABASE height_inches and trellisable (F010)', () => {
 })
 
 describe('CROPS_BY_ID', () => {
-  it('provides lookup object with all 133 crops', () => {
-    expect(Object.keys(CROPS_BY_ID)).toHaveLength(133)
+  it('provides lookup object with all 246 crops', () => {
+    expect(Object.keys(CROPS_BY_ID)).toHaveLength(246)
   })
 
   it('all crops in CROPS_BY_ID match their ID keys', () => {
