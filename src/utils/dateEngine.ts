@@ -82,10 +82,24 @@ export function isCropViable(
     lfd,
     crop.planting_strategy.start_window_start - currentProfile.season_extension_weeks
   )
-  const windowEnd = calculatePlantingDate(
+  let windowEnd = calculatePlantingDate(
     lfd,
     crop.planting_strategy.start_window_end
   )
+
+  // For frost-sensitive (warm-season) crops, also allow planting as long as
+  // there is enough time to mature before the first fall frost.
+  // Only applies to crops that require frost to clear first (start_window_start >= 0).
+  // Cold-tolerant crops (start_window_start < 0) have heat-limited windows — no extension.
+  if (crop.planting_strategy.start_window_start >= 0) {
+    const ffd = new Date(currentProfile.first_frost_date)
+    const maturityBufferDays = 14
+    const ffdDeadline = new Date(ffd)
+    ffdDeadline.setDate(ffd.getDate() - crop.days_to_maturity - maturityBufferDays)
+    if (ffdDeadline > windowEnd) {
+      windowEnd = ffdDeadline
+    }
+  }
 
   // Normalize all dates to midnight for accurate date-only comparison
   const normalizedTarget = normalizeDateToMidnight(targetDate)
