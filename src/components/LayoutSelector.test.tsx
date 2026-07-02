@@ -1,9 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { LayoutSelector } from './LayoutSelector'
 import type { GardenLayout, Crop, GardenProfile } from '../types/garden'
 import type { ExportedLayout } from '../utils/layoutExportImport'
 import { generateUUID } from '../utils/uuid'
+import * as exportImport from '../utils/layoutExportImport'
 
 describe('LayoutSelector', () => {
   const mockOnSwitch = vi.fn()
@@ -354,5 +355,62 @@ describe('LayoutSelector', () => {
 
     // Dropdown should be closed
     expect(screen.queryByText('Spring 2026')).not.toBeInTheDocument()
+  })
+
+  const renderSelector = () =>
+    render(
+      <LayoutSelector
+        onExport={mockOnExport}
+        onImport={mockOnImport}
+        gardenProfile={mockProfile}
+        layouts={layouts}
+        activeLayoutId="layout-1"
+        onSwitch={mockOnSwitch}
+        onCreate={mockOnCreate}
+        onRename={mockOnRename}
+        onDuplicate={mockOnDuplicate}
+        onDelete={mockOnDelete}
+      />
+    )
+
+  const importFile = (contents: string) => {
+    const input = screen.getByLabelText('Import layout file')
+    const file = new File([contents], 'bad.json', { type: 'application/json' })
+    fireEvent.change(input, { target: { files: [file] } })
+  }
+
+  it('shows an in-app error (not window.alert) when import fails', async () => {
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {})
+    vi.spyOn(exportImport, 'readJSONFile').mockRejectedValue(new Error('bad file'))
+    renderSelector()
+    fireEvent.click(screen.getByRole('button', { name: /My Garden/i }))
+
+    importFile('not json')
+
+    const alert = await screen.findByRole('alert')
+    expect(alert).toHaveTextContent(/failed to import/i)
+    expect(alertSpy).not.toHaveBeenCalled()
+    alertSpy.mockRestore()
+  })
+
+  it('clears the import error once a valid import succeeds', async () => {
+    const readSpy = vi
+      .spyOn(exportImport, 'readJSONFile')
+      .mockRejectedValueOnce(new Error('bad file'))
+      .mockResolvedValueOnce({} as ExportedLayout)
+    renderSelector()
+    fireEvent.click(screen.getByRole('button', { name: /My Garden/i }))
+
+    importFile('not json')
+    await screen.findByRole('alert')
+
+    // Dropdown stays open on error; retry with a valid file.
+    importFile('{}')
+
+    await waitFor(() => {
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+    })
+    expect(mockOnImport).toHaveBeenCalled()
+    readSpy.mockRestore()
   })
 })
