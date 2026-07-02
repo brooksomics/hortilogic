@@ -356,6 +356,9 @@ function MyComponent() {
 | `LayoutStorage` | types/garden.ts:88 | Multi-layout storage schema (version 1) |
 | `ProfileStorage` | types/garden.ts:95 | Profile storage schema (version 1) |
 | `LegacyGardenState` | types/garden.ts:102 | Old single-layout schema (for migration) |
+| `CropSchema` | schemas/crop.ts:13 | Zod schema validating crop catalog entries (crops.json) at module load |
+
+**Crop catalog data**: `data/crops.json` (286 crops) loaded and Zod-validated by the thin `data/crops.ts` loader (exports `CROP_DATABASE`, `CROPS_BY_ID`, `getCropsByType`, `getCropsByFamily`, `getAllFamilies`, `DATABASE_STATS`).
 
 **Type Relationships:**
 ```

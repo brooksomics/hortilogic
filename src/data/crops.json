@@ -1,0 +1,7719 @@
+[
+  {
+    "id": "lettuce-butterhead",
+    "name": "Butterhead Lettuce",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 55,
+    "water_need": 4,
+    "height_inches": 8,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "radish-red",
+        "cucumber",
+        "strawberry"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "lettuce-romaine",
+    "name": "Romaine Lettuce",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 70,
+    "water_need": 4,
+    "height_inches": 10,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "radish-red",
+        "cucumber"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "lettuce-leaf",
+    "name": "Leaf Lettuce",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 45,
+    "water_need": 4,
+    "height_inches": 8,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "radish-red",
+        "cucumber"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "lettuce-iceberg",
+    "name": "Iceberg Lettuce",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 85,
+    "water_need": 4,
+    "height_inches": 10,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "radish-red"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "spinach",
+    "name": "Spinach",
+    "type": "vegetable",
+    "botanical_family": "Amaranthaceae",
+    "emoji": "🥬",
+    "sfg_density": 9,
+    "sun": "partial",
+    "days_to_maturity": 40,
+    "water_need": 4,
+    "height_inches": 8,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -6,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "peas-sugar-snap",
+        "radish-red",
+        "strawberry",
+        "cilantro"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "kale-curly",
+    "name": "Curly Kale",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 55,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "garlic",
+        "dill",
+        "nasturtium"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "strawberry"
+      ]
+    }
+  },
+  {
+    "id": "kale-lacinato",
+    "name": "Lacinato Kale (Dinosaur)",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "garlic",
+        "dill"
+      ],
+      "enemies": [
+        "tomato-beefsteak"
+      ]
+    }
+  },
+  {
+    "id": "arugula",
+    "name": "Arugula",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥗",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 40,
+    "water_need": 3,
+    "height_inches": 8,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 8
+    },
+    "companions": {
+      "friends": [
+        "cucumber",
+        "lettuce-leaf",
+        "spinach"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "swiss-chard-rainbow",
+    "name": "Rainbow Swiss Chard",
+    "type": "vegetable",
+    "botanical_family": "Amaranthaceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "garlic",
+        "radish-red"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "swiss-chard-green",
+    "name": "Green Swiss Chard",
+    "type": "vegetable",
+    "botanical_family": "Amaranthaceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 55,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "garlic",
+        "radish-red"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "bok-choy",
+    "name": "Bok Choy",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 45,
+    "water_need": 4,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "dill",
+        "garlic"
+      ],
+      "enemies": [
+        "tomato-beefsteak"
+      ]
+    }
+  },
+  {
+    "id": "collard-greens",
+    "name": "Collard Greens",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "garlic",
+        "dill"
+      ],
+      "enemies": [
+        "tomato-beefsteak"
+      ]
+    }
+  },
+  {
+    "id": "mustard-greens",
+    "name": "Mustard Greens",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 40,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "radish-red",
+        "peas-sugar-snap",
+        "lettuce-leaf"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "endive",
+    "name": "Endive",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥗",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 85,
+    "water_need": 3,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "radish-red"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "radicchio",
+    "name": "Radicchio",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥗",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 3,
+    "height_inches": 10,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "endive"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "watercress",
+    "name": "Watercress",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 9,
+    "sun": "partial",
+    "days_to_maturity": 50,
+    "water_need": 5,
+    "height_inches": 8,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "spinach"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "mizuna",
+    "name": "Mizuna",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 9,
+    "sun": "partial",
+    "days_to_maturity": 40,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "spinach"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "tatsoi",
+    "name": "Tatsoi",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 45,
+    "water_need": 3,
+    "height_inches": 10,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "garlic"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "mache",
+    "name": "Mache (Corn Salad)",
+    "type": "vegetable",
+    "botanical_family": "Caprifoliaceae",
+    "emoji": "🥗",
+    "sfg_density": 9,
+    "sun": "partial",
+    "days_to_maturity": 50,
+    "water_need": 3,
+    "height_inches": 6,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -6,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "spinach"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "sorrel",
+    "name": "Sorrel",
+    "type": "vegetable",
+    "botanical_family": "Polygonaceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "strawberry"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "tomato-beefsteak",
+    "name": "Beefsteak Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 85,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "basil-sweet",
+        "parsley-flat",
+        "onion-yellow",
+        "marigold-french",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato",
+        "kale-curly",
+        "kale-lacinato",
+        "kale-red-russian",
+        "bok-choy",
+        "collard-greens",
+        "peas-sugar-snap",
+        "fennel",
+        "dill"
+      ]
+    }
+  },
+  {
+    "id": "tomato-cherry",
+    "name": "Cherry Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 65,
+    "water_need": 3,
+    "height_inches": 60,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "basil-sweet",
+        "parsley-flat",
+        "onion-yellow",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato",
+        "kale-curly",
+        "bok-choy",
+        "collard-greens",
+        "peas-sugar-snap"
+      ]
+    }
+  },
+  {
+    "id": "tomato-roma",
+    "name": "Roma Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 3,
+    "height_inches": 48,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "basil-sweet",
+        "parsley-flat",
+        "onion-yellow"
+      ],
+      "enemies": [
+        "potato",
+        "peas-sugar-snap"
+      ]
+    }
+  },
+  {
+    "id": "tomato-heirloom",
+    "name": "Heirloom Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "basil-sweet",
+        "parsley-flat",
+        "onion-yellow",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato",
+        "peas-sugar-snap"
+      ]
+    }
+  },
+  {
+    "id": "pepper-bell",
+    "name": "Bell Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🫑",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow",
+        "carrot",
+        "marigold-french"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "pepper-jalapeno",
+    "name": "Jalapeño Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 2,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow",
+        "carrot"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "pepper-habanero",
+    "name": "Habanero Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 100,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "oregano"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "pepper-poblano",
+    "name": "Poblano Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🫑",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 65,
+    "water_need": 3,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "eggplant",
+    "name": "Eggplant",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍆",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 4,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "thyme",
+        "oregano",
+        "marigold-french"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "potato",
+    "name": "Potato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🥔",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "peas-sugar-snap",
+        "cabbage"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "tomato-cherry",
+        "tomato-roma",
+        "tomato-heirloom",
+        "tomatillo",
+        "cucumber",
+        "zucchini",
+        "yellow-squash",
+        "turnip",
+        "sunflower",
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "tomatillo",
+    "name": "Tomatillo",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 2,
+    "height_inches": 48,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "carrot",
+        "onion-yellow"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "ground-cherry",
+    "name": "Ground Cherry",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 2,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "carrot"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "broccoli",
+    "name": "Broccoli",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥦",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 0
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "dill",
+        "garlic",
+        "nasturtium",
+        "marigold-french"
+      ],
+      "enemies": [
+        "strawberry"
+      ]
+    }
+  },
+  {
+    "id": "cauliflower",
+    "name": "Cauliflower",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥦",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 4,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 0
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "dill",
+        "garlic",
+        "nasturtium"
+      ],
+      "enemies": [
+        "strawberry"
+      ]
+    }
+  },
+  {
+    "id": "cabbage",
+    "name": "Cabbage",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 0
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "dill",
+        "potato",
+        "nasturtium"
+      ],
+      "enemies": [
+        "strawberry"
+      ]
+    }
+  },
+  {
+    "id": "brussels-sprouts",
+    "name": "Brussels Sprouts",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -6,
+      "start_window_end": -2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "dill",
+        "garlic"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "kohlrabi",
+    "name": "Kohlrabi",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 55,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "garlic"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "radish-red",
+    "name": "Red Radish",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥕",
+    "sfg_density": 16,
+    "sun": "full",
+    "days_to_maturity": 25,
+    "water_need": 3,
+    "height_inches": 6,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 8
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "peas-sugar-snap",
+        "carrot",
+        "spinach",
+        "cucumber"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "radish-daikon",
+    "name": "Daikon Radish",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥕",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 10,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "peas-sugar-snap",
+        "carrot"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "turnip",
+    "name": "Turnip",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥕",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "peas-sugar-snap",
+        "radish-red"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "rutabaga",
+    "name": "Rutabaga",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥕",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -6,
+      "start_window_end": 0
+    },
+    "companions": {
+      "friends": [
+        "peas-sugar-snap",
+        "onion-yellow"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "broccoli-rabe",
+    "name": "Broccoli Rabe",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥦",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 45,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 0
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "dill"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "napa-cabbage",
+    "name": "Napa Cabbage",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 4,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 0
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "dill"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "kale-red-russian",
+    "name": "Red Russian Kale",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "garlic"
+      ],
+      "enemies": [
+        "tomato-beefsteak"
+      ]
+    }
+  },
+  {
+    "id": "peas-sugar-snap",
+    "name": "Sugar Snap Peas",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫛",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 60,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": -8,
+      "start_window_end": -2
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "radish-red",
+        "turnip",
+        "cucumber"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "tomato-cherry",
+        "onion-yellow",
+        "onion-red",
+        "onion-green",
+        "garlic",
+        "shallot",
+        "leek",
+        "chives",
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "peas-snow",
+    "name": "Snow Peas",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫛",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 55,
+    "water_need": 3,
+    "height_inches": 60,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": -8,
+      "start_window_end": -2
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "radish-red",
+        "turnip"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "peas-english",
+    "name": "English Peas",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫛",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 65,
+    "water_need": 3,
+    "height_inches": 60,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": -8,
+      "start_window_end": -2
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "radish-red",
+        "turnip"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "green-beans-bush",
+    "name": "Bush Green Beans",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫘",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 3,
+    "height_inches": 20,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "cucumber",
+        "radish-red",
+        "nasturtium",
+        "marigold-french"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "onion-red",
+        "garlic",
+        "shallot",
+        "leek",
+        "chives",
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "green-beans-pole",
+    "name": "Pole Green Beans",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫘",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 65,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "cucumber",
+        "radish-red"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "yellow-beans",
+    "name": "Yellow Wax Beans",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫘",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 55,
+    "water_need": 3,
+    "height_inches": 20,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "cucumber",
+        "radish-red"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "fava-beans",
+    "name": "Fava Beans",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫘",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 85,
+    "water_need": 3,
+    "height_inches": 48,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -8,
+      "start_window_end": -2
+    },
+    "companions": {
+      "friends": [
+        "potato",
+        "carrot"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "edamame",
+    "name": "Edamame",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫛",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "cucumber"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "lima-beans",
+    "name": "Lima Beans",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫘",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "cucumber"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "runner-beans",
+    "name": "Runner Beans",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫘",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 84,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "cucumber"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "lentils",
+    "name": "Lentils",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫘",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 110,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "carrot"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "chickpeas",
+    "name": "Chickpeas",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫘",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 100,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "carrot"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "carrot",
+    "name": "Carrot",
+    "type": "vegetable",
+    "botanical_family": "Apiaceae",
+    "emoji": "🥕",
+    "sfg_density": 16,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 2,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "tomato-beefsteak",
+        "peas-sugar-snap",
+        "onion-yellow",
+        "leek"
+      ],
+      "enemies": [
+        "dill"
+      ]
+    }
+  },
+  {
+    "id": "beet",
+    "name": "Beet",
+    "type": "vegetable",
+    "botanical_family": "Amaranthaceae",
+    "emoji": "🥕",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 55,
+    "water_need": 3,
+    "height_inches": 15,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "lettuce-leaf",
+        "cabbage"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "onion-yellow",
+    "name": "Yellow Onion",
+    "type": "vegetable",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🧅",
+    "sfg_density": 16,
+    "sun": "full",
+    "days_to_maturity": 110,
+    "water_need": 2,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "beet",
+        "tomato-beefsteak",
+        "lettuce-leaf",
+        "chamomile"
+      ],
+      "enemies": [
+        "peas-sugar-snap",
+        "peas-snow",
+        "peas-english",
+        "green-beans-bush",
+        "green-beans-pole",
+        "yellow-beans",
+        "fava-beans",
+        "edamame",
+        "lima-beans",
+        "runner-beans",
+        "lentils",
+        "chickpeas",
+        "sage"
+      ]
+    }
+  },
+  {
+    "id": "onion-red",
+    "name": "Red Onion",
+    "type": "vegetable",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🧅",
+    "sfg_density": 16,
+    "sun": "full",
+    "days_to_maturity": 105,
+    "water_need": 2,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "beet",
+        "tomato-beefsteak"
+      ],
+      "enemies": [
+        "peas-sugar-snap",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "onion-green",
+    "name": "Green Onion (Scallion)",
+    "type": "vegetable",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🧅",
+    "sfg_density": 16,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "lettuce-leaf",
+        "tomato-beefsteak"
+      ],
+      "enemies": [
+        "peas-sugar-snap"
+      ]
+    }
+  },
+  {
+    "id": "garlic",
+    "name": "Garlic",
+    "type": "vegetable",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🧄",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 240,
+    "water_need": 2,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -8,
+      "start_window_end": -2
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "lettuce-leaf",
+        "cabbage",
+        "chamomile"
+      ],
+      "enemies": [
+        "peas-sugar-snap",
+        "peas-snow",
+        "peas-english",
+        "green-beans-bush",
+        "green-beans-pole",
+        "yellow-beans",
+        "fava-beans",
+        "edamame",
+        "lima-beans",
+        "runner-beans",
+        "lentils",
+        "chickpeas",
+        "sage"
+      ]
+    }
+  },
+  {
+    "id": "parsnip",
+    "name": "Parsnip",
+    "type": "vegetable",
+    "botanical_family": "Apiaceae",
+    "emoji": "🥕",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 2,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 0
+    },
+    "companions": {
+      "friends": [
+        "peas-sugar-snap",
+        "radish-red"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "shallot",
+    "name": "Shallot",
+    "type": "vegetable",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🧅",
+    "sfg_density": 16,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 15,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "beet",
+        "tomato-beefsteak"
+      ],
+      "enemies": [
+        "peas-sugar-snap",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "leek",
+    "name": "Leek",
+    "type": "vegetable",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🧅",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "carrot"
+      ],
+      "enemies": [
+        "peas-sugar-snap",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "sweet-potato",
+    "name": "Sweet Potato",
+    "type": "vegetable",
+    "botanical_family": "Convolvulaceae",
+    "emoji": "🍠",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 100,
+    "water_need": 2,
+    "height_inches": 18,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "green-beans-bush",
+        "peas-sugar-snap",
+        "thyme",
+        "basil-sweet",
+        "marigold-french",
+        "nasturtium",
+        "radish-red",
+        "dill"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "ginger",
+    "name": "Ginger",
+    "type": "vegetable",
+    "botanical_family": "Zingiberaceae",
+    "emoji": "🫚",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 240,
+    "water_need": 4,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "turmeric",
+        "lemongrass",
+        "peas-sugar-snap",
+        "green-beans-bush",
+        "cilantro",
+        "spinach",
+        "marigold-french",
+        "nasturtium"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "turmeric",
+    "name": "Turmeric",
+    "type": "vegetable",
+    "botanical_family": "Zingiberaceae",
+    "emoji": "🧡",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 240,
+    "water_need": 4,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "ginger",
+        "lemongrass",
+        "green-beans-bush",
+        "peas-sugar-snap",
+        "cilantro",
+        "basil-sweet",
+        "marigold-french",
+        "garlic"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "celeriac",
+    "name": "Celeriac",
+    "type": "vegetable",
+    "botanical_family": "Apiaceae",
+    "emoji": "🥕",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 110,
+    "water_need": 4,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 0
+    },
+    "companions": {
+      "friends": [
+        "leek",
+        "onion-yellow"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "radish-watermelon",
+    "name": "Watermelon Radish",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥕",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 8,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "peas-sugar-snap",
+        "carrot"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "radish-french-breakfast",
+    "name": "French Breakfast Radish",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥕",
+    "sfg_density": 16,
+    "sun": "full",
+    "days_to_maturity": 28,
+    "water_need": 3,
+    "height_inches": 6,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 8
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "peas-sugar-snap",
+        "carrot"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "cucumber",
+    "name": "Cucumber",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 4,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "peas-sugar-snap",
+        "radish-red",
+        "lettuce-leaf",
+        "nasturtium",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato",
+        "sage",
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "zucchini",
+    "name": "Zucchini",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 4,
+    "height_inches": 30,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "radish-red",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "yellow-squash",
+    "name": "Yellow Squash",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 3,
+    "height_inches": 30,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "radish-red",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "celery",
+    "name": "Celery",
+    "type": "vegetable",
+    "botanical_family": "Apiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 85,
+    "water_need": 4,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 0
+    },
+    "companions": {
+      "friends": [
+        "leek",
+        "onion-yellow",
+        "tomato-beefsteak"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "fennel",
+    "name": "Fennel",
+    "type": "vegetable",
+    "botanical_family": "Apiaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 65,
+    "water_need": 3,
+    "height_inches": 48,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [],
+      "enemies": [
+        "tomato-beefsteak",
+        "green-beans-bush",
+        "dill",
+        "pepper-bell",
+        "eggplant",
+        "potato",
+        "peas-sugar-snap",
+        "carrot",
+        "cabbage",
+        "broccoli",
+        "cauliflower",
+        "cucumber"
+      ]
+    }
+  },
+  {
+    "id": "okra",
+    "name": "Okra",
+    "type": "vegetable",
+    "botanical_family": "Malvaceae",
+    "emoji": "🌱",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 2,
+    "height_inches": 60,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "pepper-bell",
+        "eggplant"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "amaranth",
+    "name": "Amaranth (Greens)",
+    "type": "vegetable",
+    "botanical_family": "Amaranthaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 40,
+    "water_need": 2,
+    "height_inches": 60,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "quinoa",
+    "name": "Quinoa",
+    "type": "vegetable",
+    "botanical_family": "Amaranthaceae",
+    "emoji": "🌾",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 2,
+    "height_inches": 60,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "green-beans-bush",
+        "peas-sugar-snap",
+        "spinach",
+        "cabbage",
+        "lettuce-leaf",
+        "radish-red",
+        "garlic",
+        "basil-sweet",
+        "marigold-french"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "beet"
+      ]
+    }
+  },
+  {
+    "id": "brussels-sprouts-baby",
+    "name": "Baby Brussels Sprouts",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 85,
+    "water_need": 3,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -6,
+      "start_window_end": -2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "dill",
+        "garlic"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "basil-sweet",
+    "name": "Sweet Basil",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "tomato-cherry",
+        "pepper-bell"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "basil-thai",
+    "name": "Thai Basil",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "pepper-bell"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "cilantro",
+    "name": "Cilantro (Coriander)",
+    "type": "herb",
+    "botanical_family": "Apiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 50,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "spinach",
+        "lettuce-leaf"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "parsley-flat",
+    "name": "Flat-leaf Parsley",
+    "type": "herb",
+    "botanical_family": "Apiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "tomato-cherry",
+        "carrot"
+      ],
+      "enemies": [
+        "mint-spearmint",
+        "mint-peppermint"
+      ]
+    }
+  },
+  {
+    "id": "parsley-curly",
+    "name": "Curly Parsley",
+    "type": "herb",
+    "botanical_family": "Apiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 75,
+    "water_need": 3,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "carrot"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "dill",
+    "name": "Dill",
+    "type": "herb",
+    "botanical_family": "Apiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 45,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "cabbage",
+        "lettuce-leaf",
+        "onion-yellow",
+        "cucumber"
+      ],
+      "enemies": [
+        "carrot",
+        "fennel",
+        "tomato-beefsteak"
+      ]
+    }
+  },
+  {
+    "id": "oregano",
+    "name": "Oregano",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 1,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "eggplant",
+        "pepper-bell"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "thyme",
+    "name": "Thyme",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 1,
+    "height_inches": 8,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "eggplant",
+        "cabbage",
+        "strawberry"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "mint-spearmint",
+    "name": "Spearmint",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "partial",
+    "days_to_maturity": 90,
+    "water_need": 4,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "cabbage",
+        "tomato-beefsteak"
+      ],
+      "enemies": [
+        "parsley-flat"
+      ]
+    }
+  },
+  {
+    "id": "mint-peppermint",
+    "name": "Peppermint",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "partial",
+    "days_to_maturity": 90,
+    "water_need": 4,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "cabbage",
+        "tomato-beefsteak"
+      ],
+      "enemies": [
+        "parsley-flat"
+      ]
+    }
+  },
+  {
+    "id": "chives",
+    "name": "Chives",
+    "type": "herb",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🌿",
+    "sfg_density": 16,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "tomato-beefsteak"
+      ],
+      "enemies": [
+        "peas-sugar-snap",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "sage",
+    "name": "Sage",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 1,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "rosemary",
+        "cabbage",
+        "carrot"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic",
+        "cucumber",
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "rosemary",
+    "name": "Rosemary",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 1,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "sage",
+        "cabbage",
+        "green-beans-bush"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "lavender",
+    "name": "Lavender",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "💜",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 1,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "rosemary"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "chamomile",
+    "name": "Chamomile",
+    "type": "herb",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌼",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "cabbage",
+        "cucumber"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "tarragon",
+    "name": "Tarragon",
+    "type": "herb",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "eggplant"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "marjoram",
+    "name": "Marjoram",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 1,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "oregano",
+        "thyme"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "lemon-balm",
+    "name": "Lemon Balm",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🍋",
+    "sfg_density": 1,
+    "sun": "partial",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "yellow-squash"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "lemongrass",
+    "name": "Lemongrass",
+    "type": "herb",
+    "botanical_family": "Poaceae",
+    "emoji": "🌾",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 100,
+    "water_need": 3,
+    "height_inches": 48,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "tomato-beefsteak",
+        "pepper-bell",
+        "eggplant",
+        "ginger",
+        "turmeric",
+        "marigold-french",
+        "nasturtium"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "catnip",
+    "name": "Catnip",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🐱",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "beet",
+        "cabbage",
+        "broccoli",
+        "cauliflower",
+        "kale-curly",
+        "eggplant",
+        "potato",
+        "carrot",
+        "green-beans-bush",
+        "zucchini",
+        "strawberry"
+      ],
+      "enemies": [
+        "parsley-flat"
+      ]
+    }
+  },
+  {
+    "id": "stevia",
+    "name": "Stevia",
+    "type": "herb",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "pepper-bell",
+        "lettuce-leaf",
+        "radish-red",
+        "carrot",
+        "basil-sweet",
+        "thyme",
+        "marigold-french",
+        "nasturtium",
+        "lavender"
+      ],
+      "enemies": [
+        "cabbage",
+        "broccoli",
+        "cauliflower"
+      ]
+    }
+  },
+  {
+    "id": "bay-laurel",
+    "name": "Bay Laurel",
+    "type": "herb",
+    "botanical_family": "Lauraceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 730,
+    "water_need": 2,
+    "height_inches": 48,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "rosemary",
+        "thyme",
+        "oregano",
+        "sage",
+        "basil-sweet",
+        "chives",
+        "lavender",
+        "nasturtium",
+        "carrot",
+        "green-beans-bush"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "sorrel-herb",
+    "name": "French Sorrel",
+    "type": "herb",
+    "botanical_family": "Polygonaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "strawberry"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "lovage",
+    "name": "Lovage",
+    "type": "herb",
+    "botanical_family": "Apiaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "partial",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "celery",
+        "carrot",
+        "pepper-bell",
+        "peas-sugar-snap",
+        "green-beans-bush",
+        "thyme",
+        "parsley-flat",
+        "chives",
+        "basil-sweet",
+        "marigold-french",
+        "nasturtium",
+        "borage"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "anise",
+    "name": "Anise",
+    "type": "herb",
+    "botanical_family": "Apiaceae",
+    "emoji": "⭐",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "cilantro"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "marigold-french",
+    "name": "French Marigold",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌼",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 2,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "pepper-bell",
+        "eggplant",
+        "cucumber",
+        "green-beans-bush"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "marigold-african",
+    "name": "African Marigold",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌼",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 2,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "pepper-bell"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "nasturtium",
+    "name": "Nasturtium",
+    "type": "flower",
+    "botanical_family": "Tropaeolaceae",
+    "emoji": "🌸",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 2,
+    "height_inches": 12,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "cucumber",
+        "radish-red",
+        "cabbage",
+        "zucchini"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "borage",
+    "name": "Borage",
+    "type": "flower",
+    "botanical_family": "Boraginaceae",
+    "emoji": "💙",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 55,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "strawberry",
+        "cucumber",
+        "green-beans-bush"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "calendula",
+    "name": "Calendula (Pot Marigold)",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌼",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "lettuce-leaf",
+        "cucumber"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "alyssum",
+    "name": "Sweet Alyssum",
+    "type": "flower",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🌸",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 2,
+    "height_inches": 6,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "broccoli",
+        "cabbage"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "sunflower",
+    "name": "Sunflower",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌻",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 2,
+    "height_inches": 96,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "cucumber"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "zinnia",
+    "name": "Zinnia",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌺",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "cucumber"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "cosmos",
+    "name": "Cosmos",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌸",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 1,
+    "height_inches": 48,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "petunia",
+    "name": "Petunia",
+    "type": "flower",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌺",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 10,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "green-beans-bush",
+        "tomato-beefsteak"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "chrysanthemum",
+    "name": "Chrysanthemum",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌼",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "chives",
+        "marigold-french"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "bachelor-button",
+    "name": "Bachelor Button (Cornflower)",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "💙",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 1,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "cucumber",
+        "zucchini",
+        "rosemary",
+        "thyme",
+        "marigold-french",
+        "cosmos",
+        "zinnia",
+        "calendula"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "four-oclock",
+    "name": "Four O'Clock",
+    "type": "flower",
+    "botanical_family": "Nyctaginaceae",
+    "emoji": "🌸",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "geranium",
+    "name": "Geranium",
+    "type": "flower",
+    "botanical_family": "Geraniaceae",
+    "emoji": "🌺",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [],
+      "enemies": []
+    }
+  },
+  {
+    "id": "snapdragon",
+    "name": "Snapdragon",
+    "type": "flower",
+    "botanical_family": "Plantaginaceae",
+    "emoji": "🌸",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 3,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "pepper-bell",
+        "eggplant",
+        "basil-sweet",
+        "lavender",
+        "marigold-french",
+        "nasturtium",
+        "calendula",
+        "zinnia",
+        "cosmos"
+      ],
+      "enemies": [
+        "sunflower",
+        "mint-spearmint"
+      ]
+    }
+  },
+  {
+    "id": "pansy",
+    "name": "Pansy",
+    "type": "flower",
+    "botanical_family": "Violaceae",
+    "emoji": "🌺",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 8,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "lettuce-butterhead",
+        "spinach",
+        "parsley-flat",
+        "thyme",
+        "chives",
+        "marigold-french",
+        "nasturtium"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "viola",
+    "name": "Viola",
+    "type": "flower",
+    "botanical_family": "Violaceae",
+    "emoji": "💜",
+    "sfg_density": 9,
+    "sun": "partial",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 6,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "lettuce-butterhead",
+        "spinach",
+        "strawberry",
+        "basil-sweet",
+        "chives",
+        "thyme",
+        "marigold-french",
+        "nasturtium"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "dahlia",
+    "name": "Dahlia",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌺",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 48,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "marigold-french",
+        "nasturtium",
+        "basil-sweet",
+        "lavender",
+        "dill",
+        "salvia"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "dianthus",
+    "name": "Dianthus",
+    "type": "flower",
+    "botanical_family": "Caryophyllaceae",
+    "emoji": "🌸",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 2,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "thyme",
+        "sage",
+        "lavender",
+        "rosemary",
+        "chamomile",
+        "marigold-french"
+      ],
+      "enemies": [
+        "mint-spearmint"
+      ]
+    }
+  },
+  {
+    "id": "stock",
+    "name": "Stock",
+    "type": "flower",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🌸",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "garlic",
+        "chives",
+        "dill",
+        "chamomile",
+        "borage",
+        "nasturtium",
+        "marigold-french",
+        "celery",
+        "spinach",
+        "lettuce-leaf",
+        "beet",
+        "thyme"
+      ],
+      "enemies": [
+        "cabbage",
+        "broccoli",
+        "cauliflower",
+        "kale-curly",
+        "turnip",
+        "radish-red"
+      ]
+    }
+  },
+  {
+    "id": "sweet-pea",
+    "name": "Sweet Pea",
+    "type": "flower",
+    "botanical_family": "Fabaceae",
+    "emoji": "🌸",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 65,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 0
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "pepper-bell",
+        "cucumber",
+        "lettuce-leaf",
+        "spinach",
+        "radish-red",
+        "carrot",
+        "basil-sweet",
+        "marigold-french",
+        "nasturtium"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic",
+        "chives"
+      ]
+    }
+  },
+  {
+    "id": "ageratum",
+    "name": "Ageratum",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "💙",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 65,
+    "water_need": 3,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "pepper-bell",
+        "green-beans-bush",
+        "zucchini",
+        "cucumber",
+        "basil-sweet",
+        "marigold-french",
+        "zinnia"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "lobelia",
+    "name": "Lobelia",
+    "type": "flower",
+    "botanical_family": "Campanulaceae",
+    "emoji": "💙",
+    "sfg_density": 9,
+    "sun": "partial",
+    "days_to_maturity": 75,
+    "water_need": 4,
+    "height_inches": 6,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "nasturtium",
+        "basil-sweet"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "salvia",
+    "name": "Salvia",
+    "type": "flower",
+    "botanical_family": "Lamiaceae",
+    "emoji": "💜",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 2,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "broccoli",
+        "cabbage",
+        "cauliflower",
+        "carrot",
+        "strawberry",
+        "rosemary",
+        "lavender",
+        "tomato-beefsteak"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "verbena",
+    "name": "Verbena",
+    "type": "flower",
+    "botanical_family": "Verbenaceae",
+    "emoji": "💜",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 2,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "basil-sweet",
+        "dill",
+        "cilantro",
+        "garlic",
+        "marigold-french",
+        "nasturtium",
+        "zinnia"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "portulaca",
+    "name": "Portulaca (Moss Rose)",
+    "type": "flower",
+    "botanical_family": "Portulacaceae",
+    "emoji": "🌸",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 1,
+    "height_inches": 6,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "marigold-french",
+        "nasturtium",
+        "zinnia",
+        "lavender",
+        "thyme",
+        "rosemary"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "strawflower",
+    "name": "Strawflower",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌼",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 1,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "sage",
+        "lavender",
+        "marigold-french",
+        "zinnia"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "strawberry",
+    "name": "Strawberry",
+    "type": "fruit",
+    "botanical_family": "Rosaceae",
+    "emoji": "🍓",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 4,
+    "height_inches": 8,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "lettuce-butterhead",
+        "spinach",
+        "borage",
+        "thyme",
+        "sorrel"
+      ],
+      "enemies": [
+        "cabbage",
+        "broccoli",
+        "cauliflower",
+        "kale-curly",
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "tomato-brandywine",
+    "name": "Brandywine Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 85,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "parsley-flat",
+        "carrot",
+        "borage",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato",
+        "fennel",
+        "dill",
+        "cabbage"
+      ]
+    }
+  },
+  {
+    "id": "tomato-cherokee-purple",
+    "name": "Cherokee Purple Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "carrot",
+        "onion-yellow",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato",
+        "fennel",
+        "cabbage",
+        "broccoli"
+      ]
+    }
+  },
+  {
+    "id": "tomato-san-marzano",
+    "name": "San Marzano Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "parsley-flat",
+        "oregano",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato",
+        "fennel",
+        "corn-sweet"
+      ]
+    }
+  },
+  {
+    "id": "tomato-black-krim",
+    "name": "Black Krim Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "borage",
+        "carrot",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato",
+        "fennel",
+        "cabbage"
+      ]
+    }
+  },
+  {
+    "id": "tomato-green-zebra",
+    "name": "Green Zebra Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 3,
+    "height_inches": 60,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "parsley-flat",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato",
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "tomato-mortgage-lifter",
+    "name": "Mortgage Lifter Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 85,
+    "water_need": 3,
+    "height_inches": 84,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "carrot",
+        "onion-yellow",
+        "borage"
+      ],
+      "enemies": [
+        "potato",
+        "fennel",
+        "corn-sweet"
+      ]
+    }
+  },
+  {
+    "id": "tomato-sungold",
+    "name": "Sungold Cherry Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 65,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "nasturtium",
+        "marigold-french",
+        "parsley-flat"
+      ],
+      "enemies": [
+        "potato",
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "tomato-yellow-pear",
+    "name": "Yellow Pear Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "borage",
+        "carrot",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato",
+        "fennel",
+        "cabbage"
+      ]
+    }
+  },
+  {
+    "id": "tomato-amish-paste",
+    "name": "Amish Paste Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "oregano",
+        "parsley-flat",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato",
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "tomato-rutgers",
+    "name": "Rutgers Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 3,
+    "height_inches": 60,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "carrot",
+        "onion-yellow",
+        "parsley-flat"
+      ],
+      "enemies": [
+        "potato",
+        "fennel",
+        "corn-sweet"
+      ]
+    }
+  },
+  {
+    "id": "tomato-better-boy",
+    "name": "Better Boy Tomato",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "carrot",
+        "parsley-flat",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato",
+        "fennel",
+        "cabbage"
+      ]
+    }
+  },
+  {
+    "id": "pepper-serrano",
+    "name": "Serrano Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 2,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow",
+        "carrot",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "pepper-cayenne",
+    "name": "Cayenne Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow",
+        "oregano",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "pepper-anaheim",
+    "name": "Anaheim Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 3,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow",
+        "carrot",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "pepper-banana",
+    "name": "Banana Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow",
+        "carrot",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "pepper-shishito",
+    "name": "Shishito Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "pepper-padron",
+    "name": "Padron Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "pepper-hungarian-wax",
+    "name": "Hungarian Wax Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow",
+        "carrot",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "pepper-ghost",
+    "name": "Ghost Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 100,
+    "water_need": 3,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "pepper-sweet-italian",
+    "name": "Sweet Italian Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🫑",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow",
+        "carrot",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "pepper-thai",
+    "name": "Thai Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-thai",
+        "cilantro",
+        "onion-yellow",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "pepper-tabasco",
+    "name": "Tabasco Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 3,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow",
+        "oregano",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "cucumber-pickling",
+    "name": "Pickling Cucumber",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 4,
+    "height_inches": 60,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "peas-sugar-snap",
+        "radish-red",
+        "dill",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato",
+        "sage",
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "cucumber-lemon",
+    "name": "Lemon Cucumber",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 65,
+    "water_need": 4,
+    "height_inches": 60,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "radish-red",
+        "nasturtium",
+        "marigold-french",
+        "sunflower"
+      ],
+      "enemies": [
+        "potato",
+        "sage",
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "cucumber-armenian",
+    "name": "Armenian Cucumber",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 72,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "radish-red",
+        "nasturtium",
+        "sunflower"
+      ],
+      "enemies": [
+        "potato",
+        "sage",
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "butternut-squash",
+    "name": "Butternut Squash",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🎃",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 100,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "green-beans-pole",
+        "nasturtium",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "acorn-squash",
+    "name": "Acorn Squash",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🎃",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "green-beans-pole",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "spaghetti-squash",
+    "name": "Spaghetti Squash",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🎃",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 100,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "green-beans-pole",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "delicata-squash",
+    "name": "Delicata Squash",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🎃",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "green-beans-pole",
+        "nasturtium",
+        "borage"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "kabocha-squash",
+    "name": "Kabocha Squash",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🎃",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 95,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "green-beans-pole",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "hubbard-squash",
+    "name": "Hubbard Squash",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🎃",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 105,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "green-beans-pole",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "pumpkin-pie",
+    "name": "Sugar Pumpkin",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🎃",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 100,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "green-beans-pole",
+        "nasturtium",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "pumpkin-jack",
+    "name": "Jack-O-Lantern Pumpkin",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🎃",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 110,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "green-beans-pole",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "pattypan-squash",
+    "name": "Pattypan Squash",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 4,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "radish-red",
+        "nasturtium",
+        "borage"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "crookneck-squash",
+    "name": "Yellow Crookneck Squash",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 55,
+    "water_need": 4,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "radish-red",
+        "nasturtium",
+        "borage"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "watermelon",
+    "name": "Watermelon",
+    "type": "fruit",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🍉",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 85,
+    "water_need": 4,
+    "height_inches": 18,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "radish-red",
+        "nasturtium",
+        "marigold-french",
+        "corn-sweet"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "cantaloupe",
+    "name": "Cantaloupe",
+    "type": "fruit",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🍈",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 4,
+    "height_inches": 18,
+    "trellisable": true,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "radish-red",
+        "nasturtium",
+        "corn-sweet",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "honeydew-melon",
+    "name": "Honeydew Melon",
+    "type": "fruit",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🍈",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 4,
+    "height_inches": 18,
+    "trellisable": true,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "radish-red",
+        "nasturtium",
+        "corn-sweet"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "galia-melon",
+    "name": "Galia Melon",
+    "type": "fruit",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🍈",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 4,
+    "height_inches": 18,
+    "trellisable": true,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "radish-red",
+        "nasturtium",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "broccolini",
+    "name": "Broccolini",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥦",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "beet",
+        "celery",
+        "dill",
+        "chamomile"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "tomato-cherry",
+        "strawberry",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "romanesco",
+    "name": "Romanesco",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥦",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 100,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "beet",
+        "celery",
+        "dill",
+        "thyme"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "strawberry",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "gai-lan",
+    "name": "Gai Lan (Chinese Broccoli)",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "cilantro",
+        "beet",
+        "dill"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "strawberry"
+      ]
+    }
+  },
+  {
+    "id": "choy-sum",
+    "name": "Choy Sum",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 45,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "cilantro",
+        "beet"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "strawberry"
+      ]
+    }
+  },
+  {
+    "id": "cabbage-savoy",
+    "name": "Savoy Cabbage",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "beet",
+        "celery",
+        "dill",
+        "chamomile",
+        "thyme"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "strawberry",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "cabbage-red",
+    "name": "Red Cabbage",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 3,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "beet",
+        "celery",
+        "dill",
+        "thyme"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "strawberry",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "mustard-asian",
+    "name": "Asian Giant Red Mustard",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 45,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "cilantro",
+        "beet"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "strawberry"
+      ]
+    }
+  },
+  {
+    "id": "kale-redbor",
+    "name": "Redbor Kale",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "beet",
+        "dill",
+        "thyme"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "strawberry",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "pearl-onion",
+    "name": "Pearl Onion",
+    "type": "vegetable",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🧅",
+    "sfg_density": 16,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "beet",
+        "lettuce-leaf",
+        "chamomile"
+      ],
+      "enemies": [
+        "peas-sugar-snap",
+        "green-beans-bush",
+        "sage"
+      ]
+    }
+  },
+  {
+    "id": "cipollini-onion",
+    "name": "Cipollini Onion",
+    "type": "vegetable",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🧅",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 100,
+    "water_need": 2,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "beet",
+        "lettuce-leaf",
+        "tomato-beefsteak"
+      ],
+      "enemies": [
+        "peas-sugar-snap",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "walking-onion",
+    "name": "Egyptian Walking Onion",
+    "type": "vegetable",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🧅",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "beet",
+        "lettuce-leaf",
+        "chamomile"
+      ],
+      "enemies": [
+        "peas-sugar-snap",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "elephant-garlic",
+    "name": "Elephant Garlic",
+    "type": "vegetable",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🧄",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 240,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -16,
+      "start_window_end": -10
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "beet",
+        "lettuce-leaf",
+        "tomato-beefsteak"
+      ],
+      "enemies": [
+        "peas-sugar-snap",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "garlic-chives",
+    "name": "Garlic Chives",
+    "type": "herb",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🌿",
+    "sfg_density": 16,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 2,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "tomato-beefsteak",
+        "parsley-flat"
+      ],
+      "enemies": [
+        "peas-sugar-snap",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "multiplier-onion",
+    "name": "Multiplier Onion",
+    "type": "vegetable",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🧅",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "beet",
+        "lettuce-leaf"
+      ],
+      "enemies": [
+        "peas-sugar-snap",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "cowpea",
+    "name": "Cowpea (Black-Eyed Pea)",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫘",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "carrot",
+        "cucumber"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic",
+        "shallot"
+      ]
+    }
+  },
+  {
+    "id": "yardlong-bean",
+    "name": "Yardlong Bean",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫛",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 3,
+    "height_inches": 96,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "carrot",
+        "cucumber",
+        "radish-red"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic",
+        "shallot"
+      ]
+    }
+  },
+  {
+    "id": "italian-flat-bean",
+    "name": "Italian Flat Bean (Romano)",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫛",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "cucumber",
+        "corn-sweet",
+        "marigold-french"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic",
+        "shallot"
+      ]
+    }
+  },
+  {
+    "id": "purple-pole-bean",
+    "name": "Purple Podded Pole Bean",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫛",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 65,
+    "water_need": 2,
+    "height_inches": 96,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "carrot",
+        "cucumber",
+        "radish-red"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic",
+        "shallot"
+      ]
+    }
+  },
+  {
+    "id": "winged-bean",
+    "name": "Winged Bean",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫛",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 96,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "carrot",
+        "cucumber"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "salsify",
+    "name": "Salsify",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥕",
+    "sfg_density": 16,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "onion-yellow",
+        "lettuce-leaf"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "scorzonera",
+    "name": "Scorzonera (Black Salsify)",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥕",
+    "sfg_density": 16,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "onion-yellow",
+        "lettuce-leaf"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "jerusalem-artichoke",
+    "name": "Jerusalem Artichoke (Sunchoke)",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌻",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 2,
+    "height_inches": 96,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "cucumber",
+        "corn-sweet"
+      ],
+      "enemies": [
+        "tomato-beefsteak"
+      ]
+    }
+  },
+  {
+    "id": "jicama",
+    "name": "Jicama",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🥔",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 150,
+    "water_need": 2,
+    "height_inches": 60,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "cucumber",
+        "marigold-french"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "yacon",
+    "name": "Yacon",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥔",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 180,
+    "water_need": 3,
+    "height_inches": 84,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "sunflower"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "oca",
+    "name": "Oca (New Zealand Yam)",
+    "type": "vegetable",
+    "botanical_family": "Oxalidaceae",
+    "emoji": "🥔",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 210,
+    "water_need": 2,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "lettuce-leaf",
+        "spinach"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "malabar-spinach",
+    "name": "Malabar Spinach",
+    "type": "vegetable",
+    "botanical_family": "Basellaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 4,
+    "height_inches": 96,
+    "trellisable": true,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "cucumber",
+        "green-beans-pole"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "perilla-shiso",
+    "name": "Perilla (Shiso)",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "pepper-bell",
+        "cucumber"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "water-spinach",
+    "name": "Water Spinach (Kangkong)",
+    "type": "vegetable",
+    "botanical_family": "Convolvulaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 5,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "watercress"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "burdock",
+    "name": "Burdock (Gobo)",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥕",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 2,
+    "height_inches": 60,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "lettuce-leaf"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "luffa",
+    "name": "Luffa (Loofah Gourd)",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 150,
+    "water_need": 4,
+    "height_inches": 96,
+    "trellisable": true,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "nasturtium",
+        "marigold-french"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "microgreens-pea",
+    "name": "Pea Shoot Microgreens",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🌱",
+    "sfg_density": 16,
+    "sun": "partial",
+    "days_to_maturity": 14,
+    "water_need": 4,
+    "height_inches": 4,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -8,
+      "start_window_end": 8
+    },
+    "companions": {
+      "friends": [],
+      "enemies": []
+    }
+  },
+  {
+    "id": "microgreens-sunflower",
+    "name": "Sunflower Microgreens",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌱",
+    "sfg_density": 16,
+    "sun": "partial",
+    "days_to_maturity": 12,
+    "water_need": 4,
+    "height_inches": 4,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -8,
+      "start_window_end": 8
+    },
+    "companions": {
+      "friends": [],
+      "enemies": []
+    }
+  },
+  {
+    "id": "microgreens-broccoli",
+    "name": "Broccoli Microgreens",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🌱",
+    "sfg_density": 16,
+    "sun": "partial",
+    "days_to_maturity": 10,
+    "water_need": 4,
+    "height_inches": 3,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -8,
+      "start_window_end": 8
+    },
+    "companions": {
+      "friends": [],
+      "enemies": []
+    }
+  },
+  {
+    "id": "microgreens-radish",
+    "name": "Radish Microgreens",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🌱",
+    "sfg_density": 16,
+    "sun": "partial",
+    "days_to_maturity": 8,
+    "water_need": 4,
+    "height_inches": 3,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -8,
+      "start_window_end": 8
+    },
+    "companions": {
+      "friends": [],
+      "enemies": []
+    }
+  },
+  {
+    "id": "wheatgrass",
+    "name": "Wheatgrass",
+    "type": "herb",
+    "botanical_family": "Poaceae",
+    "emoji": "🌱",
+    "sfg_density": 16,
+    "sun": "partial",
+    "days_to_maturity": 10,
+    "water_need": 4,
+    "height_inches": 6,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -8,
+      "start_window_end": 8
+    },
+    "companions": {
+      "friends": [],
+      "enemies": []
+    }
+  },
+  {
+    "id": "summer-savory",
+    "name": "Summer Savory",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 1,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "green-beans-bush",
+        "green-beans-pole",
+        "onion-yellow"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "winter-savory",
+    "name": "Winter Savory",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 1,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "green-beans-bush",
+        "green-beans-pole",
+        "onion-yellow"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "hyssop",
+    "name": "Hyssop",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "cabbage",
+        "broccoli"
+      ],
+      "enemies": [
+        "radish-red"
+      ]
+    }
+  },
+  {
+    "id": "fenugreek",
+    "name": "Fenugreek",
+    "type": "herb",
+    "botanical_family": "Fabaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 2,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "cilantro",
+        "dill"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "salad-burnet",
+    "name": "Salad Burnet",
+    "type": "herb",
+    "botanical_family": "Rosaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 60,
+    "water_need": 2,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "thyme",
+        "mint-spearmint"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "epazote",
+    "name": "Epazote",
+    "type": "herb",
+    "botanical_family": "Amaranthaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "green-beans-bush",
+        "tomato-beefsteak"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "vietnamese-coriander",
+    "name": "Vietnamese Coriander (Rau Ram)",
+    "type": "herb",
+    "botanical_family": "Polygonaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 70,
+    "water_need": 4,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-thai",
+        "lemongrass"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "lemon-verbena",
+    "name": "Lemon Verbena",
+    "type": "herb",
+    "botanical_family": "Verbenaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 60,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "rosemary",
+        "thyme",
+        "oregano"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "echinacea",
+    "name": "Echinacea (Coneflower)",
+    "type": "herb",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌸",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 1,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "bee-balm",
+        "yarrow-herb"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "feverfew",
+    "name": "Feverfew",
+    "type": "herb",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌼",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "chamomile",
+        "calendula"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "valerian",
+    "name": "Valerian",
+    "type": "herb",
+    "botanical_family": "Caprifoliaceae",
+    "emoji": "🌸",
+    "sfg_density": 1,
+    "sun": "partial",
+    "days_to_maturity": 120,
+    "water_need": 2,
+    "height_inches": 60,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "echinacea",
+        "bee-balm"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "yarrow-herb",
+    "name": "Yarrow",
+    "type": "herb",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌼",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 1,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "echinacea",
+        "bee-balm",
+        "lavender"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "asparagus",
+    "name": "Asparagus",
+    "type": "vegetable",
+    "botanical_family": "Asparagaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 730,
+    "water_need": 3,
+    "height_inches": 60,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "parsley-flat",
+        "basil-sweet"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "rhubarb",
+    "name": "Rhubarb",
+    "type": "vegetable",
+    "botanical_family": "Polygonaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 365,
+    "water_need": 3,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "cabbage",
+        "broccoli",
+        "cauliflower"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "globe-artichoke",
+    "name": "Globe Artichoke",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 150,
+    "water_need": 3,
+    "height_inches": 60,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "peas-sugar-snap",
+        "sunflower"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "cardoon",
+    "name": "Cardoon",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 2,
+    "height_inches": 72,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "peas-sugar-snap"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "sea-kale",
+    "name": "Sea Kale",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 365,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "beet"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "strawberry"
+      ]
+    }
+  },
+  {
+    "id": "good-king-henry",
+    "name": "Good King Henry",
+    "type": "vegetable",
+    "botanical_family": "Amaranthaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "partial",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "spinach",
+        "sorrel"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "morning-glory",
+    "name": "Morning Glory",
+    "type": "flower",
+    "botanical_family": "Convolvulaceae",
+    "emoji": "🌺",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 65,
+    "water_need": 2,
+    "height_inches": 96,
+    "trellisable": true,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "nigella",
+    "name": "Nigella (Love-in-a-Mist)",
+    "type": "flower",
+    "botanical_family": "Ranunculaceae",
+    "emoji": "🌸",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 2,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "lavender",
+        "snapdragon"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "larkspur",
+    "name": "Larkspur",
+    "type": "flower",
+    "botanical_family": "Ranunculaceae",
+    "emoji": "🌸",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "snapdragon",
+        "stock"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "aster",
+    "name": "Aster",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌼",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "chrysanthemum"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "impatiens",
+    "name": "Impatiens",
+    "type": "flower",
+    "botanical_family": "Balsaminaceae",
+    "emoji": "🌸",
+    "sfg_density": 4,
+    "sun": "shade",
+    "days_to_maturity": 70,
+    "water_need": 4,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "begonia",
+        "coleus"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "begonia",
+    "name": "Begonia",
+    "type": "flower",
+    "botanical_family": "Begoniaceae",
+    "emoji": "🌸",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 90,
+    "water_need": 4,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "impatiens",
+        "coleus"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "coleus",
+    "name": "Coleus",
+    "type": "flower",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "impatiens",
+        "begonia"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "balsam",
+    "name": "Garden Balsam",
+    "type": "flower",
+    "botanical_family": "Balsaminaceae",
+    "emoji": "🌸",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "impatiens",
+        "begonia"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "cleome",
+    "name": "Cleome (Spider Flower)",
+    "type": "flower",
+    "botanical_family": "Cleomaceae",
+    "emoji": "🌸",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 2,
+    "height_inches": 48,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "cosmos",
+        "zinnia"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "bee-balm",
+    "name": "Bee Balm (Bergamot)",
+    "type": "flower",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌺",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "echinacea",
+        "tomato-beefsteak"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "chicory",
+    "name": "Chicory",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "endive",
+        "lettuce-leaf"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "dandelion-greens",
+    "name": "Dandelion Greens",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 2,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "sorrel"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "purslane",
+    "name": "Purslane",
+    "type": "vegetable",
+    "botanical_family": "Portulacaceae",
+    "emoji": "🌿",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 1,
+    "height_inches": 8,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "portulaca"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "lettuce-oakleaf",
+    "name": "Oakleaf Lettuce",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 50,
+    "water_need": 4,
+    "height_inches": 8,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "radish-red",
+        "cucumber",
+        "strawberry"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "lettuce-batavian",
+    "name": "Batavian Lettuce",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 60,
+    "water_need": 4,
+    "height_inches": 10,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "carrot",
+        "radish-red",
+        "cucumber",
+        "strawberry"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "horseradish",
+    "name": "Horseradish",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 180,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "potato"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "chervil",
+    "name": "Chervil",
+    "type": "herb",
+    "botanical_family": "Apiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "radish-red",
+        "lettuce-leaf"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "anise-hyssop",
+    "name": "Anise Hyssop",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 1,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "echinacea",
+        "bee-balm"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "pineapple-sage",
+    "name": "Pineapple Sage",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 48,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "rosemary",
+        "thyme"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "corn-sweet",
+    "name": "Sweet Corn",
+    "type": "vegetable",
+    "botanical_family": "Poaceae",
+    "emoji": "🌽",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 3,
+    "height_inches": 84,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "green-beans-pole",
+        "cucumber",
+        "pumpkin-pie",
+        "butternut-squash"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "tomato-cherry"
+      ]
+    }
+  },
+  {
+    "id": "corn-popcorn",
+    "name": "Popcorn",
+    "type": "vegetable",
+    "botanical_family": "Poaceae",
+    "emoji": "🌽",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 100,
+    "water_need": 2,
+    "height_inches": 96,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "green-beans-pole",
+        "butternut-squash"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "tomato-cherry"
+      ]
+    }
+  },
+  {
+    "id": "molokhia",
+    "name": "Molokhia (Egyptian Spinach)",
+    "type": "vegetable",
+    "botanical_family": "Malvaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 8
+    },
+    "companions": {
+      "friends": [
+        "okra",
+        "basil-sweet",
+        "amaranth"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "longevity-spinach",
+    "name": "Longevity Spinach",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 8
+    },
+    "companions": {
+      "friends": [
+        "okinawa-spinach",
+        "malabar-spinach"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "okinawa-spinach",
+    "name": "Okinawa Spinach",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 8
+    },
+    "companions": {
+      "friends": [
+        "longevity-spinach",
+        "malabar-spinach"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "cranberry-hibiscus",
+    "name": "Cranberry Hibiscus",
+    "type": "vegetable",
+    "botanical_family": "Malvaceae",
+    "emoji": "🌺",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 60,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "roselle",
+        "okra"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "new-zealand-spinach",
+    "name": "New Zealand Spinach",
+    "type": "vegetable",
+    "botanical_family": "Aizoaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 2,
+    "height_inches": 12,
+    "trellisable": false,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "pepper-bell"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "tree-collards",
+    "name": "Tree Collards",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 60,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "beet",
+        "dill"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "strawberry"
+      ]
+    }
+  },
+  {
+    "id": "orach-magenta",
+    "name": "Magenta Orach",
+    "type": "vegetable",
+    "botanical_family": "Amaranthaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 2,
+    "height_inches": 48,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "spinach",
+        "amaranth"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "ethiopian-kale",
+    "name": "Ethiopian Kale",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "beet",
+        "dill"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "strawberry"
+      ]
+    }
+  },
+  {
+    "id": "magenta-spreen",
+    "name": "Magenta Spreen (Tree Spinach)",
+    "type": "vegetable",
+    "botanical_family": "Amaranthaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 2,
+    "height_inches": 60,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "amaranth",
+        "orach-magenta"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "miners-lettuce",
+    "name": "Miner's Lettuce (Claytonia)",
+    "type": "vegetable",
+    "botanical_family": "Montiaceae",
+    "emoji": "🥬",
+    "sfg_density": 9,
+    "sun": "partial",
+    "days_to_maturity": 50,
+    "water_need": 3,
+    "height_inches": 6,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -8,
+      "start_window_end": 2
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "mache"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "cuban-oregano",
+    "name": "Cuban Oregano",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 1,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "rosemary",
+        "oregano",
+        "thyme"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "mexican-mint-marigold",
+    "name": "Mexican Mint Marigold",
+    "type": "herb",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌼",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "marigold-french",
+        "pepper-bell"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "lemon-thyme",
+    "name": "Lemon Thyme",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 1,
+    "height_inches": 12,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "rosemary",
+        "sage",
+        "cabbage"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "greek-oregano",
+    "name": "Greek Oregano",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 1,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "tomato-beefsteak",
+        "pepper-bell"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "lemon-basil",
+    "name": "Lemon Basil",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 65,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "pepper-bell",
+        "oregano"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "society-garlic",
+    "name": "Society Garlic",
+    "type": "herb",
+    "botanical_family": "Amaryllidaceae",
+    "emoji": "🌸",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 2,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "rosemary",
+        "thyme",
+        "lavender"
+      ],
+      "enemies": [
+        "peas-sugar-snap",
+        "green-beans-bush"
+      ]
+    }
+  },
+  {
+    "id": "african-blue-basil",
+    "name": "African Blue Basil",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "pepper-bell",
+        "borage"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "holy-basil-tulsi",
+    "name": "Holy Basil (Tulsi)",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 60,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "tomato-beefsteak",
+        "pepper-bell",
+        "marigold-french"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "pineapple-mint",
+    "name": "Pineapple Mint",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "cabbage",
+        "broccoli"
+      ],
+      "enemies": [
+        "parsley-flat",
+        "parsley-curly"
+      ]
+    }
+  },
+  {
+    "id": "moroccan-mint",
+    "name": "Moroccan Mint",
+    "type": "herb",
+    "botanical_family": "Lamiaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 60,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "cabbage",
+        "broccoli",
+        "tomato-beefsteak"
+      ],
+      "enemies": [
+        "parsley-flat",
+        "parsley-curly"
+      ]
+    }
+  },
+  {
+    "id": "mexican-sour-gherkin",
+    "name": "Mexican Sour Gherkin (Cucamelon)",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 96,
+    "trellisable": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "nasturtium",
+        "marigold-french",
+        "sunflower"
+      ],
+      "enemies": [
+        "potato",
+        "sage"
+      ]
+    }
+  },
+  {
+    "id": "pepper-aji-amarillo",
+    "name": "Aji Amarillo Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "cilantro",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "pepper-pasilla",
+    "name": "Pasilla Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 3,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "cilantro",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "pepper-rocoto",
+    "name": "Rocoto Pepper",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🌶️",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 120,
+    "water_need": 3,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "onion-yellow",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "tomatillo-purple",
+    "name": "Purple Tomatillo",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍅",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 3,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "cilantro",
+        "pepper-bell",
+        "basil-sweet"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "chayote",
+    "name": "Chayote",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 150,
+    "water_need": 3,
+    "height_inches": 96,
+    "trellisable": true,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "green-beans-pole",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "asian-eggplant-japanese",
+    "name": "Japanese Eggplant",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍆",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 70,
+    "water_need": 3,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-sweet",
+        "green-beans-bush",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "thai-eggplant",
+    "name": "Thai Round Eggplant",
+    "type": "vegetable",
+    "botanical_family": "Solanaceae",
+    "emoji": "🍆",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 75,
+    "water_need": 3,
+    "height_inches": 30,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "basil-thai",
+        "cilantro",
+        "marigold-french"
+      ],
+      "enemies": [
+        "fennel"
+      ]
+    }
+  },
+  {
+    "id": "bitter-melon",
+    "name": "Bitter Melon",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 96,
+    "trellisable": true,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "okra",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "ridge-gourd",
+    "name": "Ridge Gourd",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 100,
+    "water_need": 3,
+    "height_inches": 96,
+    "trellisable": true,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "okra",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  },
+  {
+    "id": "shungiku",
+    "name": "Shungiku (Chrysanthemum Greens)",
+    "type": "vegetable",
+    "botanical_family": "Asteraceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 50,
+    "water_need": 3,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "lettuce-leaf",
+        "cilantro"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "komatsuna",
+    "name": "Komatsuna (Japanese Mustard Spinach)",
+    "type": "vegetable",
+    "botanical_family": "Brassicaceae",
+    "emoji": "🥬",
+    "sfg_density": 4,
+    "sun": "partial",
+    "days_to_maturity": 35,
+    "water_need": 3,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -4,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "onion-yellow",
+        "beet",
+        "dill"
+      ],
+      "enemies": [
+        "tomato-beefsteak",
+        "strawberry"
+      ]
+    }
+  },
+  {
+    "id": "agretti",
+    "name": "Agretti (Italian Saltwort)",
+    "type": "vegetable",
+    "botanical_family": "Amaranthaceae",
+    "emoji": "🌿",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 50,
+    "water_need": 2,
+    "height_inches": 18,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "orach-magenta",
+        "magenta-spreen"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "roselle",
+    "name": "Roselle (Sorrel Hibiscus)",
+    "type": "herb",
+    "botanical_family": "Malvaceae",
+    "emoji": "🌺",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 150,
+    "water_need": 3,
+    "height_inches": 60,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "cranberry-hibiscus",
+        "okra"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "tithonia-mexican-sunflower",
+    "name": "Mexican Sunflower (Tithonia)",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌻",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 96,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "cucumber",
+        "pepper-bell",
+        "sunflower"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "day-lily-edible",
+    "name": "Day Lily (Edible)",
+    "type": "flower",
+    "botanical_family": "Asphodelaceae",
+    "emoji": "🌼",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": -2,
+      "start_window_end": 4
+    },
+    "companions": {
+      "friends": [
+        "echinacea",
+        "bee-balm"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "globe-amaranth",
+    "name": "Globe Amaranth",
+    "type": "flower",
+    "botanical_family": "Amaranthaceae",
+    "emoji": "🌸",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 80,
+    "water_need": 2,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "zinnia",
+        "cosmos",
+        "marigold-french"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "cosmos-sulphureus",
+    "name": "Sulphur Cosmos",
+    "type": "flower",
+    "botanical_family": "Asteraceae",
+    "emoji": "🌼",
+    "sfg_density": 4,
+    "sun": "full",
+    "days_to_maturity": 65,
+    "water_need": 2,
+    "height_inches": 36,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 0,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "cosmos",
+        "zinnia",
+        "marigold-french"
+      ],
+      "enemies": []
+    }
+  },
+  {
+    "id": "tepary-bean",
+    "name": "Tepary Bean",
+    "type": "vegetable",
+    "botanical_family": "Fabaceae",
+    "emoji": "🫘",
+    "sfg_density": 9,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 1,
+    "height_inches": 24,
+    "trellisable": false,
+    "planting_strategy": {
+      "start_window_start": 1,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "pumpkin-pie",
+        "amaranth"
+      ],
+      "enemies": [
+        "onion-yellow",
+        "garlic"
+      ]
+    }
+  },
+  {
+    "id": "snake-gourd",
+    "name": "Snake Gourd",
+    "type": "vegetable",
+    "botanical_family": "Cucurbitaceae",
+    "emoji": "🥒",
+    "sfg_density": 1,
+    "sun": "full",
+    "days_to_maturity": 90,
+    "water_need": 3,
+    "height_inches": 96,
+    "trellisable": true,
+    "edge_planting": true,
+    "planting_strategy": {
+      "start_window_start": 2,
+      "start_window_end": 6
+    },
+    "companions": {
+      "friends": [
+        "corn-sweet",
+        "okra",
+        "nasturtium"
+      ],
+      "enemies": [
+        "potato"
+      ]
+    }
+  }
+]
