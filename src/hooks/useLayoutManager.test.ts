@@ -949,4 +949,30 @@ describe('useLayoutManager', () => {
       expect(result.current.activeLayout?.boxes[0]?.cells[0]?.id).toBe('lettuce')
     })
   })
+
+  describe('cross-tab sync (hortilogic-a0h.3)', () => {
+    it('reflects a layout edit made in another tab without reload', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      // Simulate another tab renaming the layout and writing to localStorage
+      const layoutId = result.current.activeLayoutId
+      const otherTabStorage = {
+        version: 2,
+        activeLayoutId: layoutId,
+        layouts: {
+          [layoutId]: { ...result.current.layouts[layoutId]!, name: 'Edited in tab A' },
+        },
+      }
+      const serialized = JSON.stringify(otherTabStorage)
+
+      act(() => {
+        localStorage.setItem('hortilogic:layouts', serialized)
+        window.dispatchEvent(
+          new StorageEvent('storage', { key: 'hortilogic:layouts', newValue: serialized })
+        )
+      })
+
+      expect(result.current.activeLayout?.name).toBe('Edited in tab A')
+    })
+  })
 })

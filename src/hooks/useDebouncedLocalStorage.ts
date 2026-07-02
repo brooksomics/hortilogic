@@ -114,6 +114,25 @@ export function useDebouncedLocalStorage<T>(
     }
   }, [writeToStorage])
 
+  // Sync in-memory state when another tab writes the same key, so two open
+  // tabs stop clobbering each other's writes (hortilogic-a0h.3)
+  useEffect(() => {
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== key || event.newValue === null) return
+      try {
+        const parsed = JSON.parse(event.newValue) as unknown
+        const next = validator ? validator(parsed) : (parsed as T)
+        if (next !== null) setStoredValue(next)
+      } catch {
+        // Ignore malformed cross-tab payloads; keep this tab's state
+      }
+    }
+    window.addEventListener('storage', handleStorage)
+    return () => {
+      window.removeEventListener('storage', handleStorage)
+    }
+  }, [key, validator])
+
   // Closing a tab does not unmount React, so flush pending writes on pagehide
   // too - otherwise changes inside the debounce window are lost (hortilogic-a0h.2)
   useEffect(() => {
