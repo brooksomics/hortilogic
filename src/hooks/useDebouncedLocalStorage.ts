@@ -114,5 +114,17 @@ export function useDebouncedLocalStorage<T>(
     }
   }, [writeToStorage])
 
+  // Closing a tab does not unmount React, so flush pending writes on pagehide
+  // too - otherwise changes inside the debounce window are lost (hortilogic-a0h.2)
+  useEffect(() => {
+    const handlePagehide = () => {
+      if (timeoutRef.current) flush()
+    }
+    window.addEventListener('pagehide', handlePagehide)
+    return () => {
+      window.removeEventListener('pagehide', handlePagehide)
+    }
+  }, [flush])
+
   return [storedValue, setValue, flush]
 }

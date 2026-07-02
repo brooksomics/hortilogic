@@ -229,4 +229,46 @@ describe('useDebouncedLocalStorage', () => {
     expect(setItemSpy).toHaveBeenCalledTimes(1)
     expect(setItemSpy).toHaveBeenCalledWith(TEST_KEY, JSON.stringify(2))
   })
+
+  describe('pagehide flush (hortilogic-a0h.2)', () => {
+    it('flushes a pending write when the tab is hidden or closed', () => {
+      const { result } = renderHook(() =>
+        useDebouncedLocalStorage(TEST_KEY, 0, DEBOUNCE_DELAY)
+      )
+      const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
+
+      act(() => {
+        result.current[1](7)
+      })
+      expect(setItemSpy).not.toHaveBeenCalled()
+
+      act(() => {
+        window.dispatchEvent(new Event('pagehide'))
+      })
+
+      expect(setItemSpy).toHaveBeenCalledWith(TEST_KEY, JSON.stringify(7))
+    })
+
+    it('does not write on pagehide when nothing is pending', () => {
+      renderHook(() => useDebouncedLocalStorage(TEST_KEY, 0, DEBOUNCE_DELAY))
+      const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
+
+      act(() => {
+        window.dispatchEvent(new Event('pagehide'))
+      })
+
+      expect(setItemSpy).not.toHaveBeenCalled()
+    })
+
+    it('removes the pagehide listener on unmount', () => {
+      const removeSpy = vi.spyOn(window, 'removeEventListener')
+      const { unmount } = renderHook(() =>
+        useDebouncedLocalStorage(TEST_KEY, 0, DEBOUNCE_DELAY)
+      )
+
+      unmount()
+
+      expect(removeSpy.mock.calls.some(([type]) => type === 'pagehide')).toBe(true)
+    })
+  })
 })
