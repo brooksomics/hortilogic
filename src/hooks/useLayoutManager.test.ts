@@ -907,4 +907,46 @@ describe('useLayoutManager', () => {
       expect(newUpdatedAt).not.toBe(originalUpdatedAt)
     })
   })
+
+  describe('same-tick mutations (React 18 batching, hortilogic-a0h.1)', () => {
+    it('persists two plantCrop calls dispatched in the same tick', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+
+      act(() => {
+        result.current.plantCrop(0, lettuce)
+        result.current.plantCrop(1, tomato)
+      })
+
+      const cells = result.current.activeLayout?.boxes[0]?.cells
+      expect(cells?.[0]?.id).toBe('lettuce')
+      expect(cells?.[1]?.id).toBe('tomato')
+    })
+
+    it('does not drop a batch bed update when a plant follows in the same tick', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+      const autofilled: (Crop | null)[] = [lettuce, ...(Array(15).fill(null) as (Crop | null)[])]
+
+      act(() => {
+        result.current.setBed(autofilled)
+        result.current.plantCrop(1, tomato)
+      })
+
+      const cells = result.current.activeLayout?.boxes[0]?.cells
+      expect(cells?.[0]?.id).toBe('lettuce')
+      expect(cells?.[1]?.id).toBe('tomato')
+    })
+
+    it('persists a rename and a plant dispatched in the same tick', () => {
+      const { result } = renderHook(() => useLayoutManager(TEST_PROFILE_ID))
+      const layoutId = result.current.activeLayoutId
+
+      act(() => {
+        result.current.renameLayout(layoutId, 'Renamed')
+        result.current.plantCrop(0, lettuce)
+      })
+
+      expect(result.current.activeLayout?.name).toBe('Renamed')
+      expect(result.current.activeLayout?.boxes[0]?.cells[0]?.id).toBe('lettuce')
+    })
+  })
 })
