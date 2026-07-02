@@ -60,6 +60,53 @@ function touchLayout(layout: GardenLayout): GardenLayout {
   }
 }
 
+/**
+ * Returns a copy of the layout with one cell set, or null if the box is missing
+ */
+function setCell(
+  layout: GardenLayout,
+  change: { cellIndex: number; value: Crop | null; boxId?: string }
+): GardenLayout | null {
+  const targetBoxId = change.boxId ?? layout.boxes[0]?.id
+  const boxIndex = layout.boxes.findIndex((box) => box.id === targetBoxId)
+  const targetBox = layout.boxes[boxIndex]
+
+  if (!targetBox) {
+    console.error(`Box ${targetBoxId ?? 'undefined'} not found`)
+    return null
+  }
+
+  const newCells = [...targetBox.cells]
+  newCells[change.cellIndex] = change.value
+
+  const updatedBoxes = [...layout.boxes]
+  updatedBoxes[boxIndex] = { ...targetBox, cells: newCells }
+
+  return { ...layout, boxes: updatedBoxes }
+}
+
+/**
+ * Returns storage without the given layout, switching active if needed.
+ * Refuses to remove the last remaining layout.
+ */
+function removeLayoutFromStorage(storage: LayoutStorage, layoutId: string): LayoutStorage {
+  const layoutIds = Object.keys(storage.layouts)
+  if (layoutIds.length <= 1) {
+    console.warn('Cannot delete the last remaining layout')
+    return storage
+  }
+
+  const remainingLayouts = Object.fromEntries(
+    Object.entries(storage.layouts).filter(([id]) => id !== layoutId)
+  )
+  const newActiveId =
+    storage.activeLayoutId === layoutId
+      ? layoutIds.find((id) => id !== layoutId) ?? storage.activeLayoutId
+      : storage.activeLayoutId
+
+  return { ...storage, activeLayoutId: newActiveId, layouts: remainingLayouts }
+}
+
 export interface UseLayoutManagerResult {
   /** Map of all layouts keyed by ID */
   layouts: Record<string, GardenLayout>
@@ -144,17 +191,33 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
   // For backward compatibility, currentBed returns the first box's cells
   const currentBed = activeLayout?.boxes[0]?.cells ?? []
 
+  /**
+   * Functionally update the active layout so same-tick mutations compose
+   * instead of clobbering each other (hortilogic-a0h.1).
+   * The transform returns null to skip the write.
+   */
+  const updateActiveLayout = (
+    transform: (layout: GardenLayout) => GardenLayout | null
+  ): void => {
+    setLayoutStorage((prev) => {
+      const layout = prev.layouts[prev.activeLayoutId]
+      const next = layout ? transform(layout) : null
+      if (!next) return prev
+      return {
+        ...prev,
+        layouts: { ...prev.layouts, [prev.activeLayoutId]: touchLayout(next) },
+      }
+    })
+  }
+
   const createLayout = (name: string): string => {
     const newLayout = createNewLayout(name, defaultProfileId)
 
-    setLayoutStorage({
-      ...layoutStorage,
+    setLayoutStorage((prev) => ({
+      ...prev,
       activeLayoutId: newLayout.id,
-      layouts: {
-        ...layouts,
-        [newLayout.id]: newLayout,
-      },
-    })
+      layouts: { ...prev.layouts, [newLayout.id]: newLayout },
+    }))
 
     return newLayout.id
   }
@@ -165,56 +228,27 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
       return
     }
 
-    setLayoutStorage({
-      ...layoutStorage,
-      activeLayoutId: layoutId,
-    })
+    setLayoutStorage((prev) => ({ ...prev, activeLayoutId: layoutId }))
   }
 
   const renameLayout = (layoutId: string, newName: string): void => {
-    const layout = layouts[layoutId]
-    if (!layout) {
+    if (!layouts[layoutId]) {
       console.error(`Layout ${layoutId} not found`)
       return
     }
 
-    setLayoutStorage({
-      ...layoutStorage,
-      layouts: {
-        ...layouts,
-        [layoutId]: touchLayout({ ...layout, name: newName }),
-      },
+    setLayoutStorage((prev) => {
+      const layout = prev.layouts[layoutId]
+      if (!layout) return prev
+      return {
+        ...prev,
+        layouts: { ...prev.layouts, [layoutId]: touchLayout({ ...layout, name: newName }) },
+      }
     })
   }
 
   const deleteLayout = (layoutId: string): void => {
-    const layoutIds = Object.keys(layouts)
-
-    // Prevent deleting last layout
-    if (layoutIds.length <= 1) {
-      console.warn('Cannot delete the last remaining layout')
-      return
-    }
-
-    // Remove the layout from the layouts object
-    const remainingLayouts: Record<string, GardenLayout> = {}
-    for (const [id, layout] of Object.entries(layouts)) {
-      if (id !== layoutId) {
-        remainingLayouts[id] = layout
-      }
-    }
-
-    // If deleting active layout, switch to another
-    const newActiveId =
-      activeLayoutId === layoutId
-        ? layoutIds.find((id) => id !== layoutId) ?? activeLayoutId
-        : activeLayoutId
-
-    setLayoutStorage({
-      ...layoutStorage,
-      activeLayoutId: newActiveId,
-      layouts: remainingLayouts,
-    })
+    setLayoutStorage((prev) => removeLayoutFromStorage(prev, layoutId))
   }
 
   const duplicateLayout = (layoutId: string, newName: string): string => {
@@ -225,129 +259,67 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     }
 
     const duplicate = createNewLayout(newName, original.profileId)
-    // Deep copy boxes with their cells
-    duplicate.boxes = original.boxes.map(box => ({
-      ...box,
-      id: generateUUID(), // New ID for duplicated box
-      cells: [...box.cells],
-    }))
 
-    setLayoutStorage({
-      ...layoutStorage,
-      activeLayoutId: duplicate.id,
-      layouts: {
-        ...layouts,
-        [duplicate.id]: duplicate,
-      },
+    setLayoutStorage((prev) => {
+      const source = prev.layouts[layoutId]
+      if (!source) return prev
+      // Deep copy boxes with their cells, from prev so same-tick edits survive
+      const copy: GardenLayout = {
+        ...duplicate,
+        boxes: source.boxes.map((box) => ({
+          ...box,
+          id: generateUUID(),
+          cells: [...box.cells],
+        })),
+      }
+      return {
+        ...prev,
+        activeLayoutId: copy.id,
+        layouts: { ...prev.layouts, [copy.id]: copy },
+      }
     })
 
     return duplicate.id
   }
 
   const plantCrop = (cellIndex: number, crop: Crop, boxId?: string): void => {
-    if (!activeLayout || activeLayout.boxes.length === 0) return
-
-    // Find the target box (default to first box if no boxId provided)
-    const targetBoxId = boxId ?? activeLayout.boxes[0]?.id
-    const boxIndex = activeLayout.boxes.findIndex(box => box.id === targetBoxId)
-
-    if (boxIndex === -1) {
-      console.error(`Box ${targetBoxId ?? 'undefined'} not found`)
-      return
-    }
-
-    const targetBox = activeLayout.boxes[boxIndex]
-    if (!targetBox) return
-
-    const newCells = [...targetBox.cells]
-    newCells[cellIndex] = crop
-
-    const updatedBoxes = [...activeLayout.boxes]
-    updatedBoxes[boxIndex] = { ...targetBox, cells: newCells }
-
-    setLayoutStorage({
-      ...layoutStorage,
-      layouts: {
-        ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
-      },
-    })
+    updateActiveLayout((layout) =>
+      layout.boxes.length === 0 ? null : setCell(layout, { cellIndex, value: crop, boxId })
+    )
   }
 
   const removeCrop = (cellIndex: number, boxId?: string): void => {
-    if (!activeLayout || activeLayout.boxes.length === 0) return
-
-    // Find the target box (default to first box if no boxId provided)
-    const targetBoxId = boxId ?? activeLayout.boxes[0]?.id
-    const boxIndex = activeLayout.boxes.findIndex(box => box.id === targetBoxId)
-
-    if (boxIndex === -1) {
-      console.error(`Box ${targetBoxId ?? 'undefined'} not found`)
-      return
-    }
-
-    const targetBox = activeLayout.boxes[boxIndex]
-    if (!targetBox) return
-
-    const newCells = [...targetBox.cells]
-    newCells[cellIndex] = null
-
-    const updatedBoxes = [...activeLayout.boxes]
-    updatedBoxes[boxIndex] = { ...targetBox, cells: newCells }
-
-    setLayoutStorage({
-      ...layoutStorage,
-      layouts: {
-        ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
-      },
-    })
+    updateActiveLayout((layout) =>
+      layout.boxes.length === 0 ? null : setCell(layout, { cellIndex, value: null, boxId })
+    )
   }
 
   const clearBed = (): void => {
-    if (!activeLayout || activeLayout.boxes.length === 0) return
-
-    // Clear all boxes in the layout
-    const updatedBoxes = activeLayout.boxes.map((box) => ({
-      ...box,
-      cells: Array(box.width * box.height).fill(null) as (Crop | null)[],
-    }))
-
-    setLayoutStorage({
-      ...layoutStorage,
-      layouts: {
-        ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
-      },
-    })
+    updateActiveLayout((layout) =>
+      layout.boxes.length === 0
+        ? null
+        : {
+            ...layout,
+            boxes: layout.boxes.map((box) => ({
+              ...box,
+              cells: Array(box.width * box.height).fill(null) as (Crop | null)[],
+            })),
+          }
+    )
   }
 
   const setBed = (newBed: (Crop | null)[]): void => {
-    if (!activeLayout || !activeLayout.boxes[0]) return
-
-    const firstBox = activeLayout.boxes[0]
-    const updatedBoxes = [...activeLayout.boxes]
-    updatedBoxes[0] = { ...firstBox, cells: [...newBed] }
-
-    setLayoutStorage({
-      ...layoutStorage,
-      layouts: {
-        ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
-      },
+    updateActiveLayout((layout) => {
+      const firstBox = layout.boxes[0]
+      if (!firstBox) return null
+      const updatedBoxes = [...layout.boxes]
+      updatedBoxes[0] = { ...firstBox, cells: [...newBed] }
+      return { ...layout, boxes: updatedBoxes }
     })
   }
 
   const setAllBoxes = (boxes: GardenBox[]): void => {
-    if (!activeLayout) return
-
-    setLayoutStorage({
-      ...layoutStorage,
-      layouts: {
-        ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, boxes }),
-      },
-    })
+    updateActiveLayout((layout) => ({ ...layout, boxes }))
   }
 
   const addBox = (name: string, width: number, height: number): string => {
@@ -361,53 +333,26 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
       cells: Array(width * height).fill(null) as (Crop | null)[],
     }
 
-    const updatedBoxes = [...activeLayout.boxes, newBox]
-
-    setLayoutStorage({
-      ...layoutStorage,
-      layouts: {
-        ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
-      },
-    })
+    updateActiveLayout((layout) => ({ ...layout, boxes: [...layout.boxes, newBox] }))
 
     return newBox.id
   }
 
   const removeBox = (boxId: string): void => {
-    if (!activeLayout) return
-
-    // Prevent removing the last remaining box
-    if (activeLayout.boxes.length <= 1) {
-      console.warn('Cannot remove the last remaining box')
-      return
-    }
-
-    const updatedBoxes = activeLayout.boxes.filter(box => box.id !== boxId)
-
-    setLayoutStorage({
-      ...layoutStorage,
-      layouts: {
-        ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
-      },
+    updateActiveLayout((layout) => {
+      if (layout.boxes.length <= 1) {
+        console.warn('Cannot remove the last remaining box')
+        return null
+      }
+      return { ...layout, boxes: layout.boxes.filter((box) => box.id !== boxId) }
     })
   }
 
   const setBoxOrientation = (boxId: string, orientation: number): void => {
-    if (!activeLayout) return
-
-    const updatedBoxes = activeLayout.boxes.map(box =>
-      box.id === boxId ? { ...box, orientation } : box
-    )
-
-    setLayoutStorage({
-      ...layoutStorage,
-      layouts: {
-        ...layouts,
-        [activeLayoutId]: touchLayout({ ...activeLayout, boxes: updatedBoxes }),
-      },
-    })
+    updateActiveLayout((layout) => ({
+      ...layout,
+      boxes: layout.boxes.map((box) => (box.id === boxId ? { ...box, orientation } : box)),
+    }))
   }
 
   const exportLayout = (profile?: GardenProfile): ExportedLayout => {
@@ -429,14 +374,11 @@ export function useLayoutManager(defaultProfileId: string): UseLayoutManagerResu
     }
 
     // Add to layouts and switch to it
-    setLayoutStorage({
-      ...layoutStorage,
+    setLayoutStorage((prev) => ({
+      ...prev,
       activeLayoutId: importedLayout.id,
-      layouts: {
-        ...layouts,
-        [importedLayout.id]: importedLayout,
-      },
-    })
+      layouts: { ...prev.layouts, [importedLayout.id]: importedLayout },
+    }))
 
     return importedLayout.id
   }

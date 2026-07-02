@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { AlertTriangle, Search } from 'lucide-react'
 import type { GardenProfile } from '../types/garden'
 import { lookupByZip } from '../utils/zipLookup'
+import { BackupControls } from './BackupControls'
 
 interface SettingsModalProps {
   isOpen: boolean
@@ -316,6 +317,8 @@ export function SettingsModal({ isOpen, profile, onSave, onClose }: SettingsModa
             </button>
           </div>
         </form>
+
+        <BackupControls />
 
         {/* Danger Zone */}
         <div className="mt-6 pt-6 border-t border-soil-200">
