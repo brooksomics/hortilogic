@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import App from './App'
 import { GardenProvider } from './context/GardenProvider'
@@ -19,9 +19,50 @@ describe('App', () => {
     localStorage.clear()
   })
 
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('renders HortiLogic heading', () => {
     renderApp()
     expect(screen.getByText('HortiLogic')).toBeInTheDocument()
+  })
+
+  it('warns when localStorage writes fail and clears the warning on a successful write', async () => {
+    const user = userEvent.setup()
+    // Simulate quota exceeded for the profile write (goes through useLocalStorage);
+    // pass other keys through so unrelated writes still succeed.
+    // eslint-disable-next-line @typescript-eslint/unbound-method -- re-invoked with the mock's `this`
+    const realSetItem = Storage.prototype.setItem
+    const setItemSpy = vi
+      .spyOn(Storage.prototype, 'setItem')
+      .mockImplementation(function (this: Storage, key: string, value: string) {
+        if (key === 'hortilogic:profiles') {
+          throw new DOMException('quota', 'QuotaExceededError')
+        }
+        realSetItem.call(this, key, value)
+      })
+
+    renderApp() // mount-time profile persist fails -> warning surfaces
+
+    // Query by text (UndoToast also uses role="alert")
+    expect(await screen.findByText(/not being saved/i)).toBeInTheDocument()
+
+    // Storage recovers; a successful write should clear the warning
+    setItemSpy.mockRestore()
+    await user.click(
+      screen.getByRole('button', { name: /Select Beefsteak Tomato for planting/i })
+    )
+    const empty = screen.getAllByRole('button', { name: /: empty$/ })[0]
+    if (!empty) throw new Error('No empty square found')
+    await user.click(empty)
+
+    await waitFor(
+      () => {
+        expect(screen.queryByText(/not being saved/i)).not.toBeInTheDocument()
+      },
+      { timeout: 2000 }
+    )
   })
 
   it('renders Interactive Garden Planner subtitle', () => {
