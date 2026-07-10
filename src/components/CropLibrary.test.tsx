@@ -398,10 +398,13 @@ describe('CropLibrary', () => {
       const filterCheckbox = screen.getByRole('checkbox', { name: /hide out-of-season/i })
       await user.click(filterCheckbox)
 
-      // All crops should be hidden in summer (all are spring crops)
+      // Cool-season spring crops are hidden in summer
       expect(screen.queryByText('Butterhead Lettuce')).not.toBeInTheDocument()
-      expect(screen.queryByText('Beefsteak Tomato')).not.toBeInTheDocument()
       expect(screen.queryByText('Carrot')).not.toBeInTheDocument()
+      // Warm-season tomato stays visible: the profile's frost-free season is
+      // long enough for it to mature before first frost (planting window is
+      // extended by FFD in long-season climates, hortilogic-vij)
+      expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
     })
 
     it('shows all crops when no profile is provided', () => {
