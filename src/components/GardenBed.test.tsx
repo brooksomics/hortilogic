@@ -188,13 +188,51 @@ describe('GardenBed', () => {
     // Grid should have accessible label
     expect(screen.getByRole('grid')).toHaveAttribute('aria-label', '8 by 4 foot garden bed with 32 squares')
 
-    // Planted square should have accessible label
-    const plantedSquare = screen.getByLabelText('Planted: Sugar Snap Peas')
+    // Grid should expose a row/gridcell structure
+    expect(screen.getAllByRole('row')).toHaveLength(4)
+    expect(screen.getAllByRole('gridcell')).toHaveLength(32)
+
+    // Planted square label announces position and contents (index 10 = row 2, col 3)
+    const plantedSquare = screen.getByLabelText('Row 2 column 3: Sugar Snap Peas')
     expect(plantedSquare).toBeInTheDocument()
 
-    // Empty squares should have accessible labels
-    const emptySquares = screen.getAllByLabelText('Empty square')
-    expect(emptySquares).toHaveLength(31)
+    // Empty squares announce position and "empty"
+    expect(screen.getByLabelText('Row 1 column 1: empty')).toBeInTheDocument()
+    expect(screen.getByLabelText('Row 4 column 8: empty')).toBeInTheDocument()
+  })
+
+  it('lets the user plant and remove a square with the keyboard only', async () => {
+    const user = userEvent.setup()
+    const handleClick = vi.fn()
+    render(<GardenBed width={4} height={2} onSquareClick={handleClick} />)
+
+    const first = screen.getByLabelText('Row 1 column 1: empty')
+    first.focus()
+    await user.keyboard('{Enter}')
+    expect(handleClick).toHaveBeenCalledWith(0)
+
+    await user.keyboard(' ')
+    expect(handleClick).toHaveBeenCalledTimes(2)
+    expect(handleClick).toHaveBeenLastCalledWith(0)
+  })
+
+  it('moves focus between squares with the arrow keys (roving tabindex)', async () => {
+    const user = userEvent.setup()
+    render(<GardenBed width={4} height={2} />)
+
+    const first = screen.getByLabelText('Row 1 column 1: empty')
+    first.focus()
+    expect(first).toHaveFocus()
+    expect(first).toHaveAttribute('tabindex', '0')
+
+    await user.keyboard('{ArrowRight}')
+    expect(screen.getByLabelText('Row 1 column 2: empty')).toHaveFocus()
+
+    await user.keyboard('{ArrowDown}')
+    expect(screen.getByLabelText('Row 2 column 2: empty')).toHaveFocus()
+
+    // Non-focused cells are removed from the tab order
+    expect(first).toHaveAttribute('tabindex', '-1')
   })
 
   it('displays harvest date badge and tooltip when profile is active', () => {

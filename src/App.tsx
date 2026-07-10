@@ -10,6 +10,7 @@ import { LayoutActionModal } from './components/LayoutActionModal'
 import { BoxActionModal, type BoxData, type BoxActionMode } from './components/BoxActionModal'
 import { SettingsModal } from './components/SettingsModal'
 import { UndoToast } from './components/UndoToast'
+import { StorageWarning } from './components/StorageWarning'
 import { useGardenContext } from './hooks/useGardenContext'
 import { CROP_DATABASE } from './data/crops'
 
@@ -267,6 +268,9 @@ function App() {
           onMouseEnter={undoToast.pause}
           onMouseLeave={undoToast.resume}
         />
+
+        {/* Persistent warning when localStorage writes fail */}
+        <StorageWarning />
       </div>
     </div>
   )

@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
+import { reportStorageWrite } from './useStorageHealth'
 
 /**
  * Debounced version of useLocalStorage that batches rapid state changes
@@ -62,8 +63,10 @@ export function useDebouncedLocalStorage<T>(
   const writeToStorage = useCallback(() => {
     try {
       window.localStorage.setItem(key, JSON.stringify(currentValueRef.current))
+      reportStorageWrite(true)
     } catch (error) {
       console.error(`Error writing localStorage key "${key}":`, error)
+      reportStorageWrite(false)
     }
   }, [key])
 

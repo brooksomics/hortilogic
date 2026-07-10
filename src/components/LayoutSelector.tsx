@@ -30,6 +30,7 @@ export function LayoutSelector({
   gardenProfile,
 }: LayoutSelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [importError, setImportError] = useState<string | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -103,6 +104,7 @@ export function LayoutSelector({
         const data = await readJSONFile(file)
         const layoutName = `Imported ${file.name.replace('.json', '')}`
         onImport(data as ExportedLayout, layoutName)
+        setImportError(null)
         setIsOpen(false)
 
         // Reset file input for subsequent imports
@@ -111,7 +113,7 @@ export function LayoutSelector({
         }
       } catch (err) {
         console.error('Failed to import layout:', err)
-        alert(
+        setImportError(
           'Failed to import layout. Please ensure the file is a valid HortiLogic layout export.'
         )
 
@@ -251,6 +253,11 @@ export function LayoutSelector({
               className="hidden"
               aria-label="Import layout file"
             />
+            {importError && (
+              <p role="alert" className="px-4 py-2 text-sm text-red-600">
+                {importError}
+              </p>
+            )}
           </div>
         </div>
       )}

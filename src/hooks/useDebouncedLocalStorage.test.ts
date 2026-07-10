@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { useDebouncedLocalStorage } from './useDebouncedLocalStorage'
+import { getStorageHealth, reportStorageWrite } from './useStorageHealth'
 
 describe('useDebouncedLocalStorage', () => {
   const TEST_KEY = 'test-debounced-key'
@@ -14,6 +15,7 @@ describe('useDebouncedLocalStorage', () => {
   afterEach(() => {
     vi.restoreAllMocks()
     vi.useRealTimers()
+    reportStorageWrite(true) // reset shared storage-health state
   })
 
   it('should return initial value on first render', () => {
@@ -328,6 +330,36 @@ describe('useDebouncedLocalStorage', () => {
       unmount()
 
       expect(removeSpy.mock.calls.some(([type]) => type === 'pagehide')).toBe(true)
+    })
+  })
+
+  describe('surfaces write failures (hortilogic-696.3)', () => {
+    it('reports storage unhealthy when a write throws and healthy when it succeeds', () => {
+      const { result } = renderHook(() =>
+        useDebouncedLocalStorage(TEST_KEY, 0, DEBOUNCE_DELAY)
+      )
+      const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
+
+      // Quota exceeded: the debounced write throws
+      setItemSpy.mockImplementationOnce(() => {
+        throw new DOMException('quota', 'QuotaExceededError')
+      })
+      act(() => {
+        result.current[1](1)
+      })
+      act(() => {
+        vi.runAllTimers()
+      })
+      expect(getStorageHealth()).toBe(true)
+
+      // A later successful write clears the warning
+      act(() => {
+        result.current[1](2)
+      })
+      act(() => {
+        vi.runAllTimers()
+      })
+      expect(getStorageHealth()).toBe(false)
     })
   })
 })

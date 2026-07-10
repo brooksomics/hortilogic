@@ -1,13 +1,21 @@
+import { useRef, useState } from 'react'
 import { AlertTriangle, Droplets, Trash2 } from 'lucide-react'
 import type { Crop, GardenProfile } from '@/types'
 import { isCropViable, parseLocalDate } from '@/utils/dateEngine'
 import { calculateHarvestDate, formatHarvestDate, getDaysUntilHarvest } from '@/utils/harvestDate'
 import { getRowWaterAverage, getDripLineColor, getWaterLabel } from '@/utils/waterScoring'
+import { nextGridIndex } from '@/utils/gridNavigation'
 import { CompassRose } from './CompassRose'
 
 interface GardenSquareProps {
   crop?: Crop | null
   onClick?: () => void
+  /** 1-based row position (for the accessible label) */
+  row: number
+  /** 1-based column position (for the accessible label) */
+  col: number
+  /** Roving tabindex: 0 for the active cell, -1 otherwise */
+  tabIndex?: number
   /** Whether the crop is viable for current season (if planted) */
   isViable?: boolean
   /** Days until estimated harvest (optional) */
@@ -16,11 +24,23 @@ interface GardenSquareProps {
   harvestDateString?: string | null
 }
 
+/** Build the accessible label announcing position and contents. */
+function buildLabel(props: GardenSquareProps): string {
+  const { crop, row, col, isViable = true, daysUntil = null } = props
+  const position = `Row ${row.toString()} column ${col.toString()}`
+  if (!crop) return `${position}: empty`
+  let label = `${position}: ${crop.name || crop.id}`
+  if (!isViable) label += ' (out of season)'
+  if (daysUntil !== null) label += ` - ${daysUntil.toString()}d to harvest`
+  return label
+}
+
 /**
  * Single square in the garden bed
  * Displays crop info if planted, or shows as empty
  */
-function GardenSquare({ crop, onClick, isViable = true, daysUntil = null, harvestDateString = null }: GardenSquareProps) {
+function GardenSquare(props: GardenSquareProps) {
+  const { crop, onClick, isViable = true, tabIndex = -1, harvestDateString = null } = props
   // Determine background color based on crop and viability
   const bgColor = crop
     ? isViable
@@ -30,10 +50,7 @@ function GardenSquare({ crop, onClick, isViable = true, daysUntil = null, harves
       : 'bg-orange-100 hover:bg-orange-200 border-orange-400'
     : 'bg-soil-50 hover:bg-soil-100 border-soil-400'
 
-  // Construct label with harvest info if available
-  let label = crop ? `Planted: ${crop.name || crop.id}` : 'Empty square'
-  if (crop && !isViable) label += ' (out of season)'
-  if (crop && daysUntil !== null) label += ` - ${daysUntil.toString()}d to harvest`
+  const label = buildLabel(props)
 
   return (
     <button
@@ -45,6 +62,7 @@ function GardenSquare({ crop, onClick, isViable = true, daysUntil = null, harves
         ${bgColor}
       `}
       type="button"
+      tabIndex={tabIndex}
       title={label}
       aria-label={label}
     >
@@ -86,6 +104,19 @@ function GardenSquare({ crop, onClick, isViable = true, daysUntil = null, harves
       )}
     </button>
   )
+}
+
+/** Compute harvest badge/tooltip data for a cell, if a planting date is set. */
+function getHarvestInfo(crop: Crop | null | undefined, gardenProfile?: GardenProfile | null) {
+  if (!crop || !gardenProfile?.targetPlantingDate) {
+    return { daysUntil: null as number | null, harvestDateString: null as string | null }
+  }
+  const targetDate = parseLocalDate(gardenProfile.targetPlantingDate)
+  const harvestDate = calculateHarvestDate(targetDate, crop.days_to_maturity)
+  return {
+    daysUntil: Math.max(0, getDaysUntilHarvest(harvestDate)),
+    harvestDateString: formatHarvestDate(harvestDate),
+  }
 }
 
 interface GardenBedProps {
@@ -157,6 +188,19 @@ export function GardenBed({
     return isCropViable(crop, gardenProfile, checkDate)
   })
 
+  // Roving tabindex: only the active cell is in the tab order; arrows move focus.
+  const gridRef = useRef<HTMLDivElement>(null)
+  const [focusedIndex, setFocusedIndex] = useState(0)
+
+  const handleGridKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const target = nextGridIndex(e.key, focusedIndex, width, totalCells)
+    if (target === null) return
+    e.preventDefault()
+    setFocusedIndex(target)
+    const cells = gridRef.current?.querySelectorAll<HTMLButtonElement>('button')
+    cells?.[target]?.focus()
+  }
+
   // Generate Tailwind grid-cols class dynamically
   const gridColsClass = `grid-cols-${width.toString()}`
 
@@ -224,36 +268,37 @@ export function GardenBed({
 
         {/* Garden grid */}
         <div
+          ref={gridRef}
+          onKeyDown={handleGridKeyDown}
           className={`grid ${gridColsClass} gap-0.5 p-1 bg-soil-200 rounded-lg shadow-lg flex-1`}
           style={{ gridTemplateColumns: `repeat(${width.toString()}, minmax(0, 1fr))` }}
           role="grid"
           aria-label={`${width.toString()} by ${height.toString()} foot garden bed with ${cellCount.toString()} squares`}
         >
-          {bedSquares.map((crop, index) => {
-            // Calculate harvest data if crop exists
-            let daysUntil: number | null = null
-            let harvestDateString: string | null = null
-
-            if (crop && gardenProfile?.targetPlantingDate) {
-              const targetDate = parseLocalDate(gardenProfile.targetPlantingDate)
-              const harvestDate = calculateHarvestDate(targetDate, crop.days_to_maturity)
-              const rawDays = getDaysUntilHarvest(harvestDate)
-              // Only show positive days remaining
-              daysUntil = Math.max(0, rawDays)
-              harvestDateString = formatHarvestDate(harvestDate)
-            }
-
-            return (
-              <GardenSquare
-                key={index}
-                crop={crop}
-                onClick={() => onSquareClick?.(index)}
-                isViable={viabilityMap[index]}
-                daysUntil={daysUntil}
-                harvestDateString={harvestDateString}
-              />
-            )
-          })}
+          {Array.from({ length: height }, (_, rowIndex) => (
+            // display:contents keeps the CSS grid layout flat while exposing row semantics
+            <div key={rowIndex} role="row" style={{ display: 'contents' }}>
+              {Array.from({ length: width }, (_, colIndex) => {
+                const index = rowIndex * width + colIndex
+                const crop = bedSquares[index]
+                const { daysUntil, harvestDateString } = getHarvestInfo(crop, gardenProfile)
+                return (
+                  <div key={index} role="gridcell" style={{ display: 'contents' }}>
+                    <GardenSquare
+                      crop={crop}
+                      row={rowIndex + 1}
+                      col={colIndex + 1}
+                      tabIndex={index === focusedIndex ? 0 : -1}
+                      onClick={() => onSquareClick?.(index)}
+                      isViable={viabilityMap[index]}
+                      daysUntil={daysUntil}
+                      harvestDateString={harvestDateString}
+                    />
+                  </div>
+                )
+              })}
+            </div>
+          ))}
         </div>
       </div>
 
