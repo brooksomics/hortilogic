@@ -2,7 +2,17 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { CropLibrary } from './CropLibrary'
+import { getCropViabilityStatus } from '@/utils/cropViabilityHelper'
 import type { Crop, GardenProfile } from '@/types'
+
+// Wrap the real viability calculation in a spy so tests can count invocations
+vi.mock('@/utils/cropViabilityHelper', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/utils/cropViabilityHelper')>()
+  return {
+    ...actual,
+    getCropViabilityStatus: vi.fn(actual.getCropViabilityStatus)
+  }
+})
 
 const sampleCrops: Crop[] = [
   {
@@ -1040,6 +1050,73 @@ describe('CropLibrary', () => {
       expect(screen.getByText('Beefsteak Tomato')).toBeInTheDocument()
       expect(screen.getByText('Bell Pepper')).toBeInTheDocument()
       expect(screen.getByText('Eggplant')).toBeInTheDocument()
+    })
+  })
+
+  describe('Search Performance (hortilogic-18g)', () => {
+    const perfProfile: GardenProfile = {
+      name: 'Perf Garden',
+      hardiness_zone: '5b',
+      last_frost_date: '2024-04-15',
+      first_frost_date: '2024-10-15',
+      season_extension_weeks: 0,
+      targetPlantingDate: '2024-04-01'
+    }
+
+    it('computes viability at most once per crop on initial render', () => {
+      const spy = vi.mocked(getCropViabilityStatus)
+      spy.mockClear()
+
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+          currentProfile={perfProfile}
+        />
+      )
+
+      expect(spy.mock.calls.length).toBeLessThanOrEqual(sampleCrops.length)
+    })
+
+    it('does not recompute viability on search keystrokes', async () => {
+      const user = userEvent.setup()
+      const spy = vi.mocked(getCropViabilityStatus)
+
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+          currentProfile={perfProfile}
+        />
+      )
+
+      spy.mockClear()
+      const searchInput = screen.getByPlaceholderText(/search crops/i)
+      await user.type(searchInput, 'tomato')
+
+      expect(spy.mock.calls.length).toBe(0)
+    })
+
+    it('does not recompute viability when toggling the season filter', async () => {
+      const user = userEvent.setup()
+      const spy = vi.mocked(getCropViabilityStatus)
+
+      render(
+        <CropLibrary
+          crops={sampleCrops}
+          selectedCrop={null}
+          onSelectCrop={vi.fn()}
+          currentProfile={perfProfile}
+        />
+      )
+
+      spy.mockClear()
+      const filterCheckbox = screen.getByRole('checkbox', { name: /hide out-of-season/i })
+      await user.click(filterCheckbox)
+
+      expect(spy.mock.calls.length).toBe(0)
     })
   })
 

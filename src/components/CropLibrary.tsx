@@ -1,9 +1,10 @@
 import { useState, useMemo } from 'react'
-import { Sprout, X, ThumbsDown } from 'lucide-react'
+import { Sprout, X } from 'lucide-react'
 import type { Crop, GardenProfile, GardenStash } from '../types/garden'
-import { getCropViabilityStatus, getViabilityStyles } from '@/utils/cropViabilityHelper'
+import { getCropViabilityStatus } from '@/utils/cropViabilityHelper'
+import type { ViabilityStatus } from '@/utils/cropViabilityHelper'
 import { parseLocalDate } from '@/utils/dateEngine'
-import { calculateHarvestDate, formatHarvestDate, getDaysUntilHarvest } from '@/utils/harvestDate'
+import { CropCard } from './CropCard'
 
 interface CropLibraryProps {
   /** Available crops to display */
@@ -57,6 +58,32 @@ export function CropLibrary({
   const [activeCategory, setActiveCategory] = useState<CropCategory>('all')
   const [activeSunFilter, setActiveSunFilter] = useState<SunRequirement>(null)
 
+  // Viability computed once per crop per profile change — not per keystroke
+  // (hortilogic-18g)
+  const viabilityMap = useMemo(() => {
+    if (!currentProfile) {
+      return null
+    }
+    const targetDate = currentProfile.targetPlantingDate
+      ? new Date(currentProfile.targetPlantingDate)
+      : new Date()
+    const entries = crops.map((crop): [string, ViabilityStatus] => [
+      crop.id,
+      getCropViabilityStatus(crop, currentProfile, targetDate)
+    ])
+    return new Map(entries)
+  }, [crops, currentProfile])
+
+  // Stable date identity so memoized cards skip re-rendering on keystrokes
+  const harvestBaseDate = useMemo(() => {
+    if (!currentProfile) {
+      return null
+    }
+    return currentProfile.targetPlantingDate
+      ? parseLocalDate(currentProfile.targetPlantingDate)
+      : new Date()
+  }, [currentProfile])
+
   const filteredCrops = useMemo(() => {
     return crops.filter((crop) => {
       // Search by name, id, or botanical family
@@ -72,18 +99,15 @@ export function CropLibrary({
       const matchesSun = activeSunFilter === null || crop.sun === activeSunFilter
 
       // Filter by season if profile and toggle enabled
-      if (hideOutOfSeason && currentProfile) {
-        const targetDate = currentProfile.targetPlantingDate
-          ? new Date(currentProfile.targetPlantingDate)
-          : new Date()
-        const status = getCropViabilityStatus(crop, currentProfile, targetDate)
+      if (hideOutOfSeason && viabilityMap) {
+        const status = viabilityMap.get(crop.id)
         const matchesSeason = status === 'viable' || status === 'marginal'
         return matchesSearch && matchesCategory && matchesSun && matchesSeason
       }
 
       return matchesSearch && matchesCategory && matchesSun
     })
-  }, [crops, searchQuery, hideOutOfSeason, currentProfile, activeCategory, activeSunFilter])
+  }, [crops, searchQuery, hideOutOfSeason, viabilityMap, activeCategory, activeSunFilter])
 
   // Group crops by botanical family (only for vegetables)
   const groupedCrops = useMemo(() => {
@@ -116,157 +140,21 @@ export function CropLibrary({
     setActiveSunFilter(activeSunFilter === sun ? null : sun)
   }
 
-  const renderCropCard = (crop: Crop) => {
-    const isSelected = selectedCrop?.id === crop.id
-
-    // Current quantity in stash
-    const stashQty = stash ? (stash[crop.id] || 0) : 0
-
-    // Get viability status and styles
-    let viabilityStyles = null
-    let viabilityStatus = null
-    let ViabilityIcon = null
-    if (currentProfile) {
-      const targetDate = currentProfile.targetPlantingDate
-        ? new Date(currentProfile.targetPlantingDate)
-        : new Date()
-      viabilityStatus = getCropViabilityStatus(crop, currentProfile, targetDate)
-      viabilityStyles = getViabilityStyles(viabilityStatus)
-      ViabilityIcon = viabilityStyles.icon
-    }
-
-    // Determine border class
-    const borderClass = isSelected
-      ? 'border-leaf-500 bg-leaf-50'
-      : viabilityStyles
-        ? viabilityStyles.className
-        : 'border-soil-200 bg-white'
-
-    // Create aria-label with viability info
-    const ariaLabel = viabilityStyles
-      ? `Select ${crop.name || crop.id} for planting - ${viabilityStyles.label}`
-      : `Select ${crop.name || crop.id} for planting`
-
-    const isDisliked = dislikedCropIds?.includes(crop.id) ?? false
-
-    return (
-      <div
-        key={crop.id}
-        className={`
-          w-full p-3 rounded-lg border-2 transition-all group
-          ${borderClass}
-        `}
-        data-testid={`crop-card-${crop.id}`}
-      >
-        <div className="flex items-center justify-between mb-2">
-          {/* Crop Info Header - Clickable to select for painting */}
-          <button
-            onClick={() => { onSelectCrop(crop); }}
-            className="flex items-center gap-2 flex-1 text-left"
-            type="button"
-            aria-pressed={isSelected}
-            aria-label={ariaLabel}
-          >
-            {crop.emoji && (
-              <span className="text-2xl flex-shrink-0" aria-hidden="true">
-                {crop.emoji}
-              </span>
-            )}
-            <div className="flex-1">
-              <div className="font-semibold text-soil-900">
-                {crop.name || crop.id}
-              </div>
-              <div className="text-xs text-soil-600 mt-1">
-                {crop.sfg_density} per sq ft &middot; {crop.height_inches}&quot;
-                {crop.trellisable && ' (trellisable)'}
-              </div>
-              {currentProfile && (
-                <div className="text-xs font-medium text-emerald-700 mt-1">
-                  Est. harvest: {(() => {
-                    const targetDate = currentProfile.targetPlantingDate
-                      ? parseLocalDate(currentProfile.targetPlantingDate)
-                      : new Date()
-                    const harvestDate = calculateHarvestDate(targetDate, crop.days_to_maturity)
-                    const daysUntil = getDaysUntilHarvest(harvestDate)
-                    return `${formatHarvestDate(harvestDate)} (${Math.max(0, daysUntil).toString()} days)`
-                  })()}
-                </div>
-              )}
-            </div>
-
-            {/* Viability Icon */}
-            {ViabilityIcon && (
-              <ViabilityIcon className="w-4 h-4 viability-icon mr-1" aria-hidden="true" />
-            )}
-          </button>
-
-          {/* Don't Like Button */}
-          {onToggleDislikedCrop && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                onToggleDislikedCrop(crop.id)
-              }}
-              className={`
-                p-1.5 rounded transition-colors
-                ${isDisliked
-                  ? 'text-red-600 hover:bg-red-50'
-                  : 'text-soil-400 hover:bg-soil-100 hover:text-soil-600'
-                }
-              `}
-              aria-label={
-                isDisliked
-                  ? `Unmark ${crop.name || crop.id} as don't like`
-                  : `Mark ${crop.name || crop.id} as don't like`
-              }
-              type="button"
-            >
-              <ThumbsDown
-                className={`w-4 h-4 ${isDisliked ? 'fill-current' : ''}`}
-                aria-hidden="true"
-              />
-            </button>
-          )}
-        </div>
-
-        {/* Stash Controls */}
-        {onAddToStash && onRemoveFromStash && (
-          <div className="flex items-center justify-between bg-soil-50 rounded p-1">
-            <span className="text-xs text-soil-600 px-2">Stash:</span>
-            <div className="flex items-center gap-1">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onRemoveFromStash(crop.id, 1)
-                }}
-                className="w-6 h-6 flex items-center justify-center rounded bg-white border border-soil-300 text-soil-700 hover:bg-soil-100 disabled:opacity-50"
-                disabled={stashQty === 0}
-                aria-label={`Remove ${crop.name ?? crop.id} from stash`}
-                type="button"
-              >
-                -
-              </button>
-              <span className="w-6 text-center text-sm font-medium text-soil-900">
-                {stashQty}
-              </span>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onAddToStash(crop.id, 1)
-                }}
-                className="w-6 h-6 flex items-center justify-center rounded bg-white border border-soil-300 text-soil-700 hover:bg-soil-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                aria-label={`Add ${crop.name ?? crop.id} to stash`}
-                type="button"
-                disabled={false} // Todo: connect to canAddToStash
-              >
-                +
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    )
-  }
+  const renderCropCard = (crop: Crop) => (
+    <CropCard
+      key={crop.id}
+      crop={crop}
+      isSelected={selectedCrop?.id === crop.id}
+      stashQty={stash ? (stash[crop.id] || 0) : 0}
+      viabilityStatus={viabilityMap?.get(crop.id) ?? null}
+      harvestBaseDate={harvestBaseDate}
+      isDisliked={dislikedCropIds?.includes(crop.id) ?? false}
+      onSelectCrop={onSelectCrop}
+      onAddToStash={onAddToStash}
+      onRemoveFromStash={onRemoveFromStash}
+      onToggleDislikedCrop={onToggleDislikedCrop}
+    />
+  )
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 lg:flex lg:flex-col lg:flex-1 lg:min-h-0 lg:overflow-hidden">
