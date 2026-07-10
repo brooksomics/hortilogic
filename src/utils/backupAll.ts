@@ -10,6 +10,7 @@ import {
   StashStorageSchema,
 } from '../schemas/garden'
 import { readLayoutStorage, readProfileStorage } from './storageHelpers'
+import { reportStorageWrite } from '../hooks/useStorageHealth'
 
 const LAYOUTS_KEY = 'hortilogic:layouts'
 const PROFILES_KEY = 'hortilogic:profiles'
@@ -65,13 +66,27 @@ export function importAll(data: unknown): ImportAllResult {
     return { ok: false, error: `Invalid backup file: ${first?.message ?? 'unknown error'}` }
   }
 
-  const { layouts, profiles, stashes } = parsed.data
-  if (layouts) localStorage.setItem(LAYOUTS_KEY, JSON.stringify(layouts))
-  if (profiles) localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles))
-  for (const [layoutId, stash] of Object.entries(stashes)) {
-    localStorage.setItem(`${STASH_PREFIX}${layoutId}`, JSON.stringify(stash))
+  if (!writeBackupToStorage(parsed.data)) {
+    return { ok: false, error: 'Could not save the backup to browser storage.' }
   }
   return { ok: true }
+}
+
+/** Write a validated backup to localStorage, reporting write health. */
+function writeBackupToStorage({ layouts, profiles, stashes }: FullBackup): boolean {
+  try {
+    if (layouts) localStorage.setItem(LAYOUTS_KEY, JSON.stringify(layouts))
+    if (profiles) localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles))
+    for (const [layoutId, stash] of Object.entries(stashes)) {
+      localStorage.setItem(`${STASH_PREFIX}${layoutId}`, JSON.stringify(stash))
+    }
+    return true
+  } catch (error) {
+    // Failure-only report: success must not clear another writer's failure
+    console.error('Backup restore write failed:', error)
+    reportStorageWrite(false)
+    return false
+  }
 }
 
 /** Trigger a browser download of the backup as a JSON file. */

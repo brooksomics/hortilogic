@@ -7,6 +7,7 @@ import { useGardenInteractions } from '../hooks/useGardenInteractions'
 import { useProfiles } from '../hooks/useProfiles'
 import { migrateToLayoutsSchema, migrateToMultiBoxSchema } from '../utils/storageMigration'
 import { useUndoToast } from '../hooks/useUndoToast'
+import { reportStorageWrite } from '../hooks/useStorageHealth'
 
 export interface GardenProviderProps {
   children: ReactNode
@@ -71,7 +72,13 @@ export function GardenProvider({ children }: GardenProviderProps): React.JSX.Ele
   const restoreStash = useCallback((stash: GardenStash) => {
     if (activeLayout?.id) {
       const key = `hortilogic_stash_${activeLayout.id}`
-      localStorage.setItem(key, JSON.stringify(stash))
+      try {
+        localStorage.setItem(key, JSON.stringify(stash))
+      } catch (error) {
+        // Failure-only report: success must not clear another writer's failure
+        console.error(`Error writing localStorage key "${key}":`, error)
+        reportStorageWrite(false)
+      }
       // Force re-render by triggering the garden interactions stash update
       window.dispatchEvent(new CustomEvent('stash-restore', { detail: stash }))
     }

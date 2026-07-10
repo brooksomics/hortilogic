@@ -2,8 +2,9 @@
  
  
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
-import { migrateToLayoutsSchema, migrateToMultiBoxSchema } from './storageMigration'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { migrateToLayoutsSchema, migrateToMultiBoxSchema, type MigrationResult } from './storageMigration'
+import { getStorageHealth, reportStorageWrite } from '../hooks/useStorageHealth'
 import type {
   LegacyGardenState,
   GardenProfile,
@@ -689,6 +690,71 @@ describe('storageMigration', () => {
       expect(result.success).toBe(true)
       expect(result.migrated).toBe(false)
       expect(result.reason).toBe('no_layouts_data')
+    })
+  })
+
+  describe('storage write failures (hortilogic-xow)', () => {
+    afterEach(() => {
+      vi.restoreAllMocks()
+      reportStorageWrite(true)
+    })
+
+    function mockSetItemToThrow(): void {
+      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+        throw new DOMException('quota', 'QuotaExceededError')
+      })
+    }
+
+    it('migrateToLayoutsSchema fails safely and reports the write failure', () => {
+      const legacyState: LegacyGardenState = {
+        currentBed: createEmptyBed(),
+        gardenProfile: {
+          name: 'My Garden',
+          hardiness_zone: '5b',
+          last_frost_date: '2024-05-15',
+          first_frost_date: '2024-10-01',
+          season_extension_weeks: 0,
+        },
+      }
+      localStorage.setItem('hortilogic:garden', JSON.stringify(legacyState))
+      mockSetItemToThrow()
+
+      let result: MigrationResult | undefined
+      expect(() => {
+        result = migrateToLayoutsSchema()
+      }).not.toThrow()
+
+      expect(result?.success).toBe(false)
+      expect(getStorageHealth()).toBe(true)
+    })
+
+    it('migrateToMultiBoxSchema fails safely and reports the write failure', () => {
+      const layoutId = 'test-layout-1'
+      const layoutStorage: LayoutStorage = {
+        version: 1,
+        activeLayoutId: layoutId,
+        layouts: {
+          [layoutId]: {
+            id: layoutId,
+            name: 'Spring 2026',
+            createdAt: '2026-01-01T00:00:00.000Z',
+            updatedAt: '2026-01-01T00:00:00.000Z',
+            bed: createEmptyBed(),
+            profileId: 'test-profile-1',
+            boxes: undefined as unknown as GardenBox[],
+          },
+        },
+      }
+      localStorage.setItem('hortilogic:layouts', JSON.stringify(layoutStorage))
+      mockSetItemToThrow()
+
+      let result: MigrationResult | undefined
+      expect(() => {
+        result = migrateToMultiBoxSchema()
+      }).not.toThrow()
+
+      expect(result?.success).toBe(false)
+      expect(getStorageHealth()).toBe(true)
     })
   })
 })

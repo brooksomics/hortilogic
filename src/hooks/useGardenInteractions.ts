@@ -8,6 +8,7 @@ import type { PlacementSummary } from '../components/StashSummary'
 import type { UndoSnapshotInput } from './useUndoToast'
 
 import { StashStorageSchema } from '../schemas/garden'
+import { reportStorageWrite } from './useStorageHealth'
 
 export interface UseGardenInteractionsResult {
   /** Currently selected crop */
@@ -156,7 +157,14 @@ export function useGardenInteractions({
   useEffect(() => {
     if (activeLayout) {
       const key = `hortilogic_stash_${activeLayout.id}`
-      localStorage.setItem(key, JSON.stringify(stash))
+      try {
+        localStorage.setItem(key, JSON.stringify(stash))
+      } catch (error) {
+        // Failure-only report: a mount-time success here must not clear
+        // another writer's failure (see App.test.tsx storage warning test)
+        console.error(`Error writing localStorage key "${key}":`, error)
+        reportStorageWrite(false)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stash, activeLayout?.id])

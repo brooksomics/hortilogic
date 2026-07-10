@@ -8,6 +8,7 @@ import type {
   Crop,
 } from '../types/garden'
 import { generateUUID } from './uuid'
+import { reportStorageWrite } from '../hooks/useStorageHealth'
 
 const LEGACY_KEY = 'hortilogic:garden'
 const LAYOUTS_KEY = 'hortilogic:layouts'
@@ -120,11 +121,17 @@ export function migrateToLayoutsSchema(): MigrationResult {
     }
 
     // Write new schema to localStorage
-    localStorage.setItem(PROFILES_KEY, JSON.stringify(profileStorage))
-    localStorage.setItem(LAYOUTS_KEY, JSON.stringify(layoutStorage))
-
-    // Mark old key as migrated (rename instead of delete for safety)
-    localStorage.setItem(MIGRATED_KEY, legacyData)
+    try {
+      localStorage.setItem(PROFILES_KEY, JSON.stringify(profileStorage))
+      localStorage.setItem(LAYOUTS_KEY, JSON.stringify(layoutStorage))
+      // Mark old key as migrated (rename instead of delete for safety)
+      localStorage.setItem(MIGRATED_KEY, legacyData)
+    } catch (error) {
+      // Failure-only report: success must not clear another writer's failure
+      console.error('Migration write failed:', error)
+      reportStorageWrite(false)
+      return { success: false, migrated: false, reason: 'write_failed' }
+    }
     localStorage.removeItem(LEGACY_KEY)
 
     return {
@@ -210,7 +217,14 @@ export function migrateToMultiBoxSchema(): MigrationResult {
     }
 
     // Write updated storage to localStorage
-    localStorage.setItem(LAYOUTS_KEY, JSON.stringify(updatedStorage))
+    try {
+      localStorage.setItem(LAYOUTS_KEY, JSON.stringify(updatedStorage))
+    } catch (error) {
+      // Failure-only report: success must not clear another writer's failure
+      console.error('Multi-box migration write failed:', error)
+      reportStorageWrite(false)
+      return { success: false, migrated: false, reason: 'write_failed' }
+    }
 
     return {
       success: true,
