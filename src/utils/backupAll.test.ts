@@ -1,5 +1,6 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { exportAll, importAll } from './backupAll'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { exportAll, importAll, type ImportAllResult } from './backupAll'
+import { getStorageHealth, reportStorageWrite } from '../hooks/useStorageHealth'
 
 const LAYOUTS_KEY = 'hortilogic:layouts'
 const PROFILES_KEY = 'hortilogic:profiles'
@@ -133,6 +134,30 @@ describe('backupAll', () => {
       })
       expect(result.ok).toBe(true)
       expect(localStorage.getItem(LAYOUTS_KEY)).toBeNull()
+    })
+  })
+
+  describe('storage write failures (hortilogic-xow)', () => {
+    afterEach(() => {
+      vi.restoreAllMocks()
+      reportStorageWrite(true)
+    })
+
+    it('importAll returns an error and reports the failure when writes throw', () => {
+      seedStorage()
+      const backup = exportAll()
+      localStorage.clear()
+      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+        throw new DOMException('quota', 'QuotaExceededError')
+      })
+
+      let result: ImportAllResult | undefined
+      expect(() => {
+        result = importAll(backup)
+      }).not.toThrow()
+
+      expect(result?.ok).toBe(false)
+      expect(getStorageHealth()).toBe(true)
     })
   })
 })

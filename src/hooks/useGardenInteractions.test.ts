@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { useGardenInteractions } from './useGardenInteractions'
+import { getStorageHealth, reportStorageWrite } from './useStorageHealth'
 import type { Crop, GardenProfile, GardenLayout, GardenBox } from '../types/garden'
 
 describe('useGardenInteractions', () => {
@@ -651,6 +652,40 @@ describe('useGardenInteractions', () => {
       expect(plantCalled).toBe(true)
       expect(plantedIndex).toBe(0)
       expect(plantedBoxId).toBe('box-2')
+    })
+  })
+
+  describe('stash persistence write failures (hortilogic-xow)', () => {
+    afterEach(() => {
+      reportStorageWrite(true)
+    })
+
+    it('does not crash and reports the failure when the stash save throws', () => {
+      const { result } = renderHook(() =>
+        useGardenInteractions({
+          currentBed: mockCurrentBed,
+          gardenProfile: mockProfile,
+          activeLayout: mockLayout,
+          setAllBoxes: mockSetAllBoxes,
+          plantCrop: mockPlantCrop,
+          removeCrop: mockRemoveCrop,
+          updateProfile: mockUpdateProfile,
+          captureUndo: mockCaptureUndo,
+        })
+      )
+
+      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+        throw new DOMException('quota', 'QuotaExceededError')
+      })
+
+      expect(() => {
+        act(() => {
+          result.current.addToStash('tomato', 2)
+        })
+      }).not.toThrow()
+
+      expect(result.current.stash).toEqual({ tomato: 2 })
+      expect(getStorageHealth()).toBe(true)
     })
   })
 })
