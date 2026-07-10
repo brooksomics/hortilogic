@@ -163,3 +163,9 @@ Track key architectural and implementation decisions.
 - src/components/SettingsModal.tsx
 - src/components/SettingsModal.test.tsx
 - _project_specs/features/004-user-settings.md
+
+## 2026-07-01: Crop catalog as validated JSON (hortilogic-9bn)
+
+- **Decision**: Catalog data moved from a 5,278-line TS literal (src/data/crops.ts) to src/data/crops.json, parsed once at module load with a new Zod `CropSchema` (src/schemas/crop.ts). crops.ts stays as a thin loader with identical exports so no call sites change.
+- **Why**: data-as-code slowed typecheck/editor and had no runtime validation; Zod parse fails fast on bad catalog edits.
+- **Also**: deleted dead src/data/crops-v2-comprehensive.ts (zero importers); its 15 unique crops were either deliberately removed by PR #36 or duplicated under other ids, so nothing was merged.
