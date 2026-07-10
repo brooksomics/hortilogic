@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { reportStorageWrite } from './useStorageHealth'
 
 /**
  * Custom hook for managing state synchronized with localStorage
@@ -41,8 +42,10 @@ export function useLocalStorage<T>(
   useEffect(() => {
     try {
       window.localStorage.setItem(key, JSON.stringify(storedValue))
+      reportStorageWrite(true)
     } catch (error) {
       console.error(`Error writing localStorage key "${key}":`, error)
+      reportStorageWrite(false)
     }
   }, [key, storedValue])
 

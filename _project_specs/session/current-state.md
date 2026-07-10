@@ -9,9 +9,19 @@ After each task, ask: Decision made? >10 tool calls? Feature done?
 
 # Current Session State
 
-*Last updated: 2026-02-08*
+*Last updated: 2026-07-01*
 
-## Active Task
+## Active Task (agent 3, epic hortilogic-9bn)
+**Data layer cleanup — COMPLETE** (branch worktree-agent3-hortilogic-9bn, based on extend-planting-window)
+
+- 9bn.1: deleted dead src/data/crops-v2-comprehensive.ts (2,997 lines, zero importers). Its 15 unique crop ids: 13 deliberately removed by PR #36, chinese-cabbage/rapini exist as napa-cabbage/broccoli-rabe. Nothing merged.
+- 9bn.3: deleted stale PR_DESCRIPTION.md + CROP_DATABASE_SUMMARY.md (documented the deleted v2 DB); moved personal layout export to examples/garden-layout-export-sample.json.
+- 9bn.2: catalog moved to src/data/crops.json (286 crops); crops.ts is a thin Zod-validated loader (new src/schemas/crop.ts, TDD). Added resolveJsonModule to tsconfig.app.json.
+- hortilogic-0uf (found+fixed): Node 26 experimental localStorage global shadowed jsdom's, failing 151 tests; fixed via --no-experimental-webstorage execArgv in vitest.config.ts.
+- Known remaining failure: CropLibrary summer-filter test = pre-existing hortilogic-vij. Coverage tooling missing = hortilogic-461.
+- Suite: 511/512 pass; lint, typecheck, build green.
+
+## Previous Task
 ✅ **Feature 010: Crop Height, Orientation & Sun-Blocking - COMPLETE**
 
 ## Current Status
