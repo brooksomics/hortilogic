@@ -173,3 +173,90 @@ describe('isCropViable', () => {
     expect(isCropViable(peasCrop, profile, atLFD)).toBe(false)
   })
 })
+
+describe('isCropViable - FFD-based window extension for long-season climates', () => {
+  const socalProfile: GardenProfile = {
+    name: 'SoCal Garden',
+    hardiness_zone: '10a',
+    last_frost_date: '2026-01-15',
+    first_frost_date: '2026-12-31',
+    season_extension_weeks: 0
+  }
+
+  const bellPepper: Crop = {
+    id: 'pepper-bell',
+    type: 'vegetable',
+    botanical_family: 'Solanaceae',
+    sun: 'full',
+    days_to_maturity: 70,
+    water_need: 3,
+    height_inches: 30,
+    trellisable: false,
+    sfg_density: 1,
+    planting_strategy: {
+      start_window_start: 1,  // 1 week after LFD
+      start_window_end: 6     // up to 6 weeks after LFD (~Feb 26)
+    },
+    companions: { friends: [], enemies: [] }
+  }
+
+  it('returns TRUE for April 11 planting in SoCal (ample time before FFD Dec 31)', () => {
+    // Apr 11 is ~12.6 weeks after Jan 15 LFD — past fixed window end (Feb 26)
+    // But Dec 31 FFD - 70 days maturity - 14 buffer = ~Oct 8, so still plantable
+    const april11 = new Date('2026-04-11')
+    expect(isCropViable(bellPepper, socalProfile, april11)).toBe(true)
+  })
+
+  it('returns FALSE when too late to mature before FFD', () => {
+    // Oct 20 + 70 days + 14 buffer = Jan 12, which is after Dec 31 FFD
+    const oct20 = new Date('2026-10-20')
+    expect(isCropViable(bellPepper, socalProfile, oct20)).toBe(false)
+  })
+
+  it('does NOT extend window for cold-tolerant crops (start_window_start < 0)', () => {
+    const lettuce: Crop = {
+      id: 'lettuce',
+      type: 'vegetable',
+      botanical_family: 'Asteraceae',
+      sun: 'partial',
+      days_to_maturity: 55,
+      water_need: 3,
+      height_inches: 24,
+      trellisable: false,
+      sfg_density: 4,
+      planting_strategy: {
+        start_window_start: -4, // cold-tolerant: can plant before LFD
+        start_window_end: 2
+      },
+      companions: { friends: [], enemies: [] }
+    }
+
+    // April 11 in SoCal is ~12.6 weeks after Jan 15 LFD — well past the 2-week window end
+    // Even though FFD is Dec 31, lettuce is heat-sensitive: no extension applied
+    const april11 = new Date('2026-04-11')
+    expect(isCropViable(lettuce, socalProfile, april11)).toBe(false)
+  })
+
+  it('does NOT extend window for early-spring-only crops (start_window_end < 0)', () => {
+    const peas: Crop = {
+      id: 'peas',
+      type: 'vegetable',
+      botanical_family: 'Fabaceae',
+      sun: 'full',
+      days_to_maturity: 60,
+      water_need: 3,
+      height_inches: 24,
+      trellisable: false,
+      sfg_density: 8,
+      planting_strategy: {
+        start_window_start: -8,
+        start_window_end: -2
+      },
+      companions: { friends: [], enemies: [] }
+    }
+
+    // April 11 is after LFD — cold-season window is closed, no FFD extension
+    const april11 = new Date('2026-04-11')
+    expect(isCropViable(peas, socalProfile, april11)).toBe(false)
+  })
+})
